@@ -1,0 +1,313 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="horizontal">
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:src="@mipmap/ic_car_top_ci_bg" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="@dimen/dp_30"
+            android:layout_marginBottom="@dimen/dp_30"
+            android:orientation="horizontal">
+
+
+            <com.hjq.shape.layout.ShapeLinearLayout
+                android:layout_width="@dimen/dp_60"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_margin="@dimen/dp_10"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:paddingStart="@dimen/dp_10"
+                android:paddingTop="@dimen/dp_15"
+                android:paddingEnd="@dimen/dp_10"
+                android:paddingBottom="@dimen/dp_15"
+                app:shape_radius="@dimen/dp_30"
+                app:shape_solidColor="#1A1B1C">
+
+
+                <ImageView
+                    android:id="@+id/homeCenterLeftTopImg"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@mipmap/ic_cir_radius_top_ig" />
+
+
+                <TextView
+                    android:id="@+id/homeCenterLeftTopTv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:shadowColor="#80000000"
+                    android:shadowRadius="3.0"
+                    android:textColor="#80FFFFFF"
+                    android:text="88"
+                    android:textSize="30sp" />
+
+                <ImageView
+                    android:id="@+id/homeCenterLeftBotImg"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@mipmap/ic_cir_radius_bot_ig" />
+
+
+                <View
+                    android:layout_width="1dp"
+                    android:layout_height="0dp"
+                    android:layout_weight="1" />
+
+                <ImageView
+
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@mipmap/ic_cir_radius_top_ig" />
+
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:shadowRadius="3.0"
+                    android:text="66"
+                    android:textColor="#80FFFFFF"
+                    android:textSize="30sp" />
+
+                <ImageView
+                    android:id="@+id/homeCenterLeftBotImg2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+
+                    android:src="@mipmap/ic_cir_radius_bot_ig" />
+
+
+            </com.hjq.shape.layout.ShapeLinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:id="@+id/carHomeCenterTopTopImg"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="top"
+                        android:background="@mipmap/ic_car_home_center_last_top"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+
+                    <ImageView
+                        android:id="@+id/carCenterTopBomImg"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@mipmap/ic_white_arrow_bottom"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintRight_toRightOf="parent" />
+
+
+                    <com.app.airmaster.widget.CusVerticalTextScheduleView
+                        android:id="@+id/carCenterTopScheduleView"
+                        android:layout_width="@dimen/dp_2"
+                        android:layout_height="0dp"
+                        android:background="#3D3D44"
+                        app:cus_all_schedule_color="#FF2C2B29"
+                        app:cus_curr_schedule_color="#3D3D44"
+                        app:layout_constraintBottom_toTopOf="@+id/carCenterTopBomImg"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintRight_toRightOf="parent"
+                        android:layout_marginTop="@dimen/dp_2"
+                        android:layout_marginBottom="@dimen/dp_2"
+                        app:layout_constraintTop_toBottomOf="@+id/carHomeCenterTopTopImg" />
+
+
+                    <com.app.airmaster.widget.VerticalSeekBar
+                        android:layout_width="10dp"
+                        android:layout_height="match_parent"
+                        android:progress="50"
+                        android:progressBackgroundTint="@color/transparent"
+                        android:progressDrawable="@null"
+                        android:progressTint="@color/transparent"
+                        android:thumb="@mipmap/ic_car_home_middle_top_left"
+                        app:layout_constraintRight_toLeftOf="@+id/carCenterTopScheduleView" />
+
+
+                    <com.app.airmaster.widget.VerticalSeekBar
+                        android:id="@+id/homeLeftAirSeekBar"
+                        android:layout_width="10dp"
+                        android:layout_height="match_parent"
+                        android:progress="50"
+                        android:progressBackgroundTint="@color/transparent"
+                        android:progressDrawable="@null"
+                        android:progressTint="@color/transparent"
+                        android:thumb="@mipmap/ic_car_home_middle_top_right"
+                        app:layout_constraintLeft_toRightOf="@+id/carCenterTopScheduleView" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1">
+
+
+                    <ImageView
+                        android:id="@+id/carCenterBotBomImg"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@mipmap/ic_white_arrow_bottom"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintRight_toRightOf="parent" />
+
+
+                    <ImageView
+                        android:id="@+id/carCenterBotTopImg"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@mipmap/ic_white_arrow_top"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+
+                    <com.app.airmaster.widget.CusVerticalTextScheduleView
+                        android:id="@+id/carCenterBottomScheduleView"
+                        android:layout_width="@dimen/dp_2"
+                        android:layout_height="0dp"
+                        android:layout_marginTop="@dimen/dp_2"
+                        android:layout_marginBottom="@dimen/dp_2"
+                        android:background="#3D3D44"
+                        app:cus_all_schedule_color="#3D3D44"
+                        app:cus_curr_schedule_color="#FFFE8B50"
+                        app:layout_constraintBottom_toTopOf="@+id/carCenterBotBomImg"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/carCenterBotTopImg" />
+
+                    <com.app.airmaster.widget.VerticalSeekBar
+                        android:layout_width="10dp"
+                        android:layout_height="match_parent"
+                        android:progress="50"
+                        android:progressBackgroundTint="@color/transparent"
+                        android:progressDrawable="@null"
+                        android:progressTint="@color/transparent"
+                        android:thumb="@mipmap/ic_car_home_middle_bot_left"
+                        app:layout_constraintRight_toLeftOf="@+id/carCenterBottomScheduleView" />
+
+                    <com.app.airmaster.widget.VerticalSeekBar
+                        android:layout_width="10dp"
+                        android:layout_height="match_parent"
+                        android:progress="50"
+                        android:progressBackgroundTint="@color/transparent"
+                        android:progressDrawable="@null"
+                        android:progressTint="@color/transparent"
+                        android:thumb="@mipmap/ic_car_home_middle_bot_right"
+                        app:layout_constraintLeft_toRightOf="@+id/carCenterBottomScheduleView" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+            </LinearLayout>
+
+            <com.hjq.shape.layout.ShapeLinearLayout
+                android:layout_width="@dimen/dp_60"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/dp_10"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:paddingStart="@dimen/dp_10"
+                android:paddingTop="@dimen/dp_15"
+                android:paddingEnd="@dimen/dp_10"
+                android:paddingBottom="@dimen/dp_15"
+                app:shape_radius="@dimen/dp_30"
+                app:shape_solidColor="#FF1B1B1B">
+
+
+                <ImageView
+
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@mipmap/ic_cir_radius_top_ig" />
+
+
+                <TextView
+
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="88"
+                    android:textColor="#80FFFFFF"
+                    android:textSize="30sp" />
+
+                <ImageView
+
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@mipmap/ic_cir_radius_bot_ig" />
+
+
+                <View
+                    android:layout_width="1dp"
+                    android:layout_height="0dp"
+                    android:layout_weight="1" />
+
+                <ImageView
+
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@mipmap/ic_cir_radius_top_ig" />
+
+
+                <TextView
+
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:shadowColor="#80FFFFFF"
+                    android:shadowRadius="3.0"
+                    android:text="66"
+                    android:textColor="#80FFFFFF"
+                    android:textSize="30sp" />
+
+                <ImageView
+
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+
+                    android:src="@mipmap/ic_cir_radius_bot_ig" />
+
+
+            </com.hjq.shape.layout.ShapeLinearLayout>
+
+
+        </LinearLayout>
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:src="@mipmap/ic_car_top_ci_bot_bg" />
+    </FrameLayout>
+
+
+</LinearLayout>

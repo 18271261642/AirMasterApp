@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/transparent"
+    android:layout_gravity="center"
+    android:gravity="center"
+    android:orientation="horizontal">
+
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+
+        <com.hjq.shape.layout.ShapeLinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/dp_10"
+            app:shape_radius="@dimen/dp_10"
+            app:shape_solidColor="#FF2A2A2B">
+
+
+            <CheckBox
+                android:id="@+id/homeBottomEncourageCheckBox"
+                android:layout_width="@dimen/dp_28"
+                android:layout_height="@dimen/dp_28"
+                android:layout_margin="@dimen/dp_10"
+                android:background="@drawable/home_bottom_encourage_selector"
+                android:button="@null" />
+
+        </com.hjq.shape.layout.ShapeLinearLayout>
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+
+        <com.hjq.shape.layout.ShapeLinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/dp_10"
+            app:shape_radius="@dimen/dp_10"
+            app:shape_solidColor="#FF2A2A2B">
+
+
+            <CheckBox
+                android:id="@+id/homeBottomPrepareHeightCheckBox"
+                android:layout_width="@dimen/dp_28"
+                android:layout_height="@dimen/dp_28"
+                android:layout_margin="@dimen/dp_10"
+                android:background="@drawable/home_bottom_prepar_height_selector"
+                android:button="@null" />
+
+        </com.hjq.shape.layout.ShapeLinearLayout>
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+
+        <com.hjq.shape.layout.ShapeLinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/dp_10"
+            app:shape_radius="@dimen/dp_10"
+            app:shape_solidColor="#FF2A2A2B">
+
+
+            <CheckBox
+                android:id="@+id/itemHomeBottomWarringCheckBox"
+                android:layout_width="@dimen/dp_28"
+                android:layout_height="@dimen/dp_28"
+                android:layout_margin="@dimen/dp_10"
+                android:background="@drawable/home_bottom_warring"
+                android:button="@null" />
+
+        </com.hjq.shape.layout.ShapeLinearLayout>
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+
+        <com.hjq.shape.layout.ShapeLinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/dp_10"
+            app:shape_radius="@dimen/dp_10"
+            app:shape_solidColor="#FF2A2A2B">
+
+
+            <CheckBox
+                android:id="@+id/itemHomeBottomDrainageCheckBox"
+                android:layout_width="@dimen/dp_28"
+                android:layout_height="@dimen/dp_28"
+                android:layout_margin="@dimen/dp_10"
+                android:background="@drawable/home_bottom_drainage_selector"
+                android:button="@null" />
+
+        </com.hjq.shape.layout.ShapeLinearLayout>
+
+
+    </LinearLayout>
+
+</LinearLayout>

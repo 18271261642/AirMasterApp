@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.hjq.shape.layout.ShapeLinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="@dimen/dp_260"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    app:shape_solidColor="#FF232323"
+    app:shape_radius="@dimen/dp_15"
+    android:layout_margin="@dimen/dp_15"
+    android:layout_height="wrap_content">
+
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="是否全部清除？"
+        android:textColor="@color/white"
+        android:textSize="@dimen/sp_19"
+        android:layout_marginTop="@dimen/dp_30"
+        android:gravity="center"
+        android:layout_gravity="center"/>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dp_15"
+        android:orientation="horizontal">
+
+
+        <com.hjq.shape.view.ShapeTextView
+            android:id="@+id/confirmCancelTv"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            app:shape_solidColor="#FF333333"
+            app:shape_radius="@dimen/dp_25"
+            android:text="取消"
+            android:textSize="20sp"
+            android:padding="@dimen/dp_10"
+            android:textColor="@color/white"
+            android:layout_gravity="center"
+            android:layout_margin="@dimen/dp_25"
+            android:gravity="center"/>
+
+        <com.hjq.shape.view.ShapeTextView
+            android:id="@+id/confirmConfirmTv"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            app:shape_solidColor="#A3FF4B00"
+            app:shape_radius="@dimen/dp_25"
+            android:text="确定"
+            android:textSize="20sp"
+            android:padding="@dimen/dp_10"
+            android:layout_margin="@dimen/dp_25"
+            android:textColor="@color/white"
+            android:layout_gravity="center"
+            android:gravity="center"/>
+
+    </LinearLayout>
+</com.hjq.shape.layout.ShapeLinearLayout>

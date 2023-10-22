@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_height="match_parent"
+    android:background="@color/play_color_theme"
+    tools:ignore="MissingDefaultResource">
+
+    <com.hjq.bar.TitleBar
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:leftIcon="@drawable/ic_white_left_back"
+        android:background="@color/transparent"
+        app:lineVisible="false"
+        app:title="系统自检"
+        app:titleColor="@color/white"/>
+
+
+    <com.bonlala.widget.layout.SettingBar
+        android:id="@+id/sysGasBar"
+        android:layout_width="match_parent"
+        app:bar_leftDrawable="@mipmap/ic_sys_check_manual"
+        app:bar_leftText="手动自检"
+        android:layout_marginTop="@dimen/dp_20"
+        android:background="@color/transparent"
+        app:bar_leftTextColor="@color/white"
+        app:bar_rightDrawable="@mipmap/ic_set_right_back"
+        app:bar_lineVisible="false"
+        android:layout_height="wrap_content"/>
+
+
+    <com.bonlala.widget.layout.SettingBar
+        android:layout_width="match_parent"
+        app:bar_leftDrawable="@mipmap/ic_sys_check_auto"
+        app:bar_leftText="自动自检"
+        android:background="@color/transparent"
+        app:bar_leftTextColor="@color/white"
+        app:bar_rightDrawable="@mipmap/ic_set_right_back"
+        app:bar_lineVisible="false"
+        android:layout_height="wrap_content"/>
+
+
+
+</LinearLayout>

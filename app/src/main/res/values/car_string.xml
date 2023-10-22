@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="string_car_app_name">爱玩车</string>
+    
+    <string name="string_home_air">AIR</string>
+    <string name="string_home_control">Control</string>
+    <string name="string_home_setting">Setting</string>
+    
+</resources>

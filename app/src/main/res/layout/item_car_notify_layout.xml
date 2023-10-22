@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:orientation="horizontal"
+    android:background="#FF1F2022"
+    android:layout_height="wrap_content">
+
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_margin="@dimen/dp_10"
+        android:src="@mipmap/ic_car_fault_logo"/>
+
+
+    <TextView
+        android:id="@+id/itemCarFaultNotifyTv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/white"
+        android:layout_gravity="center"
+        android:text="胎压检测系统故障"/>
+
+</LinearLayout>

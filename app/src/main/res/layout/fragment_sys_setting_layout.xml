@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:background="@color/play_color_theme"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_height="match_parent">
+
+    <com.hjq.bar.TitleBar
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:leftIcon="@drawable/ic_white_left_back"
+        android:background="@color/transparent"
+        app:lineVisible="false"
+        app:title="系统设置"
+        app:titleColor="@color/white"/>
+
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dp_20"
+        android:layout_marginStart="@dimen/dp_10"
+        android:layout_marginEnd="@dimen/dp_10"
+        android:scrollbars="none">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+
+
+        <com.bonlala.widget.layout.SettingBar
+            android:id="@+id/sysGasBar"
+            android:layout_width="match_parent"
+            app:bar_leftDrawable="@mipmap/ic_sys_gas_pressure"
+            app:bar_leftText="气罐压力"
+            android:background="@color/transparent"
+            app:bar_leftTextColor="@color/white"
+            app:bar_rightDrawable="@mipmap/ic_set_right_back"
+            app:bar_lineVisible="false"
+            android:layout_height="wrap_content"/>
+
+
+        <com.bonlala.widget.layout.SettingBar
+            android:id="@+id/sysWorkModelBar"
+            android:layout_width="match_parent"
+            app:bar_leftDrawable="@mipmap/ic_sys_work_model"
+            app:bar_leftText="工作模式"
+            android:background="@color/transparent"
+            app:bar_leftTextColor="@color/white"
+            app:bar_rightDrawable="@mipmap/ic_set_right_back"
+            app:bar_lineVisible="false"
+            android:layout_height="wrap_content"/>
+
+
+        <com.bonlala.widget.layout.SettingBar
+            android:layout_width="match_parent"
+            app:bar_leftDrawable="@mipmap/ic_sys_height_scale"
+            app:bar_leftText="高度尺工具"
+            android:background="@color/transparent"
+            app:bar_leftTextColor="@color/white"
+            app:bar_rightDrawable="@mipmap/ic_set_right_back"
+            app:bar_lineVisible="false"
+            android:layout_height="wrap_content"/>
+
+
+        <com.bonlala.widget.layout.SettingBar
+            android:id="@+id/sysPowerProtectBar"
+            android:layout_width="match_parent"
+            app:bar_leftDrawable="@mipmap/ic_sys_power_protect"
+            app:bar_leftText="电瓶保护"
+            android:background="@color/transparent"
+            app:bar_leftTextColor="@color/white"
+            app:bar_rightDrawable="@mipmap/ic_set_right_back"
+            app:bar_lineVisible="false"
+            android:layout_height="wrap_content"/>
+
+
+        <com.bonlala.widget.layout.SettingBar
+            android:id="@+id/sysIgnitionBar"
+            android:layout_width="match_parent"
+            app:bar_leftDrawable="@mipmap/ic_sys_ignition"
+            app:bar_leftText="点火熄火设置"
+            android:background="@color/transparent"
+            app:bar_leftTextColor="@color/white"
+            app:bar_rightDrawable="@mipmap/ic_set_right_back"
+            app:bar_lineVisible="false"
+            android:layout_height="wrap_content"/>
+
+
+        <com.bonlala.widget.layout.SettingBar
+            android:id="@+id/carSysHeightMemoryBar"
+            android:layout_width="match_parent"
+            app:bar_leftDrawable="@mipmap/ic_sys_height_memory"
+            app:bar_leftText="高度记忆设置"
+            android:background="@color/transparent"
+            app:bar_leftTextColor="@color/white"
+            app:bar_rightDrawable="@mipmap/ic_set_right_back"
+            app:bar_lineVisible="false"
+            android:layout_height="wrap_content"/>
+
+
+        <com.bonlala.widget.layout.SettingBar
+            android:id="@+id/sysRepairBar"
+            android:layout_width="match_parent"
+            app:bar_leftDrawable="@mipmap/ic_sys_repair_model"
+            app:bar_leftText="维修模式"
+            android:background="@color/transparent"
+            app:bar_leftTextColor="@color/white"
+            app:bar_rightDrawable="@mipmap/ic_set_right_back"
+            app:bar_lineVisible="false"
+            android:layout_height="wrap_content"/>
+
+
+        <com.bonlala.widget.layout.SettingBar
+            android:id="@+id/sysLowestBar"
+            android:layout_width="match_parent"
+            app:bar_leftDrawable="@mipmap/ic_sys_low_air"
+            app:bar_leftText="最低行驶保护气压"
+            android:background="@color/transparent"
+            app:bar_leftTextColor="@color/white"
+            app:bar_rightDrawable="@mipmap/ic_set_right_back"
+            app:bar_lineVisible="false"
+            android:layout_height="wrap_content"/>
+
+
+
+    </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+
+</LinearLayout>
