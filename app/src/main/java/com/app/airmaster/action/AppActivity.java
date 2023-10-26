@@ -13,6 +13,8 @@ import android.text.style.ForegroundColorSpan;
 import android.view.View;
 
 import com.app.airmaster.R;
+import com.app.airmaster.adapter.OnCommItemClickListener;
+import com.app.airmaster.dialog.ConfirmDialog;
 import com.app.airmaster.dialog.WaitDialog;
 import com.bonlala.base.BaseActivity;
 import com.bonlala.base.BaseDialog;
@@ -292,5 +294,24 @@ public abstract class AppActivity extends BaseActivity
             intent.putExtra(key[i],value[i]);
         }
         startActivity(intent);
+    }
+
+
+    private ConfirmDialog confirmDialog;
+    public void showCommAlertDialog(String content, String cancelTxt , String confirmTxt, OnCommItemClickListener onCommItemClickListener){
+        if(confirmDialog == null){
+            confirmDialog = new ConfirmDialog(this,com.bonlala.base.R.style.BaseDialogTheme);
+        }
+
+        confirmDialog.show();
+        confirmDialog.setContentTxt(content);
+        confirmDialog.setBtnTxt(confirmTxt,cancelTxt);
+        confirmDialog.setOnCommClickListener(onCommItemClickListener);
+    }
+
+    public void disCommAlertDialog(){
+        if(confirmDialog != null){
+            confirmDialog.dismiss();
+        }
     }
 }

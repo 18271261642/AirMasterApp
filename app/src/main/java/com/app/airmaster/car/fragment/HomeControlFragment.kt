@@ -1,12 +1,18 @@
 package com.app.airmaster.car.fragment
 
 import android.os.Build
+import android.view.MotionEvent
+import android.view.View
+import android.view.View.OnTouchListener
 import com.app.airmaster.R
 import com.app.airmaster.action.TitleBarFragment
+import com.app.airmaster.adapter.OnCommItemClickListener
 import com.app.airmaster.adapter.OnItemCheckedListener
 import com.app.airmaster.car.CarFaultNotifyActivity
 import com.app.airmaster.car.CarHomeActivity
 import com.app.airmaster.car.view.HomeBottomCheckView
+import com.app.airmaster.car.view.HomeBottomNumberView
+import com.app.airmaster.second.SecondScanActivity
 import com.app.airmaster.widget.CusVerticalScheduleView
 import com.app.airmaster.widget.CusVerticalTextScheduleView
 import com.app.airmaster.widget.VerticalSeekBar
@@ -24,6 +30,7 @@ class HomeControlFragment : TitleBarFragment<CarHomeActivity>() {
     private var homeLeftAirSeekBar : VerticalSeekBar?= null
 
     private var homeBottomCheckView : HomeBottomCheckView ?= null
+    private var homeBottomNumberView : HomeBottomNumberView ?= null
 
 
 
@@ -43,7 +50,7 @@ class HomeControlFragment : TitleBarFragment<CarHomeActivity>() {
         cusVerticalTxtView= findViewById(R.id.cusVerticalTxtView)
         cusVerticalView = findViewById(R.id.cusVerticalView)
         homeBottomCheckView = findViewById(R.id.homeBottomCheckView)
-
+        homeBottomNumberView = findViewById(R.id.homeBottomNumberView)
 
 
         homeBottomCheckView?.setOnItemCheck(object : OnItemCheckedListener{
@@ -56,6 +63,24 @@ class HomeControlFragment : TitleBarFragment<CarHomeActivity>() {
         })
 
 
+
+        homeBottomNumberView?.setOnTouchListener(object : OnTouchListener{
+            override fun onTouch(p0: View?, p1: MotionEvent?): Boolean {
+                attachActivity.showCommAlertDialog("未连接设备","去官网","去连接",object :
+                    OnCommItemClickListener {
+                    override fun onItemClick(position: Int) {
+                        attachActivity.disCommAlertDialog()
+                        if(position == 0x01){
+                            startActivity(SecondScanActivity::class.java)
+                        }
+                    }
+
+                })
+
+                return true
+            }
+
+        })
 
 
         cusVerticalView?.allScheduleValue = 150F
@@ -92,4 +117,6 @@ class HomeControlFragment : TitleBarFragment<CarHomeActivity>() {
     override fun initData() {
 
     }
+
+
 }

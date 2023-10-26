@@ -23,7 +23,7 @@
 
 
             <com.hjq.shape.layout.ShapeLinearLayout
-                android:layout_width="@dimen/dp_60"
+                android:layout_width="@dimen/dp_70"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_margin="@dimen/dp_10"
@@ -45,11 +45,14 @@
 
 
                 <TextView
+                    android:layout_marginTop="@dimen/dp_10"
+                    android:layout_marginBottom="@dimen/dp_10"
                     android:id="@+id/homeCenterLeftTopTv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:shadowColor="#80000000"
                     android:shadowRadius="3.0"
+                    android:textStyle="bold"
                     android:textColor="#80FFFFFF"
                     android:text="88"
                     android:textSize="30sp" />
@@ -85,7 +88,8 @@
                     android:id="@+id/homeCenterLeftBotImg2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-
+                    android:layout_marginTop="@dimen/dp_10"
+                    android:layout_marginBottom="@dimen/dp_10"
                     android:src="@mipmap/ic_cir_radius_bot_ig" />
 
 
@@ -136,8 +140,8 @@
                         app:layout_constraintBottom_toTopOf="@+id/carCenterTopBomImg"
                         app:layout_constraintLeft_toLeftOf="parent"
                         app:layout_constraintRight_toRightOf="parent"
-                        android:layout_marginTop="@dimen/dp_2"
-                        android:layout_marginBottom="@dimen/dp_2"
+                        android:layout_marginTop="@dimen/dp_10"
+                        android:layout_marginBottom="@dimen/dp_10"
                         app:layout_constraintTop_toBottomOf="@+id/carHomeCenterTopTopImg" />
 
 
@@ -164,6 +168,11 @@
                         app:layout_constraintLeft_toRightOf="@+id/carCenterTopScheduleView" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+                <View
+                    android:layout_width="1dp"
+                    android:layout_height="10dp"/>
 
 
                 <androidx.constraintlayout.widget.ConstraintLayout
@@ -196,8 +205,8 @@
                         android:id="@+id/carCenterBottomScheduleView"
                         android:layout_width="@dimen/dp_2"
                         android:layout_height="0dp"
-                        android:layout_marginTop="@dimen/dp_2"
-                        android:layout_marginBottom="@dimen/dp_2"
+                        android:layout_marginTop="@dimen/dp_10"
+                        android:layout_marginBottom="@dimen/dp_10"
                         android:background="#3D3D44"
                         app:cus_all_schedule_color="#3D3D44"
                         app:cus_curr_schedule_color="#FFFE8B50"
@@ -210,6 +219,8 @@
                         android:layout_width="10dp"
                         android:layout_height="match_parent"
                         android:progress="50"
+                        android:layout_marginTop="@dimen/dp_10"
+                        android:layout_marginBottom="@dimen/dp_10"
                         android:progressBackgroundTint="@color/transparent"
                         android:progressDrawable="@null"
                         android:progressTint="@color/transparent"
@@ -220,6 +231,8 @@
                         android:layout_width="10dp"
                         android:layout_height="match_parent"
                         android:progress="50"
+                        android:layout_marginTop="@dimen/dp_10"
+                        android:layout_marginBottom="@dimen/dp_10"
                         android:progressBackgroundTint="@color/transparent"
                         android:progressDrawable="@null"
                         android:progressTint="@color/transparent"
@@ -232,7 +245,7 @@
             </LinearLayout>
 
             <com.hjq.shape.layout.ShapeLinearLayout
-                android:layout_width="@dimen/dp_60"
+                android:layout_width="@dimen/dp_70"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/dp_10"
                 android:gravity="center"
@@ -253,7 +266,9 @@
 
 
                 <TextView
-
+                    android:layout_marginTop="@dimen/dp_10"
+                    android:layout_marginBottom="@dimen/dp_10"
+                    android:textStyle="bold"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="88"
@@ -280,7 +295,8 @@
 
 
                 <TextView
-
+                    android:layout_marginTop="@dimen/dp_10"
+                    android:layout_marginBottom="@dimen/dp_10"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:shadowColor="#80FFFFFF"

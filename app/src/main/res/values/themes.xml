@@ -17,7 +17,8 @@
         <item name="windowNoTitle">true</item>
         <item name="windowActionBar">false</item>
 
-
+        <item name="android:windowBackground">@color/play_color_theme</item>
+        <item name="backgroundColor">@color/play_color_theme</item>
 
     </style>
     
@@ -26,6 +27,7 @@
         <item name="windowNoTitle">true</item>
         <item name="windowActionBar">false</item>
         <item name="backgroundColor">@color/play_color_theme</item>
+        <item name="android:windowBackground">@color/play_color_theme</item>
     </style>
     
     
