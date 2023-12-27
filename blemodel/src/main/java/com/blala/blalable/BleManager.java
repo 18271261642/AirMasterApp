@@ -363,44 +363,25 @@ public class BleManager {
                 String notifyStr = uuid1.toString()+" "+Utils.formatBtArrayToString(bytes);
                 Log.e(TAG,"------写入数据返回="+notifyStr);
                 stringBuffer.append("数据返回:"+notifyStr+"\n\n");
-                sendCommBroadcast("ble_action",0);
+               // sendCommBroadcast("ble_action",0);
                 if(interfaceManager.writeBackDataListener != null){
                     interfaceManager.writeBackDataListener.backWriteData(bytes);
                 }
 
-                //锻炼结束后手表返回 011701
-                if(bytes.length == 3 && bytes[0] == 1 && bytes[1] == 23 && bytes[2] == 1){
-                    sendCommBroadcast(BleConstant.BLE_COMPLETE_EXERCISE_ACTION,0);
+                //8800000000003860030f7ffaaf0031040190020100461e46321632df0000dfdf00000000000078ce010000008b8b464600020600000000000000000000000085
+                //8800000000003808030f7ffaaf00310401 90 02 01 003c0a16322c1edf0000dfdf00000000000078ce010000008b8b464600040c000000000000000000000000c9
+
+                if(bytes.length>20 && (bytes[9] &0xff) == 15 && (bytes[10] &0xff) == 127 && (bytes[17] & 0xff) == 144){
+
+                    //当前工作模式
+                    int workModel = bytes[18] &0xff;
+                    //自检模式下项目
+                    int selfCheckModel = bytes[19] & 0xff;
+                    //当前处于预置位位置
+                    int curPos =
+
                 }
 
-                //0151ff 测量手表结束后返回 心率
-
-                //023cffff 血压手表结束测量
-
-
-
-                if(bytes.length == 3 && bytes[0] ==1 && (bytes[1]& 0xff) == 0x15 && bytes[2] == 1 ){    //拍照
-                    sendCommBroadcast(0x01);
-                }
-
-                if(bytes.length == 3 && bytes[0] == 1 && (bytes[1]& 0xff) == 81){   //测量心率返回
-                    if(interfaceManager.onMeasureDataListener != null)
-                        interfaceManager.onMeasureDataListener.onMeasureHeart(bytes[2] & 0xff,System.currentTimeMillis());
-                    handler.sendEmptyMessageDelayed(0x00,1500);
-                }
-
-                if(bytes.length == 4 && (bytes[0] & 0xff) == 2 && (bytes[1] & 0xff) == 60){ //测量血压返回
-                    if(interfaceManager.onMeasureDataListener != null)
-                        interfaceManager.onMeasureDataListener.onMeasureBp(bytes[2] & 0xff ,bytes[3] & 0xff,System.currentTimeMillis());
-                    handler.sendEmptyMessageDelayed(0x00,1500);
-                }
-
-                // 013e60 血氧
-                if(bytes.length == 3 && bytes[0] == 1 && (bytes[1]& 0xff) == 62){
-                    if(interfaceManager.onMeasureDataListener != null)
-                        interfaceManager.onMeasureDataListener.onMeasureSpo2(bytes[2] & 0xff,System.currentTimeMillis());
-                    handler.sendEmptyMessageDelayed(0x00,1500);
-                }
             }
 
             @Override

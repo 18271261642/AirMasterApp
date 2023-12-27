@@ -254,7 +254,7 @@ public class BleOperateManager {
 
     //连接成功第一步获取设备的状态
     public void getKeyBoardStatus() {
-        byte[] btArray = new byte[]{0x00, 0x13, 0x00};
+        byte[] btArray = new byte[]{0x01, 0x1d};
         byte[] statusArray = Utils.getFullPackage(btArray);
 
         bleManager.writeDataToDevice(statusArray, new WriteBackDataListener() {

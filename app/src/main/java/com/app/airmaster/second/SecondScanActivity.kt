@@ -136,6 +136,7 @@ class SecondScanActivity : AppActivity() {
             val service = BaseApplication.getBaseApplication().connStatusService
             val bean = list?.get(position)
             if (bean != null) {
+                showDialog("Connecting..")
                 handlers.sendEmptyMessageDelayed(0x00, 500)
                 service.connDeviceBack(
                     bean.bluetoothDevice.name, bean.bluetoothDevice.address
