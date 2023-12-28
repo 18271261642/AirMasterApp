@@ -20,4 +20,10 @@
         <!--是否显示文字-->
         <attr name="cus_is_show_txt" format="boolean"/>
     </declare-styleable>
+
+    <declare-styleable name="CusCarTemperatureView">
+
+
+
+    </declare-styleable>
 </resources>

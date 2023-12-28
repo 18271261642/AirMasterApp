@@ -41,6 +41,11 @@ public class MiscUtil {
         return (int) (dip * density + 0.5f * (dip >= 0 ? 1 : -1));
     }
 
+    public static float dipToPxFloat(Context context, float dip) {
+        float density = context.getResources().getDisplayMetrics().density;
+        return (dip * density + 0.5f * (dip >= 0 ? 1 : -1));
+    }
+
     /**
      * 获取数值精度格式化字符串
      *

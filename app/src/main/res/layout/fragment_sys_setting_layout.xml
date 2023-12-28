@@ -7,6 +7,7 @@
     android:layout_height="match_parent">
 
     <com.hjq.bar.TitleBar
+        android:id="@+id/sysTitleBar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:leftIcon="@drawable/ic_white_left_back"

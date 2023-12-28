@@ -10,6 +10,8 @@ import android.os.Message;
 import android.text.TextUtils;
 import android.util.Log;
 
+import com.blala.blalable.car.AutoBackBean;
+import com.blala.blalable.car.OnCarAutoBackListener;
 import com.blala.blalable.listener.BleConnStatusListener;
 import com.blala.blalable.listener.ConnStatusListener;
 import com.blala.blalable.listener.InterfaceManager;
@@ -73,6 +75,9 @@ public class BleManager {
     private BleConnStatusListener bleConnStatusListener;
 
 
+    private OnCarAutoBackListener onCarAutoBackListener;
+
+
     private final InterfaceManager interfaceManager = new InterfaceManager();
 
     public void setBleConnStatusListener(BleConnStatusListener bleConnStatusListener) {
@@ -83,6 +88,10 @@ public class BleManager {
         this.interfaceManager.onBleBackListener = onBleBackListener;
     }
 
+
+    public void setOnCarAutoBackListener(OnCarAutoBackListener onCarAutoBackListener) {
+        this.onCarAutoBackListener = onCarAutoBackListener;
+    }
 
     public void setOnSendWriteListener(OnSendWriteDataListener onSendWriteListener){
         this.interfaceManager.onSendWriteDataListener = onSendWriteListener;
@@ -355,6 +364,8 @@ public class BleManager {
     }
 
 
+    private AutoBackBean autoBackBean = new AutoBackBean();
+
     //数据发送通道返回数据，app端发送数据后设备返回数据
     private synchronized void setNotifyData(String mac,UUID serviceUUid,UUID notifyUUid,ConnStatusListener connStatusListener){
         bluetoothClient.notify(mac, serviceUUid, notifyUUid, new BleNotifyResponse() {
@@ -378,7 +389,40 @@ public class BleManager {
                     //自检模式下项目
                     int selfCheckModel = bytes[19] & 0xff;
                     //当前处于预置位位置
-                    int curPos =
+                    int curPos =  bytes[20] & 0xff;
+                    //左前气压值
+                    int leftPressure = bytes[21] &0xff;
+                    //右前气压值
+                    int rightPressure = bytes[22] & 0xff;
+                    //左后气压值
+                    int leftRearPressure = bytes[23] & 0xff;
+                    //右后气压值
+                    int rightRearPressure = bytes[24] &0xff;
+
+                    //气缸气压值
+                    int cylinderPressure = bytes[25] & 0xff;
+
+                    //电池电压
+                    int batteryVal = bytes[38] & 0xff;
+                    //气罐温度
+                    int airBottleTemperature = bytes[39] & 0xff;
+
+                    autoBackBean.setWorkModel(workModel);
+                    autoBackBean.setSelfCheckModel(selfCheckModel);
+                    autoBackBean.setCurPos(curPos);
+                    autoBackBean.setLeftPressure(leftPressure);
+                    autoBackBean.setRightPressure(rightPressure);
+                    autoBackBean.setLeftFrontHeight(leftRearPressure);
+                    autoBackBean.setRightRearPressure(rightRearPressure);
+                    autoBackBean.setCylinderPressure(cylinderPressure);
+                    autoBackBean.setBatteryVal(batteryVal);
+                    autoBackBean.setAirBottleTemperature(airBottleTemperature);
+
+                    Log.e(TAG,"--------自动返回="+autoBackBean.toString());
+
+                    if(onCarAutoBackListener != null){
+                        onCarAutoBackListener.backAutoData(autoBackBean);
+                    }
 
                 }
 

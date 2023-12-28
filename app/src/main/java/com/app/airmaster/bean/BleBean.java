@@ -14,6 +14,18 @@ public class BleBean {
     private int rssi;
 
 
+    //是否已经连接
+    private boolean isConnected;
+
+
+    public boolean isConnected() {
+        return isConnected;
+    }
+
+    public void setConnected(boolean connected) {
+        isConnected = connected;
+    }
+
     public BleBean(BluetoothDevice bluetoothDevice, int rssi) {
         this.bluetoothDevice = bluetoothDevice;
         this.rssi = rssi;

@@ -1,9 +1,13 @@
 package com.app.airmaster.car.fragment
 
+import android.view.View
 import com.app.airmaster.R
 import com.app.airmaster.action.TitleBarFragment
 import com.app.airmaster.car.CarSysSetActivity
 import com.bonlala.widget.layout.SettingBar
+import com.hjq.bar.OnTitleBarListener
+import com.hjq.bar.TitleBar
+import com.hjq.toast.ToastUtils
 
 /**
  * 系统设置
@@ -12,6 +16,8 @@ import com.bonlala.widget.layout.SettingBar
  */
 class CarSysFragment : TitleBarFragment<CarSysSetActivity>() {
 
+
+    private var sysTitleBar : TitleBar ?= null
 
     companion object{
         fun getInstance() : CarSysFragment{
@@ -25,6 +31,8 @@ class CarSysFragment : TitleBarFragment<CarSysSetActivity>() {
     }
 
     override fun initView() {
+        sysTitleBar = findViewById(R.id.sysTitleBar)
+
         val fragmentManager = parentFragmentManager
         val fragmentTransaction = fragmentManager?.beginTransaction()
 
@@ -73,6 +81,23 @@ class CarSysFragment : TitleBarFragment<CarSysSetActivity>() {
             fragmentTransaction.addToBackStack(null)
             fragmentTransaction.commit()
         }
+
+
+        sysTitleBar?.setOnTitleBarListener(object : OnTitleBarListener{
+            override fun onLeftClick(view: View?) {
+                ToastUtils.show("ddddddd")
+                (attachActivity as CarSysSetActivity).finish()
+            }
+
+            override fun onTitleClick(view: View?) {
+
+            }
+
+            override fun onRightClick(view: View?) {
+
+            }
+
+        })
     }
 
     override fun initData() {

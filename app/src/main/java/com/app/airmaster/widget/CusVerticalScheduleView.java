@@ -6,9 +6,11 @@ import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.LinearGradient;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.RectF;
+import android.graphics.Shader;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.animation.LinearInterpolator;
@@ -106,6 +108,8 @@ public class CusVerticalScheduleView extends View {
         allSchedulePaint.setStrokeCap(Paint.Cap.ROUND);
         allSchedulePaint.setTextSize(1f);
 
+
+
         currSchedulePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         currSchedulePaint.setStyle(Paint.Style.FILL);
         currSchedulePaint.setColor(currShceduleColor);
@@ -151,6 +155,9 @@ public class CusVerticalScheduleView extends View {
         if(currV>mHeight){
             currV = mHeight;
         }
+
+        Shader shader = new LinearGradient(0,0,mWidth,mHeight,new int[]{Color.parseColor("#2C2B29"),Color.parseColor("#4A4C4D")},null,Shader.TileMode.CLAMP);
+        allSchedulePaint.setShader(shader);
         RectF rectF = new RectF(0,0,mWidth,mHeight);
 //        canvas.drawRoundRect(rectF,mHeight/2,mHeight/2,allSchedulePaint);
         allSchedulePaint.setColor(allShceduleColor);

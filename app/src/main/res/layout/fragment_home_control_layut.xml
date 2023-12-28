@@ -32,7 +32,12 @@
                 android:layout_height="0dp"
                 android:layout_weight="1"/>
 
-            <include layout="@layout/view_home_air_layout"/>
+            <com.app.airmaster.car.view.HomeLeftAirPressureView
+                android:layout_width="wrap_content"
+                android:id="@+id/homeLeftAirPressureView"
+                android:layout_height="match_parent"/>
+
+        <!--    <include layout="@layout/view_home_air_layout"/>-->
             <View
                 android:layout_width="1dp"
                 android:layout_height="0dp"
@@ -47,8 +52,15 @@
             android:orientation="vertical">
 
 
+            <com.app.airmaster.car.view.CarHomeCenterView
+                android:layout_width="match_parent"
+                android:id="@+id/carHomeCenterView"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:layout_height="match_parent"/>
+           <!--
             <include layout="@layout/view_car_home_cente_layout"/>
-
+-->
         <!--   <ImageView
                android:layout_width="wrap_content"
                android:layout_height="wrap_content"
@@ -61,8 +73,14 @@
             android:layout_gravity="center"
             android:orientation="vertical">
 
-            <include layout="@layout/view_home_temperature_layout"/>
 
+            <com.app.airmaster.car.view.HomeRightTemperatureView
+                android:layout_width="wrap_content"
+                android:id="@+id/homeRightView"
+                android:layout_height="wrap_content"/>
+
+           <!-- <include layout="@layout/view_home_temperature_layout"/>
+-->
         </LinearLayout>
 
     </LinearLayout>

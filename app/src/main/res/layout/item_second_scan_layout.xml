@@ -1,22 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.hjq.shape.layout.ShapeLinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:orientation="vertical"
+    android:orientation="horizontal"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:shape_solidColor="#1F2022"
+    app:shape_radius="@dimen/dp_10"
+    android:padding="@dimen/dp_8"
+    app:shape_angle="270"
+    app:shape_solidPressedColor="#801F2022"
+    android:layout_margin="@dimen/dp_5"
     android:layout_height="wrap_content">
 
 
     <com.hjq.shape.layout.ShapeLinearLayout
-        android:layout_width="match_parent"
-        app:shape_startColor="#343348"
-        app:shape_endColor="#262D38"
-        app:shape_radius="@dimen/dp_10"
-        android:padding="@dimen/dp_8"
-        app:shape_angle="270"
-        app:shape_solidPressedColor="#80262D38"
-        android:layout_margin="@dimen/dp_5"
+        android:layout_width="0dp"
+        android:layout_weight="1"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:orientation="vertical">
 
 
         <TextView
@@ -28,18 +28,28 @@
             android:textSize="@dimen/sp_18"
            android:layout_marginStart="@dimen/dp_10"
             android:padding="@dimen/dp_5"
-            android:layout_gravity="center"/>
+            android:layout_gravity="left"/>
 
 
-        <View
-            android:layout_width="0dp"
-            android:layout_height="1dp"
-            android:layout_weight="1"/>
 
+        <TextView
+            android:id="@+id/itemDeviceMacTv"
+            android:layout_marginStart="@dimen/dp_10"
+            android:padding="@dimen/dp_5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="DDDD"
+            android:textColor="@color/white"/>
 
 
     </com.hjq.shape.layout.ShapeLinearLayout>
 
 
+    <ImageView
+        android:id="@+id/itemScanCheckImageView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginEnd="@dimen/dp_5" />
 
-</LinearLayout>
+</com.hjq.shape.layout.ShapeLinearLayout>

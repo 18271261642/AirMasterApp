@@ -167,4 +167,21 @@ public class AutoBackBean {
     public void setAirBottleTemperature(int airBottleTemperature) {
         this.airBottleTemperature = airBottleTemperature;
     }
+
+    @Override
+    public String toString() {
+        return "AutoBackBean{" +
+                "workModel=" + workModel +
+                ", selfCheckModel=" + selfCheckModel +
+                ", curPos=" + curPos +
+                ", leftPressure=" + leftPressure +
+                ", rightPressure=" + rightPressure +
+                ", leftRearPressure=" + leftRearPressure +
+                ", rightRearPressure=" + rightRearPressure +
+                ", cylinderPressure=" + cylinderPressure +
+                ", leftFrontHeight=" + leftFrontHeight +
+                ", batteryVal=" + batteryVal +
+                ", airBottleTemperature=" + airBottleTemperature +
+                '}';
+    }
 }

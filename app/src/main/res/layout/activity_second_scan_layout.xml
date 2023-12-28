@@ -4,6 +4,7 @@
     android:orientation="vertical"
     android:background="@color/play_color_theme"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_height="match_parent">
 
     <com.hjq.bar.TitleBar
@@ -15,10 +16,34 @@
         app:lineVisible="false"
         app:leftIcon="@drawable/ic_white_left_back"/>
 
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/white"
+        android:textSize="@dimen/sp_18"
+        android:layout_margin="@dimen/dp_15"
+        android:text="已连接的设备"/>
+
+    <com.app.airmaster.car.view.CarBindDeviceView
+        android:id="@+id/scanBindDeviceView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/dp_10"/>
+
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/white"
+        android:textSize="@dimen/sp_18"
+        android:layout_margin="@dimen/dp_15"
+        android:text="未连接的设备"/>
     <androidx.recyclerview.widget.RecyclerView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/secondScanRy"
+        tools:listitem="@layout/item_second_scan_layout"
         android:layout_margin="@dimen/dp_10"/>
 
 

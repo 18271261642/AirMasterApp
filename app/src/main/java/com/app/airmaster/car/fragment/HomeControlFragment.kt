@@ -4,19 +4,24 @@ import android.os.Build
 import android.view.MotionEvent
 import android.view.View
 import android.view.View.OnTouchListener
+import com.app.airmaster.BaseApplication
 import com.app.airmaster.R
 import com.app.airmaster.action.TitleBarFragment
 import com.app.airmaster.adapter.OnCommItemClickListener
 import com.app.airmaster.adapter.OnItemCheckedListener
 import com.app.airmaster.car.CarFaultNotifyActivity
 import com.app.airmaster.car.CarHomeActivity
+import com.app.airmaster.car.view.CarHomeCenterView
 import com.app.airmaster.car.view.HomeBottomCheckView
 import com.app.airmaster.car.view.HomeBottomNumberView
+import com.app.airmaster.car.view.HomeLeftAirPressureView
+import com.app.airmaster.car.view.HomeRightTemperatureView
 import com.app.airmaster.second.SecondScanActivity
 import com.app.airmaster.widget.CusVerticalScheduleView
 import com.app.airmaster.widget.CusVerticalTextScheduleView
 import com.app.airmaster.widget.VerticalSeekBar
 import com.app.airmaster.widget.VerticalSeekBar.OnSeekBarChangeListener
+import timber.log.Timber
 
 /**
  * Created by Admin
@@ -25,12 +30,15 @@ import com.app.airmaster.widget.VerticalSeekBar.OnSeekBarChangeListener
 class HomeControlFragment : TitleBarFragment<CarHomeActivity>() {
 
 
-    private var cusVerticalView : CusVerticalScheduleView ?= null
-    private var cusVerticalTxtView : CusVerticalTextScheduleView ?= null
-    private var homeLeftAirSeekBar : VerticalSeekBar?= null
-
     private var homeBottomCheckView : HomeBottomCheckView ?= null
     private var homeBottomNumberView : HomeBottomNumberView ?= null
+
+    //中间的view
+    private var carHomeCenterView :  CarHomeCenterView ?= null
+    //左侧的view
+    private var homeLeftAirPressureView : HomeLeftAirPressureView ?= null
+    private var homeRightView : HomeRightTemperatureView ?= null
+
 
 
 
@@ -46,9 +54,9 @@ class HomeControlFragment : TitleBarFragment<CarHomeActivity>() {
     }
 
     override fun initView() {
-        homeLeftAirSeekBar = findViewById(R.id.homeLeftAirSeekBar)
-        cusVerticalTxtView= findViewById(R.id.cusVerticalTxtView)
-        cusVerticalView = findViewById(R.id.cusVerticalView)
+        homeRightView = findViewById(R.id.homeRightView)
+        homeLeftAirPressureView = findViewById(R.id.homeLeftAirPressureView)
+        carHomeCenterView = findViewById(R.id.carHomeCenterView)
         homeBottomCheckView = findViewById(R.id.homeBottomCheckView)
         homeBottomNumberView = findViewById(R.id.homeBottomNumberView)
 
@@ -82,41 +90,27 @@ class HomeControlFragment : TitleBarFragment<CarHomeActivity>() {
 
         })
 
-
-        cusVerticalView?.allScheduleValue = 150F
-        cusVerticalTxtView?.allScheduleValue = 150F
-
-
-        homeLeftAirSeekBar?.max = 150
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            homeLeftAirSeekBar?.min = 0
-        }
-        homeLeftAirSeekBar?.progress = 130
-        showSchedule(130)
-        homeLeftAirSeekBar?.setOnSeekBarChangeListener(object : OnSeekBarChangeListener{
-            override fun onProgressChanged(VerticalSeekBar: VerticalSeekBar?, progress: Int) {
-                showSchedule(progress)
-            }
-
-            override fun onStartTrackingTouch(VerticalSeekBar: VerticalSeekBar?) {
-
-            }
-
-            override fun onStopTrackingTouch(VerticalSeekBar: VerticalSeekBar?) {
-
-            }
-
-        })
     }
 
-    private fun showSchedule(value : Int){
-        cusVerticalView?.setCurrScheduleValue(value.toFloat())
-        cusVerticalTxtView?.setCurrScheduleValue(value)
-    }
 
     override fun initData() {
+        BaseApplication.getBaseApplication().bleOperate.setAutoBackDataListener {
+            Timber.e("---------自动回复="+it.toString())
+            carHomeCenterView?.setLeftRearPressureValue(it.leftRearPressure)
+            carHomeCenterView?.setRightTopPressureValue(it.rightPressure)
+            carHomeCenterView?.setLeftTopPressureValue(it.leftPressure)
+            carHomeCenterView?.setRightRearPressureValue(it.rightRearPressure)
 
+            homeLeftAirPressureView?.setAirPressureValue(it.cylinderPressure)
+            homeRightView?.setTempValue(it.airBottleTemperature -127)
+
+
+        }
+
+        //homeRightView?.setTempValue(100)
     }
+
+
 
 
 }

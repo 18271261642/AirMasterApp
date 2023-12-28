@@ -70,17 +70,21 @@
                     android:layout_weight="1" />
 
                 <ImageView
-
+                    android:id="@+id/leftRearAddImageView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:src="@mipmap/ic_cir_radius_top_ig" />
 
 
                 <TextView
+                    android:id="@+id/homeCenterLeftRearPressureTv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:shadowRadius="3.0"
+                    android:textStyle="bold"
                     android:text="66"
+                    android:layout_marginTop="@dimen/dp_10"
+                    android:layout_marginBottom="@dimen/dp_10"
                     android:textColor="#80FFFFFF"
                     android:textSize="30sp" />
 
@@ -88,8 +92,8 @@
                     android:id="@+id/homeCenterLeftBotImg2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/dp_10"
-                    android:layout_marginBottom="@dimen/dp_10"
+
+
                     android:src="@mipmap/ic_cir_radius_bot_ig" />
 
 
@@ -259,13 +263,14 @@
 
 
                 <ImageView
-
+                    android:id="@+id/rightTopAddImageView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:src="@mipmap/ic_cir_radius_top_ig" />
 
 
                 <TextView
+                    android:id="@+id/homeCenterRightTopPressureTv"
                     android:layout_marginTop="@dimen/dp_10"
                     android:layout_marginBottom="@dimen/dp_10"
                     android:textStyle="bold"
@@ -276,7 +281,7 @@
                     android:textSize="30sp" />
 
                 <ImageView
-
+                    android:id="@+id/rightTopReduceImageView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:src="@mipmap/ic_cir_radius_bot_ig" />
@@ -288,25 +293,27 @@
                     android:layout_weight="1" />
 
                 <ImageView
-
+                    android:id="@+id/rightRearAddImageView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:src="@mipmap/ic_cir_radius_top_ig" />
 
 
                 <TextView
+                    android:id="@+id/homeCenterRightRearPressureTv"
                     android:layout_marginTop="@dimen/dp_10"
                     android:layout_marginBottom="@dimen/dp_10"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:shadowColor="#80FFFFFF"
                     android:shadowRadius="3.0"
+                    android:textStyle="bold"
                     android:text="66"
                     android:textColor="#80FFFFFF"
                     android:textSize="30sp" />
 
                 <ImageView
-
+                    android:id="@+id/rightRearReduceImageView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
 

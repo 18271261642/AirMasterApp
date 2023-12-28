@@ -6,6 +6,8 @@ import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
 import android.util.Log;
+
+import com.blala.blalable.car.OnCarAutoBackListener;
 import com.blala.blalable.keyboard.KeyBoardConstant;
 import com.blala.blalable.listener.BleConnStatusListener;
 import com.blala.blalable.listener.ConnStatusListener;
@@ -543,5 +545,13 @@ public class BleOperateManager {
         }
     };
 
+
+    /**
+     * 设置自动回复的数据
+     * @param onCarAutoBackListener
+     */
+    public void setAutoBackDataListener(OnCarAutoBackListener onCarAutoBackListener){
+        bleManager.setOnCarAutoBackListener(onCarAutoBackListener);
+    }
 
 }

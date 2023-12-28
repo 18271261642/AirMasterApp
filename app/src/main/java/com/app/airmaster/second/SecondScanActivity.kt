@@ -2,11 +2,17 @@ package com.app.airmaster.second
 
 import android.Manifest
 import android.annotation.SuppressLint
+import android.content.BroadcastReceiver
+import android.content.Context
+import android.content.Intent
+import android.content.IntentFilter
+import android.content.pm.LabeledIntent
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Handler
 import android.os.Looper
 import android.os.Message
+import android.view.View
 import androidx.core.app.ActivityCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -17,13 +23,17 @@ import com.app.airmaster.adapter.OnCommItemClickListener
 import com.app.airmaster.adapter.SecondScanAdapter
 import com.app.airmaster.bean.BleBean
 import com.app.airmaster.ble.ConnStatus
+import com.app.airmaster.car.view.CarBindDeviceView
 import com.app.airmaster.utils.BikeUtils
 import com.app.airmaster.utils.BonlalaUtils
 import com.app.airmaster.utils.MmkvUtils
+import com.blala.blalable.BleConstant
 import com.blala.blalable.Utils
 import com.hjq.permissions.XXPermissions
+import com.hjq.toast.ToastUtils
 import com.inuker.bluetooth.library.search.SearchResult
 import com.inuker.bluetooth.library.search.response.SearchResponse
+import java.nio.file.WatchEvent
 
 /**
  * Created by Admin
@@ -31,10 +41,17 @@ import com.inuker.bluetooth.library.search.response.SearchResponse
  */
 class SecondScanActivity : AppActivity() {
 
+
+
     private var secondScanRy: RecyclerView? = null
+
 
     private var adapter: SecondScanAdapter? = null
     private var list: MutableList<BleBean>? = null
+
+
+    private var scanBindDeviceView : CarBindDeviceView ?= null
+
 
     //用于去重的list
     private var repeatList: MutableList<String>? = null
@@ -53,20 +70,76 @@ class SecondScanActivity : AppActivity() {
     }
 
     override fun initView() {
+
+        scanBindDeviceView  = findViewById(R.id.scanBindDeviceView)
+
+
         secondScanRy = findViewById(R.id.secondScanRy)
         val linearLayoutManager = LinearLayoutManager(context)
         linearLayoutManager.orientation = LinearLayoutManager.VERTICAL
         secondScanRy?.layoutManager = linearLayoutManager
         list = mutableListOf()
-        adapter = SecondScanAdapter(context, list!!)
+        adapter = SecondScanAdapter(context, list!!,false)
         secondScanRy?.adapter = adapter
         repeatList = mutableListOf()
         adapter!!.setOnItemClick(onItemClick)
+
+
+        scanBindDeviceView?.setOnClickListener {
+            if(BaseApplication.getBaseApplication().connStatus == ConnStatus.CONNECTED){
+                return@setOnClickListener
+            }
+            showDialog("Connecting..")
+            BaseApplication.getBaseApplication().connStatusService?.autoConnDevice(MmkvUtils.getConnDeviceMac(),false)
+        }
+
     }
 
     override fun initData() {
+        val intentFilter = IntentFilter()
+        intentFilter.addAction(BleConstant.BLE_CONNECTED_ACTION)
+        intentFilter.addAction(BleConstant.BLE_DIS_CONNECT_ACTION)
+        intentFilter.addAction(BleConstant.BLE_SCAN_COMPLETE_ACTION)
+        registerReceiver(broadcastReceiver,intentFilter)
+
+
+
+
+
         verifyScanFun(false)
+
+        getHasBindDevice()
     }
+
+
+
+    //获取已经连接的设备
+    private fun getHasBindDevice(){
+        val connMac = MmkvUtils.getConnDeviceMac()
+        if(BikeUtils.isEmpty(connMac)){
+            scanBindDeviceView?.visibility = View.GONE
+            return
+        }
+        scanBindDeviceView?.visibility = View.VISIBLE
+        val name = MmkvUtils.getConnDeviceName()
+        val isConnected = BaseApplication.getBaseApplication().connStatus == ConnStatus.CONNECTED
+        scanBindDeviceView?.setNameAndMac(name,connMac)
+        scanBindDeviceView?.setImgStatus(isConnected)
+
+        var position = -1
+        list?.forEachIndexed { index, bleBean ->
+            if(bleBean.bluetoothDevice.address == connMac){
+
+                position = index
+            }
+        }
+        if(list?.size!! >0 && position !=-1){
+            list?.removeAt(position)
+            adapter?.notifyDataSetChanged()
+        }
+
+    }
+
 
 
     //判断是否有位置权限了，没有请求权限
@@ -141,9 +214,12 @@ class SecondScanActivity : AppActivity() {
                 service.connDeviceBack(
                     bean.bluetoothDevice.name, bean.bluetoothDevice.address
                 ) { mac, status ->
+                    hideDialog()
                     MmkvUtils.saveConnDeviceMac(mac)
                     MmkvUtils.saveConnDeviceName(bean.bluetoothDevice.name)
                     BaseApplication.getBaseApplication().connStatus = ConnStatus.CONNECTED
+
+                    getHasBindDevice()
                 }
             }
         }
@@ -151,7 +227,7 @@ class SecondScanActivity : AppActivity() {
 
     //开始扫描
     fun startScan() {
-
+        val connMac = MmkvUtils.getConnDeviceMac()
         BaseApplication.getBaseApplication().bleOperate.scanBleDevice(object : SearchResponse {
 
             override fun onSearchStarted() {
@@ -173,6 +249,11 @@ class SecondScanActivity : AppActivity() {
                 //030543
                 if (!BikeUtils.isEmpty(recordStr)
                 ) {
+
+                    if(!BikeUtils.isEmpty(connMac) && connMac == p0.address){
+                        return
+                    }
+
                     //判断少于40个设备就不添加了
                     if (repeatList?.size!! > 40) {
                         return
@@ -201,6 +282,24 @@ class SecondScanActivity : AppActivity() {
 
     override fun onDestroy() {
         super.onDestroy()
+        unregisterReceiver(broadcastReceiver)
         BaseApplication.getInstance().bleManager.stopScan()
+    }
+
+
+    private val broadcastReceiver : BroadcastReceiver = object : BroadcastReceiver(){
+        override fun onReceive(p0: Context?, p1: Intent?) {
+            val action = p1?.action
+            if(action == BleConstant.BLE_CONNECTED_ACTION){
+                hideDialog()
+                ToastUtils.show("连接成功")
+                getHasBindDevice()
+            }
+            if(action == BleConstant.BLE_DIS_CONNECT_ACTION){
+                hideDialog()
+                ToastUtils.show("连接失败")
+            }
+        }
+
     }
 }

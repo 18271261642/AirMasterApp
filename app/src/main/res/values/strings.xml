@@ -2,6 +2,10 @@
     <string name="app_name">Pocket Wuque</string>
 
 
+    <string name="string_pressure_h">高压（PSI）: %1s</string>
+    <string name="string_pressure_l">低压（PSI）: %1s</string>
+
+
     <string name="string_alarm_edit">Alarm Editing</string>
     <string name="string_save">Save</string>
     <string name="string_please_input_title">Please enter title!</string>
