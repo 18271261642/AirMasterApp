@@ -19,10 +19,10 @@ class ControlViewModel : ViewModel() {
         val bArray = ByteArray(2)
         bArray[0] = 0x1D
         bArray[1] = gear.toByte()
-        val scrStr = "00051D"+String.format("%02x",gear)
+        val scrStr = "000504011D"+String.format("%02x",gear)
         val crc = Utils.crcCarContentArray(scrStr)
 
-        val str = "011E"+ CarConstant.CAR_HEAD_BYTE_STR+"00051D"+String.format("%02x",gear)+crc
+        val str = "011E"+ CarConstant.CAR_HEAD_BYTE_STR+"000504011D"+String.format("%02x",gear)+crc
         val resultArray = Utils.hexStringToByte(str)
         val result = Utils.getFullPackage(resultArray)
         BaseApplication.getBaseApplication().bleOperate.writeCommonByte(result){
@@ -34,7 +34,7 @@ class ControlViewModel : ViewModel() {
 
     //一键低趴
     fun setOneGearReset(){
-        val scrStr = "00052500"
+        val scrStr = "000504012500"
         val crc = Utils.crcCarContentArray(scrStr)
 
         val str = "011E"+ CarConstant.CAR_HEAD_BYTE_STR+scrStr+crc
