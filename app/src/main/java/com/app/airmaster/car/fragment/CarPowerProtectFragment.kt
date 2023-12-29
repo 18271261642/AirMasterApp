@@ -9,6 +9,7 @@ import com.app.airmaster.action.TitleBarFragment
 import com.app.airmaster.ble.ota.BluetoothLeClass.OnWriteDataListener
 import com.app.airmaster.car.CarSysSetActivity
 import com.blala.blalable.Utils
+import com.blala.blalable.car.CarConstant
 import com.blala.blalable.listener.WriteBackDataListener
 import com.bonlala.widget.view.SwitchButton
 
@@ -43,9 +44,9 @@ class CarPowerProtectFragment : TitleBarFragment<CarSysSetActivity>(){
         powerSeekBar = findViewById(R.id.powerSeekBar)
 
         powerHeightBtn?.setOnCheckedChangeListener { button, checked ->
-            if(!button.isPressed){
-                return@setOnCheckedChangeListener
-            }
+//            if(!button.isPressed){
+//                return@setOnCheckedChangeListener
+//            }
             sendHeightProtect(checked)
 
         }
@@ -78,7 +79,11 @@ class CarPowerProtectFragment : TitleBarFragment<CarSysSetActivity>(){
     private fun sendPower(){
         val powerValue = powerSeekBar?.progress
 
-        val str = "011E17"+String.format("%02x",powerValue)
+        val crcStr = "000517"+String.format("%02x",powerValue)
+        val crc = Utils.crcCarContentArray(crcStr)
+
+        val str =  "011E"+CarConstant.CAR_HEAD_BYTE_STR+crcStr+crc
+
         val arry = Utils.stringToByte(str)
         val result = Utils.getFullPackage(arry)
         BaseApplication.getBaseApplication().bleOperate.writeCommonByte(result,object :
@@ -92,7 +97,9 @@ class CarPowerProtectFragment : TitleBarFragment<CarSysSetActivity>(){
 
 
     private fun sendHeightProtect(open : Boolean){
-        val str = "011E18"+(if(open) "01" else "00")
+        val crcStr = "000518"+(if(open) "01" else "00")
+        val crc = Utils.crcCarContentArray(crcStr)
+        val str = "011E"+CarConstant.CAR_HEAD_BYTE_STR+crcStr+crc
         val arry = Utils.stringToByte(str)
         val result = Utils.getFullPackage(arry)
         BaseApplication.getBaseApplication().bleOperate.writeCommonByte(result,object :

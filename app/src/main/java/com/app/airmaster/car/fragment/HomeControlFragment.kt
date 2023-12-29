@@ -4,6 +4,7 @@ import android.os.Build
 import android.view.MotionEvent
 import android.view.View
 import android.view.View.OnTouchListener
+import androidx.lifecycle.ViewModelProvider
 import com.app.airmaster.BaseApplication
 import com.app.airmaster.R
 import com.app.airmaster.action.TitleBarFragment
@@ -17,6 +18,7 @@ import com.app.airmaster.car.view.HomeBottomNumberView
 import com.app.airmaster.car.view.HomeLeftAirPressureView
 import com.app.airmaster.car.view.HomeRightTemperatureView
 import com.app.airmaster.second.SecondScanActivity
+import com.app.airmaster.viewmodel.ControlViewModel
 import com.app.airmaster.widget.CusVerticalScheduleView
 import com.app.airmaster.widget.CusVerticalTextScheduleView
 import com.app.airmaster.widget.VerticalSeekBar
@@ -28,6 +30,9 @@ import timber.log.Timber
  *Date 2023/7/14
  */
 class HomeControlFragment : TitleBarFragment<CarHomeActivity>() {
+
+
+    private var controlViewModel : ControlViewModel ?= null
 
 
     private var homeBottomCheckView : HomeBottomCheckView ?= null
@@ -70,30 +75,40 @@ class HomeControlFragment : TitleBarFragment<CarHomeActivity>() {
 
         })
 
-
-
-        homeBottomNumberView?.setOnTouchListener(object : OnTouchListener{
-            override fun onTouch(p0: View?, p1: MotionEvent?): Boolean {
-                attachActivity.showCommAlertDialog("未连接设备","去官网","去连接",object :
-                    OnCommItemClickListener {
-                    override fun onItemClick(position: Int) {
-                        attachActivity.disCommAlertDialog()
-                        if(position == 0x01){
-                            startActivity(SecondScanActivity::class.java)
-                        }
-                    }
-
-                })
-
-                return true
+        homeBottomNumberView?.setOnItemClick{
+            if(it == -1){
+                controlViewModel?.setOneGearReset()
+            }else{
+                controlViewModel?.getHomeGear(it)
             }
 
-        })
+        }
+
+
+//
+//        homeBottomNumberView?.setOnTouchListener(object : OnTouchListener{
+//            override fun onTouch(p0: View?, p1: MotionEvent?): Boolean {
+//                attachActivity.showCommAlertDialog("未连接设备","去官网","去连接",object :
+//                    OnCommItemClickListener {
+//                    override fun onItemClick(position: Int) {
+//                        attachActivity.disCommAlertDialog()
+//                        if(position == 0x01){
+//                            startActivity(SecondScanActivity::class.java)
+//                        }
+//                    }
+//
+//                })
+//
+//                return true
+//            }
+//
+//        })
 
     }
 
 
     override fun initData() {
+        controlViewModel = ViewModelProvider(this)[ControlViewModel::class.java]
         BaseApplication.getBaseApplication().bleOperate.setAutoBackDataListener {
             Timber.e("---------自动回复="+it.toString())
             carHomeCenterView?.setLeftRearPressureValue(it.leftRearPressure)

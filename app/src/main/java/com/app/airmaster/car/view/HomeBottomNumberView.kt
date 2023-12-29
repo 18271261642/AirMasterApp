@@ -8,6 +8,7 @@ import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.LinearLayout
 import com.app.airmaster.R
+import com.app.airmaster.adapter.OnCommItemClickListener
 
 /**
  * Created by Admin
@@ -15,6 +16,12 @@ import com.app.airmaster.R
  */
 class HomeBottomNumberView : LinearLayout {
 
+
+    private var onItemClickListener : OnCommItemClickListener?= null
+
+    fun setOnItemClick(click : OnCommItemClickListener){
+        this.onItemClickListener = click
+    }
 
     //1
     private var bot1Layout : FrameLayout ?= null
@@ -34,6 +41,9 @@ class HomeBottomNumberView : LinearLayout {
     private var botBg4Img : ImageView ?= null
     private var botAboveImg4 : ImageView ?= null
 
+
+    //低趴
+    private var homeGearResetLayout : FrameLayout ?= null
 
     constructor(context: Context) : super (context){
         initViews(context)
@@ -66,6 +76,10 @@ class HomeBottomNumberView : LinearLayout {
         bot4Layout?.setOnClickListener {
             setClickIndex(3)
         }
+
+        homeGearResetLayout?.setOnClickListener {
+            onItemClickListener?.onItemClick(-1)
+        }
     }
 
 
@@ -86,7 +100,7 @@ class HomeBottomNumberView : LinearLayout {
         botAboveImg3 = v.findViewById(R.id.botAboveImg3)
         botAboveImg4 = v.findViewById(R.id.botAboveImg4)
 
-
+        homeGearResetLayout = v.findViewById(R.id.homeGearResetLayout)
 
     }
 
@@ -120,5 +134,8 @@ class HomeBottomNumberView : LinearLayout {
         botAboveImg2?.visibility =if(index==1) View.VISIBLE else View.INVISIBLE
         botAboveImg3?.visibility =if(index==2) View.VISIBLE else View.INVISIBLE
         botAboveImg4?.visibility = if(index==3) View.VISIBLE else View.INVISIBLE
+
+        onItemClickListener?.onItemClick(index+1)
+
     }
 }

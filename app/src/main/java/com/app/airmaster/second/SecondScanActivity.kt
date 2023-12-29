@@ -103,9 +103,6 @@ class SecondScanActivity : AppActivity() {
         registerReceiver(broadcastReceiver,intentFilter)
 
 
-
-
-
         verifyScanFun(false)
 
         getHasBindDevice()
@@ -150,6 +147,23 @@ class SecondScanActivity : AppActivity() {
             BikeUtils.openBletooth(this)
             return
         }
+
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+
+            XXPermissions.with(this).permission(
+                arrayOf(
+                    Manifest.permission.BLUETOOTH_CONNECT,
+                    Manifest.permission.BLUETOOTH_SCAN,
+                    Manifest.permission.BLUETOOTH_ADVERTISE
+                )
+            ).request { permissions, all ->
+                //verifyScanFun()
+            }
+        }
+
+
+
         //判断权限
         val isPermission = ActivityCompat.checkSelfPermission(
             this,
@@ -168,19 +182,6 @@ class SecondScanActivity : AppActivity() {
             return
         }
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-
-            XXPermissions.with(this).permission(
-                arrayOf(
-                    Manifest.permission.BLUETOOTH_CONNECT,
-                    Manifest.permission.BLUETOOTH_SCAN,
-                    Manifest.permission.BLUETOOTH_ADVERTISE
-                )
-            ).request { permissions, all ->
-                //verifyScanFun()
-            }
-        }
-
 
         //判断蓝牙是否打开
         val isOpenBle = BonlalaUtils.isOpenBlue(this@SecondScanActivity)
@@ -196,7 +197,6 @@ class SecondScanActivity : AppActivity() {
             BaseApplication.getBaseApplication().connStatusService.autoConnDevice(mac, false)
 
         } else {
-
             startScan()
         }
 
@@ -209,6 +209,13 @@ class SecondScanActivity : AppActivity() {
             val service = BaseApplication.getBaseApplication().connStatusService
             val bean = list?.get(position)
             if (bean != null) {
+
+                val mac = MmkvUtils.getConnDeviceMac()
+                if(!BikeUtils.isEmpty(mac)){
+                    ToastUtils.show("请先解绑再连接!")
+                    return@OnCommItemClickListener
+                }
+
                 showDialog("Connecting..")
                 handlers.sendEmptyMessageDelayed(0x00, 500)
                 service.connDeviceBack(

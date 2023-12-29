@@ -11,6 +11,7 @@ import com.app.airmaster.ble.ota.Utils
 import com.app.airmaster.car.CarSysSetActivity
 import com.app.airmaster.widget.VerticalSeekBar
 import com.app.airmaster.widget.VerticalSeekBar.OnSeekBarChangeListener
+import com.blala.blalable.car.CarConstant
 import com.blala.blalable.listener.WriteBackDataListener
 import timber.log.Timber
 
@@ -100,8 +101,21 @@ class CarGassPressureFragment : TitleBarFragment<CarSysSetActivity>(){
 
         val h = String.format("%02x",height)
         val l = String.format("%02x",low)
-        val str = "011E14$h$l"
-        Log.e("TAG","-----ddddd---------"+str+"  "+(height?.toByte()))
+
+        val contentStr = "040114$h$l"
+        val contentArray = com.blala.blalable.Utils.hexStringToByte(contentStr)
+        val lengthArray = com.blala.blalable.Utils.intToSecondByteArrayHeight(contentArray.size+1)
+        val lenthStr = com.blala.blalable.Utils.getHexString(lengthArray)
+
+        val resultContent = lenthStr+contentStr
+
+        val crcStr = com.blala.blalable.Utils.crcCarContentArray(resultContent)
+
+        val str = "011E"+CarConstant.CAR_HEAD_BYTE_STR+resultContent+crcStr
+        val strArray = com.blala.blalable.Utils.hexStringToByte(str)
+        val resultArray = com.blala.blalable.Utils.getFullPackage(strArray)
+        Log.e("TAG","-----ddddd---------"+str+"  "+com.blala.blalable.Utils.getHexString(resultArray))
+
 
         val array = com.blala.blalable.Utils.stringToByte(str)
         val result = com.blala.blalable.Utils.getFullPackage(array)

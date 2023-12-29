@@ -237,6 +237,19 @@ public class Utils {
 
     }
 
+    /**
+     * 高位在前
+     * @param value
+     * @return
+     */
+    public static byte[] intToSecondByteArrayHeight(int value){
+        byte[] bytes = new byte[2];
+        bytes[1] = (byte) (value& 0xff);
+        bytes[0] = (byte) (value >> 8);
+        return bytes;
+
+    }
+
 
     //表盘第二个文件转数组
     public static byte[] listStrToForthByt(List<String> list){
@@ -641,5 +654,26 @@ public class Utils {
         return result;
     }
 
+
+    /**
+     * 车内容累校验
+     */
+    public static byte crcCarContent(int sum){
+        int v = ((sum ^ 0xff)+1) & 0xff;
+        String str = String.format("%02x",v);
+        byte[] array = hexStringToByte(str);
+        return array[0];
+    }
+
+    public static String crcCarContentArray(String hexArray){
+        byte[] array = hexStringToByte(hexArray);
+        int sum = 0;
+        for(int i = 0;i<array.length;i++){
+            sum+=array[i] & 0xff;
+        }
+        int v = ((sum ^ 0xff)+1) & 0xff;
+        String str = String.format("%02x",v);
+        return str;
+    }
 
 }
