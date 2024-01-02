@@ -108,6 +108,11 @@ class HomeControlFragment : TitleBarFragment<CarHomeActivity>() {
 
 
     override fun initData() {
+
+        carHomeCenterView?.setFrontHeightValue(50,50)
+        carHomeCenterView?.setAfterHeightValue(100,80)
+
+
         controlViewModel = ViewModelProvider(this)[ControlViewModel::class.java]
         BaseApplication.getBaseApplication().bleOperate.setAutoBackDataListener {
             Timber.e("---------自动回复="+it.toString())
@@ -115,6 +120,10 @@ class HomeControlFragment : TitleBarFragment<CarHomeActivity>() {
             carHomeCenterView?.setRightTopPressureValue(it.rightPressure)
             carHomeCenterView?.setLeftTopPressureValue(it.leftPressure)
             carHomeCenterView?.setRightRearPressureValue(it.rightRearPressure)
+
+            carHomeCenterView?.setFrontHeightValue(it.leftFrontHeight,it.rightFrontHeightRuler)
+            carHomeCenterView?.setAfterHeightValue(it.leftAfterHeightRuler,it.rightAfterHeightRuler)
+
 
             homeLeftAirPressureView?.setAirPressureValue(it.cylinderPressure)
             homeRightView?.setTempValue(it.airBottleTemperature -127)

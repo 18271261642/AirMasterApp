@@ -1,6 +1,8 @@
 package com.app.airmaster.car.view
 
 import android.content.Context
+import android.graphics.BitmapFactory
+import android.graphics.drawable.BitmapDrawable
 import android.provider.ContactsContract.CommonDataKinds.Im
 import android.util.AttributeSet
 import android.view.LayoutInflater
@@ -40,6 +42,10 @@ class CarHomeCenterView : LinearLayout {
     private var rightRearReduceImageView : ImageView ?= null
 
 
+    private var carFrontHeightGaugeView : CarHeightGaugeView ?= null
+    private var carAfterHeightGaugeView : CarHeightGaugeView ?= null
+
+
     constructor(context: Context) : super (context){
         initViews(context)
     }
@@ -70,7 +76,13 @@ class CarHomeCenterView : LinearLayout {
         rightRearAddImageView = view.findViewById(R.id.rightRearAddImageView)
         rightRearReduceImageView = view.findViewById(R.id.rightRearReduceImageView)
 
+
+        carFrontHeightGaugeView = view.findViewById(R.id.carFrontHeightGaugeView)
+        carAfterHeightGaugeView = view.findViewById(R.id.carAfterHeightGaugeView)
+
         setHomeCenterDefault()
+        setFrontImage()
+
     }
 
 
@@ -101,5 +113,29 @@ class CarHomeCenterView : LinearLayout {
         setRightTopPressureValue(0)
         setLeftRearPressureValue(0)
         setRightRearPressureValue(0)
+    }
+
+
+    //设置前轮的图片
+    private fun setFrontImage(){
+        val leftBit = BitmapFactory.decodeResource(context.resources,R.mipmap.ic_car_mid_left_img)
+        val rightBit = BitmapFactory.decodeResource(context.resources,R.mipmap.ic_car_mid_right_img)
+        carFrontHeightGaugeView?.setBitmap(leftBit,rightBit)
+
+
+        val afterLeft = BitmapFactory.decodeResource(context.resources,R.mipmap.ic_car_mid_after_left_img)
+        val afterRight = BitmapFactory.decodeResource(context.resources,R.mipmap.ic_car_mid_after_right_img)
+
+        carAfterHeightGaugeView?.setBitmap(afterLeft,afterRight)
+    }
+
+    //设置前轮高度
+    fun setFrontHeightValue(leftValue: Int,rightValue: Int){
+        carFrontHeightGaugeView?.setValues(leftValue,rightValue)
+    }
+
+    //设置后轮高度
+    fun setAfterHeightValue(afterLeft : Int,afterRight : Int){
+        carAfterHeightGaugeView?.setValues(afterLeft,afterRight)
     }
 }

@@ -26,4 +26,9 @@
 
 
     </declare-styleable>
+
+
+    <declare-styleable name="CarHeightGaugeView">
+        <attr name="car_height_gauge_mid_bg_color" format="color"/>
+    </declare-styleable>
 </resources>

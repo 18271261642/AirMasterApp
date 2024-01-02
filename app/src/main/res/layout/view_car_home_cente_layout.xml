@@ -106,6 +106,10 @@
                 android:orientation="vertical">
 
 
+
+
+
+
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
@@ -134,6 +138,11 @@
                         app:layout_constraintRight_toRightOf="parent" />
 
 
+
+
+
+
+
                     <com.app.airmaster.widget.CusVerticalTextScheduleView
                         android:id="@+id/carCenterTopScheduleView"
                         android:layout_width="@dimen/dp_2"
@@ -153,6 +162,7 @@
                         android:layout_width="10dp"
                         android:layout_height="match_parent"
                         android:progress="50"
+                        android:visibility="gone"
                         android:progressBackgroundTint="@color/transparent"
                         android:progressDrawable="@null"
                         android:progressTint="@color/transparent"
@@ -165,11 +175,30 @@
                         android:layout_width="10dp"
                         android:layout_height="match_parent"
                         android:progress="50"
+                        android:visibility="gone"
                         android:progressBackgroundTint="@color/transparent"
                         android:progressDrawable="@null"
                         android:progressTint="@color/transparent"
                         android:thumb="@mipmap/ic_car_home_middle_top_right"
                         app:layout_constraintLeft_toRightOf="@+id/carCenterTopScheduleView" />
+
+
+
+                    <com.app.airmaster.car.view.CarHeightGaugeView
+                        android:id="@+id/carFrontHeightGaugeView"
+                        android:layout_width="25dp"
+                        app:car_height_gauge_mid_bg_color="#3D3D44"
+                        app:layout_constraintBottom_toTopOf="@+id/carCenterTopBomImg"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintRight_toRightOf="parent"
+                        android:layout_marginTop="@dimen/dp_10"
+                        android:layout_marginBottom="@dimen/dp_10"
+                        app:layout_constraintTop_toBottomOf="@+id/carHomeCenterTopTopImg"
+                        android:layout_height="0dp"/>
+
+
+
+
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -205,43 +234,20 @@
                         app:layout_constraintTop_toTopOf="parent" />
 
 
-                    <com.app.airmaster.widget.CusVerticalTextScheduleView
-                        android:id="@+id/carCenterBottomScheduleView"
-                        android:layout_width="@dimen/dp_2"
-                        android:layout_height="0dp"
-                        android:layout_marginTop="@dimen/dp_10"
-                        android:layout_marginBottom="@dimen/dp_10"
-                        android:background="#3D3D44"
-                        app:cus_all_schedule_color="#3D3D44"
-                        app:cus_curr_schedule_color="#FFFE8B50"
+                    <com.app.airmaster.car.view.CarHeightGaugeView
+                        android:id="@+id/carAfterHeightGaugeView"
+                        android:layout_width="25dp"
+                        app:car_height_gauge_mid_bg_color="#3D3D44"
                         app:layout_constraintBottom_toTopOf="@+id/carCenterBotBomImg"
                         app:layout_constraintLeft_toLeftOf="parent"
                         app:layout_constraintRight_toRightOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/carCenterBotTopImg" />
+                        app:layout_constraintTop_toBottomOf="@+id/carCenterBotTopImg"
+                        android:layout_height="0dp"/>
 
-                    <com.app.airmaster.widget.VerticalSeekBar
-                        android:layout_width="10dp"
-                        android:layout_height="match_parent"
-                        android:progress="50"
-                        android:layout_marginTop="@dimen/dp_10"
-                        android:layout_marginBottom="@dimen/dp_10"
-                        android:progressBackgroundTint="@color/transparent"
-                        android:progressDrawable="@null"
-                        android:progressTint="@color/transparent"
-                        android:thumb="@mipmap/ic_car_home_middle_bot_left"
-                        app:layout_constraintRight_toLeftOf="@+id/carCenterBottomScheduleView" />
 
-                    <com.app.airmaster.widget.VerticalSeekBar
-                        android:layout_width="10dp"
-                        android:layout_height="match_parent"
-                        android:progress="50"
-                        android:layout_marginTop="@dimen/dp_10"
-                        android:layout_marginBottom="@dimen/dp_10"
-                        android:progressBackgroundTint="@color/transparent"
-                        android:progressDrawable="@null"
-                        android:progressTint="@color/transparent"
-                        android:thumb="@mipmap/ic_car_home_middle_bot_right"
-                        app:layout_constraintLeft_toRightOf="@+id/carCenterBottomScheduleView" />
+
+
+
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 

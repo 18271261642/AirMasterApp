@@ -58,6 +58,22 @@ public class AutoBackBean {
      */
     private int rightRearPressure;
 
+
+    /**左前高度尺**/
+    private int leftFrontHeightRuler;
+    /**右前高度尺**/
+    private int rightFrontHeightRuler;
+    /**左后高度尺**/
+    private int leftAfterHeightRuler;
+    /**右后高度尺**/
+    private int rightAfterHeightRuler;
+
+
+
+
+
+
+
     /**
      * 气缸气压值
      */
@@ -168,6 +184,38 @@ public class AutoBackBean {
         this.airBottleTemperature = airBottleTemperature;
     }
 
+    public int getLeftFrontHeightRuler() {
+        return leftFrontHeightRuler;
+    }
+
+    public void setLeftFrontHeightRuler(int leftFrontHeightRuler) {
+        this.leftFrontHeightRuler = leftFrontHeightRuler;
+    }
+
+    public int getRightFrontHeightRuler() {
+        return rightFrontHeightRuler;
+    }
+
+    public void setRightFrontHeightRuler(int rightFrontHeightRuler) {
+        this.rightFrontHeightRuler = rightFrontHeightRuler;
+    }
+
+    public int getLeftAfterHeightRuler() {
+        return leftAfterHeightRuler;
+    }
+
+    public void setLeftAfterHeightRuler(int leftAfterHeightRuler) {
+        this.leftAfterHeightRuler = leftAfterHeightRuler;
+    }
+
+    public int getRightAfterHeightRuler() {
+        return rightAfterHeightRuler;
+    }
+
+    public void setRightAfterHeightRuler(int rightAfterHeightRuler) {
+        this.rightAfterHeightRuler = rightAfterHeightRuler;
+    }
+
     @Override
     public String toString() {
         return "AutoBackBean{" +
@@ -178,6 +226,10 @@ public class AutoBackBean {
                 ", rightPressure=" + rightPressure +
                 ", leftRearPressure=" + leftRearPressure +
                 ", rightRearPressure=" + rightRearPressure +
+                ", leftFrontHeightRuler=" + leftFrontHeightRuler +
+                ", rightFrontHeightRuler=" + rightFrontHeightRuler +
+                ", leftAfterHeightRuler=" + leftAfterHeightRuler +
+                ", rightAfterHeightRuler=" + rightAfterHeightRuler +
                 ", cylinderPressure=" + cylinderPressure +
                 ", leftFrontHeight=" + leftFrontHeight +
                 ", batteryVal=" + batteryVal +
