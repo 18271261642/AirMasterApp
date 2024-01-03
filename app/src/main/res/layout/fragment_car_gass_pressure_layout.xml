@@ -6,15 +6,16 @@
     android:background="@color/play_color_theme"
     android:orientation="vertical">
 
-
+<!--
     <com.hjq.bar.TitleBar
+        android:id="@+id/gassTitleBar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/transparent"
         app:leftIcon="@drawable/ic_white_left_back"
         app:lineVisible="false"
         app:title="气罐压力"
-        app:titleColor="@color/white" />
+        app:titleColor="@color/white" />-->
 
 
     <LinearLayout

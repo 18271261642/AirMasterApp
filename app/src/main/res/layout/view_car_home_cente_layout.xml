@@ -41,7 +41,7 @@
                     android:id="@+id/homeCenterLeftTopImg"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@mipmap/ic_cir_radius_top_ig" />
+                    android:src="@drawable/top_selector" />
 
 
                 <TextView
@@ -61,7 +61,7 @@
                     android:id="@+id/homeCenterLeftBotImg"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@mipmap/ic_cir_radius_bot_ig" />
+                    android:src="@drawable/bottom_selector" />
 
 
                 <View
@@ -73,7 +73,7 @@
                     android:id="@+id/leftRearAddImageView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@mipmap/ic_cir_radius_top_ig" />
+                    android:src="@drawable/top_selector" />
 
 
                 <TextView
@@ -92,9 +92,7 @@
                     android:id="@+id/homeCenterLeftBotImg2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-
-
-                    android:src="@mipmap/ic_cir_radius_bot_ig" />
+                    android:src="@drawable/bottom_selector" />
 
 
             </com.hjq.shape.layout.ShapeLinearLayout>
@@ -122,7 +120,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="top"
-                        android:background="@mipmap/ic_car_home_center_last_top"
+                        android:background="@drawable/all_top_selector"
                         app:layout_constraintLeft_toLeftOf="parent"
                         app:layout_constraintRight_toRightOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
@@ -132,7 +130,7 @@
                         android:id="@+id/carCenterTopBomImg"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:src="@mipmap/ic_white_arrow_bottom"
+                        android:src="@drawable/all_bottom_selector"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintLeft_toLeftOf="parent"
                         app:layout_constraintRight_toRightOf="parent" />
@@ -218,7 +216,7 @@
                         android:id="@+id/carCenterBotBomImg"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:src="@mipmap/ic_white_arrow_bottom"
+                        android:src="@drawable/all_bottom_selector"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintLeft_toLeftOf="parent"
                         app:layout_constraintRight_toRightOf="parent" />
@@ -228,7 +226,7 @@
                         android:id="@+id/carCenterBotTopImg"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:src="@mipmap/ic_white_arrow_top"
+                        android:src="@drawable/all_top_selector"
                         app:layout_constraintLeft_toLeftOf="parent"
                         app:layout_constraintRight_toRightOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
@@ -243,12 +241,6 @@
                         app:layout_constraintRight_toRightOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/carCenterBotTopImg"
                         android:layout_height="0dp"/>
-
-
-
-
-
-
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
 
@@ -272,7 +264,7 @@
                     android:id="@+id/rightTopAddImageView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@mipmap/ic_cir_radius_top_ig" />
+                    android:src="@drawable/top_selector" />
 
 
                 <TextView
@@ -290,7 +282,7 @@
                     android:id="@+id/rightTopReduceImageView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@mipmap/ic_cir_radius_bot_ig" />
+                    android:src="@drawable/bottom_selector" />
 
 
                 <View
@@ -302,7 +294,7 @@
                     android:id="@+id/rightRearAddImageView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@mipmap/ic_cir_radius_top_ig" />
+                    android:src="@drawable/top_selector" />
 
 
                 <TextView
@@ -323,7 +315,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
 
-                    android:src="@mipmap/ic_cir_radius_bot_ig" />
+                    android:src="@drawable/bottom_selector" />
 
 
             </com.hjq.shape.layout.ShapeLinearLayout>

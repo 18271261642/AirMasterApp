@@ -44,4 +44,28 @@ class ControlViewModel : ViewModel() {
 
         }
     }
+
+
+
+    //手动调整轮子充气或放气
+    fun setManualOperation(map : HashMap<Int,Int>){
+        var keyCode = 0
+        var valueCode = 0
+        map.forEach {
+            keyCode = it.key
+            valueCode = it.value
+        }
+
+        val timeArray = Utils.intToSecondByteArrayHeight(1000)
+        val timeStr = com.app.airmaster.ble.ota.Utils.bytesToHexString(timeArray)
+        val scrStr = "0005040112"+String.format("%02x",keyCode)+String.format("%02d",(valueCode+1))+timeStr
+        val crc = Utils.crcCarContentArray(scrStr)
+        val str = "011E"+ CarConstant.CAR_HEAD_BYTE_STR+scrStr+crc
+        val resultArray = Utils.hexStringToByte(str)
+        val result = Utils.getFullPackage(resultArray)
+        BaseApplication.getBaseApplication().bleOperate.writeCommonByte(result){
+
+        }
+
+    }
 }

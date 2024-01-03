@@ -8,6 +8,7 @@ import com.bonlala.widget.layout.SettingBar
 import com.hjq.bar.OnTitleBarListener
 import com.hjq.bar.TitleBar
 import com.hjq.toast.ToastUtils
+import timber.log.Timber
 
 /**
  * 系统设置
@@ -82,9 +83,12 @@ class CarSysFragment : TitleBarFragment<CarSysSetActivity>() {
             fragmentTransaction.commit()
         }
 
-
+        sysTitleBar?.setTitle("abc")
         sysTitleBar?.setOnTitleBarListener(object : OnTitleBarListener{
             override fun onLeftClick(view: View?) {
+                Timber.e("----------leftclick")
+
+
                 ToastUtils.show("ddddddd")
                 (attachActivity as CarSysSetActivity).finish()
             }

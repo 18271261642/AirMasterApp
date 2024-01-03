@@ -71,18 +71,12 @@ public class AutoBackBean {
 
 
 
-
-
-
     /**
      * 气缸气压值
      */
     private int cylinderPressure;
 
-    /**
-     * 左前高度尺工作量
-     */
-    private int leftFrontHeight;
+
 
 
     /**
@@ -160,14 +154,6 @@ public class AutoBackBean {
         this.cylinderPressure = cylinderPressure;
     }
 
-    public int getLeftFrontHeight() {
-        return leftFrontHeight;
-    }
-
-    public void setLeftFrontHeight(int leftFrontHeight) {
-        this.leftFrontHeight = leftFrontHeight;
-    }
-
     public int getBatteryVal() {
         return batteryVal;
     }
@@ -226,12 +212,11 @@ public class AutoBackBean {
                 ", rightPressure=" + rightPressure +
                 ", leftRearPressure=" + leftRearPressure +
                 ", rightRearPressure=" + rightRearPressure +
-                ", leftFrontHeightRuler=" + leftFrontHeightRuler +
-                ", rightFrontHeightRuler=" + rightFrontHeightRuler +
-                ", leftAfterHeightRuler=" + leftAfterHeightRuler +
-                ", rightAfterHeightRuler=" + rightAfterHeightRuler +
+                ", 左前高度尺=" + leftFrontHeightRuler +
+                ", 右前高度尺=" + rightFrontHeightRuler +
+                ", 左后高度尺=" + leftAfterHeightRuler +
+                ", 右后高度尺=" + rightAfterHeightRuler +
                 ", cylinderPressure=" + cylinderPressure +
-                ", leftFrontHeight=" + leftFrontHeight +
                 ", batteryVal=" + batteryVal +
                 ", airBottleTemperature=" + airBottleTemperature +
                 '}';

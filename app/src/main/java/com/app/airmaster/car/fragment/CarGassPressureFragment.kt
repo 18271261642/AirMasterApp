@@ -2,6 +2,7 @@ package com.app.airmaster.car.fragment
 
 import android.os.Build
 import android.util.Log
+import android.view.View
 import android.widget.SeekBar
 import android.widget.TextView
 import com.app.airmaster.BaseApplication
@@ -13,6 +14,9 @@ import com.app.airmaster.widget.VerticalSeekBar
 import com.app.airmaster.widget.VerticalSeekBar.OnSeekBarChangeListener
 import com.blala.blalable.car.CarConstant
 import com.blala.blalable.listener.WriteBackDataListener
+import com.hjq.bar.OnTitleBarListener
+import com.hjq.bar.TitleBar
+import com.hjq.toast.ToastUtils
 import timber.log.Timber
 
 /**
@@ -50,6 +54,23 @@ class CarGassPressureFragment : TitleBarFragment<CarSysSetActivity>(){
         pLowTv = findViewById(R.id.pLowTv)
         gassPressureHeightSeekBar = findViewById(R.id.gassPressureHeightSeekBar)
         gassPressureLowSeekBar = findViewById(R.id.gassPressureLowSeekBar)
+//
+//        findViewById<TitleBar>(R.id.gassTitleBar).setOnTitleBarListener(object : OnTitleBarListener{
+//            override fun onLeftClick(view: View?) {
+//                ToastUtils.show("ddddd")
+//                val fragmentManager = parentFragmentManager
+//                fragmentManager.popBackStack()
+//            }
+//
+//            override fun onTitleClick(view: View?) {
+//
+//            }
+//
+//            override fun onRightClick(view: View?) {
+//
+//            }
+//
+//        })
     }
 
     override fun initData() {

@@ -398,20 +398,23 @@ public class BleManager {
                     int leftRearPressure = bytes[23] & 0xff;
                     //右后气压值
                     int rightRearPressure = bytes[24] &0xff;
-                    //左前高度尺
-                    int leftRuler = bytes[25] & 0xff;
-                    //右前高度尺
-                    int rightRuler = bytes[26] &0xff;
-                    //左后高度尺
-                    int leftAfterRuler = bytes[27] &0xff;
-                    //右后高度尺
-                    int rightAfterRuler = bytes[28] & 0xff;
-
-
 
 
                     //气缸气压值
                     int cylinderPressure = bytes[25] & 0xff;
+
+                    //左前高度尺
+                    int leftRuler = bytes[26] & 0xff;
+                    //右前高度尺
+                    int rightRuler = bytes[27] &0xff;
+                    //左后高度尺
+                    int leftAfterRuler = bytes[28] &0xff;
+                    //右后高度尺
+                    int rightAfterRuler = bytes[29] & 0xff;
+
+
+
+
 
                     //电池电压
                     int batteryVal = bytes[38] & 0xff;
@@ -423,9 +426,9 @@ public class BleManager {
                     autoBackBean.setCurPos(curPos);
                     autoBackBean.setLeftPressure(leftPressure);
                     autoBackBean.setRightPressure(rightPressure);
-                    autoBackBean.setLeftFrontHeight(leftRearPressure);
+                    autoBackBean.setLeftRearPressure(leftRearPressure);
                     autoBackBean.setRightRearPressure(rightRearPressure);
-                    autoBackBean.setLeftFrontHeight(leftRuler);
+                    autoBackBean.setLeftFrontHeightRuler(leftRuler);
                     autoBackBean.setRightFrontHeightRuler(rightRuler);
                     autoBackBean.setLeftAfterHeightRuler(leftAfterRuler);
                     autoBackBean.setRightAfterHeightRuler(rightAfterRuler);

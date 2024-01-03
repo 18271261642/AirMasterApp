@@ -25,6 +25,8 @@ class CusCarTemperView : View {
     //数值
     private var txtPaint : Paint ?= null
 
+    private var tempTxtPaint : Paint ?= null
+
 
     private var mWidth : Float ?= null
     private var mHeight : Float ?= null
@@ -68,6 +70,14 @@ class CusCarTemperView : View {
         txtPaint?.color = Color.WHITE
         txtPaint?.textSize = MiscUtil.dipToPxFloat(context,12F)
 
+
+        tempTxtPaint = Paint(Paint.ANTI_ALIAS_FLAG)
+        tempTxtPaint?.style = Paint.Style.FILL_AND_STROKE
+        tempTxtPaint?.isAntiAlias = true
+        tempTxtPaint?.strokeWidth = 1F
+        tempTxtPaint?.color = Color.TRANSPARENT
+        tempTxtPaint?.textSize = MiscUtil.dipToPxFloat(context,12F)
+
     }
 
 
@@ -89,10 +99,13 @@ class CusCarTemperView : View {
 
         val progressHeight = model * progressValue
         val progressTxt = String.format("%02d",progressValue)
-        val tW = MiscUtil.getTextWidth(txtPaint!!,progressTxt)
+        val tW = MiscUtil.getTextWidth(tempTxtPaint!!,"100")
         val tH = MiscUtil.measureTextHeight(txtPaint)
 
-        Timber.e("------tw="+tW+"  "+MiscUtil.getTextWidth(txtPaint!!,"100"))
+
+        canvas?.drawText("100",12F,mHeight!!/2,tempTxtPaint!!)
+
+        //Timber.e("------tw="+tW+"  "+MiscUtil.getTextWidth(txtPaint!!,"100"))
         canvas?.drawText(progressTxt,if(progressValue<=99) 12F else 0F,mHeight!!-progressHeight-tH,txtPaint!!)
 
 

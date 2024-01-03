@@ -17,6 +17,7 @@ import com.app.airmaster.car.view.HomeBottomCheckView
 import com.app.airmaster.car.view.HomeBottomNumberView
 import com.app.airmaster.car.view.HomeLeftAirPressureView
 import com.app.airmaster.car.view.HomeRightTemperatureView
+import com.app.airmaster.listeners.OnControlPressureCheckedListener
 import com.app.airmaster.second.SecondScanActivity
 import com.app.airmaster.viewmodel.ControlViewModel
 import com.app.airmaster.widget.CusVerticalScheduleView
@@ -109,6 +110,7 @@ class HomeControlFragment : TitleBarFragment<CarHomeActivity>() {
 
     override fun initData() {
 
+        carHomeCenterView?.setFrontImage()
         carHomeCenterView?.setFrontHeightValue(50,50)
         carHomeCenterView?.setAfterHeightValue(100,80)
 
@@ -121,7 +123,7 @@ class HomeControlFragment : TitleBarFragment<CarHomeActivity>() {
             carHomeCenterView?.setLeftTopPressureValue(it.leftPressure)
             carHomeCenterView?.setRightRearPressureValue(it.rightRearPressure)
 
-            carHomeCenterView?.setFrontHeightValue(it.leftFrontHeight,it.rightFrontHeightRuler)
+            carHomeCenterView?.setFrontHeightValue(it.leftFrontHeightRuler,it.rightFrontHeightRuler)
             carHomeCenterView?.setAfterHeightValue(it.leftAfterHeightRuler,it.rightAfterHeightRuler)
 
 
@@ -131,7 +133,12 @@ class HomeControlFragment : TitleBarFragment<CarHomeActivity>() {
 
         }
 
-        //homeRightView?.setTempValue(100)
+        carHomeCenterView?.setOnPressureListener(object : OnControlPressureCheckedListener{
+            override fun onItemChecked(map: MutableMap<Int, Int>?) {
+                controlViewModel?.setManualOperation(map!! as HashMap<Int, Int>)
+            }
+
+        })
     }
 
 

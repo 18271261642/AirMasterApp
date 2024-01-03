@@ -113,7 +113,13 @@ class CarHeightGaugeView : View{
 
         val model = mHeight!! / maxValue
 
-        Timber.e("------model="+model+" leftHeight="+leftHeight)
+        if(leftValue>maxValue){
+            leftValue = maxValue
+        }
+        if(rightValue >maxValue){
+            rightValue = maxValue
+        }
+
         val lefProgressValue = model * leftValue!!
         val rightProgressValue = model * rightValue!!
 
@@ -145,6 +151,6 @@ class CarHeightGaugeView : View{
     fun setValues(leftV : Int,rightV : Int){
         this.leftValue = leftV.toFloat()
         this.rightValue = rightV.toFloat()
-        initPaint()
+        invalidate()
     }
 }

@@ -146,7 +146,7 @@ public class CusVerticalTextScheduleView extends View {
     RectF currRectf;
     private void drawSchedule(Canvas canvas) {
         float currV = (currScheduleValue * mHeight /allScheduleValue);
-        Timber.e("-----currV="+currV+" "+mHeight);
+       // Timber.e("-----currV="+currV+" "+mHeight);
         if(currV>mHeight){
             currV = mHeight;
         }
@@ -167,13 +167,13 @@ public class CusVerticalTextScheduleView extends View {
         currRectf.bottom = mHeight;
         String txtStr = String.valueOf(currScheduleValue<0?0 : currScheduleValue);
 
-        canvas.drawText(txtStr,20,currRectf.top-20,txtPaint);
+        canvas.drawText(txtStr,20,currRectf.top-10,txtPaint);
 
 
 //        RectF currRectf = new RectF(5f,y,currV,0);
         currPath.addRoundRect(currRectf,0,0,Path.Direction.CW);
         path.op(bgPath,currPath,Path.Op.INTERSECT);
-        Timber.e("----isShow="+isShowTxt+" "+showTxt);
+       // Timber.e("----isShow="+isShowTxt+" "+showTxt);
         currSchedulePaint.setColor(currShceduleColor);
        // canvas.drawPath(path,currSchedulePaint);
 //        if(isShowTxt){

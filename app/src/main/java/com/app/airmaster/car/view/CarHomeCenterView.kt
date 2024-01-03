@@ -6,12 +6,31 @@ import android.graphics.drawable.BitmapDrawable
 import android.provider.ContactsContract.CommonDataKinds.Im
 import android.util.AttributeSet
 import android.view.LayoutInflater
+import android.view.View
+import android.view.View.OnClickListener
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import com.app.airmaster.R
+import com.app.airmaster.listeners.OnControlPressureCheckedListener
 
-class CarHomeCenterView : LinearLayout {
+class CarHomeCenterView : LinearLayout ,OnClickListener{
+
+    private var onPressureListener : OnControlPressureCheckedListener ?= null
+
+    private var map = HashMap<Int,Int>()
+    fun setOnPressureListener(c : OnControlPressureCheckedListener){
+        this.onPressureListener = c
+    }
+
+    //前轮+
+    private var carHomeCenterTopTopImg : ImageView ?= null
+    private var carCenterTopBomImg : ImageView ?= null //-
+    //后轮+
+    private var carCenterBotTopImg : ImageView ?= null
+    //后轮-
+    private var carCenterBotBomImg : ImageView ?= null
+
 
 
     //左前轮气压值
@@ -67,6 +86,11 @@ class CarHomeCenterView : LinearLayout {
         homeCenterLeftRearPressureTv = view.findViewById(R.id.homeCenterLeftRearPressureTv)
         homeCenterRightRearPressureTv = view.findViewById(R.id.homeCenterRightRearPressureTv)
 
+        carHomeCenterTopTopImg = view.findViewById(R.id.carHomeCenterTopTopImg)
+        carCenterTopBomImg = view.findViewById(R.id.carCenterTopBomImg)
+        carCenterBotTopImg = view.findViewById(R.id.carCenterBotTopImg)
+        carCenterBotBomImg = view.findViewById(R.id.carCenterBotBomImg)
+
         homeCenterLeftTopImg = view.findViewById(R.id.homeCenterLeftTopImg)
         homeCenterLeftBotImg = view.findViewById(R.id.homeCenterLeftBotImg)
         rightTopAddImageView = view.findViewById(R.id.rightTopAddImageView)
@@ -81,7 +105,22 @@ class CarHomeCenterView : LinearLayout {
         carAfterHeightGaugeView = view.findViewById(R.id.carAfterHeightGaugeView)
 
         setHomeCenterDefault()
-        setFrontImage()
+      //  setFrontImage()
+
+
+        homeCenterLeftTopImg?.setOnClickListener(this)
+        homeCenterLeftBotImg?.setOnClickListener(this)
+        rightTopAddImageView?.setOnClickListener(this)
+        rightTopReduceImageView?.setOnClickListener(this)
+        leftRearAddImageView?.setOnClickListener(this)
+        homeCenterLeftBotImg2?.setOnClickListener(this)
+        rightRearReduceImageView?.setOnClickListener(this)
+        rightRearAddImageView?.setOnClickListener(this)
+
+        carHomeCenterTopTopImg?.setOnClickListener(this)
+        carCenterTopBomImg?.setOnClickListener(this)
+        carCenterBotTopImg?.setOnClickListener(this)
+        carCenterBotBomImg?.setOnClickListener(this)
 
     }
 
@@ -117,7 +156,7 @@ class CarHomeCenterView : LinearLayout {
 
 
     //设置前轮的图片
-    private fun setFrontImage(){
+     fun setFrontImage(){
         val leftBit = BitmapFactory.decodeResource(context.resources,R.mipmap.ic_car_mid_left_img)
         val rightBit = BitmapFactory.decodeResource(context.resources,R.mipmap.ic_car_mid_right_img)
         carFrontHeightGaugeView?.setBitmap(leftBit,rightBit)
@@ -138,4 +177,52 @@ class CarHomeCenterView : LinearLayout {
     fun setAfterHeightValue(afterLeft : Int,afterRight : Int){
         carAfterHeightGaugeView?.setValues(afterLeft,afterRight)
     }
+
+    override fun onClick(p0: View?) {
+       val id = p0?.id
+        map.clear()
+        when (id){
+            R.id.homeCenterLeftTopImg->{    //左前+
+                map[0] = 1
+            }
+            R.id.homeCenterLeftBotImg->{    //左前-
+                map[0] = 0
+            }
+
+            R.id.rightTopAddImageView->{    //右前+
+                map[1] = 1
+            }
+            R.id.rightTopReduceImageView->{ //右前-
+                map[1] = 0
+            }
+            R.id.leftRearAddImageView->{    //左后+
+                map[2] = 1
+            }
+            R.id.homeCenterLeftBotImg2->{   //左后-
+                map[2] = 0
+            }
+            R.id.rightRearAddImageView->{   //右后+
+                map[3] = 1
+            }
+            R.id.rightRearReduceImageView->{    //右后-
+                map[3] = 0
+            }
+
+            R.id.carHomeCenterTopTopImg->{  //前轮+
+                map[4] = 1
+            }
+            R.id.carCenterTopBomImg->{  //前轮-
+                map[4] = 0
+            }
+            R.id.carCenterBotTopImg->{  //后轮+
+                map[5] = 1
+            }
+            R.id.carCenterBotBomImg->{  //后轮-
+                map[5] = 0
+            }
+        }
+        onPressureListener?.onItemChecked(map)
+    }
+
+
 }

@@ -151,7 +151,7 @@ public class CusVerticalScheduleView extends View {
     RectF currRectf;
     private void drawSchedule(Canvas canvas) {
         float currV = (currScheduleValue * mHeight /allScheduleValue);
-        Timber.e("-----currV="+currV+" "+mHeight);
+        //Timber.e("-----currV="+currV+" "+mHeight);
         if(currV>mHeight){
             currV = mHeight;
         }
@@ -178,7 +178,6 @@ public class CusVerticalScheduleView extends View {
 //        RectF currRectf = new RectF(5f,y,currV,0);
         currPath.addRoundRect(currRectf,0,0,Path.Direction.CW);
         path.op(bgPath,currPath,Path.Op.INTERSECT);
-        Timber.e("----isShow="+isShowTxt+" "+showTxt);
         currSchedulePaint.setColor(currShceduleColor);
         canvas.drawPath(path,currSchedulePaint);
         if(isShowTxt){
