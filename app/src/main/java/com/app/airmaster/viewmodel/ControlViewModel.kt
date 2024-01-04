@@ -32,6 +32,51 @@ class ControlViewModel : ViewModel() {
     }
 
 
+    //汽水分离模式
+    fun setMoistureModel(model : Int){
+        val scrStr = "0005040123"+String.format("%02x",model)
+        val crc = Utils.crcCarContentArray(scrStr)
+
+        val str = "011E"+ CarConstant.CAR_HEAD_BYTE_STR+scrStr+crc
+        val resultArray = Utils.hexStringToByte(str)
+        val result = Utils.getFullPackage(resultArray)
+        BaseApplication.getBaseApplication().bleOperate.writeCommonByte(result){
+
+        }
+    }
+
+
+    //主动干燥
+    fun setActiveDrying(){
+        val time = 15000
+        val timeArray = Utils.intToSecondByteArrayHeight(time)
+        val scrStr = "0006040124"+Utils.getHexString(timeArray)
+        val crc = Utils.crcCarContentArray(scrStr)
+
+        val str = "011E"+ CarConstant.CAR_HEAD_BYTE_STR+scrStr+crc
+        val resultArray = Utils.hexStringToByte(str)
+        val result = Utils.getFullPackage(resultArray)
+        BaseApplication.getBaseApplication().bleOperate.writeCommonByte(result){
+
+        }
+    }
+
+
+
+    //气罐手动打气
+    fun setManualAerate(isStart : Boolean){
+        val scrStr = "0005040113"+String.format("%02x",if(isStart) 0 else 1)
+        val crc = Utils.crcCarContentArray(scrStr)
+
+        val str = "011E"+ CarConstant.CAR_HEAD_BYTE_STR+scrStr+crc
+        val resultArray = Utils.hexStringToByte(str)
+        val result = Utils.getFullPackage(resultArray)
+        BaseApplication.getBaseApplication().bleOperate.writeCommonByte(result){
+
+        }
+    }
+
+
     //一键低趴
     fun setOneGearReset(){
         val scrStr = "000504012500"
@@ -67,5 +112,69 @@ class ControlViewModel : ViewModel() {
 
         }
 
+    }
+
+
+    //设置ACC启停定时进入休眠时间
+    fun setAccModel(time : Int){
+        val scrStr = "0005040116"+String.format("%02x",time)
+        val crc = Utils.crcCarContentArray(scrStr)
+        val str = "011E"+ CarConstant.CAR_HEAD_BYTE_STR+scrStr+crc
+        val resultArray = Utils.hexStringToByte(str)
+        val result = Utils.getFullPackage(resultArray)
+        BaseApplication.getBaseApplication().bleOperate.writeCommonByte(result){
+
+        }
+    }
+
+    //是否进入维修模式维修模式
+    fun setRepairModel(into : Boolean){
+        val scrStr = "0005040129"+String.format("%02x",if(into) 1 else 0)
+        val crc = Utils.crcCarContentArray(scrStr)
+        val str = "011E"+ CarConstant.CAR_HEAD_BYTE_STR+scrStr+crc
+        val resultArray = Utils.hexStringToByte(str)
+        val result = Utils.getFullPackage(resultArray)
+        BaseApplication.getBaseApplication().bleOperate.writeCommonByte(result){
+
+        }
+    }
+
+    //运行中最低保护气压
+    fun setRunLowPressure(front : Int,rear : Int){
+        val frontStr = String.format("%02x",front)
+        val rearStr = String.format("%02x",rear)
+        val scrStr = "000804012A$frontStr$frontStr$rearStr$rearStr"
+        val crc = Utils.crcCarContentArray(scrStr)
+        val str = "011E"+ CarConstant.CAR_HEAD_BYTE_STR+scrStr+crc
+        val resultArray = Utils.hexStringToByte(str)
+        val result = Utils.getFullPackage(resultArray)
+        BaseApplication.getBaseApplication().bleOperate.writeCommonByte(result){
+
+        }
+    }
+
+
+    //点火联动设置
+    fun setStartUpSetting(level :Int){
+        val scrStr = "0005040119"+String.format("%02x",level)
+        val crc = Utils.crcCarContentArray(scrStr)
+        val str = "011E"+ CarConstant.CAR_HEAD_BYTE_STR+scrStr+crc
+        val resultArray = Utils.hexStringToByte(str)
+        val result = Utils.getFullPackage(resultArray)
+        BaseApplication.getBaseApplication().bleOperate.writeCommonByte(result){
+
+        }
+    }
+
+    //熄火设置
+    fun setStallSetting(level :Int){
+        val scrStr = "000504011A"+String.format("%02x",level)
+        val crc = Utils.crcCarContentArray(scrStr)
+        val str = "011E"+ CarConstant.CAR_HEAD_BYTE_STR+scrStr+crc
+        val resultArray = Utils.hexStringToByte(str)
+        val result = Utils.getFullPackage(resultArray)
+        BaseApplication.getBaseApplication().bleOperate.writeCommonByte(result){
+
+        }
     }
 }

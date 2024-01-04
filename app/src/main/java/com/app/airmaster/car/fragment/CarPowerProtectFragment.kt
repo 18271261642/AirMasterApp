@@ -8,6 +8,7 @@ import com.app.airmaster.R
 import com.app.airmaster.action.TitleBarFragment
 import com.app.airmaster.ble.ota.BluetoothLeClass.OnWriteDataListener
 import com.app.airmaster.car.CarSysSetActivity
+import com.app.airmaster.widget.CommTitleView
 import com.blala.blalable.Utils
 import com.blala.blalable.car.CarConstant
 import com.blala.blalable.listener.WriteBackDataListener
@@ -27,6 +28,8 @@ class CarPowerProtectFragment : TitleBarFragment<CarSysSetActivity>(){
         }
     }
 
+    private var sysPowerProtectTitleView : CommTitleView ?= null
+
     private var powerProtectValueTv : TextView ?= null
     private var powerSeekBar : SeekBar ?= null
 
@@ -39,9 +42,16 @@ class CarPowerProtectFragment : TitleBarFragment<CarSysSetActivity>(){
     }
 
     override fun initView() {
+        sysPowerProtectTitleView = findViewById(R.id.sysPowerProtectTitleView)
         powerHeightBtn = findViewById(R.id.powerHeightBtn)
         powerProtectValueTv = findViewById(R.id.powerProtectValueTv)
         powerSeekBar = findViewById(R.id.powerSeekBar)
+
+        sysPowerProtectTitleView?.setCommTitleTxt("电瓶保护")
+        sysPowerProtectTitleView?.setOnItemClick{
+            val fragmentManager = parentFragmentManager
+            fragmentManager.popBackStack()
+        }
 
         powerHeightBtn?.setOnCheckedChangeListener { button, checked ->
 //            if(!button.isPressed){
@@ -50,6 +60,8 @@ class CarPowerProtectFragment : TitleBarFragment<CarSysSetActivity>(){
             sendHeightProtect(checked)
 
         }
+
+
     }
 
     override fun initData() {

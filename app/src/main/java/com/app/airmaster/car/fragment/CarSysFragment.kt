@@ -4,6 +4,7 @@ import android.view.View
 import com.app.airmaster.R
 import com.app.airmaster.action.TitleBarFragment
 import com.app.airmaster.car.CarSysSetActivity
+import com.app.airmaster.widget.CommTitleView
 import com.bonlala.widget.layout.SettingBar
 import com.hjq.bar.OnTitleBarListener
 import com.hjq.bar.TitleBar
@@ -18,7 +19,7 @@ import timber.log.Timber
 class CarSysFragment : TitleBarFragment<CarSysSetActivity>() {
 
 
-    private var sysTitleBar : TitleBar ?= null
+    private var sysSettingTitleView : CommTitleView ?= null
 
     companion object{
         fun getInstance() : CarSysFragment{
@@ -32,7 +33,7 @@ class CarSysFragment : TitleBarFragment<CarSysSetActivity>() {
     }
 
     override fun initView() {
-        sysTitleBar = findViewById(R.id.sysTitleBar)
+        sysSettingTitleView = findViewById(R.id.sysSettingTitleView)
 
         val fragmentManager = parentFragmentManager
         val fragmentTransaction = fragmentManager?.beginTransaction()
@@ -46,6 +47,13 @@ class CarSysFragment : TitleBarFragment<CarSysSetActivity>() {
         //工作模式
         findViewById<SettingBar>(R.id.sysWorkModelBar).setOnClickListener {
             fragmentTransaction.replace(R.id.stsSetFrameLayout,CarWorkModelFragment.getInstance())
+            fragmentTransaction.addToBackStack(null)
+            fragmentTransaction.commit()
+        }
+
+        //高度尺
+        findViewById<SettingBar>(R.id.sysScaleSettingBar).setOnClickListener {
+            fragmentTransaction.replace(R.id.stsSetFrameLayout,CarSysScaleFragment.getInstance())
             fragmentTransaction.addToBackStack(null)
             fragmentTransaction.commit()
         }
@@ -83,25 +91,10 @@ class CarSysFragment : TitleBarFragment<CarSysSetActivity>() {
             fragmentTransaction.commit()
         }
 
-        sysTitleBar?.setTitle("abc")
-        sysTitleBar?.setOnTitleBarListener(object : OnTitleBarListener{
-            override fun onLeftClick(view: View?) {
-                Timber.e("----------leftclick")
-
-
-                ToastUtils.show("ddddddd")
-                (attachActivity as CarSysSetActivity).finish()
-            }
-
-            override fun onTitleClick(view: View?) {
-
-            }
-
-            override fun onRightClick(view: View?) {
-
-            }
-
-        })
+        sysSettingTitleView?.setCommTitleTxt("系统设置")
+        sysSettingTitleView?.setOnItemClick{
+            finish()
+        }
     }
 
     override fun initData() {

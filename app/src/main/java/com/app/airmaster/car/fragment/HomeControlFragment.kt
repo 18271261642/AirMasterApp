@@ -66,12 +66,22 @@ class HomeControlFragment : TitleBarFragment<CarHomeActivity>() {
         homeBottomCheckView = findViewById(R.id.homeBottomCheckView)
         homeBottomNumberView = findViewById(R.id.homeBottomNumberView)
 
-
         homeBottomCheckView?.setOnItemCheck(object : OnItemCheckedListener{
             override fun onItemCheck(position: Int, isChecked: Boolean) {
+                if(position == 0x00){   //打气
+                    controlViewModel?.setManualAerate(isChecked)
+                }
+                if(position == 0x01){   //预设高度
+
+                }
+
                if(position == 2){
                    startActivity(CarFaultNotifyActivity::class.java)
                }
+
+                if(position == 0x03){   //排水
+                    controlViewModel?.setMoistureModel(if(isChecked) 0 else 1)
+                }
             }
 
         })
@@ -111,8 +121,8 @@ class HomeControlFragment : TitleBarFragment<CarHomeActivity>() {
     override fun initData() {
 
         carHomeCenterView?.setFrontImage()
-        carHomeCenterView?.setFrontHeightValue(50,50)
-        carHomeCenterView?.setAfterHeightValue(100,80)
+//        carHomeCenterView?.setFrontHeightValue(50,50)
+//        carHomeCenterView?.setAfterHeightValue(100,80)
 
 
         controlViewModel = ViewModelProvider(this)[ControlViewModel::class.java]

@@ -2,6 +2,7 @@ package com.app.airmaster.widget;
 
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
@@ -165,7 +166,7 @@ public class CusVerticalTextScheduleView extends View {
         currRectf.top = mHeight-currV ;
         currRectf.right = mWidth;
         currRectf.bottom = mHeight;
-        String txtStr = String.valueOf(currScheduleValue<0?0 : currScheduleValue);
+        String txtStr = String.format("%02d",Math.max(currScheduleValue, 0));
 
         canvas.drawText(txtStr,20,currRectf.top-10,txtPaint);
 

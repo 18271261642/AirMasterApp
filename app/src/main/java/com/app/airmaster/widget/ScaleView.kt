@@ -21,21 +21,23 @@ class ScaleView : View {
         init()
     }
 
+    private var mHeight : Float ?= null
+    private var mWidth : Float ?= null
 
     private var mLinePaint: Paint? = null
     private var mTextPaint: Paint? = null
     private var mRulerPaint: Paint? = null
     private var progrees = 10f
-    private val max = 101
+    private val max = 100
     private val min = 0
     private var isCanMove = false
 
     private fun init() {
         mLinePaint = Paint()
-        mLinePaint?.setColor(Color.CYAN)
+        mLinePaint?.setColor(Color.WHITE)
         mLinePaint?.setAntiAlias(true) //抗锯齿
         mLinePaint?.setStyle(Paint.Style.STROKE)
-        mLinePaint?.setStrokeWidth(4F)
+        mLinePaint?.setStrokeWidth(8F)
         mTextPaint = Paint()
         mTextPaint?.setColor(Color.CYAN)
         mTextPaint?.setAntiAlias(true)
@@ -47,12 +49,14 @@ class ScaleView : View {
         mRulerPaint?.setAntiAlias(true)
         mRulerPaint?.setStyle(Paint.Style.FILL_AND_STROKE)
         mRulerPaint?.setColor(Color.RED)
-        mRulerPaint?.setStrokeWidth(4F)
+        mRulerPaint?.strokeWidth = 8F
     }
 
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec)
         setMeasuredDimension(setMeasureWidth(widthMeasureSpec), setMeasureHeight(heightMeasureSpec))
+        mWidth = measuredWidth.toFloat()
+        mHeight = measuredHeight.toFloat()
     }
 
     private fun setMeasureHeight(spec: Int): Int {
@@ -82,24 +86,35 @@ class ScaleView : View {
     override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
         canvas.save()
-        for (i in min until max) {
-            if (i % 10 == 0) {
-                canvas.drawLine(10F, 0F, 10F, 72F, mLinePaint!!)
-                val text = (i / 10).toString() + ""
-                val rect = Rect()
-                val txtWidth: Float = mTextPaint!!.measureText(text)
-                mTextPaint?.getTextBounds(text, 0, text.length, rect)
-                canvas.drawText(text, 10 - txtWidth / 2, 72F + rect.height() + 10, mTextPaint!!)
-            } else if (i % 5 == 0) {
-                canvas.drawLine(10F, 0F, 10F, 64F, mLinePaint!!)
-            } else {
-                canvas.drawLine(10F, 0F, 10F, 48F, mLinePaint!!)
-            }
-            canvas.translate(18F, 0F)
+
+
+
+
+
+       // canvas?.drawLine(10F,10F,10F,mHeight!!,mLinePaint!!)
+        canvas.drawLine(0F,mHeight!!,mWidth!!,mHeight!!,mLinePaint!!)
+
+        val model = mWidth!! / 10
+        var countX = 0F
+        for(i in 0 ..10){
+            val tmp = i * model
+            countX += tmp
+            canvas.drawLine(tmp,mHeight!!/2,tmp,mHeight!!,mLinePaint!!)
         }
-        canvas.restore()
-        canvas.drawLine(progrees, 0F, progrees, 160F, mRulerPaint!!)
-        canvas.drawCircle(progrees, 170F, 10F, mRulerPaint!!)
+//
+//        for (i in min until max) {
+//            if (i % 10 == 0) {
+//                canvas.drawLine(10F, 0F, 10F, mHeight!!, mLinePaint!!)
+//            }
+////            else if (i % 5 == 0) {
+////                canvas.drawLine(10F, 0F, 10F, mHeight!!, mLinePaint!!)
+////            } else {
+////                canvas.drawLine(10F, 0F, 10F, mHeight!!, mLinePaint!!)
+////            }
+//          //  canvas.translate(18F, 0F)
+//        }
+//        canvas.restore()
+        canvas.drawLine(progrees, 0F, progrees, mHeight!!, mRulerPaint!!)
 
     }
 

@@ -6,14 +6,10 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_height="match_parent">
 
-    <com.hjq.bar.TitleBar
+    <com.app.airmaster.widget.CommTitleView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:leftIcon="@drawable/ic_white_left_back"
-        android:background="@color/transparent"
-        app:lineVisible="false"
-        app:title="最细行驶保护气压"
-        app:titleColor="@color/white"/>
+        android:id="@+id/sysLowestAirTitleView"
+        android:layout_height="wrap_content"/>
 
 
 

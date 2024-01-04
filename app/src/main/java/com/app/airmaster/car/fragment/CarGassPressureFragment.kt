@@ -1,5 +1,6 @@
 package com.app.airmaster.car.fragment
 
+import android.annotation.SuppressLint
 import android.os.Build
 import android.util.Log
 import android.view.View
@@ -10,6 +11,7 @@ import com.app.airmaster.R
 import com.app.airmaster.action.TitleBarFragment
 import com.app.airmaster.ble.ota.Utils
 import com.app.airmaster.car.CarSysSetActivity
+import com.app.airmaster.widget.CommTitleView
 import com.app.airmaster.widget.VerticalSeekBar
 import com.app.airmaster.widget.VerticalSeekBar.OnSeekBarChangeListener
 import com.blala.blalable.car.CarConstant
@@ -41,6 +43,8 @@ class CarGassPressureFragment : TitleBarFragment<CarSysSetActivity>(){
     private var pLowTv : TextView ?= null
 
 
+    private var sysGassTitleView : CommTitleView ?= null
+
 
 
 
@@ -49,28 +53,21 @@ class CarGassPressureFragment : TitleBarFragment<CarSysSetActivity>(){
         return R.layout.fragment_car_gass_pressure_layout
     }
 
+    @SuppressLint("SuspiciousIndentation")
     override fun initView() {
+        sysGassTitleView = findViewById(R.id.sysGassTitleView)
         pHTv = findViewById(R.id.pHTv)
         pLowTv = findViewById(R.id.pLowTv)
         gassPressureHeightSeekBar = findViewById(R.id.gassPressureHeightSeekBar)
         gassPressureLowSeekBar = findViewById(R.id.gassPressureLowSeekBar)
-//
-//        findViewById<TitleBar>(R.id.gassTitleBar).setOnTitleBarListener(object : OnTitleBarListener{
-//            override fun onLeftClick(view: View?) {
-//                ToastUtils.show("ddddd")
-//                val fragmentManager = parentFragmentManager
-//                fragmentManager.popBackStack()
-//            }
-//
-//            override fun onTitleClick(view: View?) {
-//
-//            }
-//
-//            override fun onRightClick(view: View?) {
-//
-//            }
-//
-//        })
+
+        sysGassTitleView?.setCommTitleTxt("气罐压力")
+
+        sysGassTitleView?.setOnItemClick{
+            val fragmentManager = parentFragmentManager
+                fragmentManager.popBackStack()
+        }
+
     }
 
     override fun initData() {

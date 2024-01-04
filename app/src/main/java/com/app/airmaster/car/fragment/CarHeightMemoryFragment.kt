@@ -7,6 +7,7 @@ import com.app.airmaster.action.TitleBarFragment
 import com.app.airmaster.car.CarSysSetActivity
 import com.app.airmaster.car.adapter.CarTimerAdapter
 import com.app.airmaster.car.bean.TimerBean
+import com.app.airmaster.widget.CommTitleView
 
 /**
  * 高度记忆设置
@@ -21,6 +22,8 @@ class CarHeightMemoryFragment : TitleBarFragment<CarSysSetActivity>(){
         }
     }
 
+    private var sysHeightMemoryTitleView : CommTitleView ?= null
+
     private var carHeightMemoryRy : RecyclerView ?= null
     private var list : MutableList<TimerBean> ?= null
 
@@ -32,6 +35,7 @@ class CarHeightMemoryFragment : TitleBarFragment<CarSysSetActivity>(){
     }
 
     override fun initView() {
+        sysHeightMemoryTitleView = findViewById(R.id.sysHeightMemoryTitleView)
         carHeightMemoryRy = findViewById(R.id.carHeightMemoryRy)
         val linearLayoutManager = LinearLayoutManager(attachActivity)
         linearLayoutManager.orientation = LinearLayoutManager.VERTICAL
@@ -39,6 +43,11 @@ class CarHeightMemoryFragment : TitleBarFragment<CarSysSetActivity>(){
         list = ArrayList<TimerBean>()
         adapter = CarTimerAdapter(attachActivity, list as ArrayList<TimerBean>)
         carHeightMemoryRy?.adapter = adapter
+        sysHeightMemoryTitleView?.setCommTitleTxt("高度记忆设置")
+        sysHeightMemoryTitleView?.setOnItemClick{
+            val fragmentManager = parentFragmentManager
+            fragmentManager.popBackStack()
+        }
     }
 
     override fun initData() {

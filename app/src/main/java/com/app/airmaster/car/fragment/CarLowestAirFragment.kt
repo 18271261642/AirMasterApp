@@ -3,9 +3,12 @@ package com.app.airmaster.car.fragment
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.lifecycle.ViewModelProvider
 import com.app.airmaster.R
 import com.app.airmaster.action.TitleBarFragment
 import com.app.airmaster.car.CarSysSetActivity
+import com.app.airmaster.viewmodel.ControlViewModel
+import com.app.airmaster.widget.CommTitleView
 
 /**
  * 最低行驶气压保护
@@ -15,11 +18,16 @@ import com.app.airmaster.car.CarSysSetActivity
 class CarLowestAirFragment : TitleBarFragment<CarSysSetActivity>() {
 
 
+    private var viewModel : ControlViewModel ?= null
+
+
     companion object{
         fun getInstance() : CarLowestAirFragment{
             return CarLowestAirFragment()
         }
     }
+
+    private var sysLowestAirTitleView : CommTitleView ?= null
 
     private var carAddImgView : ImageView ?= null
     private var carAirAddTv : TextView ?= null
@@ -34,6 +42,7 @@ class CarLowestAirFragment : TitleBarFragment<CarSysSetActivity>() {
     }
 
     override fun initView() {
+        sysLowestAirTitleView = findViewById(R.id.sysLowestAirTitleView)
         carAddImgView = findViewById(R.id.carAddImgView)
         carAirAddTv = findViewById(R.id.carAirAddTv)
         carRemoveImgView = findViewById(R.id.carRemoveImgView)
@@ -45,10 +54,19 @@ class CarLowestAirFragment : TitleBarFragment<CarSysSetActivity>() {
         carRemoveImgView?.setOnClickListener(this)
         carRearAddImgView?.setOnClickListener(this)
         carRearRemoveImgView?.setOnClickListener(this)
+
+        sysLowestAirTitleView?.setCommTitleTxt("最低行驶气压保护")
+        sysLowestAirTitleView?.setOnItemClick{
+            val fragmentManager = parentFragmentManager
+            fragmentManager.popBackStack()
+        }
     }
 
     override fun initData() {
+        viewModel = ViewModelProvider(this)[ControlViewModel::class.java]
 
+        carAirAddTv?.text = frontCountNumber.toString()
+        carRearAirAddTv?.text = rearCountNumber.toString()
     }
 
     override fun onClick(view: View?) {
@@ -77,10 +95,18 @@ class CarLowestAirFragment : TitleBarFragment<CarSysSetActivity>() {
 
     private fun frontAddOrRemove(isAdd : Boolean){
         carAirAddTv?.text = if(isAdd) frontCountNumber--.toString() else frontCountNumber++.toString()
+        setLowProtectPressure()
     }
 
     var rearCountNumber = 30
     private fun rearAddOrRemove(isAdd : Boolean){
         carRearAirAddTv?.text = if(isAdd) rearCountNumber--.toString() else rearCountNumber++.toString()
+        setLowProtectPressure()
+    }
+
+
+    //设置保护气压
+    private fun setLowProtectPressure(){
+        viewModel?.setRunLowPressure(frontCountNumber,rearCountNumber)
     }
 }

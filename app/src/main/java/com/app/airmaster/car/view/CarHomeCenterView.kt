@@ -166,6 +166,9 @@ class CarHomeCenterView : LinearLayout ,OnClickListener{
         val afterRight = BitmapFactory.decodeResource(context.resources,R.mipmap.ic_car_mid_after_right_img)
 
         carAfterHeightGaugeView?.setBitmap(afterLeft,afterRight)
+
+        setFrontHeightValue(10,10)
+        setAfterHeightValue(10,10)
     }
 
     //设置前轮高度

@@ -17,6 +17,11 @@
         app:title="气罐压力"
         app:titleColor="@color/white" />-->
 
+    <com.app.airmaster.widget.CommTitleView
+        android:layout_width="match_parent"
+        android:id="@+id/sysGassTitleView"
+        android:layout_height="wrap_content"/>
+
 
     <LinearLayout
         android:layout_width="match_parent"

@@ -7,14 +7,10 @@
     android:orientation="vertical">
 
 
-    <com.hjq.bar.TitleBar
+    <com.app.airmaster.widget.CommTitleView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/transparent"
-        app:leftIcon="@drawable/ic_white_left_back"
-        app:lineVisible="false"
-        app:title="维修模式"
-        app:titleColor="@color/white" />
+        android:id="@+id/sysRepairTitleView"
+        android:layout_height="wrap_content"/>
 
 
     <com.hjq.shape.layout.ShapeConstraintLayout
@@ -38,6 +34,7 @@
 
 
         <com.bonlala.widget.view.SwitchButton
+            android:id="@+id/repairModelSwitch"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="@dimen/dp_10"
