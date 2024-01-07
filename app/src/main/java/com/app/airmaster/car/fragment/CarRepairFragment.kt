@@ -51,7 +51,8 @@ class CarRepairFragment : TitleBarFragment<CarSysSetActivity>() {
         repairModelSwitch?.isChecked = BaseApplication.getBaseApplication().autoBackBean != null &&  BaseApplication.getBaseApplication().autoBackBean.workModel == 3
 
         repairModelSwitch?.setOnCheckedChangeListener { button, checked ->
-            if(button.isChecked){
+
+            if(button.isPressed){
                 viewModel?.setRepairModel(checked)
             }
 
