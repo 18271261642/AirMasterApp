@@ -3,11 +3,13 @@ package com.app.airmaster.car.fragment
 import android.os.Build
 import android.widget.SeekBar
 import android.widget.TextView
+import androidx.lifecycle.ViewModelProvider
 import com.app.airmaster.BaseApplication
 import com.app.airmaster.R
 import com.app.airmaster.action.TitleBarFragment
 import com.app.airmaster.ble.ota.BluetoothLeClass.OnWriteDataListener
 import com.app.airmaster.car.CarSysSetActivity
+import com.app.airmaster.viewmodel.ControlViewModel
 import com.app.airmaster.widget.CommTitleView
 import com.blala.blalable.Utils
 import com.blala.blalable.car.CarConstant
@@ -21,6 +23,7 @@ import com.bonlala.widget.view.SwitchButton
  */
 class CarPowerProtectFragment : TitleBarFragment<CarSysSetActivity>(){
 
+    private var viewModel : ControlViewModel ?= null
 
     companion object{
         fun getInstance() : CarPowerProtectFragment{
@@ -65,6 +68,7 @@ class CarPowerProtectFragment : TitleBarFragment<CarSysSetActivity>(){
     }
 
     override fun initData() {
+        viewModel = ViewModelProvider(this)[ControlViewModel::class.java]
         powerSeekBar?.max = 130
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             powerSeekBar?.min = 100
@@ -84,6 +88,17 @@ class CarPowerProtectFragment : TitleBarFragment<CarSysSetActivity>(){
             }
 
         })
+
+        viewModel?.autoSetBeanData?.observe(this){
+            if(it == null){
+                return@observe
+            }
+            powerHeightBtn?.isChecked = it.isHeightVoltage
+            powerSeekBar?.progress = it.lowVoltage
+            powerProtectValueTv?.text =  (it.lowVoltage/10).toString()+" V"
+        }
+
+        viewModel?.writeCommonFunction()
 
     }
 

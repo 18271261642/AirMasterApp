@@ -127,7 +127,7 @@ class HomeControlFragment : TitleBarFragment<CarHomeActivity>() {
 
         controlViewModel = ViewModelProvider(this)[ControlViewModel::class.java]
         BaseApplication.getBaseApplication().bleOperate.setAutoBackDataListener {
-            Timber.e("---------自动回复="+it.toString())
+            BaseApplication.getBaseApplication().autoBackBean = it
             carHomeCenterView?.setLeftRearPressureValue(it.leftRearPressure)
             carHomeCenterView?.setRightTopPressureValue(it.rightPressure)
             carHomeCenterView?.setLeftTopPressureValue(it.leftPressure)

@@ -10,6 +10,7 @@ import com.app.airmaster.car.adapter.CarTimerAdapter
 import com.app.airmaster.car.bean.TimerBean
 import com.app.airmaster.viewmodel.ControlViewModel
 import com.app.airmaster.widget.CommTitleView
+import com.bonlala.widget.view.SwitchButton
 
 /**
  * 工作模式
@@ -17,6 +18,7 @@ import com.app.airmaster.widget.CommTitleView
  *Date 2023/7/14
  */
 class CarWorkModelFragment : TitleBarFragment<CarSysSetActivity>() {
+
 
 
     companion object{
@@ -27,7 +29,8 @@ class CarWorkModelFragment : TitleBarFragment<CarSysSetActivity>() {
 
 
     private var viewModel : ControlViewModel ?= null
-
+    private var accModelSwitch : SwitchButton ?= null
+    private var workModelStandbySwitch : SwitchButton ?= null
     private var sysWorkModelTitleView : CommTitleView ?= null
 
     private var workModelRy : RecyclerView ?= null
@@ -40,6 +43,8 @@ class CarWorkModelFragment : TitleBarFragment<CarSysSetActivity>() {
     }
 
     override fun initView() {
+        workModelStandbySwitch = findViewById(R.id.workModelStandbySwitch)
+        accModelSwitch = findViewById(R.id.accModelSwitch)
         sysWorkModelTitleView = findViewById(R.id.sysWorkModelTitleView)
         workModelRy = findViewById(R.id.workModelRy)
         val linearLayoutManager = LinearLayoutManager(attachActivity)
@@ -59,7 +64,7 @@ class CarWorkModelFragment : TitleBarFragment<CarSysSetActivity>() {
     override fun initData() {
         viewModel = ViewModelProvider(this)[ControlViewModel::class.java]
         list?.clear()
-        val array = arrayListOf<TimerBean>(TimerBean("5分钟",false),
+        val array = arrayListOf<TimerBean>(TimerBean("5分钟",5,false),
             TimerBean("10分钟",10,false),
             TimerBean("15分钟",15,false),
             TimerBean("20分钟",20,false),
@@ -79,5 +84,21 @@ class CarWorkModelFragment : TitleBarFragment<CarSysSetActivity>() {
 
         }
 
+
+        viewModel?.autoSetBeanData?.observe(this){
+            if(it == null){
+                return@observe
+            }
+            workModelStandbySwitch?.isChecked = it.accModel == 1
+            accModelSwitch?.isChecked = it.accModel == 0
+            if(it.sleepTime != 0){
+                list?.forEachIndexed { index, timerBean ->
+                    timerBean.isChecked = it.sleepTime == timerBean.time
+                }
+                adapter?.notifyDataSetChanged()
+            }
+        }
+
+        viewModel?.writeCommonFunction()
     }
 }

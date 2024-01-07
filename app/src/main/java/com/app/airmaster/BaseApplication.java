@@ -17,6 +17,7 @@ import com.app.airmaster.utils.LanguageUtils;
 import com.app.airmaster.utils.MmkvUtils;
 import com.blala.blalable.BleApplication;
 import com.blala.blalable.BleOperateManager;
+import com.blala.blalable.car.AutoBackBean;
 import com.hjq.http.EasyConfig;
 import com.hjq.http.config.IRequestInterceptor;
 import com.hjq.http.model.HttpHeaders;
@@ -44,6 +45,8 @@ public class BaseApplication extends BleApplication {
     private ConnStatusService connStatusService;
 
     private String logStr;
+
+    private AutoBackBean autoBackBean;
 
     @Override
     public void onCreate() {
@@ -166,5 +169,13 @@ public class BaseApplication extends BleApplication {
 
     public String getAppLog(){
         return stringBuffer.toString();
+    }
+
+    public AutoBackBean getAutoBackBean() {
+        return autoBackBean;
+    }
+
+    public void setAutoBackBean(AutoBackBean autoBackBean) {
+        this.autoBackBean = autoBackBean;
     }
 }

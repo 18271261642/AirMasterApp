@@ -373,7 +373,7 @@ public class BleManager {
             public void onNotify(UUID uuid, UUID uuid1, byte[] bytes) {
                 String notifyStr = uuid1.toString()+" "+Utils.formatBtArrayToString(bytes);
                 Log.e(TAG,"------写入数据返回="+notifyStr);
-                stringBuffer.append("数据返回:"+notifyStr+"\n\n");
+                //stringBuffer.append("数据返回:"+notifyStr+"\n\n");
                // sendCommBroadcast("ble_action",0);
                 if(interfaceManager.writeBackDataListener != null){
                     interfaceManager.writeBackDataListener.backWriteData(bytes);
@@ -438,7 +438,7 @@ public class BleManager {
                     autoBackBean.setBatteryVal(batteryVal);
                     autoBackBean.setAirBottleTemperature(airBottleTemperature);
 
-                    Log.e(TAG,"--------自动返回="+autoBackBean.toString());
+                  //  Log.e(TAG,"--------自动返回="+autoBackBean.toString());
 
                     if(onCarAutoBackListener != null){
                         onCarAutoBackListener.backAutoData(autoBackBean);

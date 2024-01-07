@@ -265,6 +265,9 @@ public class ConnStatusService extends Service {
     //连接
     public void connDevice(String name,String bleMac){
         setConnListener();
+        if(BaseApplication.getBaseApplication().getConnStatus() == ConnStatus.CONNECTING){
+            return;
+        }
         BleOperateManager.getInstance().connYakDevice(name, bleMac, new ConnStatusListener() {
             @Override
             public void connStatus(int status) {
@@ -330,7 +333,7 @@ public class ConnStatusService extends Service {
                 if(BikeUtils.isEmpty(saveMac)){
                     return;
                 }
-                autoConnDevice(saveMac,true);
+               // autoConnDevice(saveMac,true);
             }
 
 

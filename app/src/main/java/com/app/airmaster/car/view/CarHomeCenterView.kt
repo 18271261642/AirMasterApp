@@ -189,39 +189,39 @@ class CarHomeCenterView : LinearLayout ,OnClickListener{
                 map[0] = 1
             }
             R.id.homeCenterLeftBotImg->{    //左前-
-                map[0] = 0
+                map[0] = 2
             }
 
             R.id.rightTopAddImageView->{    //右前+
                 map[1] = 1
             }
             R.id.rightTopReduceImageView->{ //右前-
-                map[1] = 0
+                map[1] = 2
             }
             R.id.leftRearAddImageView->{    //左后+
                 map[2] = 1
             }
             R.id.homeCenterLeftBotImg2->{   //左后-
-                map[2] = 0
+                map[2] = 2
             }
             R.id.rightRearAddImageView->{   //右后+
                 map[3] = 1
             }
             R.id.rightRearReduceImageView->{    //右后-
-                map[3] = 0
+                map[3] = 2
             }
 
             R.id.carHomeCenterTopTopImg->{  //前轮+
                 map[4] = 1
             }
             R.id.carCenterTopBomImg->{  //前轮-
-                map[4] = 0
+                map[4] = 2
             }
             R.id.carCenterBotTopImg->{  //后轮+
                 map[5] = 1
             }
             R.id.carCenterBotBomImg->{  //后轮-
-                map[5] = 0
+                map[5] = 2
             }
         }
         onPressureListener?.onItemChecked(map)

@@ -47,9 +47,11 @@
             android:id="@+id/carAirAddTv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+
+            android:layout_marginEnd="@dimen/dp_15"
             android:textSize="30sp"
             android:padding="@dimen/dp_5"
-            android:text="50"
+            android:text="--"
             android:textColor="@color/red"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -62,7 +64,7 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintRight_toLeftOf="@+id/carAirAddTv"
-
+            android:layout_marginEnd="@dimen/dp_15"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@drawable/ic_car_air_remove_img"/>
@@ -110,7 +112,9 @@
             android:layout_height="wrap_content"
             android:textSize="30sp"
             android:padding="@dimen/dp_5"
-            android:text="30"
+            android:text="--"
+
+            android:layout_marginEnd="@dimen/dp_15"
             android:textColor="@color/red"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -123,7 +127,7 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintRight_toLeftOf="@+id/carRearAirAddTv"
-
+            android:layout_marginEnd="@dimen/dp_15"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@drawable/ic_car_air_remove_img"/>

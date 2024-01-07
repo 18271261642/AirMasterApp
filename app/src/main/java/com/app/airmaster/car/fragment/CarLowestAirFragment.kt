@@ -9,6 +9,7 @@ import com.app.airmaster.action.TitleBarFragment
 import com.app.airmaster.car.CarSysSetActivity
 import com.app.airmaster.viewmodel.ControlViewModel
 import com.app.airmaster.widget.CommTitleView
+import timber.log.Timber
 
 /**
  * 最低行驶气压保护
@@ -19,8 +20,8 @@ class CarLowestAirFragment : TitleBarFragment<CarSysSetActivity>() {
 
 
     private var viewModel : ControlViewModel ?= null
-
-
+    private var rearCountNumber = 30
+    private var frontCountNumber = 30
     companion object{
         fun getInstance() : CarLowestAirFragment{
             return CarLowestAirFragment()
@@ -65,8 +66,17 @@ class CarLowestAirFragment : TitleBarFragment<CarSysSetActivity>() {
     override fun initData() {
         viewModel = ViewModelProvider(this)[ControlViewModel::class.java]
 
-        carAirAddTv?.text = frontCountNumber.toString()
-        carRearAirAddTv?.text = rearCountNumber.toString()
+        viewModel?.autoSetBeanData?.observe(this){
+            if(it == null){
+                return@observe
+            }
+            frontCountNumber = it.leftFrontProtectPressure
+            rearCountNumber = it.leftRearProtectPressure
+            carAirAddTv?.text = frontCountNumber.toString()
+            carRearAirAddTv?.text = rearCountNumber.toString()
+        }
+
+        viewModel?.writeCommonFunction()
     }
 
     override fun onClick(view: View?) {
@@ -91,22 +101,39 @@ class CarLowestAirFragment : TitleBarFragment<CarSysSetActivity>() {
         }
     }
 
-    private var frontCountNumber = 30
+
 
     private fun frontAddOrRemove(isAdd : Boolean){
-        carAirAddTv?.text = if(isAdd) frontCountNumber--.toString() else frontCountNumber++.toString()
-        setLowProtectPressure()
+        if(isAdd){
+            frontCountNumber += 1
+        }else{
+            frontCountNumber -= 1
+        }
+        val v = frontCountNumber
+        carAirAddTv?.text = v.toString()
+        Timber.e("----------frontCountNumber="+v)
+
+         setLowProtectPressure()
     }
 
-    var rearCountNumber = 30
+
     private fun rearAddOrRemove(isAdd : Boolean){
-        carRearAirAddTv?.text = if(isAdd) rearCountNumber--.toString() else rearCountNumber++.toString()
+
+        if(isAdd){
+            rearCountNumber += 1
+        }else{
+            rearCountNumber -= 1
+        }
+        val v = rearCountNumber
+
+        carRearAirAddTv?.text = v.toString()
         setLowProtectPressure()
     }
 
 
     //设置保护气压
     private fun setLowProtectPressure(){
+        Timber.e("-------fffrrr="+frontCountNumber+" rearCountNumber="+rearCountNumber)
         viewModel?.setRunLowPressure(frontCountNumber,rearCountNumber)
     }
 }

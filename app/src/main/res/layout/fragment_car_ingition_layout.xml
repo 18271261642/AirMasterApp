@@ -7,10 +7,22 @@
     android:orientation="vertical">
 
 
+
     <com.app.airmaster.widget.CommTitleView
         android:layout_width="match_parent"
         android:id="@+id/sysIngitionTitleView"
         android:layout_height="wrap_content"/>
+
+
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:scrollbars="none">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
 
 
     <com.hjq.shape.layout.ShapeConstraintLayout
@@ -44,10 +56,34 @@
 
     </com.hjq.shape.layout.ShapeConstraintLayout>
 
+    <LinearLayout
+        android:id="@+id/accTurnOnLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        android:orientation="vertical">
+
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="点火后设置联动预置位："
+            android:layout_marginTop="@dimen/dp_30"
+            android:textColor="#AEAEAE"
+            android:layout_marginStart="@dimen/dp_15"
+            android:textSize="@dimen/sp_13" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/carIgnitionOnRy"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+    </LinearLayout>
 
     <com.hjq.shape.layout.ShapeConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dp_10"
         android:padding="@dimen/dp_10"
         app:shape_solidColor="#1F2022">
 
@@ -75,6 +111,13 @@
 
     </com.hjq.shape.layout.ShapeConstraintLayout>
 
+    <LinearLayout
+        android:id="@+id/accTurnOFFLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        android:orientation="vertical">
+
 
     <TextView
         android:layout_width="match_parent"
@@ -89,4 +132,10 @@
         android:id="@+id/carIgnitionRy"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
+
+    </LinearLayout>
+    </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+
+
 </LinearLayout>

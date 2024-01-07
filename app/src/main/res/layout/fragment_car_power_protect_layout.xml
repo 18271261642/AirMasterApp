@@ -24,7 +24,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="高压保护"
+            android:text="16V高压保护"
             android:textColor="@color/white"
             android:textSize="@dimen/sp_14"
             android:padding="@dimen/dp_10"
@@ -69,6 +69,7 @@
         <com.bonlala.widget.view.SwitchButton
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent"
+            android:visibility="invisible"
             app:layout_constraintBottom_toBottomOf="parent"
             android:layout_marginEnd="@dimen/dp_10"
             android:layout_width="wrap_content"

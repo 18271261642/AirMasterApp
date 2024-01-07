@@ -19,6 +19,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.app.airmaster.BaseApplication
 import com.app.airmaster.R
 import com.app.airmaster.action.AppActivity
+import com.app.airmaster.action.SingleClick
 import com.app.airmaster.adapter.OnCommItemClickListener
 import com.app.airmaster.adapter.SecondScanAdapter
 import com.app.airmaster.bean.BleBean
@@ -29,6 +30,7 @@ import com.app.airmaster.utils.BonlalaUtils
 import com.app.airmaster.utils.MmkvUtils
 import com.blala.blalable.BleConstant
 import com.blala.blalable.Utils
+import com.bonlala.base.action.ClickAction
 import com.hjq.permissions.XXPermissions
 import com.hjq.toast.ToastUtils
 import com.inuker.bluetooth.library.search.SearchResult
@@ -85,7 +87,14 @@ class SecondScanActivity : AppActivity() {
         adapter!!.setOnItemClick(onItemClick)
 
 
+        clickToConn()
+    }
+
+
+    @SingleClick()
+    private fun clickToConn(){
         scanBindDeviceView?.setOnClickListener {
+
             if(BaseApplication.getBaseApplication().connStatus == ConnStatus.CONNECTED){
                 return@setOnClickListener
             }

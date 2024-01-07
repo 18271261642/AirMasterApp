@@ -29,6 +29,7 @@ class HomeBottomNumberView : LinearLayout {
     private var botAboveImg1 : ImageView ?= null
 
 
+
     private var bot2Layout : FrameLayout ?= null
     private var botBg2Img : ImageView ?= null
     private var botAboveImg2 : ImageView ?= null
@@ -44,6 +45,9 @@ class HomeBottomNumberView : LinearLayout {
 
     //低趴
     private var homeGearResetLayout : FrameLayout ?= null
+    //低趴
+    private var homeGearResetImage : ImageView ?= null
+
 
     constructor(context: Context) : super (context){
         initViews(context)
@@ -79,6 +83,7 @@ class HomeBottomNumberView : LinearLayout {
 
         homeGearResetLayout?.setOnClickListener {
             onItemClickListener?.onItemClick(-1)
+            setIsLowGear(true)
         }
     }
 
@@ -101,10 +106,18 @@ class HomeBottomNumberView : LinearLayout {
         botAboveImg4 = v.findViewById(R.id.botAboveImg4)
 
         homeGearResetLayout = v.findViewById(R.id.homeGearResetLayout)
+        homeGearResetImage = v.findViewById(R.id.homeGearResetImage)
 
     }
 
 
+    //是否是低趴
+    fun setIsLowGear(isLow : Boolean){
+        homeGearResetImage?.isSelected = isLow
+        if(isLow){
+            clearAllClick()
+        }
+    }
 
     private fun clearAllClick(){
         botBg1Img?.visibility = View.INVISIBLE
@@ -124,6 +137,7 @@ class HomeBottomNumberView : LinearLayout {
     //选中
     private fun setClickIndex(index : Int){
         clearAllClick()
+        setIsLowGear(false)
         botBg1Img?.visibility = if(index==0) View.VISIBLE else View.INVISIBLE
         botBg2Img?.visibility =  if(index==1) View.VISIBLE else View.INVISIBLE
         botBg3Img?.visibility =  if(index==2) View.VISIBLE else View.INVISIBLE

@@ -7,6 +7,7 @@ import android.os.Looper;
 import android.os.Message;
 import android.util.Log;
 
+import com.blala.blalable.car.CarConstant;
 import com.blala.blalable.car.OnCarAutoBackListener;
 import com.blala.blalable.keyboard.KeyBoardConstant;
 import com.blala.blalable.listener.BleConnStatusListener;
@@ -262,7 +263,7 @@ public class BleOperateManager {
         bleManager.writeDataToDevice(statusArray, new WriteBackDataListener() {
             @Override
             public void backWriteData(byte[] data) {
-                Log.e(TAG, "-----状态返回=" + Utils.formatBtArrayToString(data) + " " + (data[10]));
+                //Log.e(TAG, "-----状态返回=" + Utils.formatBtArrayToString(data) + " " + (data[10]));
                 //88 00 00 00 00 00 06 14 00 14 01 00 01 00
                 //88 00 00 00 00 00 06 14 00 14 01 00 01 00
                 /**
@@ -554,4 +555,22 @@ public class BleOperateManager {
         bleManager.setOnCarAutoBackListener(onCarAutoBackListener);
     }
 
+
+    public void setCommAllParams(WriteBackDataListener writeBackDataListener){
+        String str = "000504011100";
+        String crcStr = Utils.crcCarContentArray(str);
+        String resultStr = "011E"+ CarConstant.CAR_HEAD_BYTE_STR+str+crcStr;
+        byte[] array = Utils.hexStringToByte(resultStr);
+        byte[] resultArray = Utils.getFullPackage(array);
+        writeCommonByte(resultArray, writeBackDataListener);
+    }
+
+    public void setCommAllParams(){
+        String str = "000504011100";
+        String crcStr = Utils.crcCarContentArray(str);
+        String resultStr = "011E"+ CarConstant.CAR_HEAD_BYTE_STR+str+crcStr;
+        byte[] array = Utils.hexStringToByte(resultStr);
+        byte[] resultArray = Utils.getFullPackage(array);
+        writeCommonByte(resultArray, writeBackDataListener);
+    }
 }

@@ -4,14 +4,18 @@ import android.content.Context
 import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
-import android.graphics.Rect
 import android.util.AttributeSet
 import android.view.MotionEvent
 import android.view.View
-import java.math.BigDecimal
+import timber.log.Timber
 
 class ScaleView : View {
 
+    private var listener : OnProgressSelectListener ?= null
+
+    fun setOnProgressListener(c : OnProgressSelectListener){
+        this.listener = c
+    }
 
     constructor(context: Context) : super(context) {
 
@@ -88,9 +92,6 @@ class ScaleView : View {
         canvas.save()
 
 
-
-
-
        // canvas?.drawLine(10F,10F,10F,mHeight!!,mLinePaint!!)
         canvas.drawLine(0F,mHeight!!,mWidth!!,mHeight!!,mLinePaint!!)
 
@@ -116,6 +117,9 @@ class ScaleView : View {
 //        canvas.restore()
         canvas.drawLine(progrees, 0F, progrees, mHeight!!, mRulerPaint!!)
 
+        val m1 = 100 / mWidth!!
+        val v = (progrees*m1).toInt().toFloat()
+        Timber.e("-------vvv="+v)
     }
 
     override fun onTouchEvent(event: MotionEvent): Boolean {
@@ -127,10 +131,26 @@ class ScaleView : View {
                 }
                 val x: Float = event.getX() - 10
                 progrees = x
+                val m1 = 100 / mWidth!!
+                val v = (progrees*m1).toInt()
+
+                listener?.onProgress(v)
+                Timber.e("----progress=$progrees")
                 invalidate()
             }
         }
         return true
     }
 
+
+    fun getCurrentProgress(): Int {
+
+        val m1 = 100 / mWidth!!
+        return (progrees * m1).toInt()
+    }
+
+
+    interface OnProgressSelectListener{
+        fun onProgress(progress : Int)
+    }
 }

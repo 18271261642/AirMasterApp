@@ -1,6 +1,7 @@
 package com.app.airmaster.car.fragment
 
 import androidx.lifecycle.ViewModelProvider
+import com.app.airmaster.BaseApplication
 import com.app.airmaster.R
 import com.app.airmaster.action.TitleBarFragment
 import com.app.airmaster.car.CarSysSetActivity
@@ -45,9 +46,18 @@ class CarRepairFragment : TitleBarFragment<CarSysSetActivity>() {
             fragmentManager.popBackStack()
         }
 
+
+        //是否是维修模式
+        repairModelSwitch?.isChecked = BaseApplication.getBaseApplication().autoBackBean != null &&  BaseApplication.getBaseApplication().autoBackBean.workModel == 3
+
         repairModelSwitch?.setOnCheckedChangeListener { button, checked ->
-            viewModel?.setRepairModel(checked)
+            if(button.isChecked){
+                viewModel?.setRepairModel(checked)
+            }
+
         }
+
+
     }
 
     override fun initData() {
