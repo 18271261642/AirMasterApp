@@ -154,7 +154,17 @@ class ControlViewModel : ViewModel() {
         val resultArray = Utils.hexStringToByte(str)
         val result = Utils.getFullPackage(resultArray)
         BaseApplication.getBaseApplication().bleOperate.writeCommonByte(result){
-
+            //8800000000000cc2030f7ffaaf00050104a9014c
+            if(it != null && it.size>15){
+                //8800000000000cc6 030f 7f fa af 00 05 01 04 aa 01 4b
+                Timber.e("-------气罐压力="+(it[8].toInt().and(0xFF))+" "+(it[9].toInt().and(0xFF))+" "+(it[18].toInt().and(0xFF) == 1))
+                if((it[8].toInt().and(0xFF)) == 3 && (it[9].toInt().and(0xFF)) == 15 &&(it[17].toInt().and(0xFF) == 169
+                            )){
+                    if(it[18].toInt().and(0xFF) == 1){
+                        BaseApplication.getBaseApplication().bleOperate.setCommAllParams()
+                    }
+                }
+            }
         }
     }
 

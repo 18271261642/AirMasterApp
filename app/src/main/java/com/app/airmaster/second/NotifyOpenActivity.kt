@@ -29,19 +29,19 @@ class NotifyOpenActivity : AppActivity() {
         notifyWxSwitch = findViewById(R.id.notifyWxSwitch)
 
         notifyWxSwitch?.setOnCheckedChangeListener { button, checked ->
-            if(button.isPressed){
+            if(!button.isPressed){
                 MmkvUtils.setSaveObjParams("wx_switch",checked)
             }
         }
 
         notifyQqSwitch?.setOnCheckedChangeListener{button, checked ->
-            if(button.isPressed){
+            if(!button.isPressed){
                 MmkvUtils.setSaveObjParams("qq_switch",checked)
             }
         }
 
         notifyDiscordSwitch?.setOnCheckedChangeListener { button, checked ->
-            if(button.isPressed){
+            if(!button.isPressed){
                 MmkvUtils.setSaveObjParams("discord_switch",checked)
             }
         }

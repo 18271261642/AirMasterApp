@@ -8,6 +8,7 @@ import com.app.airmaster.car.CarSysSetActivity
 import com.app.airmaster.viewmodel.ControlViewModel
 import com.app.airmaster.widget.CommTitleView
 import com.bonlala.widget.view.SwitchButton
+import timber.log.Timber
 
 /**
  * 维修模式
@@ -51,8 +52,8 @@ class CarRepairFragment : TitleBarFragment<CarSysSetActivity>() {
         repairModelSwitch?.isChecked = BaseApplication.getBaseApplication().autoBackBean != null &&  BaseApplication.getBaseApplication().autoBackBean.workModel == 3
 
         repairModelSwitch?.setOnCheckedChangeListener { button, checked ->
-
-            if(button.isPressed){
+            Timber.e("-------button="+ button.isPressed )
+            if(!button.isPressed){
                 viewModel?.setRepairModel(checked)
             }
 
