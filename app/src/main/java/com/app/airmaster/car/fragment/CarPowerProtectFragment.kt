@@ -15,6 +15,7 @@ import com.blala.blalable.Utils
 import com.blala.blalable.car.CarConstant
 import com.blala.blalable.listener.WriteBackDataListener
 import com.bonlala.widget.view.SwitchButton
+import timber.log.Timber
 
 /**
  * 电瓶保护
@@ -95,7 +96,9 @@ class CarPowerProtectFragment : TitleBarFragment<CarSysSetActivity>(){
             }
             powerHeightBtn?.isChecked = it.isHeightVoltage
             powerSeekBar?.progress = it.lowVoltage
-            powerProtectValueTv?.text =  (it.lowVoltage/10).toString()+" V"
+            val v = it.lowVoltage/10F
+            Timber.e("-----电压--v="+v)
+            powerProtectValueTv?.text =  String.format("%.1f",v)+" V"
         }
 
         viewModel?.writeCommonFunction()

@@ -5,6 +5,7 @@ import android.view.KeyEvent
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager.widget.ViewPager
+import com.app.airmaster.BaseApplication
 import com.app.airmaster.R
 import com.app.airmaster.action.ActivityManager
 import com.app.airmaster.action.AppActivity
@@ -13,6 +14,7 @@ import com.app.airmaster.adapter.NavigationAdapter
 import com.app.airmaster.car.fragment.HomeAirFragment
 import com.app.airmaster.car.fragment.HomeControlFragment
 import com.app.airmaster.car.fragment.HomeSettingFragment
+import com.blala.blalable.car.AutoBackBean
 import com.bonlala.base.FragmentPagerAdapter
 import com.hjq.toast.ToastUtils
 import timber.log.Timber
@@ -33,6 +35,12 @@ class CarHomeActivity : AppActivity() ,NavigationAdapter.OnNavigationListener{
     private var mNavigationAdapter: NavigationAdapter? = null
     private var mPagerAdapter: FragmentPagerAdapter<AppFragment<*>>? = null
 
+
+    private var autoListener : OnHomeAutoBackListener ?= null
+
+    fun setHomeAutoListener(c : OnHomeAutoBackListener){
+        this.autoListener = c
+    }
 
 
     private var selectorIndex = 0
@@ -81,6 +89,13 @@ class CarHomeActivity : AppActivity() ,NavigationAdapter.OnNavigationListener{
         }
         onNewIntent(intent)
 
+
+
+
+        BaseApplication.getBaseApplication().bleOperate.setAutoBackDataListener {
+            BaseApplication.getBaseApplication().autoBackBean = it
+            autoListener?.backAutoData(it)
+        }
     }
 
     override fun onNewIntent(intent: Intent?) {
@@ -132,5 +147,10 @@ class CarHomeActivity : AppActivity() ,NavigationAdapter.OnNavigationListener{
             }
         }
         return super.onKeyDown(keyCode, event)
+    }
+
+
+    interface OnHomeAutoBackListener{
+        fun backAutoData(autoBean : AutoBackBean)
     }
 }

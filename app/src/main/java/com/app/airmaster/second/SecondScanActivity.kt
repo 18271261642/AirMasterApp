@@ -13,6 +13,7 @@ import android.os.Handler
 import android.os.Looper
 import android.os.Message
 import android.view.View
+import android.view.View.OnLongClickListener
 import androidx.core.app.ActivityCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -25,11 +26,14 @@ import com.app.airmaster.adapter.SecondScanAdapter
 import com.app.airmaster.bean.BleBean
 import com.app.airmaster.ble.ConnStatus
 import com.app.airmaster.car.view.CarBindDeviceView
+import com.app.airmaster.dialog.ConfirmDialog
+import com.app.airmaster.dialog.DeleteNoteDialog
 import com.app.airmaster.utils.BikeUtils
 import com.app.airmaster.utils.BonlalaUtils
 import com.app.airmaster.utils.MmkvUtils
 import com.blala.blalable.BleConstant
 import com.blala.blalable.Utils
+import com.blala.blalable.listener.OnCommLongClickListener
 import com.bonlala.base.action.ClickAction
 import com.hjq.permissions.XXPermissions
 import com.hjq.toast.ToastUtils
@@ -86,8 +90,8 @@ class SecondScanActivity : AppActivity() {
         repeatList = mutableListOf()
         adapter!!.setOnItemClick(onItemClick)
 
-
         clickToConn()
+
     }
 
 
@@ -102,6 +106,14 @@ class SecondScanActivity : AppActivity() {
             BaseApplication.getBaseApplication().connStatusService?.autoConnDevice(MmkvUtils.getConnDeviceMac(),false)
         }
 
+
+        scanBindDeviceView?.setOnLongClickListener(object : OnLongClickListener{
+            override fun onLongClick(p0: View?): Boolean {
+                unBindDevice()
+                return true
+            }
+
+        })
     }
 
     override fun initData() {
@@ -315,6 +327,27 @@ class SecondScanActivity : AppActivity() {
                 hideDialog()
                 ToastUtils.show("连接失败")
             }
+        }
+
+    }
+
+
+
+    private fun unBindDevice(){
+        val dialog = ConfirmDialog(this, com.bonlala.base.R.style.BaseDialogTheme)
+        dialog.show()
+        dialog.setContentTxt("是否解除当前连接?")
+        dialog.setOnCommClickListener{
+            dialog.dismiss()
+            if(it == 0x01){
+                MmkvUtils.saveConnDeviceMac("")
+                MmkvUtils.saveConnDeviceName("")
+                BaseApplication.getBaseApplication().bleOperate.disConnYakDevice()
+                getHasBindDevice()
+
+                verifyScanFun(false)
+            }
+
         }
 
     }

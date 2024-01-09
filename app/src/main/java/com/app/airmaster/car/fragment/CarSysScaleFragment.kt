@@ -1,6 +1,7 @@
 package com.app.airmaster.car.fragment
 
 import androidx.lifecycle.ViewModelProvider
+import com.app.airmaster.BaseApplication
 import com.app.airmaster.R
 import com.app.airmaster.action.TitleBarFragment
 import com.app.airmaster.car.CarSysSetActivity
@@ -53,7 +54,6 @@ class CarSysScaleFragment : TitleBarFragment<CarSysSetActivity>() {
             fragmentManager.popBackStack()
         }
 
-
         initScale()
     }
 
@@ -70,6 +70,16 @@ class CarSysScaleFragment : TitleBarFragment<CarSysSetActivity>() {
 
         //右后
         rightRearScaleView?.setOnProgressListener(progressSelectListener)
+
+
+        val autoBean = BaseApplication.getBaseApplication().autoBackBean
+        if(autoBean != null){
+            leftFrontScaleView?.setProgress(autoBean.leftFrontHeightRuler)
+            rightFrontScaleView?.setProgress(autoBean.rightFrontHeightRuler)
+            leftRearScaleView?.setProgress(autoBean.leftAfterHeightRuler)
+            rightRearScaleView?.setProgress(autoBean.rightAfterHeightRuler)
+
+        }
 
     }
 
@@ -89,7 +99,7 @@ class CarSysScaleFragment : TitleBarFragment<CarSysSetActivity>() {
         val rightRear = rightRearScaleView?.getCurrentProgress()
 
         if (leftFront != null) {
-            viewModel?.setHeightRuler(leftFront,leftRear!!,rightFront!!,rightRear!!)
+            //viewModel?.setHeightRuler(leftFront,leftRear!!,rightFront!!,rightRear!!)
         }
     }
 }

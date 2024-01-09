@@ -11,6 +11,10 @@ import timber.log.Timber
 
 class ScaleView : View {
 
+
+    private var tempProgress : Float =0F
+
+
     private var listener : OnProgressSelectListener ?= null
 
     fun setOnProgressListener(c : OnProgressSelectListener){
@@ -115,32 +119,36 @@ class ScaleView : View {
 //          //  canvas.translate(18F, 0F)
 //        }
 //        canvas.restore()
-        canvas.drawLine(progrees, 0F, progrees, mHeight!!, mRulerPaint!!)
+
 
         val m1 = 100 / mWidth!!
         val v = (progrees*m1).toInt().toFloat()
         Timber.e("-------vvv="+v)
+
+        progrees = tempProgress/m1
+        canvas.drawLine(progrees, 0F, progrees, mHeight!!, mRulerPaint!!)
+
     }
 
-    override fun onTouchEvent(event: MotionEvent): Boolean {
-        when (event.getAction()) {
-            MotionEvent.ACTION_DOWN -> isCanMove = true
-            MotionEvent.ACTION_MOVE -> {
-                if (!isCanMove) {
-                    return false
-                }
-                val x: Float = event.getX() - 10
-                progrees = x
-                val m1 = 100 / mWidth!!
-                val v = (progrees*m1).toInt()
-
-                listener?.onProgress(v)
-                Timber.e("----progress=$progrees")
-                invalidate()
-            }
-        }
-        return true
-    }
+//    override fun onTouchEvent(event: MotionEvent): Boolean {
+//        when (event.getAction()) {
+//            MotionEvent.ACTION_DOWN -> isCanMove = true
+//            MotionEvent.ACTION_MOVE -> {
+//                if (!isCanMove) {
+//                    return false
+//                }
+//                val x: Float = event.getX() - 10
+//                progrees = x
+//                val m1 = 100 / mWidth!!
+//                val v = (progrees*m1).toInt()
+//
+//                listener?.onProgress(v)
+//                Timber.e("----progress=$progrees")
+//                invalidate()
+//            }
+//        }
+//        return true
+//    }
 
 
     fun getCurrentProgress(): Int {
@@ -149,6 +157,15 @@ class ScaleView : View {
         return (progrees * m1).toInt()
     }
 
+
+
+    fun setProgress(pro: Int){
+        Timber.e("-----pro="+pro+" "+measuredWidth)
+        this.tempProgress = pro.toFloat()
+        invalidate()
+//        progrees = (pro/(100/measuredWidth)).toFloat()
+//        invalidate()
+    }
 
     interface OnProgressSelectListener{
         fun onProgress(progress : Int)

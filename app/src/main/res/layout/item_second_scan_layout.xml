@@ -7,7 +7,7 @@
     app:shape_radius="@dimen/dp_10"
     android:padding="@dimen/dp_8"
     app:shape_angle="270"
-    app:shape_solidPressedColor="#801F2022"
+    app:shape_solidPressedColor="@color/second_theme_color"
     android:layout_margin="@dimen/dp_5"
     android:layout_height="wrap_content">
 

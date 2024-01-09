@@ -24,6 +24,7 @@ import com.app.airmaster.widget.CusVerticalScheduleView
 import com.app.airmaster.widget.CusVerticalTextScheduleView
 import com.app.airmaster.widget.VerticalSeekBar
 import com.app.airmaster.widget.VerticalSeekBar.OnSeekBarChangeListener
+import com.blala.blalable.car.AutoBackBean
 import timber.log.Timber
 
 /**
@@ -80,7 +81,7 @@ class HomeControlFragment : TitleBarFragment<CarHomeActivity>() {
                }
 
                 if(position == 0x03){   //排水
-                    controlViewModel?.setMoistureModel(if(isChecked) 0 else 1)
+                    controlViewModel?.setActiveDrying()
                 }
             }
 
@@ -126,6 +127,26 @@ class HomeControlFragment : TitleBarFragment<CarHomeActivity>() {
 
 
         controlViewModel = ViewModelProvider(this)[ControlViewModel::class.java]
+
+        val carActivity = attachActivity as CarHomeActivity
+        carActivity.setHomeAutoListener(object : CarHomeActivity.OnHomeAutoBackListener{
+            override fun backAutoData(autoBean: AutoBackBean) {
+                carHomeCenterView?.setLeftRearPressureValue(autoBean.leftRearPressure)
+                carHomeCenterView?.setRightTopPressureValue(autoBean.rightPressure)
+                carHomeCenterView?.setLeftTopPressureValue(autoBean.leftPressure)
+                carHomeCenterView?.setRightRearPressureValue(autoBean.rightRearPressure)
+
+                carHomeCenterView?.setFrontHeightValue(autoBean.leftFrontHeightRuler,autoBean.rightFrontHeightRuler)
+                carHomeCenterView?.setAfterHeightValue(autoBean.leftAfterHeightRuler,autoBean.rightAfterHeightRuler)
+
+
+                homeLeftAirPressureView?.setAirPressureValue(autoBean.cylinderPressure)
+                homeRightView?.setTempValue(autoBean.airBottleTemperature -127)
+
+            }
+
+        })
+      /*
         BaseApplication.getBaseApplication().bleOperate.setAutoBackDataListener {
             BaseApplication.getBaseApplication().autoBackBean = it
             carHomeCenterView?.setLeftRearPressureValue(it.leftRearPressure)
@@ -142,7 +163,7 @@ class HomeControlFragment : TitleBarFragment<CarHomeActivity>() {
 
 
         }
-
+*/
         carHomeCenterView?.setOnPressureListener(object : OnControlPressureCheckedListener{
             override fun onItemChecked(map: MutableMap<Int, Int>?) {
                 controlViewModel?.setManualOperation(map!! as HashMap<Int, Int>)

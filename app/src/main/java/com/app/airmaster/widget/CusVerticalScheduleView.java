@@ -207,7 +207,8 @@ public class CusVerticalScheduleView extends View {
     }
 
     public void setCurrScheduleValue(float currScheduleValue) {
-        this.currScheduleValue = currScheduleValue;
+        this.currScheduleValue = Math.min(currScheduleValue, allScheduleValue);
+
         invalidate();
     }
 

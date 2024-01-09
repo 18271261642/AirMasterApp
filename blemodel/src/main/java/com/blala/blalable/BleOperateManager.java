@@ -7,6 +7,7 @@ import android.os.Looper;
 import android.os.Message;
 import android.util.Log;
 
+import com.blala.blalable.car.AutoBackBean;
 import com.blala.blalable.car.CarConstant;
 import com.blala.blalable.car.OnCarAutoBackListener;
 import com.blala.blalable.keyboard.KeyBoardConstant;
@@ -552,7 +553,14 @@ public class BleOperateManager {
      * @param onCarAutoBackListener
      */
     public void setAutoBackDataListener(OnCarAutoBackListener onCarAutoBackListener){
-        bleManager.setOnCarAutoBackListener(onCarAutoBackListener);
+        bleManager.setOnCarAutoBackListener(new OnCarAutoBackListener() {
+            @Override
+            public void backAutoData(AutoBackBean autoBackBean) {
+                if(onCarAutoBackListener != null){
+                    onCarAutoBackListener.backAutoData(autoBackBean);
+                }
+            }
+        });
     }
 
 
