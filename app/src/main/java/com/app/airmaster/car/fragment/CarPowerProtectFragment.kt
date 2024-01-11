@@ -9,6 +9,7 @@ import com.app.airmaster.R
 import com.app.airmaster.action.TitleBarFragment
 import com.app.airmaster.ble.ota.BluetoothLeClass.OnWriteDataListener
 import com.app.airmaster.car.CarSysSetActivity
+import com.app.airmaster.utils.CalculateUtils
 import com.app.airmaster.viewmodel.ControlViewModel
 import com.app.airmaster.widget.CommTitleView
 import com.blala.blalable.Utils
@@ -58,9 +59,9 @@ class CarPowerProtectFragment : TitleBarFragment<CarSysSetActivity>(){
         }
 
         powerHeightBtn?.setOnCheckedChangeListener { button, checked ->
-//            if(!button.isPressed){
-//                return@setOnCheckedChangeListener
-//            }
+            if(button.isPressed){
+                return@setOnCheckedChangeListener
+            }
             sendHeightProtect(checked)
 
         }
@@ -70,14 +71,17 @@ class CarPowerProtectFragment : TitleBarFragment<CarSysSetActivity>(){
 
     override fun initData() {
         viewModel = ViewModelProvider(this)[ControlViewModel::class.java]
-        powerSeekBar?.max = 130
+        powerSeekBar?.max = 120
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            powerSeekBar?.min = 100
+            powerSeekBar?.min = 98
         }
 
         powerSeekBar?.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener{
             override fun onProgressChanged(p0: SeekBar?, p1: Int, p2: Boolean) {
-                powerProtectValueTv?.text = (p0?.progress?.div(10))?.toInt().toString()+" V"
+                val bt = p0?.progress
+                val bv = CalculateUtils.div(bt!!.toDouble(),10.0,1)
+                Timber.e("------电压="+p0?.progress+" "+bv)
+                powerProtectValueTv?.text = "$bv V"
             }
 
             override fun onStartTrackingTouch(p0: SeekBar?) {
@@ -108,8 +112,7 @@ class CarPowerProtectFragment : TitleBarFragment<CarSysSetActivity>(){
 
     private fun sendPower(){
         val powerValue = powerSeekBar?.progress
-
-        val crcStr = "000517"+String.format("%02x",powerValue)
+        val crcStr = "0005040117"+String.format("%02x",powerValue)
         val crc = Utils.crcCarContentArray(crcStr)
 
         val str =  "011E"+CarConstant.CAR_HEAD_BYTE_STR+crcStr+crc
@@ -119,7 +122,17 @@ class CarPowerProtectFragment : TitleBarFragment<CarSysSetActivity>(){
         BaseApplication.getBaseApplication().bleOperate.writeCommonByte(result,object :
             WriteBackDataListener {
             override fun backWriteData(data: ByteArray?) {
-
+                //8800000000000cee030f7ffaaf0005010497015e
+                if(data != null && data.size>15){
+                    //8800000000000cc6 030f 7f fa af 00 05 01 04 aa 01 4b
+                    //Timber.e("-------气罐压力="+(data[8].toInt().and(0xFF))+" "+(it[9].toInt().and(0xFF))+" "+(it[18].toInt().and(0xFF) == 1))
+                    if((data[8].toInt().and(0xFF)) == 3 && (data[9].toInt().and(0xFF)) == 15 &&(data[17].toInt().and(0xFF) == 151
+                                )){
+                        if(data[18].toInt().and(0xFF) == 1){
+                            BaseApplication.getBaseApplication().bleOperate.setCommAllParams()
+                        }
+                    }
+                }
             }
 
         })
@@ -127,7 +140,7 @@ class CarPowerProtectFragment : TitleBarFragment<CarSysSetActivity>(){
 
 
     private fun sendHeightProtect(open : Boolean){
-        val crcStr = "000518"+(if(open) "01" else "00")
+        val crcStr = "0005040118"+(if(open) "01" else "00")
         val crc = Utils.crcCarContentArray(crcStr)
         val str = "011E"+CarConstant.CAR_HEAD_BYTE_STR+crcStr+crc
         val arry = Utils.stringToByte(str)
@@ -135,7 +148,16 @@ class CarPowerProtectFragment : TitleBarFragment<CarSysSetActivity>(){
         BaseApplication.getBaseApplication().bleOperate.writeCommonByte(result,object :
             WriteBackDataListener {
             override fun backWriteData(data: ByteArray?) {
-
+                if(data != null && data.size>15){
+                    //8800000000000cc6 030f 7f fa af 00 05 01 04 aa 01 4b
+                    //Timber.e("-------气罐压力="+(data[8].toInt().and(0xFF))+" "+(it[9].toInt().and(0xFF))+" "+(it[18].toInt().and(0xFF) == 1))
+                    if((data[8].toInt().and(0xFF)) == 3 && (data[9].toInt().and(0xFF)) == 15 &&(data[17].toInt().and(0xFF) == 152
+                                )){
+                        if(data[18].toInt().and(0xFF) == 1){
+                            BaseApplication.getBaseApplication().bleOperate.setCommAllParams()
+                        }
+                    }
+                }
             }
 
         })

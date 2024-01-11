@@ -88,6 +88,7 @@ class CarIgnitionFragment : TitleBarFragment<CarSysSetActivity>(){
         }
 
 
+        //熄火
         ingitionOffSwitch?.setOnCheckedChangeListener { button, checked ->
             setRyVisibility()
             var code = if(checked) 1 else 0
@@ -142,7 +143,7 @@ class CarIgnitionFragment : TitleBarFragment<CarSysSetActivity>(){
         onList?.addAll(array)
         onAdapter?.notifyDataSetChanged()
 
-
+        //熄火
         adapter?.setOnCommClickListener{
             var code = 0
             list?.forEachIndexed { index, timerBean ->
@@ -155,6 +156,7 @@ class CarIgnitionFragment : TitleBarFragment<CarSysSetActivity>(){
             viewModel?.setStallSetting(code)
         }
 
+        //点火
         onAdapter?.setOnCommClickListener{
             var code = 0
             onList?.forEachIndexed { index, timerBean ->

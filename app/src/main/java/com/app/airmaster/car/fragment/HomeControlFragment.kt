@@ -4,6 +4,8 @@ import android.os.Build
 import android.view.MotionEvent
 import android.view.View
 import android.view.View.OnTouchListener
+import android.widget.LinearLayout
+import android.widget.TextView
 import androidx.lifecycle.ViewModelProvider
 import com.app.airmaster.BaseApplication
 import com.app.airmaster.R
@@ -24,6 +26,7 @@ import com.app.airmaster.widget.CusVerticalScheduleView
 import com.app.airmaster.widget.CusVerticalTextScheduleView
 import com.app.airmaster.widget.VerticalSeekBar
 import com.app.airmaster.widget.VerticalSeekBar.OnSeekBarChangeListener
+import com.blala.blalable.Utils
 import com.blala.blalable.car.AutoBackBean
 import timber.log.Timber
 
@@ -45,6 +48,9 @@ class HomeControlFragment : TitleBarFragment<CarHomeActivity>() {
     //左侧的view
     private var homeLeftAirPressureView : HomeLeftAirPressureView ?= null
     private var homeRightView : HomeRightTemperatureView ?= null
+    //设备异常，展示第一个
+    private var homeErrorMsgTv : TextView ?= null
+    private var homeDeviceErrorLayout : LinearLayout ?= null
 
 
 
@@ -61,6 +67,8 @@ class HomeControlFragment : TitleBarFragment<CarHomeActivity>() {
     }
 
     override fun initView() {
+        homeDeviceErrorLayout = findViewById(R.id.homeDeviceErrorLayout)
+        homeErrorMsgTv = findViewById(R.id.homeErrorMsgTv)
         homeRightView = findViewById(R.id.homeRightView)
         homeLeftAirPressureView = findViewById(R.id.homeLeftAirPressureView)
         carHomeCenterView = findViewById(R.id.carHomeCenterView)
@@ -72,15 +80,15 @@ class HomeControlFragment : TitleBarFragment<CarHomeActivity>() {
                 if(position == 0x00){   //打气
                     controlViewModel?.setManualAerate(isChecked)
                 }
-                if(position == 0x01){   //预设高度
-
+                if(position == 0x01){   //设置预置位保持自动校准
+                    controlViewModel?.setPreAutoIsEnable(isChecked)
                 }
 
                if(position == 2){
                    startActivity(CarFaultNotifyActivity::class.java)
                }
 
-                if(position == 0x03){   //排水
+                if(position == 0x03){   //主动干燥
                     controlViewModel?.setActiveDrying()
                 }
             }
@@ -139,9 +147,16 @@ class HomeControlFragment : TitleBarFragment<CarHomeActivity>() {
                 carHomeCenterView?.setFrontHeightValue(autoBean.leftFrontHeightRuler,autoBean.rightFrontHeightRuler)
                 carHomeCenterView?.setAfterHeightValue(autoBean.leftAfterHeightRuler,autoBean.rightAfterHeightRuler)
 
-
                 homeLeftAirPressureView?.setAirPressureValue(autoBean.cylinderPressure)
-                homeRightView?.setTempValue(autoBean.airBottleTemperature -127)
+                homeRightView?.setTempValue(autoBean.airBottleTemperature -86)
+
+                //设备异常
+                val deviceErrorCode = autoBean.deviceErrorCode
+                val errorArray = Utils.byteToBit(deviceErrorCode)
+                val errorMap = getDeviceErrorMsg(errorArray)
+                val isEmpty =errorMap.size==0 || errorMap[0] == null
+                homeErrorMsgTv?.text = if(errorMap.size==0 || errorMap[0] == null) "" else errorMap[0]
+                homeDeviceErrorLayout?.visibility = if(isEmpty) View.GONE else View.VISIBLE
 
             }
 
@@ -173,6 +188,33 @@ class HomeControlFragment : TitleBarFragment<CarHomeActivity>() {
     }
 
 
+    val map = HashMap<Int, String>()
+    private fun getDeviceErrorMsg(errorStr: String): HashMap<Int, String> {
 
+        map.clear()
+        val chartArray = errorStr.toCharArray()
+        if (chartArray[0].toString() == "1") {
+            map[0] = "系统未自检"
+        }
+        if (chartArray[1].toString() == "1") {
+            map[1] = "加速度传感器故障"
+        }
+        if (chartArray[2].toString() == "1") {
+            map[2] = "电池电压过高"
+        }
+        if (chartArray[3].toString() == "1") {
+            map[3] = "电池电压过低"
+        }
+        if (chartArray[4].toString() == "1") {
+            map[4] = "气泵1温度传感器故障"
+        }
+        if (chartArray[5].toString() == "1") {
+            map[5] = "气泵2温度传感器故障"
+        }
+        if (chartArray[6].toString() == "1") {
+            map[6] = "系统温度传感器故障"
+        }
+        return map
+    }
 
 }

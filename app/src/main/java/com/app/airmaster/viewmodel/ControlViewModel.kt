@@ -5,6 +5,7 @@ import com.app.airmaster.BaseApplication
 import com.app.airmaster.car.bean.AutoSetBean
 import com.blala.blalable.Utils
 import com.blala.blalable.car.CarConstant
+import com.blala.blalable.listener.OnCarWriteBackListener
 import com.blala.blalable.listener.WriteBackDataListener
 import timber.log.Timber
 
@@ -20,6 +21,20 @@ class ControlViewModel : ViewModel() {
     var autoSetBeanData = SingleLiveEvent<AutoSetBean>()
 
 
+    //清除所有警告
+    fun clearAllWarring(){
+        val scrStr = "000404012B"
+        val crc = Utils.crcCarContentArray(scrStr)
+
+        val str = "011E"+ CarConstant.CAR_HEAD_BYTE_STR+scrStr+crc
+        val resultArray = Utils.hexStringToByte(str)
+        val result = Utils.getFullPackage(resultArray)
+        BaseApplication.getBaseApplication().bleOperate.writeCommonByte(result){
+            if(it != null){
+                setCommRefreshDevice(it,0xAB.toByte())
+            }
+        }
+    }
 
 
 
@@ -36,7 +51,9 @@ class ControlViewModel : ViewModel() {
         val resultArray = Utils.hexStringToByte(str)
         val result = Utils.getFullPackage(resultArray)
         BaseApplication.getBaseApplication().bleOperate.writeCommonByte(result){
-
+            if(it != null){
+                //setCommRefreshDevice(it,0x9A.toByte())
+            }
         }
 
     }
@@ -51,7 +68,9 @@ class ControlViewModel : ViewModel() {
         val resultArray = Utils.hexStringToByte(str)
         val result = Utils.getFullPackage(resultArray)
         BaseApplication.getBaseApplication().bleOperate.writeCommonByte(result){
-
+            if(it != null){
+                setCommRefreshDevice(it,0xA3.toByte())
+            }
         }
     }
 
@@ -67,11 +86,28 @@ class ControlViewModel : ViewModel() {
         val resultArray = Utils.hexStringToByte(str)
         val result = Utils.getFullPackage(resultArray)
         BaseApplication.getBaseApplication().bleOperate.writeCommonByte(result){
-
+            if(it != null){
+                setCommRefreshDevice(it,0xA4.toByte())
+            }
         }
     }
 
 
+
+    //设置预置位主动校准
+    fun setPreAutoIsEnable(isOpen : Boolean){
+        val scrStr = "000504011B"+String.format("%02x",if(isOpen) 1 else 0)
+        val crc = Utils.crcCarContentArray(scrStr)
+
+        val str = "011E"+ CarConstant.CAR_HEAD_BYTE_STR+scrStr+crc
+        val resultArray = Utils.hexStringToByte(str)
+        val result = Utils.getFullPackage(resultArray)
+        BaseApplication.getBaseApplication().bleOperate.writeCommonByte(result){
+            if(it != null){
+                setCommRefreshDevice(it,0x9B.toByte())
+            }
+        }
+    }
 
     //气罐手动打气
     fun setManualAerate(isStart : Boolean){
@@ -82,7 +118,9 @@ class ControlViewModel : ViewModel() {
         val resultArray = Utils.hexStringToByte(str)
         val result = Utils.getFullPackage(resultArray)
         BaseApplication.getBaseApplication().bleOperate.writeCommonByte(result){
-
+            if(it != null){
+                setCommRefreshDevice(it,0x93.toByte())
+            }
         }
     }
 
@@ -96,7 +134,9 @@ class ControlViewModel : ViewModel() {
         val resultArray = Utils.hexStringToByte(str)
         val result = Utils.getFullPackage(resultArray)
         BaseApplication.getBaseApplication().bleOperate.writeCommonByte(result){
-
+            if(it != null){
+                setCommRefreshDevice(it,0xA5.toByte())
+            }
         }
     }
 
@@ -142,7 +182,9 @@ class ControlViewModel : ViewModel() {
         val resultArray = Utils.hexStringToByte(str)
         val result = Utils.getFullPackage(resultArray)
         BaseApplication.getBaseApplication().bleOperate.writeCommonByte(result){
-
+            if(it != null){
+                setCommRefreshDevice(it,0x96.toByte())
+            }
         }
     }
 
@@ -200,7 +242,9 @@ class ControlViewModel : ViewModel() {
         val resultArray = Utils.hexStringToByte(str)
         val result = Utils.getFullPackage(resultArray)
         BaseApplication.getBaseApplication().bleOperate.writeCommonByte(result){
-
+            if(it != null){
+                setCommRefreshDevice(it,0x99.toByte())
+            }
         }
     }
 
@@ -212,7 +256,10 @@ class ControlViewModel : ViewModel() {
         val resultArray = Utils.hexStringToByte(str)
         val result = Utils.getFullPackage(resultArray)
         BaseApplication.getBaseApplication().bleOperate.writeCommonByte(result){
-
+            //8800000000000ce6030f7ffaaf000501049a015b
+            if(it != null){
+                setCommRefreshDevice(it,0x9A.toByte())
+            }
         }
     }
 
@@ -230,8 +277,9 @@ class ControlViewModel : ViewModel() {
     }
 
     fun writeCommonFunction(){
-        BaseApplication.getBaseApplication().bleOperate.setCommAllParams(object : WriteBackDataListener{
-            override fun backWriteData(data: ByteArray?) {
+        BaseApplication.getBaseApplication().bleOperate.setCommAllParams(object : OnCarWriteBackListener{
+
+            override fun backWriteBytes(data: ByteArray?) {
                 if(data != null && data.size>15){
 
                     if((data[8].toInt().and(0xFF)) == 3 && (data[9].toInt().and(0xFF)) == 15 &&(data[17].toInt().and(0xFF) ==145 )){
@@ -304,5 +352,23 @@ class ControlViewModel : ViewModel() {
         //880000000000772e 030f7f fa af 00 70 01 04  91 00 0a 01 6e 00  00 00 00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00 00 00  00 00 00 00 00 00 64 00 44 00  11 00 11 00 00 00 00 00 00 00  00 00 1e 00 1e 00 1e 00 1e 00  32 00 32 00 32 00 32 00 46 00  46 00 46 00 46 00 7d 00 4d 00  46 00 46 00 14 00 14 00 14 00  14 00 a0 8c 00 01 00 47 47 24 24 010000000000000000000000b5
         //880000000000772E 030F7F FA AF 00 70 01 04 91 000A016E000000000000000000000000000000000000000000000000000000640044001100110000000000000000001E001E001E001E00320032003200320046004600460046007D004D00460046001400140014001400A08C00010047472424010000000000000000000000B5
         //手动打气  自动调平衡  3通知 4 主动干燥
+    }
+
+
+    /**
+     * 用于判断设置成功后刷新设备状态
+     */
+    private fun setCommRefreshDevice(array : ByteArray,crc : Byte){
+        if(array != null && array.size>15){
+            val crcValue = crc.toInt().and(0xFF)
+            //8800000000000cc6 030f 7f fa af 00 05 01 04 aa 01 4b
+          //  Timber.e("-------气罐压力="+(array[8].toInt().and(0xFF))+" "+(it[9].toInt().and(0xFF))+" "+(it[18].toInt().and(0xFF) == 1))
+            if((array[8].toInt().and(0xFF)) == 3 && (array[9].toInt().and(0xFF)) == 15 &&(array[17].toInt().and(0xFF) == crcValue
+                        )){
+                if(array[18].toInt().and(0xFF) == 1){
+                    BaseApplication.getBaseApplication().bleOperate.setCommAllParams()
+                }
+            }
+        }
     }
 }

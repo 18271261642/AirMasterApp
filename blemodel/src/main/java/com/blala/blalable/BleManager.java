@@ -16,6 +16,7 @@ import com.blala.blalable.listener.BleConnStatusListener;
 import com.blala.blalable.listener.ConnStatusListener;
 import com.blala.blalable.listener.InterfaceManager;
 import com.blala.blalable.listener.OnBleStatusBackListener;
+import com.blala.blalable.listener.OnCarWriteBackListener;
 import com.blala.blalable.listener.OnCommBackDataListener;
 import com.blala.blalable.listener.OnExerciseDataListener;
 import com.blala.blalable.listener.OnMeasureDataListener;
@@ -86,6 +87,11 @@ public class BleManager {
 
     public void setOnBleBackListener (OnBleStatusBackListener onBleBackListener){
         this.interfaceManager.onBleBackListener = onBleBackListener;
+    }
+
+
+    public void setOnCarWriteBackListener(OnCarWriteBackListener onCarWriteBackListener){
+        this.interfaceManager.onCarWriteBackListener = onCarWriteBackListener;
     }
 
 
@@ -379,6 +385,10 @@ public class BleManager {
                     interfaceManager.writeBackDataListener.backWriteData(bytes);
                 }
 
+                if(interfaceManager.onCarWriteBackListener != null){
+                    interfaceManager.onCarWriteBackListener.backWriteBytes(bytes);
+                }
+
                 //8800000000003860030f7ffaaf0031040190020100461e46321632df0000dfdf00000000000078ce010000008b8b464600020600000000000000000000000085
                 //8800000000003808030f7ffaaf00310401 90 02 01 003c0a16322c1edf0000dfdf00000000000078ce010000008b8b464600040c000000000000000000000000c9
 
@@ -412,14 +422,70 @@ public class BleManager {
                     //右后高度尺
                     int rightAfterRuler = bytes[29] & 0xff;
 
-
-
-
-
                     //电池电压
                     int batteryVal = bytes[38] & 0xff;
                     //气罐温度
                     int airBottleTemperature = bytes[39] & 0xff;
+
+                    //ACC状态 0关闭；1开启
+                    int accStatus = bytes[40] & 0xff;
+                    //ACC工作模式 0acc模式;1定时模式
+                    int accWorkModel = bytes[41] & 0xff;
+                    //是否在移动 0静止；1运动
+                    int moveStatus = bytes[42] & 0xff;
+                    //是否休眠状态 0-非休眠；1-休眠
+                    int sleepStatus = bytes[43] & 0xff;
+                    //左前气压目标值(单位PSI)
+                    int leftFrontGoalPressure = bytes[44] & 0xff;
+                    //右前气压目标值(单位PSI)
+                    int rightFrontGoalPressure = bytes[45] & 0xff;
+                    //左后气压目标值(单位PSI)
+                    int leftRearGoalPressure = bytes[46] & 0xff;
+                    //右后气压目标值(单位PSI)
+                    int rightRearGoalPressure = bytes[47] & 0xff;
+                    //是否正在加热 0 false 1 true
+                    int heatStatus = bytes[48] & 0xff;
+
+                    /**设备故障状态码
+                     * bit0:系统未自检
+                     * bit1:加速度传感器故障
+                     * bit2:电池电压过高
+                     * bit3:电池电压过低
+                     * bit4:气泵1温度传感器故障
+                     * bit5:气泵2温度传感器故障
+                     * bit6:系统温度传感器故障
+                     */
+                    byte deviceErrorCode = bytes[49];
+                    /**
+                     * 左前故障状态码
+                     * bit0:高度传感器超量程
+                     * bit1:None
+                     * bit2:高度传感器线序错误
+                     * bit3:高度传感器测量范围过小
+                     * bit4:高度传感器装反
+                     * bit5:高度传感器故障
+                     * bit6:气压传感器故障
+                     * bit7:空气弹簧漏气
+                     */
+                    byte leftFrontErrorCode = bytes[50];
+                    //右前故障状态码 状态码
+                    byte rightFrontErrorCode = bytes[51];
+                    //左后故障状态码
+                    byte leftRearErrorCode = bytes[52];
+                    //右后故障状态码
+                    byte rightRearErrorCode = bytes[53];
+                    /**
+                     * 气罐故障状态码
+                     * bit0:气压传感器故障
+                     * bit1:气罐压力过低
+                     * bit2:气泵温度过高
+                     * bit3:气罐无法充气
+                     * bit4:气泵状态异常
+                     */
+                    byte airBottleErrorCode = bytes[54];
+                    //是否激活
+                    int activationStatus = bytes[55];
+
 
                     autoBackBean.setWorkModel(workModel);
                     autoBackBean.setSelfCheckModel(selfCheckModel);
@@ -438,7 +504,28 @@ public class BleManager {
                     autoBackBean.setBatteryVal(batteryVal);
                     autoBackBean.setAirBottleTemperature(airBottleTemperature);
 
-                  //  Log.e(TAG,"--------自动返回="+autoBackBean.toString());
+                    autoBackBean.setAccStatus(accStatus);
+                    autoBackBean.setAccWorkModel(accWorkModel);
+                    autoBackBean.setMoveStatus(moveStatus);
+                    autoBackBean.setSleepStatus(sleepStatus);
+                    autoBackBean.setLeftFrontGoalPressure(leftFrontGoalPressure);
+                    autoBackBean.setRightFrontGoalPressure(rightFrontGoalPressure);
+                    autoBackBean.setLeftRearGoalPressure(leftRearGoalPressure);
+                    autoBackBean.setRightRearGoalPressure(rightRearGoalPressure);
+                    autoBackBean.setHeatStatus(heatStatus);
+                    autoBackBean.setDeviceErrorCode(deviceErrorCode);
+                    autoBackBean.setLeftFrontErrorCode(leftFrontErrorCode);
+                    autoBackBean.setRightFrontErrorCode(rightFrontErrorCode);
+                    autoBackBean.setLeftFrontErrorCode(leftRearErrorCode);
+                    autoBackBean.setRightRearErrorCode(rightRearErrorCode);
+                    autoBackBean.setAirBottleErrorCode(airBottleErrorCode);
+                    autoBackBean.setActivationStatus(activationStatus);
+
+
+
+
+
+                   // Log.e(TAG,"--------自动返回="+autoBackBean.toString());
 
                     if(onCarAutoBackListener != null){
                         onCarAutoBackListener.backAutoData(autoBackBean);
@@ -487,6 +574,24 @@ public class BleManager {
         interfaceManager.setWriteBackDataListener(writeBackDataListener);
         bluetoothClient.write(bleMac,bleConstant.SERVICE_UUID,bleConstant.WRITE_UUID,data,bleWriteResponse);
     }
+    //OnCarWriteBackListener
+
+
+    public synchronized void writeCarDataToDevice(byte[] data, OnCarWriteBackListener writeBackDataListener){
+        String writeStr = Utils.formatBtArrayToString(data);
+        Log.e(TAG,"-----写入数据="+writeStr);
+        String bleMac = (String) BleSpUtils.get(mContext,SAVE_BLE_MAC_KEY,"");
+        if(TextUtils.isEmpty(bleMac))
+            return;
+        stringBuffer.append("写入数据:"+writeStr+"\n\n");
+        sendCommBroadcast("ble_action",0);
+        interfaceManager.setOnCarWriteBackListener(writeBackDataListener);
+        bluetoothClient.write(bleMac,bleConstant.SERVICE_UUID,bleConstant.WRITE_UUID,data,bleWriteResponse);
+    }
+
+
+
+
     //写入设备数据
     public synchronized void writeDataToDevice(byte[] data){
         Log.e(TAG,"-----写入数据="+Arrays.toString(data));

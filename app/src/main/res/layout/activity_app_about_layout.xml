@@ -18,43 +18,10 @@
 
 
     <com.hjq.shape.layout.ShapeConstraintLayout
+        android:id="@+id/aboutUpgradeLayout"
         android:layout_width="match_parent"
         app:shape_solidColor="#1F2022"
         android:layout_marginTop="@dimen/dp_30"
-        android:padding="@dimen/dp_10"
-        android:layout_height="wrap_content">
-
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="当前版本"
-            android:textColor="@color/white"
-            android:textSize="@dimen/sp_14"
-            android:padding="@dimen/dp_10"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toTopOf="parent"/>
-
-
-       <TextView
-           android:layout_width="wrap_content"
-           android:layout_height="wrap_content"
-           android:text="V1.0"
-           android:textColor="@color/white"
-           app:layout_constraintRight_toRightOf="parent"
-           app:layout_constraintTop_toTopOf="parent"
-           android:layout_marginEnd="10dp"
-           app:layout_constraintBottom_toBottomOf="parent"/>
-
-    </com.hjq.shape.layout.ShapeConstraintLayout>
-
-
-
-    <com.hjq.shape.layout.ShapeConstraintLayout
-        android:layout_width="match_parent"
-        app:shape_solidColor="#1F2022"
-        android:layout_marginTop="@dimen/dp_5"
         android:padding="@dimen/dp_10"
         android:layout_height="wrap_content">
 
@@ -72,17 +39,238 @@
 
 
         <ImageView
+            android:id="@+id/aboutUpgradeImageView"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
             android:layout_marginEnd="@dimen/dp_10"
             android:layout_width="wrap_content"
-            android:background="@mipmap/ic_set_right_back"
+            android:src="@mipmap/ic_set_right_back"
             android:layout_height="wrap_content"/>
 
     </com.hjq.shape.layout.ShapeConstraintLayout>
 
 
+    <LinearLayout
+        android:id="@+id/aboutUpgradeContentLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:padding="@dimen/dp_10"
+            android:layout_height="wrap_content">
+
+
+            <TextView
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Touchpad"
+                android:padding="@dimen/dp_10"
+                android:textColor="#ffaeaeae"
+                android:textSize="@dimen/sp_14"
+                />
+
+
+            <TextView
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="10dp"
+                android:textColor="#ffffffff"
+                android:textSize="@dimen/sp_14"
+                />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:padding="@dimen/dp_10"
+            android:layout_height="wrap_content">
+
+
+            <TextView
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="MCU"
+                android:padding="@dimen/dp_10"
+                android:textColor="#ffaeaeae"
+                android:textSize="@dimen/sp_14"
+                />
+
+
+            <TextView
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="10dp"
+                android:textColor="#ffffffff"
+                android:textSize="@dimen/sp_14"
+                />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:padding="@dimen/dp_10"
+            android:layout_height="wrap_content">
+
+
+            <TextView
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="无线手环"
+                android:padding="@dimen/dp_10"
+                android:textColor="#ffaeaeae"
+                android:textSize="@dimen/sp_14"
+                />
+
+
+            <TextView
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="10dp"
+                android:textColor="#ffffffff"
+                android:textSize="@dimen/sp_14"
+                />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:padding="@dimen/dp_10"
+            android:layout_height="wrap_content">
+
+
+            <TextView
+
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="APP版本"
+                android:padding="@dimen/dp_10"
+                android:textColor="#ffaeaeae"
+                android:textSize="@dimen/sp_14"
+                />
+
+
+            <TextView
+                android:id="@+id/appVersionTv"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="V1.0"
+                android:layout_marginEnd="10dp"
+                android:textColor="#ffffffff"
+                android:textSize="@dimen/sp_14"
+                />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
+    </LinearLayout>
+
+
+    <com.hjq.shape.layout.ShapeConstraintLayout
+        android:id="@+id/aboutActivateLayout"
+        android:layout_width="match_parent"
+        app:shape_solidColor="#1F2022"
+        android:layout_marginTop="@dimen/dp_5"
+        android:padding="@dimen/dp_10"
+        android:layout_height="wrap_content">
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="激活设备"
+            android:textColor="@color/white"
+            android:textSize="@dimen/sp_14"
+            android:padding="@dimen/dp_10"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toTopOf="parent"/>
+
+
+        <ImageView
+            android:id="@+id/aboutActivateDeviceImageView"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginEnd="@dimen/dp_10"
+            android:layout_width="wrap_content"
+            android:src="@mipmap/ic_set_right_back"
+            android:layout_height="wrap_content"/>
+
+    </com.hjq.shape.layout.ShapeConstraintLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/dp_10"
+        android:orientation="horizontal">
+
+
+        <com.hjq.shape.view.ShapeEditText
+            android:id="@+id/aboutActivateEdit"
+            android:layout_width="0dp"
+            app:shape_strokeColor="#292929"
+            app:shape_strokeWidth="2dp"
+            app:shape_solidColor="#1F2022"
+            app:shape_radius="@dimen/dp_20"
+            android:textColor="#4a4a4b"
+            android:singleLine="true"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:maxLines="1"
+            android:hint="请联系经销商获取激活码"
+            android:layout_marginEnd="@dimen/dp_10"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"/>
+
+        <com.hjq.shape.view.ShapeTextView
+            android:id="@+id/aboutActivateSubmitTv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:shape_startColor="#F28D27"
+            app:shape_endColor="#FD654D"
+            app:shape_solidPressedColor="#80FD654D"
+            android:paddingStart="@dimen/dp_30"
+            android:paddingEnd="@dimen/dp_30"
+            android:paddingTop="@dimen/dp_10"
+            android:paddingBottom="@dimen/dp_10"
+            app:shape_radius="@dimen/dp_25"
+            android:textColor="@color/white"
+            android:text="@string/common_confirm"/>
+
+
+    </LinearLayout>
 
 
 

@@ -77,7 +77,7 @@
             app:shape_solidColor="#FF2A2A2B">
 
 
-            <CheckBox
+            <ImageView
                 android:id="@+id/itemHomeBottomWarringCheckBox"
                 android:layout_width="@dimen/dp_28"
                 android:layout_height="@dimen/dp_28"
@@ -104,7 +104,7 @@
             app:shape_solidColor="#FF2A2A2B">
 
 
-            <CheckBox
+            <ImageView
                 android:id="@+id/itemHomeBottomDrainageCheckBox"
                 android:layout_width="@dimen/dp_28"
                 android:layout_height="@dimen/dp_28"

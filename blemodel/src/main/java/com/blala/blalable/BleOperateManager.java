@@ -14,6 +14,7 @@ import com.blala.blalable.keyboard.KeyBoardConstant;
 import com.blala.blalable.listener.BleConnStatusListener;
 import com.blala.blalable.listener.ConnStatusListener;
 import com.blala.blalable.listener.OnBleStatusBackListener;
+import com.blala.blalable.listener.OnCarWriteBackListener;
 import com.blala.blalable.listener.OnCommBackDataListener;
 import com.blala.blalable.listener.OnKeyBoardListener;
 import com.blala.blalable.listener.WriteBackDataListener;
@@ -39,6 +40,9 @@ public class BleOperateManager {
 
     private final BleConstant bleConstant = new BleConstant();
 
+    private AutoBackBean mAutoBean;
+
+
     public static BleOperateManager getInstance() {
         if (bleOperateManager == null) {
             synchronized (BleOperateManager.class) {
@@ -54,6 +58,14 @@ public class BleOperateManager {
 
     private OnKeyBoardListener keyBoardListener;
 
+
+    public AutoBackBean getmAutoBean() {
+        return mAutoBean;
+    }
+
+    public void setmAutoBean(AutoBackBean mAutoBean) {
+        this.mAutoBean = mAutoBean;
+    }
 
     private List<byte[]> detailDialList = new ArrayList<>();
     private int detailDialCount = 0;
@@ -162,6 +174,10 @@ public class BleOperateManager {
     //写通用的设置，直接写数据
     public void writeCommonByte(byte[] bytes, WriteBackDataListener writeBackDataListener) {
         bleManager.writeDataToDevice(bytes, writeBackDataListener);
+    }
+
+    public void writeCarCommByte(byte[] data, OnCarWriteBackListener onCarWriteBackListener){
+        bleManager.writeCarDataToDevice(data,onCarWriteBackListener);
     }
 
 
@@ -556,6 +572,7 @@ public class BleOperateManager {
         bleManager.setOnCarAutoBackListener(new OnCarAutoBackListener() {
             @Override
             public void backAutoData(AutoBackBean autoBackBean) {
+                setmAutoBean(autoBackBean);
                 if(onCarAutoBackListener != null){
                     onCarAutoBackListener.backAutoData(autoBackBean);
                 }
@@ -564,13 +581,15 @@ public class BleOperateManager {
     }
 
 
-    public void setCommAllParams(WriteBackDataListener writeBackDataListener){
+    public void setCommAllParams(OnCarWriteBackListener writeBackDataListener){
         String str = "000504011100";
         String crcStr = Utils.crcCarContentArray(str);
         String resultStr = "011E"+ CarConstant.CAR_HEAD_BYTE_STR+str+crcStr;
         byte[] array = Utils.hexStringToByte(resultStr);
         byte[] resultArray = Utils.getFullPackage(array);
-        writeCommonByte(resultArray, writeBackDataListener);
+      //  writeCommonByte(resultArray, writeBackDataListener);
+        writeCarCommByte(resultArray,writeBackDataListener);
+
     }
 
     public void setCommAllParams(){

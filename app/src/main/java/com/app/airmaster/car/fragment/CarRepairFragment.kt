@@ -64,6 +64,14 @@ class CarRepairFragment : TitleBarFragment<CarSysSetActivity>() {
 
     override fun initData() {
         viewModel = ViewModelProvider(this)[ControlViewModel::class.java]
+
+        viewModel?.autoSetBeanData?.observe(this){
+            //是否是维修模式
+            repairModelSwitch?.isChecked = BaseApplication.getBaseApplication().autoBackBean != null &&  BaseApplication.getBaseApplication().autoBackBean.workModel == 3
+
+        }
+
+        viewModel?.writeCommonFunction()
     }
 
 

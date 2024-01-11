@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.widget.CheckBox
 import android.widget.CompoundButton
 import android.widget.CompoundButton.OnCheckedChangeListener
+import android.widget.ImageView
 import android.widget.LinearLayout
 import com.app.airmaster.R
 import com.app.airmaster.adapter.OnItemCheckedListener
@@ -28,9 +29,9 @@ class HomeBottomCheckView : LinearLayout,OnCheckedChangeListener{
     //预设高度
     private var homeBottomPrepareHeightCheckBox : CheckBox ?= null
     //报警
-    private var itemHomeBottomWarringCheckBox : CheckBox ?= null
+    private var itemHomeBottomWarringCheckBox : ImageView ?= null
     //排水
-    private var itemHomeBottomDrainageCheckBox : CheckBox ?= null
+    private var itemHomeBottomDrainageCheckBox : ImageView ?= null
 
 
 
@@ -59,10 +60,16 @@ class HomeBottomCheckView : LinearLayout,OnCheckedChangeListener{
 
         homeBottomEncourageCheckBox?.setOnCheckedChangeListener(this)
         homeBottomPrepareHeightCheckBox?.setOnCheckedChangeListener(this)
-        itemHomeBottomWarringCheckBox?.setOnCheckedChangeListener(this)
-        itemHomeBottomDrainageCheckBox?.setOnCheckedChangeListener(this)
+       // itemHomeBottomWarringCheckBox?.setOnCheckedChangeListener(this)
+       // itemHomeBottomDrainageCheckBox?.setOnCheckedChangeListener(this)
 
+        itemHomeBottomWarringCheckBox?.setOnClickListener {
+            onCheckListener?.onItemCheck(2,true)
+        }
 
+        itemHomeBottomDrainageCheckBox?.setOnClickListener {
+            onCheckListener?.onItemCheck(3,true)
+        }
     }
 
     override fun onCheckedChanged(buttonView: CompoundButton, isChecked: Boolean) {
@@ -79,14 +86,14 @@ class HomeBottomCheckView : LinearLayout,OnCheckedChangeListener{
             onCheckListener?.onItemCheck(1,isChecked)
         }
 
-        if(buttonView.id == R.id.itemHomeBottomWarringCheckBox){
-            itemHomeBottomWarringCheckBox?.isChecked = isChecked
-            onCheckListener?.onItemCheck(2,isChecked)
-        }
-        if(buttonView.id == R.id.itemHomeBottomDrainageCheckBox){
-            itemHomeBottomDrainageCheckBox?.isChecked = isChecked
-            onCheckListener?.onItemCheck(3,isChecked)
-        }
+//        if(buttonView.id == R.id.itemHomeBottomWarringCheckBox){
+//            itemHomeBottomWarringCheckBox?.isChecked = isChecked
+//            onCheckListener?.onItemCheck(2,isChecked)
+//        }
+//        if(buttonView.id == R.id.itemHomeBottomDrainageCheckBox){
+//            itemHomeBottomDrainageCheckBox?.isChecked = isChecked
+//            onCheckListener?.onItemCheck(3,isChecked)
+//        }
     }
 
 
@@ -95,15 +102,15 @@ class HomeBottomCheckView : LinearLayout,OnCheckedChangeListener{
         setAllNoCheck()
         homeBottomEncourageCheckBox?.isChecked = index == 0
         homeBottomPrepareHeightCheckBox?.isChecked = index == 1
-        itemHomeBottomWarringCheckBox?.isChecked = index == 2
-        itemHomeBottomDrainageCheckBox?.isChecked = index == 3
+       // itemHomeBottomWarringCheckBox?.isChecked = index == 2
+     //   itemHomeBottomDrainageCheckBox?.isChecked = index == 3
     }
 
     //全部未选中
     private fun setAllNoCheck(){
         homeBottomEncourageCheckBox?.isChecked = false
         homeBottomPrepareHeightCheckBox?.isChecked = false
-        itemHomeBottomWarringCheckBox?.isChecked = false
-        itemHomeBottomDrainageCheckBox?.isChecked = false
+      //  itemHomeBottomWarringCheckBox?.isChecked = false
+      //  itemHomeBottomDrainageCheckBox?.isChecked = false
     }
 }
