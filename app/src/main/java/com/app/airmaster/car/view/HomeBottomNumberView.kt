@@ -119,7 +119,7 @@ class HomeBottomNumberView : LinearLayout {
         }
     }
 
-    private fun clearAllClick(){
+     fun clearAllClick(){
         botBg1Img?.visibility = View.INVISIBLE
         botBg2Img?.visibility = View.INVISIBLE
         botBg3Img?.visibility = View.INVISIBLE
@@ -135,7 +135,8 @@ class HomeBottomNumberView : LinearLayout {
 
 
     //选中
-    private fun setClickIndex(index : Int){
+     private fun setClickIndex(index : Int){
+
         clearAllClick()
         setIsLowGear(false)
         botBg1Img?.visibility = if(index==0) View.VISIBLE else View.INVISIBLE
@@ -149,7 +150,24 @@ class HomeBottomNumberView : LinearLayout {
         botAboveImg3?.visibility =if(index==2) View.VISIBLE else View.INVISIBLE
         botAboveImg4?.visibility = if(index==3) View.VISIBLE else View.INVISIBLE
 
+
         onItemClickListener?.onItemClick(index+1)
+    }
+
+    fun setClickIndexNoResponse(index : Int){
+        clearAllClick()
+        setIsLowGear(false)
+        botBg1Img?.visibility = if(index==0) View.VISIBLE else View.INVISIBLE
+        botBg2Img?.visibility =  if(index==1) View.VISIBLE else View.INVISIBLE
+        botBg3Img?.visibility =  if(index==2) View.VISIBLE else View.INVISIBLE
+        botBg4Img?.visibility = if(index==3) View.VISIBLE else View.INVISIBLE
+
+
+        botAboveImg1?.visibility = if(index==0) View.VISIBLE else View.INVISIBLE
+        botAboveImg2?.visibility =if(index==1) View.VISIBLE else View.INVISIBLE
+        botAboveImg3?.visibility =if(index==2) View.VISIBLE else View.INVISIBLE
+        botAboveImg4?.visibility = if(index==3) View.VISIBLE else View.INVISIBLE
+
 
     }
 }

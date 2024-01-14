@@ -48,60 +48,116 @@ class CarFaultNotifyActivity : AppActivity() {
 
     override fun initData() {
         controlViewModel = ViewModelProvider(this)[ControlViewModel::class.java]
-        //获取状态
-        val autoBean = BaseApplication.getBaseApplication().autoBackBean
-        if (autoBean != null) {
-            //设备故障
-            val deviceErrorCode = autoBean.deviceErrorCode
-            val errorArray = Utils.byteToBit(deviceErrorCode)
-            Timber.e("------通知=" + errorArray)
-            val resultMap = getDeviceErrorMsg(errorArray)
-            resultMap.forEach {
-                list?.add(it.value)
-            }
 
-            //气罐故障
-            val airErrorCode = autoBean.airBottleErrorCode
-            val airArray = Utils.byteToBit(airErrorCode)
-            val airMap = getAirBottleErrorCode(airArray)
-            airMap.forEach {
-                list?.add(it.value)
-            }
+        BaseApplication.getBaseApplication().bleOperate.setAutoBackDataListener { it ->
+            list?.clear()
+            if (it != null) {
+                //设备故障
+                val deviceErrorCode = it.deviceErrorCode
+                val errorArray = Utils.byteToBit(deviceErrorCode)
+                Timber.e("------通知=" + errorArray)
+                val resultMap = getDeviceErrorMsg(errorArray)
+                resultMap.forEach {
+                    list?.add(it.value)
+                }
 
-            //左前
-            val leftFrontCode = autoBean.leftFrontErrorCode
-            val leftArray = Utils.byteToBit(leftFrontCode)
-            val leftMap = getDirectionErrorCode(leftArray)
-            leftMap.forEach {
-                list?.add(it.value)
-            }
+                //气罐故障
+                val airErrorCode = it.airBottleErrorCode
+                val airArray = Utils.byteToBit(airErrorCode)
+                val airMap = getAirBottleErrorCode(airArray)
+                airMap.forEach {
+                    list?.add(it.value)
+                }
 
-            //左后
-            val leftRearCode = autoBean.leftRearErrorCode
-            val leftRearArray = Utils.byteToBit(leftRearCode)
-            val leftRearMap = getDirectionErrorCode(leftRearArray)
-            leftRearMap.forEach {
-                list?.add(it.value)
-            }
+                //左前
+                val leftFrontCode = it.leftFrontErrorCode
+                val leftArray = Utils.byteToBit(leftFrontCode)
+                val leftMap = getDirectionErrorCode(leftArray)
+                leftMap.forEach {
+                    list?.add(it.value)
+                }
 
-            //右前
-            val rightFront = autoBean.rightFrontErrorCode
-            val rightFrontArray = Utils.byteToBit(rightFront)
-            val rightFrontMap = getDirectionErrorCode(rightFrontArray)
-            rightFrontMap.forEach {
-                list?.add(it.value)
-            }
+                //左后
+                val leftRearCode = it.leftRearErrorCode
+                val leftRearArray = Utils.byteToBit(leftRearCode)
+                val leftRearMap = getDirectionErrorCode(leftRearArray)
+                leftRearMap.forEach {
+                    list?.add(it.value)
+                }
 
-            //右后
-            val rightRearCode = autoBean.rightRearErrorCode
-            val rightRearArray = Utils.byteToBit(rightRearCode)
-            val rightRearMap = getDirectionErrorCode(rightRearArray)
-            rightRearMap.forEach {
-                list?.add(it.value)
-            }
+                //右前
+                val rightFront = it.rightFrontErrorCode
+                val rightFrontArray = Utils.byteToBit(rightFront)
+                val rightFrontMap = getDirectionErrorCode(rightFrontArray)
+                rightFrontMap.forEach {
+                    list?.add(it.value)
+                }
 
-            adapter?.notifyDataSetChanged()
+                //右后
+                val rightRearCode = it.rightRearErrorCode
+                val rightRearArray = Utils.byteToBit(rightRearCode)
+                val rightRearMap = getDirectionErrorCode(rightRearArray)
+                rightRearMap.forEach {
+                    list?.add(it.value)
+                }
+
+                adapter?.notifyDataSetChanged()
+            }
         }
+        //获取状态
+//        val autoBean = BaseApplication.getBaseApplication().autoBackBean
+//        if (autoBean != null) {
+//            //设备故障
+//            val deviceErrorCode = autoBean.deviceErrorCode
+//            val errorArray = Utils.byteToBit(deviceErrorCode)
+//            Timber.e("------通知=" + errorArray)
+//            val resultMap = getDeviceErrorMsg(errorArray)
+//            resultMap.forEach {
+//                list?.add(it.value)
+//            }
+//
+//            //气罐故障
+//            val airErrorCode = autoBean.airBottleErrorCode
+//            val airArray = Utils.byteToBit(airErrorCode)
+//            val airMap = getAirBottleErrorCode(airArray)
+//            airMap.forEach {
+//                list?.add(it.value)
+//            }
+//
+//            //左前
+//            val leftFrontCode = autoBean.leftFrontErrorCode
+//            val leftArray = Utils.byteToBit(leftFrontCode)
+//            val leftMap = getDirectionErrorCode(leftArray)
+//            leftMap.forEach {
+//                list?.add(it.value)
+//            }
+//
+//            //左后
+//            val leftRearCode = autoBean.leftRearErrorCode
+//            val leftRearArray = Utils.byteToBit(leftRearCode)
+//            val leftRearMap = getDirectionErrorCode(leftRearArray)
+//            leftRearMap.forEach {
+//                list?.add(it.value)
+//            }
+//
+//            //右前
+//            val rightFront = autoBean.rightFrontErrorCode
+//            val rightFrontArray = Utils.byteToBit(rightFront)
+//            val rightFrontMap = getDirectionErrorCode(rightFrontArray)
+//            rightFrontMap.forEach {
+//                list?.add(it.value)
+//            }
+//
+//            //右后
+//            val rightRearCode = autoBean.rightRearErrorCode
+//            val rightRearArray = Utils.byteToBit(rightRearCode)
+//            val rightRearMap = getDirectionErrorCode(rightRearArray)
+//            rightRearMap.forEach {
+//                list?.add(it.value)
+//            }
+//
+//            adapter?.notifyDataSetChanged()
+//        }
     }
 
     private fun showClearDialog() {
@@ -222,5 +278,11 @@ class CarFaultNotifyActivity : AppActivity() {
             airBotMap[4] = "气泵状态异常"
         }
         return airBotMap
+    }
+
+    override fun onDestroy() {
+        Timber.e("----------onDestroy")
+      //  BaseApplication.getBaseApplication().bleOperate.setClearAutoBack()
+        super.onDestroy()
     }
 }

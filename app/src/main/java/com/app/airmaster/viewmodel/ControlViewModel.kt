@@ -7,6 +7,9 @@ import com.blala.blalable.Utils
 import com.blala.blalable.car.CarConstant
 import com.blala.blalable.listener.OnCarWriteBackListener
 import com.blala.blalable.listener.WriteBackDataListener
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import timber.log.Timber
 
 /**
@@ -20,6 +23,8 @@ class ControlViewModel : ViewModel() {
     //获取自动返回的状态
     var autoSetBeanData = SingleLiveEvent<AutoSetBean>()
 
+
+    var commControlStatus = SingleLiveEvent<Int>()
 
     //清除所有警告
     fun clearAllWarring(){
@@ -263,6 +268,25 @@ class ControlViewModel : ViewModel() {
         }
     }
 
+
+    //设置高度记忆模式
+    fun setHeightMemory(isHeightMemory : Boolean){
+        val scrStr = "0005040115"+String.format("%02x",if(isHeightMemory) 0 else 1)
+        val crc = Utils.crcCarContentArray(scrStr)
+        val str = "011E"+ CarConstant.CAR_HEAD_BYTE_STR+scrStr+crc
+        val resultArray = Utils.hexStringToByte(str)
+        val result = Utils.getFullPackage(resultArray)
+        BaseApplication.getBaseApplication().bleOperate.writeCommonByte(result){
+            //8800000000000ce6030f7ffaaf000501049a015b
+            if(it != null){
+                setCommRefreshDevice(it,0x95.toByte())
+                GlobalScope.launch {
+                    delay(1000)
+                    commControlStatus.postValue(1)
+                }
+            }
+        }
+    }
 
     //设置高度尺
     fun setHeightRuler( leftFront : Int,leftRear : Int,rightFront : Int,rightRear : Int ){

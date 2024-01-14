@@ -12,6 +12,7 @@ import com.app.airmaster.R
 import com.app.airmaster.action.TitleBarFragment
 import com.app.airmaster.adapter.OnCommItemClickListener
 import com.app.airmaster.adapter.OnItemCheckedListener
+import com.app.airmaster.ble.ConnStatus
 import com.app.airmaster.car.CarFaultNotifyActivity
 import com.app.airmaster.car.CarHomeActivity
 import com.app.airmaster.car.view.CarHomeCenterView
@@ -77,6 +78,13 @@ class HomeControlFragment : TitleBarFragment<CarHomeActivity>() {
 
         homeBottomCheckView?.setOnItemCheck(object : OnItemCheckedListener{
             override fun onItemCheck(position: Int, isChecked: Boolean) {
+                if(BaseApplication.getBaseApplication().connStatus != ConnStatus.CONNECTED){
+                    homeBottomCheckView?.setAllNoCheck()
+                    showNotConnDialog()
+                    return
+                }
+
+
                 if(position == 0x00){   //打气
                     controlViewModel?.setManualAerate(isChecked)
                 }
@@ -96,6 +104,13 @@ class HomeControlFragment : TitleBarFragment<CarHomeActivity>() {
         })
 
         homeBottomNumberView?.setOnItemClick{
+            if(BaseApplication.getBaseApplication().connStatus != ConnStatus.CONNECTED){
+                homeBottomNumberView?.clearAllClick()
+                homeBottomNumberView?.setIsLowGear(false)
+                showNotConnDialog()
+                return@setOnItemClick
+            }
+
             if(it == -1){
                 controlViewModel?.setOneGearReset()
             }else{
@@ -139,6 +154,14 @@ class HomeControlFragment : TitleBarFragment<CarHomeActivity>() {
         val carActivity = attachActivity as CarHomeActivity
         carActivity.setHomeAutoListener(object : CarHomeActivity.OnHomeAutoBackListener{
             override fun backAutoData(autoBean: AutoBackBean) {
+
+                //档位
+                if(autoBean.curPos == 5){
+                    homeBottomNumberView?.setIsLowGear(true)
+                }else{
+                    homeBottomNumberView?.setClickIndexNoResponse(autoBean.curPos-1)
+                }
+
                 carHomeCenterView?.setLeftRearPressureValue(autoBean.leftRearPressure)
                 carHomeCenterView?.setRightTopPressureValue(autoBean.rightPressure)
                 carHomeCenterView?.setLeftTopPressureValue(autoBean.leftPressure)
@@ -156,7 +179,7 @@ class HomeControlFragment : TitleBarFragment<CarHomeActivity>() {
                 val errorMap = getDeviceErrorMsg(errorArray)
                 val isEmpty =errorMap.size==0 || errorMap[0] == null
                 homeErrorMsgTv?.text = if(errorMap.size==0 || errorMap[0] == null) "" else errorMap[0]
-                homeDeviceErrorLayout?.visibility = if(isEmpty) View.GONE else View.VISIBLE
+                homeDeviceErrorLayout?.visibility = if(isEmpty) View.INVISIBLE else View.VISIBLE
 
             }
 
@@ -181,6 +204,12 @@ class HomeControlFragment : TitleBarFragment<CarHomeActivity>() {
 */
         carHomeCenterView?.setOnPressureListener(object : OnControlPressureCheckedListener{
             override fun onItemChecked(map: MutableMap<Int, Int>?) {
+
+                if(BaseApplication.getBaseApplication().connStatus != ConnStatus.CONNECTED){
+                    showNotConnDialog()
+                    return
+                }
+
                 controlViewModel?.setManualOperation(map!! as HashMap<Int, Int>)
             }
 
@@ -217,4 +246,17 @@ class HomeControlFragment : TitleBarFragment<CarHomeActivity>() {
         return map
     }
 
+
+    private fun showNotConnDialog(){
+        attachActivity.showCommAlertDialog("未连接设备","去官网","去连接",object :
+                    OnCommItemClickListener {
+                    override fun onItemClick(position: Int) {
+                        attachActivity.disCommAlertDialog()
+                        if(position == 0x01){
+                            startActivity(SecondScanActivity::class.java)
+                        }
+                    }
+
+                })
+    }
 }

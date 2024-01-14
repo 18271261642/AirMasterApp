@@ -59,7 +59,10 @@
         <activity android:name="com.app.airmaster.car.CarHomeActivity"
             android:screenOrientation="portrait"/>
 
-
+        <activity android:name=".car.HeightMemorySetActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".car.HeightMemoryLowSetActivity"
+            android:screenOrientation="portrait"/>
 
         <activity
             android:name="com.app.airmaster.MainActivity"

@@ -563,21 +563,17 @@ public class BleOperateManager {
         }
     };
 
+    public void setClearAutoBack(){
+        bleManager.setOnCarAutoClear();
+    }
+
 
     /**
      * 设置自动回复的数据
      * @param onCarAutoBackListener
      */
     public void setAutoBackDataListener(OnCarAutoBackListener onCarAutoBackListener){
-        bleManager.setOnCarAutoBackListener(new OnCarAutoBackListener() {
-            @Override
-            public void backAutoData(AutoBackBean autoBackBean) {
-                setmAutoBean(autoBackBean);
-                if(onCarAutoBackListener != null){
-                    onCarAutoBackListener.backAutoData(autoBackBean);
-                }
-            }
-        });
+        bleManager.setOnCarAutoBackListener(onCarAutoBackListener);
     }
 
 

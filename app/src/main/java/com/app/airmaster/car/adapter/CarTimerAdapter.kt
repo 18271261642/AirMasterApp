@@ -46,10 +46,15 @@ class CarTimerAdapter(private val context: Context,private val list : MutableLis
             onItemClickListener?.onItemClick(holder.layoutPosition)
         }
 
+        val bean = list[position]
+       holder.timeTv.text = bean.timeValue
 
-       holder.timeTv.text = list[position].timeValue
+        if(bean.isHeightMemory){
+            holder.itemTimerCheckImageView.setImageResource(R.mipmap.ic_set_right_back)
+        }else{
+            val isChecked = list[position].isChecked
+            holder.itemTimerCheckImageView.setImageResource(if(isChecked)R.mipmap.ic_scan_conn_checked else R.mipmap.ic_scan_conn_no_checked)
+        }
 
-        val isChecked = list[position].isChecked
-        holder.itemTimerCheckImageView.setImageResource(if(isChecked)R.mipmap.ic_scan_conn_checked else R.mipmap.ic_scan_conn_no_checked)
     }
 }

@@ -1,7 +1,10 @@
 package com.app.airmaster.car.fragment
 
+import com.app.airmaster.BaseApplication
 import com.app.airmaster.R
 import com.app.airmaster.action.TitleBarFragment
+import com.app.airmaster.adapter.OnCommItemClickListener
+import com.app.airmaster.ble.ConnStatus
 import com.app.airmaster.car.CarAboutActivity
 import com.app.airmaster.car.CarHomeActivity
 import com.app.airmaster.car.CarSysSetActivity
@@ -31,6 +34,10 @@ class HomeSettingFragment : TitleBarFragment<CarHomeActivity>() {
             startActivity(SecondScanActivity::class.java)
         }
         findViewById<SettingBar>(R.id.sysSysBar).setOnClickListener {
+            if(BaseApplication.getBaseApplication().connStatus != ConnStatus.CONNECTED){
+                showNotConnDialog()
+                return@setOnClickListener
+            }
             startActivity(CarSysSetActivity::class.java)
         }
         findViewById<SettingBar>(R.id.sysCheckBar).setOnClickListener {
@@ -43,5 +50,18 @@ class HomeSettingFragment : TitleBarFragment<CarHomeActivity>() {
 
     override fun initData() {
 
+    }
+
+    private fun showNotConnDialog(){
+        attachActivity?.showCommAlertDialog("未连接设备","去官网","去连接",object :
+            OnCommItemClickListener {
+            override fun onItemClick(position: Int) {
+                attachActivity.disCommAlertDialog()
+                if(position == 0x01){
+                    startActivity(SecondScanActivity::class.java)
+                }
+            }
+
+        })
     }
 }

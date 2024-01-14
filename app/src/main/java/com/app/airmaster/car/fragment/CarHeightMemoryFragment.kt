@@ -1,10 +1,13 @@
 package com.app.airmaster.car.fragment
 
+import android.content.Intent
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.app.airmaster.R
 import com.app.airmaster.action.TitleBarFragment
 import com.app.airmaster.car.CarSysSetActivity
+import com.app.airmaster.car.HeightMemoryLowSetActivity
+import com.app.airmaster.car.HeightMemorySetActivity
 import com.app.airmaster.car.adapter.CarTimerAdapter
 import com.app.airmaster.car.bean.TimerBean
 import com.app.airmaster.widget.CommTitleView
@@ -48,16 +51,33 @@ class CarHeightMemoryFragment : TitleBarFragment<CarSysSetActivity>(){
             val fragmentManager = parentFragmentManager
             fragmentManager.popBackStack()
         }
+
+        adapter?.setOnCommClickListener{
+            if(it == 4){
+                val index = list?.get(it)?.time
+                val intent = Intent(attachActivity,HeightMemoryLowSetActivity::class.java)
+                intent.putExtra("index",index)
+                attachActivity.startActivity(intent)
+                return@setOnCommClickListener
+            }
+
+
+            val index = list?.get(it)?.time
+            val intent = Intent(attachActivity,HeightMemorySetActivity::class.java)
+            intent.putExtra("index",index)
+            attachActivity.startActivity(intent)
+
+        }
     }
 
     override fun initData() {
         list?.clear()
         val array = arrayListOf<TimerBean>(
-            TimerBean("1",false),
-            TimerBean("2",false),
-            TimerBean("3",false),
-            TimerBean("4",false),
-        TimerBean("LOW",false))
+            TimerBean(1,true,"1"),
+            TimerBean(2,true,"2"),
+            TimerBean(3,true,"3"),
+            TimerBean(4,true,"4"),
+        TimerBean(5,true,"LOW"))
         list?.addAll(array)
         adapter?.notifyDataSetChanged()
     }

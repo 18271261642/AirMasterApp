@@ -107,7 +107,7 @@ class HomeBottomCheckView : LinearLayout,OnCheckedChangeListener{
     }
 
     //全部未选中
-    private fun setAllNoCheck(){
+     fun setAllNoCheck(){
         homeBottomEncourageCheckBox?.isChecked = false
         homeBottomPrepareHeightCheckBox?.isChecked = false
       //  itemHomeBottomWarringCheckBox?.isChecked = false

@@ -92,6 +92,14 @@ class CarHomeActivity : AppActivity() ,NavigationAdapter.OnNavigationListener{
 
 
 
+
+    }
+
+
+    override fun onResume() {
+        super.onResume()
+        BaseApplication.getBaseApplication().bleOperate.setClearAutoBack()
+        Timber.e("------onResumt----")
         BaseApplication.getBaseApplication().bleOperate.setAutoBackDataListener {
             BaseApplication.getBaseApplication().autoBackBean = it
             autoListener?.backAutoData(it)

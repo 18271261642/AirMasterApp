@@ -44,7 +44,7 @@ class ScaleView : View {
         mLinePaint = Paint()
         mLinePaint?.setColor(Color.WHITE)
         mLinePaint?.setAntiAlias(true) //抗锯齿
-        mLinePaint?.setStyle(Paint.Style.STROKE)
+        mLinePaint?.setStyle(Paint.Style.FILL_AND_STROKE)
         mLinePaint?.setStrokeWidth(8F)
         mTextPaint = Paint()
         mTextPaint?.setColor(Color.CYAN)
@@ -57,7 +57,7 @@ class ScaleView : View {
         mRulerPaint?.setAntiAlias(true)
         mRulerPaint?.setStyle(Paint.Style.FILL_AND_STROKE)
         mRulerPaint?.setColor(Color.RED)
-        mRulerPaint?.strokeWidth = 8F
+        mRulerPaint?.strokeWidth = 10F
     }
 
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
@@ -97,14 +97,22 @@ class ScaleView : View {
 
 
        // canvas?.drawLine(10F,10F,10F,mHeight!!,mLinePaint!!)
-        canvas.drawLine(0F,mHeight!!,mWidth!!,mHeight!!,mLinePaint!!)
+        canvas.drawLine(5F,mHeight!!,mWidth!!,mHeight!!,mLinePaint!!)
 
-        val model = mWidth!! / 10
+        val model = (mWidth!!) / 10
         var countX = 0F
         for(i in 0 ..10){
             val tmp = i * model
             countX += tmp
-            canvas.drawLine(tmp,mHeight!!/2,tmp,mHeight!!,mLinePaint!!)
+            if(i == 0 ){
+                canvas.drawLine(5F ,mHeight!!/2,5F ,mHeight!!,mLinePaint!!)
+            }
+            else if(i == 10){
+                canvas.drawLine(tmp-5F ,mHeight!!/2,tmp-5F ,mHeight!!,mLinePaint!!)
+            }else{
+                canvas.drawLine( tmp,mHeight!!/2+10F,tmp,mHeight!!,mLinePaint!!)
+            }
+
         }
 //
 //        for (i in min until max) {
@@ -126,7 +134,18 @@ class ScaleView : View {
         Timber.e("-------vvv="+v)
 
         progrees = tempProgress/m1
-        canvas.drawLine(progrees, 0F, progrees, mHeight!!, mRulerPaint!!)
+
+
+        if(progrees == 0F){
+            canvas.drawLine(5F, mHeight!!/3, 5F, mHeight!!, mRulerPaint!!)
+        }else if(tempProgress == 100F){
+            canvas.drawLine(mWidth!!-5F, mHeight!!/3, mWidth!!-5F, mHeight!!, mRulerPaint!!)
+
+        }
+        else{
+            canvas.drawLine(progrees, mHeight!!/3, progrees, mHeight!!, mRulerPaint!!)
+        }
+
 
     }
 

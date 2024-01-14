@@ -13,6 +13,7 @@ import com.app.airmaster.car.bean.TimerBean
 import com.app.airmaster.viewmodel.ControlViewModel
 import com.app.airmaster.widget.CommTitleView
 import com.bonlala.widget.view.SwitchButton
+import timber.log.Timber
 
 /**
  * 点火熄火设置
@@ -109,6 +110,7 @@ class CarIgnitionFragment : TitleBarFragment<CarSysSetActivity>(){
 
         //点火
         ingitionOnSwitch?.setOnCheckedChangeListener { button, checked ->
+            Timber.e("---------点火="+(button.isPressed))
             setRyVisibility()
             var code = if(checked) 1 else 0
             if(checked){
@@ -132,15 +134,21 @@ class CarIgnitionFragment : TitleBarFragment<CarSysSetActivity>(){
         list?.clear()
         onList?.clear()
 
-        val array = arrayListOf<TimerBean>(TimerBean("Low",0,false),
+        val array = arrayListOf<TimerBean>(TimerBean("Low",5,false),
             TimerBean("1",1,false),
             TimerBean("2",2,false),
             TimerBean("3",3,false),
             TimerBean("4",4,false))
+
+        val onArray = arrayListOf<TimerBean>(
+            TimerBean("1",1,false),
+            TimerBean("2",2,false),
+            TimerBean("3",3,false),
+            TimerBean("4",4,false))
+
         list?.addAll(array)
         adapter?.notifyDataSetChanged()
-        val tempArray = array.removeAt(0)
-        onList?.addAll(array)
+        onList?.addAll(onArray)
         onAdapter?.notifyDataSetChanged()
 
         //熄火
@@ -173,6 +181,7 @@ class CarIgnitionFragment : TitleBarFragment<CarSysSetActivity>(){
             if(it == null){
                 return@observe
             }
+            Timber.e("---------点火熄火="+it.toString())
            val isOn = it.accTurnOnValue !=0
             val isOff = it.accTurnOffValue != 0
 
@@ -183,6 +192,7 @@ class CarIgnitionFragment : TitleBarFragment<CarSysSetActivity>(){
 
             if(isOn){
                 onList?.forEachIndexed { index, timerBean ->
+                    Timber.e("---------onList="+timerBean.time +" "+it.accTurnOnValue)
                     timerBean.isChecked = timerBean.time == it.accTurnOnValue
                 }
                 onAdapter?.notifyDataSetChanged()

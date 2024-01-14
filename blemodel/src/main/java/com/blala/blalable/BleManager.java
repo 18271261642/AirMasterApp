@@ -95,8 +95,16 @@ public class BleManager {
     }
 
 
-    public void setOnCarAutoBackListener(OnCarAutoBackListener onCarAutoBackListener) {
-        this.onCarAutoBackListener = onCarAutoBackListener;
+    public void setOnCarAutoClear(){
+        if(onCarAutoBackListener != null){
+            onCarAutoBackListener = null;
+
+        }
+    }
+
+    public void setOnCarAutoBackListener(OnCarAutoBackListener onCarAutoBackListeners) {
+        this.onCarAutoBackListener = onCarAutoBackListeners;
+        Log.e(TAG,"-------onBack="+(onCarAutoBackListener == null)+" "+(onCarAutoBackListeners == null));
     }
 
     public void setOnSendWriteListener(OnSendWriteDataListener onSendWriteListener){
@@ -399,7 +407,7 @@ public class BleManager {
                     //自检模式下项目
                     int selfCheckModel = bytes[19] & 0xff;
                     //当前处于预置位位置
-                    int curPos =  bytes[20] & 0xff;
+                    int curPos =  bytes[20] & 0xf;
                     //左前气压值
                     int leftPressure = bytes[21] &0xff;
                     //右前气压值
@@ -525,7 +533,7 @@ public class BleManager {
 
 
 
-                   // Log.e(TAG,"--------自动返回="+autoBackBean.toString());
+                    Log.e(TAG,"-------档位="+autoBackBean.getCurPos()+" "+(onCarAutoBackListener == null));
 
                     if(onCarAutoBackListener != null){
                         onCarAutoBackListener.backAutoData(autoBackBean);

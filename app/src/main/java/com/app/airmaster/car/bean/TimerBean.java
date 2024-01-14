@@ -13,6 +13,9 @@ public class TimerBean {
 
     private boolean isChecked;
 
+    //是否是高度记忆模式，高度记忆模式更换图片
+    private boolean isHeightMemory;
+
     public TimerBean() {
     }
 
@@ -27,6 +30,13 @@ public class TimerBean {
         this.timeValue = timeValue;
         this.time = time;
         this.isChecked = isChecked;
+    }
+
+
+    public TimerBean(int time, boolean isHeightMemory,String timeValue) {
+        this.time = time;
+        this.isHeightMemory = isHeightMemory;
+        this.timeValue = timeValue;
     }
 
     public int getTime() {
@@ -51,5 +61,14 @@ public class TimerBean {
 
     public void setChecked(boolean checked) {
         isChecked = checked;
+    }
+
+
+    public boolean isHeightMemory() {
+        return isHeightMemory;
+    }
+
+    public void setHeightMemory(boolean heightMemory) {
+        isHeightMemory = heightMemory;
     }
 }

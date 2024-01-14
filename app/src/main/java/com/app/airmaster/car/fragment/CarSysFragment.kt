@@ -3,7 +3,9 @@ package com.app.airmaster.car.fragment
 import android.view.View
 import com.app.airmaster.R
 import com.app.airmaster.action.TitleBarFragment
+import com.app.airmaster.adapter.OnCommItemClickListener
 import com.app.airmaster.car.CarSysSetActivity
+import com.app.airmaster.second.SecondScanActivity
 import com.app.airmaster.widget.CommTitleView
 import com.bonlala.widget.layout.SettingBar
 import com.hjq.bar.OnTitleBarListener
@@ -100,4 +102,7 @@ class CarSysFragment : TitleBarFragment<CarSysSetActivity>() {
     override fun initData() {
 
     }
+
+
+
 }

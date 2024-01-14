@@ -72,14 +72,24 @@ class CarSysScaleFragment : TitleBarFragment<CarSysSetActivity>() {
         rightRearScaleView?.setOnProgressListener(progressSelectListener)
 
 
-        val autoBean = BaseApplication.getBaseApplication().autoBackBean
-        if(autoBean != null){
-            leftFrontScaleView?.setProgress(autoBean.leftFrontHeightRuler)
-            rightFrontScaleView?.setProgress(autoBean.rightFrontHeightRuler)
-            leftRearScaleView?.setProgress(autoBean.leftAfterHeightRuler)
-            rightRearScaleView?.setProgress(autoBean.rightAfterHeightRuler)
+        BaseApplication.getBaseApplication().bleOperate.setAutoBackDataListener{
+            val autoBean = it
+            if(autoBean != null){
+                leftFrontScaleView?.setProgress(autoBean.leftFrontHeightRuler)
+                rightFrontScaleView?.setProgress(autoBean.rightFrontHeightRuler)
+                leftRearScaleView?.setProgress(autoBean.leftAfterHeightRuler)
+                rightRearScaleView?.setProgress(autoBean.rightAfterHeightRuler)
 
+            }
         }
+//        val autoBean = BaseApplication.getBaseApplication().autoBackBean
+//        if(autoBean != null){
+//            leftFrontScaleView?.setProgress(autoBean.leftFrontHeightRuler)
+//            rightFrontScaleView?.setProgress(autoBean.rightFrontHeightRuler)
+//            leftRearScaleView?.setProgress(autoBean.leftAfterHeightRuler)
+//            rightRearScaleView?.setProgress(autoBean.rightAfterHeightRuler)
+//
+//        }
 
     }
 
