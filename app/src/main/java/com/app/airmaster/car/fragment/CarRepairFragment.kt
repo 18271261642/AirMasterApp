@@ -32,7 +32,7 @@ class CarRepairFragment : TitleBarFragment<CarSysSetActivity>() {
 
     private var sysRepairTitleView : CommTitleView ?= null
 
-
+    private var clickNumber = 0
 
     override fun getLayoutId(): Int {
         return R.layout.fragment_car_repair_layout
@@ -47,13 +47,13 @@ class CarRepairFragment : TitleBarFragment<CarSysSetActivity>() {
             fragmentManager.popBackStack()
         }
 
-
         //是否是维修模式
         repairModelSwitch?.isChecked = BaseApplication.getBaseApplication().autoBackBean != null &&  BaseApplication.getBaseApplication().autoBackBean.workModel == 3
 
         repairModelSwitch?.setOnCheckedChangeListener { button, checked ->
             Timber.e("-------button="+ button.isPressed )
             if(!button.isPressed){
+                clickNumber = 0
                 viewModel?.setRepairModel(checked)
             }
 
@@ -66,8 +66,12 @@ class CarRepairFragment : TitleBarFragment<CarSysSetActivity>() {
         viewModel = ViewModelProvider(this)[ControlViewModel::class.java]
 
         viewModel?.autoSetBeanData?.observe(this){
-            //是否是维修模式
-            repairModelSwitch?.isChecked = BaseApplication.getBaseApplication().autoBackBean != null &&  BaseApplication.getBaseApplication().autoBackBean.workModel == 3
+            clickNumber++
+            if(clickNumber>3){
+
+                //是否是维修模式
+                repairModelSwitch?.isChecked = BaseApplication.getBaseApplication().autoBackBean != null &&  BaseApplication.getBaseApplication().autoBackBean.workModel == 3
+            }
 
         }
 

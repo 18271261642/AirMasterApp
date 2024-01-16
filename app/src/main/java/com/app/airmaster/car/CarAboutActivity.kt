@@ -7,16 +7,25 @@ import android.text.style.ForegroundColorSpan
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.lifecycle.ViewModelProvider
 import com.app.airmaster.R
 import com.app.airmaster.action.AppActivity
+import com.app.airmaster.viewmodel.VersionViewModel
+import com.blala.blalable.Utils
 import com.hjq.shape.view.ShapeEditText
 import com.hjq.shape.view.ShapeTextView
+import timber.log.Timber
 
 /**
  * Created by Admin
  *Date 2023/7/14
  */
 class CarAboutActivity :AppActivity() {
+
+    private var viewModel : VersionViewModel ?= null
+
+
+    private var touchPadVersionTv : TextView ?= null
 
     private var appVersionTv : TextView ?= null
     private var aboutUpgradeContentLayout : LinearLayout ?= null
@@ -27,6 +36,7 @@ class CarAboutActivity :AppActivity() {
     }
 
     override fun initView() {
+        touchPadVersionTv = findViewById(R.id.touchPadVersionTv)
         aboutActivateEdit = findViewById(R.id.aboutActivateEdit)
         appVersionTv = findViewById(R.id.appVersionTv)
         aboutUpgradeContentLayout = findViewById(R.id.aboutUpgradeContentLayout)
@@ -51,7 +61,26 @@ class CarAboutActivity :AppActivity() {
     }
 
     override fun initData() {
+        viewModel = ViewModelProvider(this)[VersionViewModel::class.java]
         showAppVersion()
+
+        val bt = ByteArray(3)
+        bt[0] = 0x01
+        bt[1] = 0x02
+        bt[2] = 0x00
+        val otaByte = Utils.getFullPackage(bt)
+
+        Timber.e("--------otaByte="+Utils.formatBtArrayToString(otaByte))
+
+        viewModel?.deviceVersionInfo?.observe(this){ it ->
+            it.forEach {
+                touchPadVersionTv?.text =it.value
+            }
+        }
+
+
+        //获取固件版本信息
+        viewModel?.getDeviceVersion()
     }
 
 

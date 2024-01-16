@@ -33,6 +33,8 @@ class CarHeightMemoryFragment : TitleBarFragment<CarSysSetActivity>(){
     private var adapter : CarTimerAdapter?= null
 
 
+
+
     override fun getLayoutId(): Int {
        return R.layout.fragment_car_height_memory_layout
     }
@@ -53,7 +55,7 @@ class CarHeightMemoryFragment : TitleBarFragment<CarSysSetActivity>(){
         }
 
         adapter?.setOnCommClickListener{
-            if(it == 4){
+            if(it == 0){
                 val index = list?.get(it)?.time
                 val intent = Intent(attachActivity,HeightMemoryLowSetActivity::class.java)
                 intent.putExtra("index",index)
@@ -73,11 +75,12 @@ class CarHeightMemoryFragment : TitleBarFragment<CarSysSetActivity>(){
     override fun initData() {
         list?.clear()
         val array = arrayListOf<TimerBean>(
+            TimerBean(5,true,"LOW"),
             TimerBean(1,true,"1"),
             TimerBean(2,true,"2"),
             TimerBean(3,true,"3"),
-            TimerBean(4,true,"4"),
-        TimerBean(5,true,"LOW"))
+            TimerBean(4,true,"4"))
+
         list?.addAll(array)
         adapter?.notifyDataSetChanged()
     }

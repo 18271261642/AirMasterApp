@@ -12,7 +12,7 @@
         android:layout_height="wrap_content"
         android:background="@color/transparent"
         app:titleColor="@color/white"
-        app:title="连接设备"
+        app:title="蓝牙"
         app:lineVisible="false"
         app:leftIcon="@drawable/ic_white_left_back"/>
 
@@ -23,7 +23,7 @@
         android:textColor="@color/white"
         android:textSize="@dimen/sp_18"
         android:layout_margin="@dimen/dp_15"
-        android:text="已连接的设备"/>
+        android:text="可用设备"/>
 
     <com.app.airmaster.car.view.CarBindDeviceView
         android:id="@+id/scanBindDeviceView"
@@ -38,7 +38,7 @@
         android:textColor="@color/white"
         android:textSize="@dimen/sp_18"
         android:layout_margin="@dimen/dp_15"
-        android:text="未连接的设备"/>
+        android:text="其它设备"/>
     <androidx.recyclerview.widget.RecyclerView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

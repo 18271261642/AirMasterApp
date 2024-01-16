@@ -12,7 +12,7 @@ android {
         minSdk 21
         targetSdk 32
         versionCode 1
-        versionName "V1.0.1_240112"
+        versionName "V1.0.1_240117"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
@@ -51,6 +51,7 @@ dependencies {
     implementation project(path: ':blemodel')
     implementation project(path: ':widget')
     implementation project(path: ':base')
+    implementation project(path: ':NordicDfuLibrary')
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.4'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.0'

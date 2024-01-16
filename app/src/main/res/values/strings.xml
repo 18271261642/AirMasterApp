@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">Pocket Wuque</string>
 
+    <string name="string_ota_dialog_content">更新内容:\n1，解决bug\n2，添加新的功能\n\n</string>
 
     <string name="string_pressure_h">高压（PSI）: %1s</string>
     <string name="string_pressure_l">低压（PSI）: %1s</string>
