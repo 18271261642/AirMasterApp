@@ -676,4 +676,22 @@ public class Utils {
         return str;
     }
 
+
+    /**
+     * 将字符串转换成ACI->byte[]
+     */
+    public static byte[] changeStrToAscii(String str){
+        byte[] byteArray = new byte[16];
+        for(int i = 0;i<str.length();i++){
+            char c = str.charAt(i);
+            int asciiValue = (int) c; // 将字符转换为对应的ASCII值
+            byteArray[i] = (byte) asciiValue;
+        }
+        return byteArray;
+    }
+
+
+
+
+
 }

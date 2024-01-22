@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.hjq.shape.layout.ShapeLinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="@dimen/dp_280"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    app:shape_solidColor="#FF232323"
+    app:shape_radius="@dimen/dp_15"
+    android:layout_margin="@dimen/dp_15"
+    android:layout_height="wrap_content">
+
+
+    <TextView
+        android:id="@+id/singleContentTv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="是否全部清除？"
+        android:textColor="@color/white"
+        android:textSize="@dimen/sp_19"
+        android:layout_marginTop="@dimen/dp_30"
+        android:gravity="center"
+        android:layout_gravity="center"/>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dp_25"
+        android:layout_marginBottom="@dimen/dp_15"
+        android:orientation="horizontal">
+
+
+        <com.hjq.shape.view.ShapeTextView
+            android:id="@+id/singleSubmitTv"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            app:shape_solidColor="#333333"
+            app:shape_solidPressedColor="#80333333"
+            app:shape_radius="@dimen/dp_25"
+            android:text="@string/common_confirm"
+            android:textSize="20sp"
+            android:paddingTop="@dimen/dp_5"
+            android:paddingBottom="@dimen/dp_5"
+            android:paddingStart="@dimen/dp_15"
+            android:paddingEnd="@dimen/dp_15"
+            android:textColor="@color/white"
+            android:layout_gravity="center"
+            android:layout_margin="@dimen/dp_15"
+            android:gravity="center"/>
+
+
+    </LinearLayout>
+</com.hjq.shape.layout.ShapeLinearLayout>

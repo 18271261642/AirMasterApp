@@ -14,7 +14,7 @@ public class RequestServer implements IRequestServer {
 
     @Override
     public String getHost() {
-        return "https://wuquedistribution.com:12349/";
+        return "http://47.113.195.211:8091/";
     }
 
     @Override

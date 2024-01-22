@@ -250,6 +250,7 @@
             android:layout_gravity="center"
             android:gravity="center"
             android:maxLines="1"
+            android:maxLength="16"
             android:hint="请联系经销商获取激活码"
             android:layout_marginEnd="@dimen/dp_10"
             android:layout_height="wrap_content"
