@@ -70,6 +70,7 @@
             android:text="1"
             android:textColor="@color/white"
             android:textSize="30sp"
+            android:fontFamily="@font/lato_regular15"
             android:textStyle="bold" />
 
     </FrameLayout>
@@ -98,6 +99,7 @@
             android:button="@null"
             android:gravity="center"
             android:text="2"
+            android:fontFamily="@font/lato_regular15"
             android:textColor="@color/white"
             android:textSize="30sp"
             android:textStyle="bold" />
@@ -139,6 +141,7 @@
             android:button="@null"
             android:gravity="center"
             android:text="3"
+            android:fontFamily="@font/lato_regular15"
             android:textColor="@color/white"
             android:textSize="30sp"
             android:textStyle="bold" />
@@ -177,6 +180,7 @@
             android:button="@null"
             android:gravity="center"
             android:text="4"
+            android:fontFamily="@font/lato_regular15"
             android:textColor="@color/white"
             android:textSize="30sp"
             android:textStyle="bold" />

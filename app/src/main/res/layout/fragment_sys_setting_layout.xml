@@ -49,6 +49,7 @@
             app:bar_leftTextColor="@color/white"
             app:bar_rightDrawable="@mipmap/ic_set_right_back"
             app:bar_lineVisible="false"
+            android:visibility="gone"
             android:layout_height="wrap_content"/>
 
 
@@ -123,7 +124,16 @@
             app:bar_lineVisible="false"
             android:layout_height="wrap_content"/>
 
-
+        <com.bonlala.widget.layout.SettingBar
+            android:id="@+id/sysAirBalanceBar"
+            android:layout_width="match_parent"
+            app:bar_leftDrawable="@mipmap/ic_sys_low_air"
+            app:bar_leftText="气压平衡"
+            android:background="@color/transparent"
+            app:bar_leftTextColor="@color/white"
+            app:bar_rightDrawable="@mipmap/ic_set_right_back"
+            app:bar_lineVisible="false"
+            android:layout_height="wrap_content"/>
 
     </LinearLayout>
     </androidx.core.widget.NestedScrollView>

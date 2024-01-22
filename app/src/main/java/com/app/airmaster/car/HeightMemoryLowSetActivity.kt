@@ -41,7 +41,7 @@ class HeightMemoryLowSetActivity : AppActivity(){
                 return@setOnClickListener
             }
             val intent = Intent(this@HeightMemoryLowSetActivity,HeightMemorySetActivity::class.java)
-            intent.putExtra("index",1)
+            intent.putExtra("index",5)
             startActivity(intent)
         }
 

@@ -13,6 +13,9 @@ import com.app.airmaster.car.bean.TimerBean
 import com.app.airmaster.viewmodel.ControlViewModel
 import com.app.airmaster.widget.CommTitleView
 import com.bonlala.widget.view.SwitchButton
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import timber.log.Timber
 
 /**
@@ -46,6 +49,10 @@ class CarIgnitionFragment : TitleBarFragment<CarSysSetActivity>(){
     private var carIgnitionOnRy : RecyclerView ?= null
     private var onList : MutableList<TimerBean> ?= null
     private var onAdapter : CarTimerAdapter?= null
+
+
+    //是否点击了点火开关
+    private var isStirUp = false
 
     companion object{
         fun getInstance() : CarIgnitionFragment{
@@ -103,9 +110,10 @@ class CarIgnitionFragment : TitleBarFragment<CarSysSetActivity>(){
                 list?.forEach {
                    it.isChecked = false
                 }
+                viewModel?.setStallSetting(0)
             }
             adapter?.notifyDataSetChanged()
-            viewModel?.setStallSetting(code)
+
         }
 
         //点火
@@ -123,9 +131,10 @@ class CarIgnitionFragment : TitleBarFragment<CarSysSetActivity>(){
                 onList?.forEach {
                    it.isChecked = false
                 }
+                viewModel?.setStartUpSetting(0)
             }
             onAdapter?.notifyDataSetChanged()
-            viewModel?.setStartUpSetting(code)
+
         }
     }
 
@@ -162,6 +171,7 @@ class CarIgnitionFragment : TitleBarFragment<CarSysSetActivity>(){
             }
             adapter?.notifyDataSetChanged()
             viewModel?.setStallSetting(code)
+
         }
 
         //点火

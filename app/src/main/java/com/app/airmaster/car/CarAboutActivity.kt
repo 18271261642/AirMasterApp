@@ -1,9 +1,14 @@
 package com.app.airmaster.car
 
 import android.graphics.Color
+import android.provider.ContactsContract.CommonDataKinds.Im
 import android.text.SpannableStringBuilder
 import android.text.Spanned
 import android.text.style.ForegroundColorSpan
+import android.view.View
+import android.view.animation.Animation
+import android.view.animation.RotateAnimation
+import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
@@ -32,29 +37,47 @@ class CarAboutActivity :AppActivity() {
     private var viewModel : VersionViewModel ?= null
 
 
+    private var aboutActivateDeviceImageView : ImageView ?= null
+
+    private var aboutUpgradeImageView : ImageView ?= null
+
     private var touchPadVersionTv : TextView ?= null
 
     private var appVersionTv : TextView ?= null
     private var aboutUpgradeContentLayout : LinearLayout ?= null
     private var aboutActivateEdit : ShapeEditText ?= null
 
+    private var activateContentLayout : LinearLayout ?= null
+
+    //是否是折叠状态
+    private var isUpgradeFold = false
+    private var isActivateFold = false
+
     override fun getLayoutId(): Int {
         return R.layout.activity_app_about_layout
     }
 
     override fun initView() {
+        activateContentLayout = findViewById(R.id.activateContentLayout)
+        aboutActivateDeviceImageView = findViewById(R.id.aboutActivateDeviceImageView)
+        aboutUpgradeImageView = findViewById(R.id.aboutUpgradeImageView)
         touchPadVersionTv = findViewById(R.id.touchPadVersionTv)
         aboutActivateEdit = findViewById(R.id.aboutActivateEdit)
         appVersionTv = findViewById(R.id.appVersionTv)
         aboutUpgradeContentLayout = findViewById(R.id.aboutUpgradeContentLayout)
+
+
+        isUpgradeFoldState(true)
+        isAcFoldState(true)
+
         //升级
         findViewById<ConstraintLayout>(R.id.aboutUpgradeLayout).setOnClickListener {
-
+            isUpgradeFoldState(isUpgradeFold)
         }
 
         //激活设备
         findViewById<ConstraintLayout>(R.id.aboutActivateLayout).setOnClickListener {
-
+            isAcFoldState(isActivateFold)
         }
 
         //提交激活码
@@ -142,5 +165,37 @@ class CarAboutActivity :AppActivity() {
                 startActivity(SecondScanActivity::class.java)
             }
         }
+    }
+
+
+    //是否是折叠装填
+    private fun isUpgradeFoldState(fold : Boolean){
+        isUpgradeFold = !fold
+        aboutUpgradeContentLayout?.visibility = if(fold) View.GONE else View.VISIBLE
+        rotateU(fold)
+    }
+
+
+    private fun isAcFoldState(fold : Boolean){
+        isActivateFold = !fold
+        activateContentLayout?.visibility = if(fold) View.GONE else View.VISIBLE
+        rotateA(fold)
+    }
+
+    private fun rotateU(fold : Boolean){
+        val rotate = RotateAnimation(0F,if(fold)0F else 90F,Animation.RELATIVE_TO_SELF,0.5F,RotateAnimation.RELATIVE_TO_SELF,0.5F)
+        rotate.duration = 10
+        rotate.fillAfter = true
+        rotate.repeatCount = 0
+        aboutUpgradeImageView?.startAnimation(rotate)
+    }
+
+
+    private fun rotateA(fold : Boolean){
+        val rotate = RotateAnimation(0F,if(fold)0F else 90F,Animation.RELATIVE_TO_SELF,0.5F,RotateAnimation.RELATIVE_TO_SELF,0.5F)
+        rotate.duration = 10
+        rotate.fillAfter = true
+        rotate.repeatCount = 0
+        aboutActivateDeviceImageView?.startAnimation(rotate)
     }
 }

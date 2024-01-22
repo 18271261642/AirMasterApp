@@ -159,12 +159,12 @@ class CarHomeCenterView : LinearLayout ,OnClickListener{
      fun setFrontImage(){
         val leftBit = BitmapFactory.decodeResource(context.resources,R.mipmap.ic_car_mid_left_img)
         val rightBit = BitmapFactory.decodeResource(context.resources,R.mipmap.ic_car_mid_right_img)
-        carFrontHeightGaugeView?.setBitmap(leftBit,rightBit)
+
 
 
         val afterLeft = BitmapFactory.decodeResource(context.resources,R.mipmap.ic_car_mid_after_left_img)
         val afterRight = BitmapFactory.decodeResource(context.resources,R.mipmap.ic_car_mid_after_right_img)
-
+        carFrontHeightGaugeView?.setBitmap(afterLeft,afterRight)
         carAfterHeightGaugeView?.setBitmap(afterLeft,afterRight)
 
         setFrontHeightValue(10,10)

@@ -300,6 +300,36 @@ class ControlViewModel : ViewModel() {
         }
     }
 
+
+    //自动平衡开关
+    fun setAirBalanceSwitch(open : Boolean){
+        val scrStr = "000504012C"+String.format("%02x",if(open) 1 else 0)
+        val crc = Utils.crcCarContentArray(scrStr)
+        val str = "011E"+ CarConstant.CAR_HEAD_BYTE_STR+scrStr+crc
+        val resultArray = Utils.hexStringToByte(str)
+        val result = Utils.getFullPackage(resultArray)
+        BaseApplication.getBaseApplication().bleOperate.writeCommonByte(result){
+            if(it != null){
+                setCommRefreshDevice(it,0xAC.toByte())
+            }
+        }
+    }
+
+
+    //自动平衡等级
+    fun setAirBalanceLevel(level : Int){
+        val scrStr = "000504012D"+String.format("%02x",level)
+        val crc = Utils.crcCarContentArray(scrStr)
+        val str = "011E"+ CarConstant.CAR_HEAD_BYTE_STR+scrStr+crc
+        val resultArray = Utils.hexStringToByte(str)
+        val result = Utils.getFullPackage(resultArray)
+        BaseApplication.getBaseApplication().bleOperate.writeCommonByte(result){
+            if(it != null){
+                setCommRefreshDevice(it,0xAD.toByte())
+            }
+        }
+    }
+
     fun writeCommonFunction(){
         BaseApplication.getBaseApplication().bleOperate.setCommAllParams(object : OnCarWriteBackListener{
 

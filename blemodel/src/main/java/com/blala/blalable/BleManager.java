@@ -421,14 +421,33 @@ public class BleManager {
                     //气缸气压值
                     int cylinderPressure = bytes[25] & 0xff;
 
-                    //左前高度尺
-                    int leftRuler = bytes[26] & 0xff;
-                    //右前高度尺
-                    int rightRuler = bytes[27] &0xff;
-                    //左后高度尺
-                    int leftAfterRuler = bytes[28] &0xff;
-                    //右后高度尺
-                    int rightAfterRuler = bytes[29] & 0xff;
+                    //左前高度尺工作量
+                    int leftRulerWork = bytes[26] & 0xff;
+                    //右前高度尺工作量
+                    int rightRulerWork = bytes[27] &0xff;
+                    //左后高度尺工作量
+                    int leftAfterRulerWork = bytes[28] &0xff;
+                    //右后高度尺工作量
+                    int rightAfterRulerWork = bytes[29] & 0xff;
+
+                    //左前高度尺目标工作量
+                    int leftRulerGoalWork = bytes[30] & 0xff;
+                    //右前高度尺目标工作量
+                    int rightRulerGoalWor = bytes[31] &0xff;
+                    //左后高度尺目标工作量
+                    int leftAfterRulerGoalWor = bytes[32] &0xff;
+                    //右后高度尺目标工作量
+                    int rightAfterRulerGoalWor = bytes[33] & 0xff;
+
+                    //左前高度尺实际工作量
+                    int leftRuler = bytes[34] & 0xff;
+                    //右前高度尺实际工作量
+                    int rightRuler = bytes[35] &0xff;
+                    //左后高度尺实际工作量
+                    int leftAfterRuler = bytes[36] &0xff;
+                    //右后高度尺实际工作量
+                    int rightAfterRuler = bytes[37] & 0xff;
+
 
                     //电池电压
                     int batteryVal = bytes[38] & 0xff;

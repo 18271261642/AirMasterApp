@@ -45,17 +45,18 @@
 
 
                 <TextView
-                    android:layout_marginTop="@dimen/dp_10"
-                    android:layout_marginBottom="@dimen/dp_10"
                     android:id="@+id/homeCenterLeftTopTv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dp_20"
+                    android:layout_marginBottom="@dimen/dp_20"
+                    android:fontFamily="@font/lato_regular15"
                     android:shadowColor="#80000000"
                     android:shadowRadius="3.0"
-                    android:textStyle="bold"
-                    android:textColor="#80FFFFFF"
                     android:text="88"
-                    android:textSize="30sp" />
+                    android:textColor="#80FFFFFF"
+                    android:textSize="30sp"
+                    android:textStyle="bold" />
 
                 <ImageView
                     android:id="@+id/homeCenterLeftBotImg"
@@ -80,13 +81,14 @@
                     android:id="@+id/homeCenterLeftRearPressureTv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dp_20"
+                    android:layout_marginBottom="@dimen/dp_20"
+                    android:fontFamily="@font/lato_regular15"
                     android:shadowRadius="3.0"
-                    android:textStyle="bold"
                     android:text="66"
-                    android:layout_marginTop="@dimen/dp_10"
-                    android:layout_marginBottom="@dimen/dp_10"
                     android:textColor="#80FFFFFF"
-                    android:textSize="30sp" />
+                    android:textSize="30sp"
+                    android:textStyle="bold" />
 
                 <ImageView
                     android:id="@+id/homeCenterLeftBotImg2"
@@ -102,10 +104,6 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:orientation="vertical">
-
-
-
-
 
 
                 <androidx.constraintlayout.widget.ConstraintLayout
@@ -136,23 +134,19 @@
                         app:layout_constraintRight_toRightOf="parent" />
 
 
-
-
-
-
-
                     <com.app.airmaster.widget.CusVerticalTextScheduleView
                         android:id="@+id/carCenterTopScheduleView"
                         android:layout_width="@dimen/dp_2"
                         android:layout_height="0dp"
+                        android:layout_marginTop="@dimen/dp_10"
+                        android:layout_marginBottom="@dimen/dp_10"
                         android:background="#3D3D44"
                         app:cus_all_schedule_color="#FF2C2B29"
                         app:cus_curr_schedule_color="#3D3D44"
+
                         app:layout_constraintBottom_toTopOf="@+id/carCenterTopBomImg"
                         app:layout_constraintLeft_toLeftOf="parent"
                         app:layout_constraintRight_toRightOf="parent"
-                        android:layout_marginTop="@dimen/dp_10"
-                        android:layout_marginBottom="@dimen/dp_10"
                         app:layout_constraintTop_toBottomOf="@+id/carHomeCenterTopTopImg" />
 
 
@@ -160,11 +154,11 @@
                         android:layout_width="10dp"
                         android:layout_height="match_parent"
                         android:progress="50"
-                        android:visibility="gone"
                         android:progressBackgroundTint="@color/transparent"
                         android:progressDrawable="@null"
                         android:progressTint="@color/transparent"
                         android:thumb="@mipmap/ic_car_home_middle_top_left"
+                        android:visibility="gone"
                         app:layout_constraintRight_toLeftOf="@+id/carCenterTopScheduleView" />
 
 
@@ -173,29 +167,25 @@
                         android:layout_width="10dp"
                         android:layout_height="match_parent"
                         android:progress="50"
-                        android:visibility="gone"
                         android:progressBackgroundTint="@color/transparent"
                         android:progressDrawable="@null"
                         android:progressTint="@color/transparent"
                         android:thumb="@mipmap/ic_car_home_middle_top_right"
+                        android:visibility="gone"
                         app:layout_constraintLeft_toRightOf="@+id/carCenterTopScheduleView" />
-
 
 
                     <com.app.airmaster.car.view.CarHeightGaugeView
                         android:id="@+id/carFrontHeightGaugeView"
                         android:layout_width="25dp"
+                        android:layout_height="0dp"
+                        android:layout_marginTop="@dimen/dp_15"
+                        android:layout_marginBottom="@dimen/dp_15"
                         app:car_height_gauge_mid_bg_color="#3D3D44"
                         app:layout_constraintBottom_toTopOf="@+id/carCenterTopBomImg"
                         app:layout_constraintLeft_toLeftOf="parent"
                         app:layout_constraintRight_toRightOf="parent"
-                        android:layout_marginTop="@dimen/dp_15"
-                        android:layout_marginBottom="@dimen/dp_15"
-                        app:layout_constraintTop_toBottomOf="@+id/carHomeCenterTopTopImg"
-                        android:layout_height="0dp"/>
-
-
-
+                        app:layout_constraintTop_toBottomOf="@+id/carHomeCenterTopTopImg" />
 
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
@@ -203,7 +193,7 @@
 
                 <View
                     android:layout_width="1dp"
-                    android:layout_height="10dp"/>
+                    android:layout_height="10dp" />
 
 
                 <androidx.constraintlayout.widget.ConstraintLayout
@@ -235,21 +225,21 @@
                     <com.app.airmaster.car.view.CarHeightGaugeView
                         android:id="@+id/carAfterHeightGaugeView"
                         android:layout_width="25dp"
+                        android:layout_height="0dp"
+                        android:layout_marginTop="@dimen/dp_15"
+                        android:layout_marginBottom="@dimen/dp_15"
                         app:car_height_gauge_mid_bg_color="#3D3D44"
                         app:layout_constraintBottom_toTopOf="@+id/carCenterBotBomImg"
                         app:layout_constraintLeft_toLeftOf="parent"
                         app:layout_constraintRight_toRightOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/carCenterBotTopImg"
-                        android:layout_marginTop="@dimen/dp_15"
-                        android:layout_marginBottom="@dimen/dp_15"
-                        android:layout_height="0dp"/>
+                        app:layout_constraintTop_toBottomOf="@+id/carCenterBotTopImg" />
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
 
             </LinearLayout>
 
             <com.hjq.shape.layout.ShapeLinearLayout
-                android:layout_width="@dimen/dp_70"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/dp_10"
                 android:gravity="center"
@@ -271,14 +261,15 @@
 
                 <TextView
                     android:id="@+id/homeCenterRightTopPressureTv"
-                    android:layout_marginTop="@dimen/dp_10"
-                    android:layout_marginBottom="@dimen/dp_10"
-                    android:textStyle="bold"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dp_20"
+                    android:layout_marginBottom="@dimen/dp_20"
+                    android:fontFamily="@font/lato_regular15"
                     android:text="88"
                     android:textColor="#80FFFFFF"
-                    android:textSize="30sp" />
+                    android:textSize="30sp"
+                    android:textStyle="bold" />
 
                 <ImageView
                     android:id="@+id/rightTopReduceImageView"
@@ -301,16 +292,17 @@
 
                 <TextView
                     android:id="@+id/homeCenterRightRearPressureTv"
-                    android:layout_marginTop="@dimen/dp_10"
-                    android:layout_marginBottom="@dimen/dp_10"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dp_20"
+                    android:layout_marginBottom="@dimen/dp_20"
+                    android:fontFamily="@font/lato_regular15"
                     android:shadowColor="#80FFFFFF"
                     android:shadowRadius="3.0"
-                    android:textStyle="bold"
                     android:text="66"
                     android:textColor="#80FFFFFF"
-                    android:textSize="30sp" />
+                    android:textSize="30sp"
+                    android:textStyle="bold" />
 
                 <ImageView
                     android:id="@+id/rightRearReduceImageView"

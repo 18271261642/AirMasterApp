@@ -81,10 +81,12 @@ class HomeBottomNumberView : LinearLayout {
             setClickIndex(3)
         }
 
-        homeGearResetLayout?.setOnClickListener {
+        homeGearResetLayout?.setOnLongClickListener {
             onItemClickListener?.onItemClick(-1)
             setIsLowGear(true)
+            true
         }
+
     }
 
 
