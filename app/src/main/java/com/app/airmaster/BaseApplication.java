@@ -24,6 +24,7 @@ import com.hjq.http.model.HttpHeaders;
 import com.hjq.http.model.HttpParams;
 import com.hjq.http.request.HttpRequest;
 import com.hjq.toast.ToastUtils;
+import com.tencent.bugly.crashreport.CrashReport;
 import com.tencent.mmkv.MMKV;
 import org.litepal.LitePal;
 import java.util.concurrent.TimeUnit;
@@ -47,6 +48,9 @@ public class BaseApplication extends BleApplication {
     private String logStr;
 
     private AutoBackBean autoBackBean;
+
+    //是否是OTA模式
+    private boolean isOTAModel = false;
 
     @Override
     public void onCreate() {
@@ -77,6 +81,8 @@ public class BaseApplication extends BleApplication {
         //mmkv
         MMKV.initialize(this);
         MmkvUtils.initMkv();
+
+        CrashReport.initCrashReport(getApplicationContext(), "5203bcf1b4", true);
 
         initNet();
 
@@ -177,5 +183,13 @@ public class BaseApplication extends BleApplication {
 
     public void setAutoBackBean(AutoBackBean autoBackBean) {
         this.autoBackBean = autoBackBean;
+    }
+
+    public boolean isOTAModel() {
+        return isOTAModel;
+    }
+
+    public void setOTAModel(boolean OTAModel) {
+        isOTAModel = OTAModel;
     }
 }

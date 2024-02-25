@@ -276,6 +276,10 @@ public class ConnStatusService extends Service {
 
             @Override
             public void setNoticeStatus(int code) {
+                if(BaseApplication.getBaseApplication().isOTAModel()){
+
+                    return;
+                }
                 BaseApplication.getBaseApplication().setConnStatus(ConnStatus.CONNECTED);
 //                Timber.e("-------连接成功="+code);
                 MmkvUtils.saveConnDeviceMac(bleMac);

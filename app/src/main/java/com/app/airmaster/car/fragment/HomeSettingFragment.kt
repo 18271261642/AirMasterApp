@@ -9,6 +9,7 @@ import com.app.airmaster.car.CarAboutActivity
 import com.app.airmaster.car.CarHomeActivity
 import com.app.airmaster.car.CarSysSetActivity
 import com.app.airmaster.car.CarSystemCheckActivity
+import com.app.airmaster.car.ShowWebActivity
 import com.app.airmaster.second.SecondScanActivity
 import com.bonlala.widget.layout.SettingBar
 
@@ -59,6 +60,9 @@ class HomeSettingFragment : TitleBarFragment<CarHomeActivity>() {
                 attachActivity.disCommAlertDialog()
                 if(position == 0x01){
                     startActivity(SecondScanActivity::class.java)
+                }
+                if(position == 0x00){
+                    startActivity(ShowWebActivity::class.java)
                 }
             }
 

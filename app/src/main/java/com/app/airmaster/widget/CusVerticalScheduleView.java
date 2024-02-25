@@ -50,7 +50,7 @@ public class CusVerticalScheduleView extends View {
     private float mWidth,mHeight;
 
     //所有进度值
-    private float allScheduleValue = 100f;
+    private float allScheduleValue = 200f;
     //当前进度值
     private float currScheduleValue = 0;
 

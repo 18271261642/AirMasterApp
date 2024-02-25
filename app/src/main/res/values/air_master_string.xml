@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="string_bluetooth">蓝牙</string>
+    <string name="string_home_air">AIR</string>
+    <string name="string_home_control">Control</string>
+    <string name="string_home_setting">Setting</string>
+    <string name="string_check_ing">检测中……</string>
+    <string name="string_check_success">检测成功</string>
+    <string name="string_check_fail">检测失败</string>
+
+    <string name="string_check1_desc">检测最低高度</string>
+    <string name="string_check2_desc">检测车身水平状态</string>
+    <string name="string_check3_desc">检测传感器</string>
+    <string name="string_check4_desc">检测最高高度</string>
+    <string name="string_check5_desc">检测线束状态</string>
+    <string name="string_check6_desc">检测动态调整</string>
+    <string name="string_ota_dialog_content">更新内容:\n1，解决bug\n2，添加新的功能\n</string>
+    <string name="string_pressure_h">高压（PSI）: %1s</string>
+    <string name="string_pressure_l">低压（PSI）: %1s</string>
+
+
+    <string name="string_scan_conn_success">连接成功</string>
+    <string name="string_scan_conn_failed">连接失败</string>
+
+    <string name="string_setting_menu_conn_device">连接设备</string>
+    <string name="string_setting_menu_set">系统设置</string>
+    <string name="string_setting_menu_sys_auto_check">系统自检</string>
+    <string name="string_setting_menu_about">关于</string>
+    <string name="string_scan_valid_device">可用设备</string>
+    <string name="string_scan_other_device">其它设备</string>
+    <string name="string_scan_unbind_prompt">是否解除当前连接?</string>
+    <string name="string_scan_conn_new_device">请先解绑再连接!</string>
+
+    <!--系统设置页面-->
+    <string name="string_set_tank_pressure">气罐压力</string>
+    <string name="string_set_sensor_tool">高度尺工具</string>
+    <string name="string_set_battery_protect">电瓶保护</string>
+    <string name="string_set_start_end">点熄火设置</string>
+    <string name="string_set_preset_setting">高度记忆设置</string>
+    <string name="string_set_service_model">维修模式</string>
+    <string name="string_set_minimum_dirve">最低行驶保护气压</string>
+    <string name="string_set_ap_balance">气压平衡</string>
+    <string name="string_tank_pressure_alert">高压和低压差不能超过40PSI.</string>
+    <string name="string_sensor_fl">左前传感器</string>
+    <string name="string_sensor_fr">右前传感器</string>
+    <string name="string_sensor_rl">左后传感器</string>
+    <string name="string_sensor_rr">右后传感器</string>
+    <string name="string_battery_16">16V高压保护</string>
+    <string name="string_battery_mini_b">低压保护</string>
+    <string name="string_start_end_start">点火设置</string>
+</resources>

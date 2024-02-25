@@ -234,7 +234,7 @@ class SecondScanActivity : AppActivity() {
 
                 val mac = MmkvUtils.getConnDeviceMac()
                 if(!BikeUtils.isEmpty(mac)){
-                    ToastUtils.show("请先解绑再连接!")
+                    ToastUtils.show(resources.getString(R.string.string_scan_conn_new_device))
                     return@OnCommItemClickListener
                 }
 
@@ -327,12 +327,12 @@ class SecondScanActivity : AppActivity() {
             val action = p1?.action
             if(action == BleConstant.BLE_CONNECTED_ACTION){
                 hideDialog()
-                ToastUtils.show("连接成功")
+                ToastUtils.show(resources.getString(R.string.string_scan_conn_success))
                 getHasBindDevice()
             }
             if(action == BleConstant.BLE_DIS_CONNECT_ACTION){
                 hideDialog()
-                ToastUtils.show("连接失败")
+                ToastUtils.show(resources.getString(R.string.string_scan_conn_failed))
             }
         }
 
@@ -343,7 +343,7 @@ class SecondScanActivity : AppActivity() {
     private fun unBindDevice(){
         val dialog = ConfirmDialog(this, com.bonlala.base.R.style.BaseDialogTheme)
         dialog.show()
-        dialog.setContentTxt("是否解除当前连接?")
+        dialog.setContentTxt(resources.getString(R.string.string_scan_unbind_prompt))
         dialog.setOnCommClickListener{
             dialog.dismiss()
             if(it == 0x01){

@@ -1,53 +1,39 @@
-package com.app.airmaster.car.fragment
+package com.app.airmaster.car
 
 import android.os.Build
-import android.view.KeyEvent
 import android.view.View
+import android.view.View.OnLongClickListener
 import android.webkit.WebSettings
-import android.webkit.WebView
 import com.app.airmaster.R
-import com.app.airmaster.action.TitleBarFragment
-import com.app.airmaster.car.CarHomeActivity
+import com.app.airmaster.action.AppActivity
 import com.github.lzyzsd.jsbridge.BridgeWebView
 
-/**
- * Created by Admin
- *Date 2023/7/14
- */
-class HomeAirFragment : TitleBarFragment<CarHomeActivity>(){
-
-    companion object{
-        fun getInstance() : HomeAirFragment{
-            return HomeAirFragment()
-        }
-    }
+class ShowWebActivity : AppActivity() {
 
 
-    private var webView : BridgeWebView?= null
+    private var commWebView : BridgeWebView ?= null
 
 
     override fun getLayoutId(): Int {
-        return R.layout.fragment_home_air_layout
+        return R.layout.activity_show_web_layout
     }
 
     override fun initView() {
-        webView = findViewById(R.id.carWebView)
+        commWebView = findViewById(R.id.commWebView)
 
+        initWebSetting()
 
+        commWebView?.setOnLongClickListener { true }
     }
 
     override fun initData() {
-        initWebSetting()
-
         val url = "http://www.airmaster-performance.com"
-
-//        val url = "https://www.baidu.com"
-        webView?.loadUrl(url)
+        commWebView?.loadUrl(url)
     }
 
 
     private fun initWebSetting() {
-        val settings: WebSettings = webView!!.getSettings()
+        val settings: WebSettings = commWebView!!.getSettings()
         // 允许文件访问
         settings.allowFileAccess = true
         // 允许网页定位
@@ -72,25 +58,19 @@ class HomeAirFragment : TitleBarFragment<CarHomeActivity>(){
             settings.mixedContentMode = WebSettings.MIXED_CONTENT_ALWAYS_ALLOW
         }
 
-        webView?.setOnLongClickListener(View.OnLongClickListener {
+        commWebView?.setOnLongClickListener(View.OnLongClickListener {
 
             true
         })
     }
 
 
-    override fun onKeyDown(keyCode: Int, event: KeyEvent?): Boolean {
-        if (event?.action == KeyEvent.KEYCODE_BACK || event?.action == KeyEvent.ACTION_DOWN) {
+    override fun onBackPressed() {
 
-            if (webView?.canGoBack() == true) {
-                webView?.goBack()
-                return true
-            } else {
-
-                finish()
-            }
+        if (commWebView?.canGoBack() == true) {
+            commWebView?.goBack()
+            return
         }
-        return super.onKeyDown(keyCode, event)
+        super.onBackPressed()
     }
-
 }

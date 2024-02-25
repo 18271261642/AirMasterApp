@@ -62,8 +62,8 @@ class HomeLeftAirPressureView : LinearLayout{
         homeLeftAirSeekBar?.visibility = View.VISIBLE
         cusVerticalView?.currScheduleValue = value.toFloat()
         homeLeftAirSeekBar?.progress = value
-        cusHomeLeftVerticalTxtView?.currScheduleValue = value
-        cusHomeLeftVerticalTxtView?.showTxt = value.toString()
+        cusHomeLeftVerticalTxtView?.currScheduleValue = if(value>150) 150 else  value
+        cusHomeLeftVerticalTxtView?.showTxt = if(value>150) "150" else value.toString()
     }
 
 

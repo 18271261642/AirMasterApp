@@ -125,7 +125,7 @@ class CarHeightGaugeView : View{
 
         val leftRectF = RectF()
         leftRectF.left = (mWidth!!/2-leftWidth-5F)
-        leftRectF.top = mHeight!! - lefProgressValue
+        leftRectF.top = if((lefProgressValue) > leftHeight/2 ) (mHeight!!-leftHeight.toFloat()) else ( mHeight!! - lefProgressValue)
         leftRectF.right = mWidth!!/2-5F
         leftRectF.bottom = leftRectF.top+leftHeight
 
@@ -134,7 +134,7 @@ class CarHeightGaugeView : View{
 
         val rightRectF = RectF()
         rightRectF.left = mWidth!!/2+5F
-        rightRectF.top = mHeight!!-rightProgressValue
+        rightRectF.top = if(rightProgressValue >rightHeight/2) (mHeight!!-rightHeight.toFloat()) else mHeight!!-rightProgressValue
         rightRectF.right = rightRectF.left+rightWidth
         rightRectF.bottom = rightRectF.top+rightHeight
         canvas?.drawBitmap(rightDrawable!!,null,rightRectF,rightImgPaint)

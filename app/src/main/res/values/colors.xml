@@ -23,7 +23,9 @@
     <!--二代主题颜色-->
     <color name="second_theme_color">#191C24</color>
 
+    <color name="second_press_theme_color">#80161718</color>
 
     <!--玩车主题色-->
     <color name="play_color_theme">#FF161718</color>
+
 </resources>

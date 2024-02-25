@@ -109,7 +109,17 @@ class CarLowestAirFragment : TitleBarFragment<CarSysSetActivity>() {
         }else{
             frontCountNumber -= 1
         }
-        val v = frontCountNumber
+        var v = frontCountNumber
+        if(v>=99){
+            v = 99
+            carAirAddTv?.text = "99"
+            return
+        }
+        if(v<=0){
+            v = 0
+            carAirAddTv?.text = "0"
+            return
+        }
         carAirAddTv?.text = v.toString()
         Timber.e("----------frontCountNumber="+v)
 
@@ -124,8 +134,17 @@ class CarLowestAirFragment : TitleBarFragment<CarSysSetActivity>() {
         }else{
             rearCountNumber -= 1
         }
-        val v = rearCountNumber
-
+        var v = rearCountNumber
+        if(v<=0){
+            v = 0
+            carRearAirAddTv?.text = "0"
+            return
+        }
+        if(v>=99){
+            v = 99
+            carRearAirAddTv?.text = "99"
+            return
+        }
         carRearAirAddTv?.text = v.toString()
         setLowProtectPressure()
     }

@@ -3,10 +3,12 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:keepScreenOn="true"
     android:background="@color/play_color_theme"
     android:orientation="vertical">
 
     <com.hjq.bar.TitleBar
+        android:id="@+id/carAboutTitleBar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/transparent"
@@ -58,8 +60,11 @@
         android:orientation="vertical">
 
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <com.hjq.shape.layout.ShapeConstraintLayout
             android:layout_width="match_parent"
+            app:shape_solidColor="@color/play_color_theme"
+            app:shape_solidPressedColor="#1F2022"
+            android:id="@+id/aboutTouchLayout"
             android:layout_height="wrap_content"
             android:padding="@dimen/dp_10">
 
@@ -87,7 +92,27 @@
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <com.hjq.shape.view.ShapeTextView
+                android:id="@+id/aboutDfuShowTv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/white"
+                android:text="有新版本"
+                android:visibility="gone"
+                app:shape_startColor="#F28D27"
+                app:shape_endColor="#FD654D"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                android:paddingStart="@dimen/dp_10"
+                android:paddingEnd="@dimen/dp_10"
+                android:paddingTop="@dimen/dp_2"
+                app:shape_radius="@dimen/dp_15"
+                android:paddingBottom="@dimen/dp_2"/>
+
+
+        </com.hjq.shape.layout.ShapeConstraintLayout>
 
 
         <androidx.constraintlayout.widget.ConstraintLayout

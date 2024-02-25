@@ -1,9 +1,7 @@
 package com.app.airmaster.car.fragment
 
-import android.os.Build
-import android.view.MotionEvent
+
 import android.view.View
-import android.view.View.OnTouchListener
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.lifecycle.ViewModelProvider
@@ -15,6 +13,7 @@ import com.app.airmaster.adapter.OnItemCheckedListener
 import com.app.airmaster.ble.ConnStatus
 import com.app.airmaster.car.CarFaultNotifyActivity
 import com.app.airmaster.car.CarHomeActivity
+import com.app.airmaster.car.ShowWebActivity
 import com.app.airmaster.car.view.CarHomeCenterView
 import com.app.airmaster.car.view.HomeBottomCheckView
 import com.app.airmaster.car.view.HomeBottomNumberView
@@ -23,13 +22,9 @@ import com.app.airmaster.car.view.HomeRightTemperatureView
 import com.app.airmaster.listeners.OnControlPressureCheckedListener
 import com.app.airmaster.second.SecondScanActivity
 import com.app.airmaster.viewmodel.ControlViewModel
-import com.app.airmaster.widget.CusVerticalScheduleView
-import com.app.airmaster.widget.CusVerticalTextScheduleView
-import com.app.airmaster.widget.VerticalSeekBar
-import com.app.airmaster.widget.VerticalSeekBar.OnSeekBarChangeListener
 import com.blala.blalable.Utils
 import com.blala.blalable.car.AutoBackBean
-import timber.log.Timber
+
 
 /**
  * Created by Admin
@@ -143,7 +138,7 @@ class HomeControlFragment : TitleBarFragment<CarHomeActivity>() {
 
 
     override fun initData() {
-
+        //homeLeftAirPressureView?.setAirPressureValue(0)
         carHomeCenterView?.setFrontImage()
 //        carHomeCenterView?.setFrontHeightValue(50,50)
 //        carHomeCenterView?.setAfterHeightValue(100,80)
@@ -171,14 +166,22 @@ class HomeControlFragment : TitleBarFragment<CarHomeActivity>() {
                 carHomeCenterView?.setAfterHeightValue(autoBean.leftAfterHeightRuler,autoBean.rightAfterHeightRuler)
 
                 homeLeftAirPressureView?.setAirPressureValue(autoBean.cylinderPressure)
-                homeRightView?.setTempValue(autoBean.airBottleTemperature -86)
+                homeRightView?.setTempValue(autoBean.airBottleTemperature )
 
                 //设备异常
                 val deviceErrorCode = autoBean.deviceErrorCode
                 val errorArray = Utils.byteToBit(deviceErrorCode)
                 val errorMap = getDeviceErrorMsg(errorArray)
-                val isEmpty =errorMap.size==0 || errorMap[0] == null
-                homeErrorMsgTv?.text = if(errorMap.size==0 || errorMap[0] == null) "" else errorMap[0]
+                val isEmpty =errorMap.size==0
+
+                val strArray = mutableListOf<String>()
+                errorMap.forEach {
+                    strArray.add(it.value)
+                }
+
+              //  Timber.e("-------设备异常="+errorMap.toString()+" "+isEmpty)
+
+                homeErrorMsgTv?.text = if(isEmpty) "" else strArray[0]
                 homeDeviceErrorLayout?.visibility = if(isEmpty) View.INVISIBLE else View.VISIBLE
 
             }
@@ -254,6 +257,9 @@ class HomeControlFragment : TitleBarFragment<CarHomeActivity>() {
                         attachActivity.disCommAlertDialog()
                         if(position == 0x01){
                             startActivity(SecondScanActivity::class.java)
+                        }
+                        if(position == 0x00){
+                            startActivity(ShowWebActivity::class.java)
                         }
                     }
 

@@ -1,26 +1,18 @@
-package com.app.airmaster.dialog
+package com.app.airmaster.viewmodel
 
 import android.annotation.SuppressLint
 import android.content.Context
-import android.graphics.Color
 import android.os.Build
-import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.os.Message
-import android.view.View
-import android.widget.LinearLayout
-import android.widget.TextView
-import androidx.appcompat.app.AppCompatDialog
+import androidx.lifecycle.ViewModel
 import com.app.airmaster.BaseApplication
 import com.app.airmaster.R
-import com.app.airmaster.adapter.OnCommItemClickListener
 import com.app.airmaster.ble.DfuService
 import com.app.airmaster.utils.BikeUtils
-import com.app.airmaster.utils.ClickUtils
 import com.app.airmaster.utils.MmkvUtils
 import com.blala.blalable.listener.ConnStatusListener
-import com.hjq.shape.view.ShapeTextView
 import com.hjq.toast.ToastUtils
 import com.inuker.bluetooth.library.search.SearchResult
 import com.inuker.bluetooth.library.search.response.SearchResponse
@@ -29,11 +21,16 @@ import no.nordicsemi.android.dfu.DfuServiceInitiator
 import no.nordicsemi.android.dfu.DfuServiceListenerHelper
 import timber.log.Timber
 
-
 /**
- * 升级的dialog
+ * 用于Nordic的OTA升级
  */
-class DfuDialogView : AppCompatDialog {
+class DfuViewModel : ViewModel(){
+
+    //升级状态
+    var dfuUpgradeStatus = SingleLiveEvent<Boolean>()
+    //进度
+    var dfuProgressData = SingleLiveEvent<Int>()
+
 
 
     private val handlers : Handler = object : Handler(Looper.getMainLooper()){
@@ -46,111 +43,36 @@ class DfuDialogView : AppCompatDialog {
         }
     }
 
-
-    private var onClickListener : OnCommItemClickListener ?= null
-
-    private var onDfuListener : OnCommItemClickListener ?= null
-
-    fun setOnClick(c : OnCommItemClickListener){
-        this.onClickListener = c
-    }
-
-    fun setOnDfuStateListener(d : OnCommItemClickListener){
-        this.onDfuListener = d
-    }
-
-
-
-
-    //是否在升级中
-    private var isUpgradeing = false
-
-    private var dfuDialogTitleTv : TextView ?= null
-    private var dfuContentTv : TextView ?= null
-    private var dfuBtnLayout : LinearLayout ?= null
-    private var privacyDialogConfirmTv : ShapeTextView ?= null
-    private var privacyDialogCancelTv : ShapeTextView ?= null
-
-    private var dfuIngLayout : LinearLayout ?= null
-    private var dfuStateTv : TextView ?= null
-
-
     private var otaFileUrl : String ?= null
 
-    constructor(context: Context) : super (context){
-
-    }
-
-    constructor(context: Context, theme : Int) : super (context,theme){
-
-    }
-
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.dialog_device_ota_layout)
-        initViews()
-
-        initData()
-    }
-
-
-    private fun initData(){
+    fun registerDfu(context: Context){
         DfuServiceListenerHelper.registerProgressListener(context, mDfuProgressListener)
     }
 
-    private fun initViews(){
-        dfuDialogTitleTv = findViewById(R.id.dfuDialogTitleTv)
-        dfuContentTv = findViewById(R.id.dfuContentTv)
-        privacyDialogConfirmTv = findViewById(R.id.privacyDialogConfirmTv)
-        privacyDialogCancelTv = findViewById(R.id.privacyDialogCancelTv)
-        dfuIngLayout = findViewById(R.id.dfuIngLayout)
-        dfuStateTv = findViewById(R.id.dfuStateTv)
-        dfuBtnLayout = findViewById(R.id.dfuBtnLayout)
-
-        privacyDialogConfirmTv?.setOnClickListener {
-            if(ClickUtils.isFastDoubleClick()){
-                return@setOnClickListener
-            }
-            onClickListener?.onItemClick(0x01)
-        }
-        privacyDialogCancelTv?.setOnClickListener {
-            onClickListener?.onItemClick(0x00)
-        }
-    }
-
-
-    //显示升级的状态
-    fun setDfuModel(){
-        dfuContentTv?.visibility = View.GONE
-        dfuIngLayout?.visibility = View.VISIBLE
-        dfuBtnLayout?.visibility = View.GONE
-    }
-
-    fun setDfuUpgradeContent(content : String){
-        dfuContentTv?.text = content
+    fun unregister(context: Context){
+        DfuServiceListenerHelper.unregisterProgressListener(context, mDfuProgressListener)
     }
 
 
 
     //扫描
-    fun startDfuModel(url : String){
+    fun startDfuModel(url : String,context: Context){
         this.otaFileUrl = url
-        BaseApplication.getBaseApplication().bleOperate.scanBleDevice(object : SearchResponse{
+        BaseApplication.getBaseApplication().bleOperate.scanBleDevice(object : SearchResponse {
             override fun onSearchStarted() {
 
             }
 
             @SuppressLint("MissingPermission")
             override fun onDeviceFounded(p0: SearchResult?) {
-               val name = p0?.name
+                val name = p0?.name
                 if(BikeUtils.isEmpty(name)){
                     return
                 }
                 if(name!!.lowercase() == "sl_ota"){
                     handlers.sendEmptyMessageDelayed(0x00,1000)
                     MmkvUtils.setSaveObjParams("ota_mac",p0?.device?.address)
-                    connOta(p0?.device!!.address)
+                    connOta(p0?.device!!.address, context)
                 }
 
             }
@@ -169,15 +91,15 @@ class DfuDialogView : AppCompatDialog {
 
 
     //连接
-    private fun connOta(mac : String){
+    private fun connOta(mac : String,context: Context){
         BaseApplication.getBaseApplication().bleOperate.connYakDevice("ota",mac,object :
-            ConnStatusListener{
+            ConnStatusListener {
             override fun connStatus(status: Int) {
 
             }
 
             override fun setNoticeStatus(code: Int) {
-                startToDfu(otaFileUrl!!)
+                startToDfu(otaFileUrl!!,context)
             }
 
         })
@@ -186,7 +108,7 @@ class DfuDialogView : AppCompatDialog {
 
 
 
-     fun startToDfu(url : String){
+    fun startToDfu(url : String,context: Context){
         val mac = MmkvUtils.getSaveParams("ota_mac","") as String
         val dfuServiceInitiator = DfuServiceInitiator(mac)
             .setDeviceName("SL_OTA")
@@ -204,6 +126,8 @@ class DfuDialogView : AppCompatDialog {
     }
 
 
+
+
     private val mDfuProgressListener : DfuProgressListener = object : DfuProgressListener {
         override fun onDeviceConnecting(deviceAddress: String?) {
             Timber.e("------onDeviceConnecting--------")
@@ -217,7 +141,7 @@ class DfuDialogView : AppCompatDialog {
 
         override fun onDfuProcessStarting(deviceAddress: String?) {
             Timber.e("------onDfuProcessStarting--------")
-            isUpgradeing = true
+           // isUpgradeing = true
 
         }
 
@@ -239,7 +163,8 @@ class DfuDialogView : AppCompatDialog {
             partsTotal: Int
         ) {
             Timber.e("------onProgressChanged--------="+percent+" "+currentPart)
-            dfuStateTv?.text = "升级中: "+percent
+          //  dfuStateTv?.text = "升级中: "+percent
+            dfuProgressData.postValue(percent)
         }
 
         override fun onFirmwareValidating(deviceAddress: String?) {
@@ -257,9 +182,10 @@ class DfuDialogView : AppCompatDialog {
 
         override fun onDfuCompleted(deviceAddress: String?) {
             Timber.e("-------onDfuCompleted-------="+deviceAddress)
-            ToastUtils.show(context.getString(R.string.string_upgrade_success))
+          //  ToastUtils.show(context.getString(R.string.string_upgrade_success))
             //  dfuNoUpdateTv.visibility = View.GONE
-            failOrSuccess(true)
+          //  failOrSuccess(true)
+            dfuUpgradeStatus.postValue(true)
 //            val saveMac = MmkvUtils.getConnDeviceMac()
 //            if(!BikeUtils.isEmpty(saveMac)){
 ////                BaseApplication.getInstance().connStatusService.autoConnDevice(saveMac,true)
@@ -269,27 +195,16 @@ class DfuDialogView : AppCompatDialog {
 
         override fun onDfuAborted(deviceAddress: String?) {
             Timber.e("------onDfuAborted--------")
-            failOrSuccess(false)
+          //  failOrSuccess(false)
+            dfuUpgradeStatus.postValue(false)
         }
 
         override fun onError(deviceAddress: String?, error: Int, errorType: Int, message: String?) {
             Timber.e("--------onError------="+error+" "+message)
-            failOrSuccess(false)
+          //  failOrSuccess(false)
+            dfuUpgradeStatus.postValue(false)
         }
 
     }
 
-
-
-
-     fun unregister(){
-        DfuServiceListenerHelper.unregisterProgressListener(context, mDfuProgressListener)
-    }
-
-
-    private fun failOrSuccess(success : Boolean){
-      //  dismiss()
-
-        onDfuListener?.onItemClick(if(success) 1 else 0)
-    }
 }

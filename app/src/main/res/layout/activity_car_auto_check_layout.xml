@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:keepScreenOn="true"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_height="match_parent">
+
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_40"/>
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="right"
+        android:src="@mipmap/ic_check_top_img"/>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_weight="1"
+        android:layout_height="0dp">
+
+
+        <androidx.viewpager2.widget.ViewPager2
+            android:id="@+id/checkPager"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingBottom="@dimen/dp_30" />
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:layout_marginBottom="@dimen/dp_30">
+
+            <me.relex.circleindicator.CircleIndicator3
+                android:id="@+id/checkIndicator"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp_50"
+                app:ci_drawable="@drawable/guide_indicator_selected"
+                app:ci_drawable_unselected="@drawable/guide_indicator_unselected"
+                app:ci_height="@dimen/dp_5"
+                app:ci_margin="@dimen/dp_5"
+                app:ci_width="@dimen/dp_5" />
+
+
+        </FrameLayout>
+    </FrameLayout>
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@mipmap/ic_check_top_img"/>
+</LinearLayout>

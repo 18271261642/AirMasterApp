@@ -1,9 +1,9 @@
-package com.app.airmaster.car.bean;
+package com.app.airmaster.bean;
 
 import java.util.List;
 
 
-public class ServerVersionInfoBean {
+public class DeviceVersionBean {
 
 
 

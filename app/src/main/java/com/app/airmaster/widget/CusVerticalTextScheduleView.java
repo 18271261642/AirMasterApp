@@ -18,6 +18,7 @@ import androidx.annotation.Nullable;
 
 import com.app.airmaster.R;
 import com.app.airmaster.utils.DisplayUtils;
+import com.bonlala.widget.utils.MiscUtil;
 
 import timber.log.Timber;
 
@@ -48,7 +49,7 @@ public class CusVerticalTextScheduleView extends View {
     private float mWidth,mHeight;
 
     //所有进度值
-    private float allScheduleValue = 150f;
+    private float allScheduleValue = 160f;
     //当前进度值
     private int currScheduleValue = 0;
 
@@ -168,7 +169,10 @@ public class CusVerticalTextScheduleView extends View {
         currRectf.bottom = mHeight;
         String txtStr = String.format("%02d",Math.max(currScheduleValue, 0));
 
-        canvas.drawText(txtStr,20,currRectf.top-10,txtPaint);
+        float txtHeight = MiscUtil.measureTextHeight(txtPaint);
+        float topHeight = Math.max((mHeight - currV-10), txtHeight);
+
+        canvas.drawText(txtStr,25,topHeight,txtPaint);
 
 
 //        RectF currRectf = new RectF(5f,y,currV,0);

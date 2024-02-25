@@ -2,18 +2,20 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="@color/play_color_theme"
     android:orientation="vertical"
     android:layout_height="match_parent">
 
-    <View
+    <com.hjq.bar.TitleBar
         android:layout_width="match_parent"
-        android:layout_height="@dimen/dp_40"
-        android:background="@color/transparent"/>
+        android:layout_height="wrap_content"
+        android:background="@color/transparent"
+        app:titleColor="@color/white"
+        app:leftIcon="@drawable/ic_white_left_back"
+        app:lineVisible="false"/>
 
 
     <com.github.lzyzsd.jsbridge.BridgeWebView
-        android:id="@+id/carWebView"
+        android:id="@+id/commWebView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:focusable="true"

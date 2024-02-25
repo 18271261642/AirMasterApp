@@ -33,7 +33,7 @@ class CusCarTemperView : View {
 
 
     //最大值
-    private val maxValue = 150
+    private val maxValue = 120
     private var progressValue : Int = 0
 
 

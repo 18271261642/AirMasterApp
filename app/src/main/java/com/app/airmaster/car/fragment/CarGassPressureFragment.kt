@@ -80,7 +80,24 @@ class CarGassPressureFragment : TitleBarFragment<CarSysSetActivity>(){
 
         gassPressureHeightSeekBar?.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener{
             override fun onProgressChanged(p0: SeekBar?, p1: Int, p2: Boolean) {
-                pHTv?.text = String.format(resources.getString(R.string.string_pressure_h),p0?.progress.toString())
+                val heightValue = p0?.progress
+                pHTv?.text = String.format(resources.getString(R.string.string_pressure_h),heightValue.toString())
+
+                //低压
+                val lowValue = gassPressureLowSeekBar?.progress
+                Timber.e("-----low="+lowValue+" level="+(heightValue!!-lowValue!!))
+
+                if((heightValue!!-lowValue!!)>=20 && (heightValue-lowValue)<=40){
+
+                }else{
+                    val level = heightValue - lowValue
+                    if(level<20){
+                        gassPressureLowSeekBar?.progress = heightValue-20
+                    }else{
+                        gassPressureLowSeekBar?.progress = heightValue+20
+                    }
+                }
+
             }
 
             override fun onStartTrackingTouch(p0: SeekBar?) {
@@ -96,7 +113,38 @@ class CarGassPressureFragment : TitleBarFragment<CarSysSetActivity>(){
 
         gassPressureLowSeekBar?.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener{
             override fun onProgressChanged(p0: SeekBar?, p1: Int, p2: Boolean) {
-                pLowTv?.text = String.format(resources.getString(R.string.string_pressure_l),p0?.progress.toString())
+                //低压压
+                val lowValue = p0?.progress
+                //高压
+                val heightValue = gassPressureHeightSeekBar?.progress
+                if(lowValue!!<80){
+                    gassPressureLowSeekBar?.progress = 80
+                    return
+                }
+                if(heightValue!!-lowValue<20){
+                    gassPressureLowSeekBar?.progress =heightValue-20
+                    return
+                }
+                if(heightValue!!-lowValue>40){
+                    gassPressureLowSeekBar?.progress =heightValue-40
+                    return
+                }
+
+                Timber.e("-----高压="+lowValue+" level="+(heightValue!!-lowValue!!))
+
+                if((heightValue!!-lowValue!!)<=40 && (heightValue-lowValue)>=20){
+                    val level = heightValue - lowValue
+//                    if(level<20){
+//                        gassPressureHeightSeekBar?.progress = heightValue+20
+//                    }else{
+//                        gassPressureHeightSeekBar?.progress = heightValue-20
+//                    }
+                    pLowTv?.text = String.format(resources.getString(R.string.string_pressure_l),lowValue.toString())
+
+                }else{
+                    return
+                }
+
             }
 
             override fun onStartTrackingTouch(p0: SeekBar?) {
@@ -166,5 +214,10 @@ class CarGassPressureFragment : TitleBarFragment<CarSysSetActivity>(){
             }
 
         })
+    }
+
+    //处理高压的
+    private fun dealHeightPressure(value : Int){
+
     }
 }

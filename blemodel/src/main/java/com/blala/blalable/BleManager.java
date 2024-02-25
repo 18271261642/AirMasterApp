@@ -340,11 +340,8 @@ public class BleManager {
                     //判断是否是OTA升级状态，是OTA状态不保存地址
                     (new Handler(Looper.getMainLooper())).postDelayed(new Runnable() {
                         public void run() {
-
                             //实时数据返回，主动通道
-
                             setNotifyData(bleMac,bleConstant.SERVICE_UUID,bleConstant.READ_UUID,connectResponse);
-
                         }
                     }, 2000L);
                     connectResponse.connStatus(code);

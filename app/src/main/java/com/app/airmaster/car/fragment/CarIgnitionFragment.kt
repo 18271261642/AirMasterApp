@@ -53,6 +53,8 @@ class CarIgnitionFragment : TitleBarFragment<CarSysSetActivity>(){
 
     //是否点击了点火开关
     private var isStirUp = false
+    //熄火
+    private var isStall = false
 
     companion object{
         fun getInstance() : CarIgnitionFragment{
@@ -98,7 +100,8 @@ class CarIgnitionFragment : TitleBarFragment<CarSysSetActivity>(){
 
         //熄火
         ingitionOffSwitch?.setOnCheckedChangeListener { button, checked ->
-            setRyVisibility()
+            openOrCloseOffRy(checked)
+          //  setRyVisibility()
             var code = if(checked) 1 else 0
             if(checked){
                 list?.forEach {
@@ -119,7 +122,9 @@ class CarIgnitionFragment : TitleBarFragment<CarSysSetActivity>(){
         //点火
         ingitionOnSwitch?.setOnCheckedChangeListener { button, checked ->
             Timber.e("---------点火="+(button.isPressed))
-            setRyVisibility()
+           // setRyVisibility()
+            openOrCloseOnRy(checked)
+
             var code = if(checked) 1 else 0
             if(checked){
                 onList?.forEach {
@@ -195,8 +200,12 @@ class CarIgnitionFragment : TitleBarFragment<CarSysSetActivity>(){
            val isOn = it.accTurnOnValue !=0
             val isOff = it.accTurnOffValue != 0
 
-            ingitionOffSwitch?.isChecked = isOff
-            ingitionOnSwitch?.isChecked = isOn
+            if(!isStirUp){
+                ingitionOffSwitch?.isChecked = isOff
+            }
+            if(!isStall){
+                ingitionOnSwitch?.isChecked = isOn
+            }
 
             setRyVisibility()
 
@@ -227,8 +236,24 @@ class CarIgnitionFragment : TitleBarFragment<CarSysSetActivity>(){
     private fun setRyVisibility(){
         val onState = ingitionOnSwitch?.isChecked
         val offState = ingitionOffSwitch?.isChecked
+        if(!isStirUp){
+            accTurnOnLayout?.visibility = if(onState==true) View.VISIBLE else View.GONE
+        }
+      if(!isStall){
+          accTurnOFFLayout?.visibility = if(offState == true) View.VISIBLE else View.GONE
+      }
 
-        accTurnOnLayout?.visibility = if(onState==true) View.VISIBLE else View.GONE
-        accTurnOFFLayout?.visibility = if(offState == true) View.VISIBLE else View.GONE
+    }
+
+    //点火
+    private fun openOrCloseOnRy(isOpen : Boolean){
+        this.isStirUp = isOpen
+        accTurnOnLayout?.visibility = if(isOpen) View.VISIBLE else View.GONE
+    }
+
+    //熄火
+    private fun openOrCloseOffRy(isOpen : Boolean){
+        this.isStall = isOpen
+        accTurnOFFLayout?.visibility = if(isOpen) View.VISIBLE else View.GONE
     }
 }

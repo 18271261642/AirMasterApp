@@ -3,16 +3,22 @@ package com.app.airmaster.viewmodel
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ViewModel
 import com.app.airmaster.BaseApplication
+import com.app.airmaster.bean.CdkBean
 import com.app.airmaster.ble.ota.BluetoothLeClass.OnWriteDataListener
 import com.app.airmaster.car.bean.DeviceBinVersionBean
 import com.app.airmaster.car.bean.ServerVersionInfoBean
+import com.app.airmaster.car.bean.VersionParamsBean
 import com.app.airmaster.listeners.OnCarVersionsListener
 import com.app.airmaster.utils.GsonUtils
 import com.blala.blalable.Utils
 import com.blala.blalable.car.CarConstant
 import com.blala.blalable.listener.WriteBackDataListener
+import com.google.gson.Gson
 import com.hjq.http.EasyHttp
 import com.hjq.http.listener.OnHttpListener
+import okhttp3.MediaType
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.RequestBody
 import org.json.JSONObject
 import timber.log.Timber
 import java.lang.Exception
@@ -20,7 +26,8 @@ import java.lang.Exception
 /**
  * 版本相关的
  */
-class VersionViewModel : ViewModel(){
+class VersionViewModel : CommViewModel(){
+
 
     //设备的固件版本
     var deviceVersionInfo = SingleLiveEvent<DeviceBinVersionBean>()
@@ -33,6 +40,11 @@ class VersionViewModel : ViewModel(){
     //激活状态
     var activateState = SingleLiveEvent<Boolean>()
 
+
+    //芯片识别码
+    var cdKeyCode = SingleLiveEvent<String>()
+
+
     //获取固件版本
     fun getDeviceVersion(){
         val str = "8800000000000300001900"
@@ -42,22 +54,29 @@ class VersionViewModel : ViewModel(){
             override fun backWriteData(data: ByteArray?) {
                 //880000000000102200 02 c019 000107 d91df96706a3 000101
                 //88000000000022a100 1a 010010 c019 000107 d91df96706a3 00800001 0202000a02040301020304010001
+                //88000000000022a100 1a 01 0010c019 00 01 07 d91df96706a3 00800001  020200 0a 0204 03 01020304010001
+                //880000000000365400 1a 01 0007 00800001  03 06 03   02 0009 c019 02 fffff9 00010a  03000f fffe03fffffc112233fffffa445566  040009 fffe04fffffc778899
                 if(data == null)
                     return
                 if(data.size >14){
                     if(data[9].toInt().and(0xFF) == 26){
                         val bean = DeviceBinVersionBean()
-                        //型号
-                        val model = String.format("%02x",data[13])+String.format("%02x",data[14])
+
+                        //bin文件的匹配码 00800001
+                        val bindCode = String.format("%02x",data[13])+String.format("%02x",data[14])+String.format("%02x",data[15])+String.format("%02x",data[16])
+                        //识别码
+                        val identificationCode = String.format("%02x",data[25])+String.format("%02x",data[26])+String.format("%02x",data[27])+String.format("%02x",data[28])
                         //版本
-                        val version = "V"+data[15].toInt()+"."+data[16].toInt()+"."+data[17]
+                        val version = "V"+data[29].toInt()+"."+data[30].toInt()+"."+data[31]
+                        val versionInt = Utils.getIntFromBytes(0x00,data[29],data[30],data[31])
+                        //型号
+                        val model = String.format("%02x",data[23])+String.format("%02x",data[24])
 
-                        //Bin文件的匹配码
-                        val binStr = String.format("%02x",data[24])+String.format("%02x",data[25])+String.format("%02x",data[26])+String.format("%02x",data[27])
-
+                        bean.identificationCode = identificationCode
                         bean.productCode = model
                         bean.versionStr = version
-                        bean.binCode = binStr
+                        bean.versionCode =versionInt
+                        bean.binCode = bindCode
                         deviceVersionInfo.postValue(bean)
                     }
                 }
@@ -68,24 +87,98 @@ class VersionViewModel : ViewModel(){
     }
 
 
+
+
+    //读取芯片序列号
+    fun getDeviceCdKey(){
+        val scrStr = "000504010700"
+        val crc = Utils.crcCarContentArray(scrStr)
+        val str = "011E"+ CarConstant.CAR_HEAD_BYTE_STR+scrStr+crc
+        val resultArray = Utils.hexStringToByte(str)
+        val result = Utils.getFullPackage(resultArray)
+        BaseApplication.getBaseApplication().bleOperate.writeCommonByte(result,object : WriteBackDataListener{
+            override fun backWriteData(data: ByteArray?) {
+                // 8800000000001b30030f7ffaaf00140104873030303030303030303000000000000080
+                if(data == null){
+                    return
+                }
+                if(data.size>26 && data[17].toInt().and(0xFF) == 135){
+                    val array = ByteArray(16)
+                    System.arraycopy(data,18,array,0,16)
+                    Timber.e("------array="+Utils.formatBtArrayToString(array))
+                    val sb = StringBuffer()
+                    array.forEach {
+                        if(it.toInt() != 0){
+                            sb.append(String.format("%02x",it.toInt()))
+                        }
+                    }
+                    val resultArray = Utils.hexStringToByte(sb.toString())
+                    val cdkStr = String(resultArray)
+                    cdKeyCode.postValue(cdkStr)
+                }
+
+
+            }
+        })
+    }
+
+
     //检查设备的固件版本
-    fun getDeviceInfoData(life : LifecycleOwner, binCode : String,versionStr : String){
-        EasyHttp.get(life).api("checkUpdate?broadcastId=0xfffe&matchCode=$binCode&firmwareVersionCode=$versionStr").request(object : OnHttpListener<String>{
-            override fun onSucceed(result: String?) {
-                val jsonObject = JSONObject(result)
-                if(jsonObject.getInt("code") == 200){
-                    val data = jsonObject.getString("data")
-                    val bean = GsonUtils.getGsonObject<ServerVersionInfoBean>(data)
-                    serverVersionInfo.postValue(bean)
+    fun getDeviceInfoData(life : LifecycleOwner, binCode : String,matchCode : String, versionCode : Int,broadcastId : String){
+
+        val versionParamsBean = VersionParamsBean()
+        versionParamsBean.matchCode = matchCode
+
+        val list = ArrayList<VersionParamsBean.ParamsListBean>()
+
+        val touchBean = VersionParamsBean.ParamsListBean()
+        touchBean.identificationCode = binCode
+        touchBean.versionCode = versionCode.toString()
+        touchBean.broadcastId = broadcastId
+        list.add(touchBean)
+
+        versionParamsBean.mcuList = list
+        val str = Gson().toJson(versionParamsBean)
+        Timber.e("----------固件提交参数="+str)
+        val requestBody = RequestBody.create(JSON, str)
+        EasyHttp.post(life)
+            .api("checkUpdate")
+            .body(requestBody)
+            .request(object : OnHttpListener<String>{
+                override fun onSucceed(result: String?) {
+                    val jsonObject = JSONObject(result)
+                    if(jsonObject.getInt("code") == 200){
+                        val data = jsonObject.getString("data")
+                        val bean = GsonUtils.getGsonObject<ServerVersionInfoBean>(data)
+                        serverVersionInfo.postValue(bean)
+
+                    }
+                }
+
+                override fun onFail(e: Exception?) {
 
                 }
-            }
 
-            override fun onFail(e: Exception?) {
+            })
 
-            }
-
-        })
+//
+//
+//        EasyHttp.get(life).api("checkUpdate?identificationCode=$binCode&matchCode=$matchCode").request(object : OnHttpListener<String>{
+//            override fun onSucceed(result: String?) {
+//                val jsonObject = JSONObject(result)
+//                if(jsonObject.getInt("code") == 200){
+//                    val data = jsonObject.getString("data")
+//                    val bean = GsonUtils.getGsonObject<ServerVersionInfoBean>(data)
+//                    serverVersionInfo.postValue(bean)
+//
+//                }
+//            }
+//
+//            override fun onFail(e: Exception?) {
+//
+//            }
+//
+//        })
     }
 
 
@@ -112,7 +205,7 @@ class VersionViewModel : ViewModel(){
                 if(data != null && data.size >17){
                     if(data[17].toInt().and(0xFF) == 176){
                         val state = data[18].toInt()
-                        activateState.postValue(state==0)
+                        activateState.postValue(state==1)
                     }
                 }
 
@@ -136,8 +229,11 @@ class VersionViewModel : ViewModel(){
     }
 
     //保存激活信息
-    fun saveActivateRecord(life: LifecycleOwner,activateCode : String,productSn : String,userName : String,phone : String){
-        EasyHttp.get(life).api("cdkey/record/save?cdkey=$activateCode&productSn=$productSn&username=$userName&phone=$phone").request(object : OnHttpListener<String>{
+    fun saveActivateRecord(life: LifecycleOwner,activateCode : String,productSn : String){
+
+
+
+        EasyHttp.post(life).api(CdkBean().setParams(activateCode,productSn)).request(object : OnHttpListener<String>{
             override fun onSucceed(result: String?) {
 
             }

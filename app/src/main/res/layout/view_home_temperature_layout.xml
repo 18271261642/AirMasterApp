@@ -22,7 +22,7 @@
         app:layout_constraintTop_toTopOf="parent"
         android:textSize="@dimen/sp_10"
         android:textColor="#FF5D676D"
-        android:text="150"/>
+        android:text="120"/>
 
     <ImageView
         android:id="@+id/homeTemputerImg"

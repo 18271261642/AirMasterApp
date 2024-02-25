@@ -2,6 +2,7 @@ package com.app.airmaster.viewmodel
 
 import androidx.lifecycle.ViewModel
 import com.app.airmaster.BaseApplication
+import com.app.airmaster.bean.CheckBean
 import com.app.airmaster.car.bean.AutoSetBean
 import com.blala.blalable.Utils
 import com.blala.blalable.car.CarConstant
@@ -17,7 +18,7 @@ import timber.log.Timber
  * @Date 2023/12/29
  * @Desc
  */
-class ControlViewModel : ViewModel() {
+open class ControlViewModel : CommViewModel() {
 
 
     //获取自动返回的状态
@@ -25,6 +26,10 @@ class ControlViewModel : ViewModel() {
 
 
     var commControlStatus = SingleLiveEvent<Int>()
+
+
+    //自检返回
+    var checkBackDataMap = SingleLiveEvent<CheckBean>()
 
     //清除所有警告
     fun clearAllWarring(){
@@ -424,5 +429,99 @@ class ControlViewModel : ViewModel() {
                 }
             }
         }
+    }
+
+
+
+    //进入或退出自检
+    fun intoOrExit(into : Boolean){
+        val scrStr = "00050401"+(if(into) "1E" else "1F")+(if(into)"00" else "01")
+        val crc = Utils.crcCarContentArray(scrStr)
+        val str = "011E"+ CarConstant.CAR_HEAD_BYTE_STR+scrStr+crc
+        val resultArray = Utils.hexStringToByte(str)
+        val result = Utils.getFullPackage(resultArray)
+        BaseApplication.getBaseApplication().bleOperate.writeCommonByte(result){
+            //8800000000000ce6030f7ffaaf000501049a015b
+            if(it != null && it.size>18){
+                //88000000000016c8030f7ffaaf000f0104 a7 01 01 02 000000000000000041
+                if(into){
+                    if(it[17].toInt().and(0xFF) == 167){
+                        //状态
+                        val state = it[20].toInt()
+                        //desc
+                        val descCode = it[21].toInt()
+                        val bean = CheckBean()
+                        bean.checkStatus = state
+                        bean.failDesc = getDesc(descCode)
+
+                        Timber.e("-------自检="+bean.toString()+" "+descCode)
+                        checkBackDataMap.postValue(bean)
+
+                    }
+                }
+              //  setCommRefreshDevice(it,0x9A.toByte())
+            }
+        }
+    }
+
+
+    /**
+     * //无
+    1   //电池电压异常
+    2   //ACC未启动
+    3   //气罐气压传感器故障
+    4   //自检超时
+    5   //左前高度传感器超量程
+    6   //右前高度传感器超量程
+    7   //左后高度传感器超量程
+    8   //右后高度传感器超量程
+    9    //左前气压传感器故障
+    10   //右前气压传感器故障
+    11   //左后气压传感器故障
+    12   //右后气压传感器故障
+    13   //左前高度传感器故障
+    14   //右前高度传感器故障
+    15   //左后高度传感器故障
+    16   //右后高度传感器故障
+    17   //左前高度传感器测量范围过小
+    18   //右前高度传感器测量范围过小
+    19   //左后高度传感器测量范围过小
+    20   //右后高度传感器测量范围过小
+    21   //左前高度传感器线序错误
+    22   //右前高度传感器线序错误
+    23   //左后高度传感器线序错误
+    24   //右后高度传感器线序错误
+     */
+
+    private fun getDesc(code : Int) : String? {
+        val map = HashMap<Int,String>()
+        map[0] = ""
+        map[1] = "电池电压异常"
+        map[2] = "ACC未启动"
+        map[3] = "ACC未启动"
+        map[4] = "自检超时"
+        map[5] = "左前高度传感器超量程"
+        map[6] = "右前高度传感器超量程"
+        map[7] = "左后高度传感器超量程"
+        map[8] = "右后高度传感器超量程"
+        map[9] = "左前气压传感器故障"
+        map[10] = "右前气压传感器故障"
+        map[11] = "左后气压传感器故障"
+        map[12] = "右后气压传感器故障"
+        map[13] = "左前高度传感器故障"
+        map[14] = "右前高度传感器故障"
+        map[15] = "左后高度传感器故障"
+        map[16] = "右后高度传感器故障"
+        map[17] = "左前高度传感器测量范围过小"
+        map[18] = "右前高度传感器测量范围过小"
+        map[19] = "左后高度传感器测量范围过小"
+        map[20] = "右后高度传感器测量范围过小"
+        map[21] = "左前高度传感器线序错误"
+        map[22] = "右前高度传感器线序错误"
+        map[23] = "左后高度传感器线序错误"
+        map[24] = "右后高度传感器线序错误"
+
+        return map.get(code)
+
     }
 }

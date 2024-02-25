@@ -11,9 +11,32 @@ public class DeviceBinVersionBean {
 
     //固件版本
     private String versionStr;
+    //版本int cdoe
+    private int versionCode;
+
+
 
     //BIN文件的匹配码
     private String binCode;
+
+    //识别码
+    private String identificationCode;
+
+    public String getIdentificationCode() {
+        return identificationCode;
+    }
+
+    public void setIdentificationCode(String identificationCode) {
+        this.identificationCode = identificationCode;
+    }
+
+    public int getVersionCode() {
+        return versionCode;
+    }
+
+    public void setVersionCode(int versionCode) {
+        this.versionCode = versionCode;
+    }
 
     public String getProductCode() {
         return productCode;

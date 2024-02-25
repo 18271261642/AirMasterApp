@@ -19,7 +19,7 @@
 
 
     <com.bonlala.widget.layout.SettingBar
-        android:id="@+id/sysGasBar"
+        android:id="@+id/sysManualCheckBar"
         android:layout_width="match_parent"
         app:bar_leftDrawable="@mipmap/ic_sys_check_manual"
         app:bar_leftText="手动自检"
@@ -32,6 +32,7 @@
 
 
     <com.bonlala.widget.layout.SettingBar
+        android:id="@+id/sysAutoCheckBar"
         android:layout_width="match_parent"
         app:bar_leftDrawable="@mipmap/ic_sys_check_auto"
         app:bar_leftText="自动自检"

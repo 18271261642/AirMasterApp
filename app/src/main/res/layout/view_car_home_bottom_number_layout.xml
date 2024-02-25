@@ -1,17 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <com.hjq.shape.layout.ShapeLinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    android:layout_height="@dimen/dp_60"
     android:layout_gravity="center"
     android:layout_marginStart="@dimen/dp_15"
     android:layout_marginEnd="@dimen/dp_15"
     android:gravity="center"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/dp_60"
+    android:orientation="horizontal"
     android:paddingStart="@dimen/dp_5"
     android:paddingEnd="@dimen/dp_5"
-    android:orientation="horizontal"
-    app:shape_endColor="#FF22201C"
-    app:shape_radius="@dimen/dp_30"
+    app:shape_endColor="#ff1b1b1b"
+    app:shape_radius="@dimen/dp_35"
+    app:shape="rectangle"
+    app:shape_centerColor="#ff22201c"
     app:shape_startColor="#FF1B1B1B">
 
 
@@ -48,17 +50,17 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:visibility="invisible"
-            android:background="@mipmap/ic_home_bot_n_b" />
+            android:background="@mipmap/ic_home_bot_n_b"
+            android:visibility="invisible" />
 
 
         <ImageView
             android:id="@+id/botAboveImg1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:visibility="invisible"
             android:layout_gravity="center"
-            android:background="@mipmap/ic_home_bot_number_bg" />
+            android:background="@mipmap/ic_home_bot_number_bg"
+            android:visibility="invisible" />
 
 
         <TextView
@@ -66,11 +68,11 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:button="@null"
+            android:fontFamily="@font/lato_regular15"
             android:gravity="center"
             android:text="1"
             android:textColor="@color/white"
-            android:textSize="30sp"
-            android:fontFamily="@font/lato_regular15"
+            android:textSize="28sp"
             android:textStyle="bold" />
 
     </FrameLayout>
@@ -88,20 +90,20 @@
             android:id="@+id/botBg2Img"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:visibility="invisible"
             android:layout_gravity="center"
-            android:background="@mipmap/ic_home_bot_n_b" />
+            android:background="@mipmap/ic_home_bot_n_b"
+            android:visibility="invisible" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:button="@null"
+            android:fontFamily="@font/lato_regular15"
             android:gravity="center"
             android:text="2"
-            android:fontFamily="@font/lato_regular15"
             android:textColor="@color/white"
-            android:textSize="30sp"
+            android:textSize="28sp"
             android:textStyle="bold" />
 
 
@@ -110,8 +112,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:visibility="invisible"
-            android:background="@mipmap/ic_home_bot_number_bg" />
+            android:background="@mipmap/ic_home_bot_number_bg"
+            android:visibility="invisible" />
 
 
     </FrameLayout>
@@ -130,8 +132,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:visibility="invisible"
-            android:background="@mipmap/ic_home_bot_n_b" />
+            android:background="@mipmap/ic_home_bot_n_b"
+            android:visibility="invisible" />
 
 
         <TextView
@@ -139,11 +141,11 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:button="@null"
+            android:fontFamily="@font/lato_regular15"
             android:gravity="center"
             android:text="3"
-            android:fontFamily="@font/lato_regular15"
             android:textColor="@color/white"
-            android:textSize="30sp"
+            android:textSize="28sp"
             android:textStyle="bold" />
 
         <ImageView
@@ -151,8 +153,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:visibility="invisible"
-            android:background="@mipmap/ic_home_bot_number_bg" />
+            android:background="@mipmap/ic_home_bot_number_bg"
+            android:visibility="invisible" />
 
     </FrameLayout>
 
@@ -168,9 +170,9 @@
             android:id="@+id/botBg4Img"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:visibility="invisible"
             android:layout_gravity="center"
-            android:src="@mipmap/ic_home_bot_n_b" />
+            android:src="@mipmap/ic_home_bot_n_b"
+            android:visibility="invisible" />
 
 
         <TextView
@@ -178,11 +180,11 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:button="@null"
+            android:fontFamily="@font/lato_regular15"
             android:gravity="center"
             android:text="4"
-            android:fontFamily="@font/lato_regular15"
             android:textColor="@color/white"
-            android:textSize="30sp"
+            android:textSize="28sp"
             android:textStyle="bold" />
 
         <ImageView
@@ -190,8 +192,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:visibility="invisible"
-            android:background="@mipmap/ic_home_bot_number_bg" />
+            android:background="@mipmap/ic_home_bot_number_bg"
+            android:visibility="invisible" />
 
     </FrameLayout>
 
