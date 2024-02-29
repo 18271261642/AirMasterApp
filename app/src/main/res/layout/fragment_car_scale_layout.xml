@@ -18,7 +18,7 @@
         android:textSize="@dimen/sp_16"
         android:layout_marginTop="@dimen/dp_20"
         android:layout_marginStart="@dimen/dp_30"
-        android:text="左前传感器"/>
+        android:text="@string/string_sensor_fl"/>
 
 
     <LinearLayout
@@ -64,7 +64,7 @@
         android:textSize="@dimen/sp_16"
         android:layout_marginTop="@dimen/dp_20"
         android:layout_marginStart="@dimen/dp_30"
-        android:text="右前传感器"/>
+        android:text="@string/string_sensor_fr"/>
 
 
     <LinearLayout
@@ -112,7 +112,7 @@
         android:textSize="@dimen/sp_16"
         android:layout_marginTop="@dimen/dp_20"
         android:layout_marginStart="@dimen/dp_30"
-        android:text="左后传感器"/>
+        android:text="@string/string_sensor_rl"/>
 
 
     <LinearLayout
@@ -160,7 +160,7 @@
         android:textSize="@dimen/sp_16"
         android:layout_marginTop="@dimen/dp_20"
         android:layout_marginStart="@dimen/dp_30"
-        android:text="右后传感器"/>
+        android:text="@string/string_sensor_rr"/>
 
 
     <LinearLayout

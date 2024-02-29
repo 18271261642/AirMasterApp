@@ -108,13 +108,10 @@ class SecondScanActivity : AppActivity() {
         }
 
 
-        scanBindDeviceView?.setOnLongClickListener(object : OnLongClickListener{
-            override fun onLongClick(p0: View?): Boolean {
-                unBindDevice()
-                return true
-            }
-
-        })
+        scanBindDeviceView?.setOnLongClickListener {
+            unBindDevice()
+            true
+        }
     }
 
     override fun initData() {

@@ -2,7 +2,7 @@
 <resources>
 
 
-    <string name="string_bluetooth">蓝牙</string>
+    <string name="string_bluetooth">Bluetooth</string>
     <string name="string_home_air">AIR</string>
     <string name="string_home_control">Control</string>
     <string name="string_home_setting">Setting</string>
@@ -24,30 +24,55 @@
     <string name="string_scan_conn_failed">连接失败</string>
 
     <string name="string_setting_menu_conn_device">连接设备</string>
-    <string name="string_setting_menu_set">系统设置</string>
-    <string name="string_setting_menu_sys_auto_check">系统自检</string>
-    <string name="string_setting_menu_about">关于</string>
-    <string name="string_scan_valid_device">可用设备</string>
-    <string name="string_scan_other_device">其它设备</string>
+    <string name="string_setting_menu_set">System setting</string>
+    <string name="string_setting_menu_sys_auto_check">Calibration</string>
+    <string name="string_setting_menu_about">About</string>
+    <string name="string_scan_valid_device">Valid device</string>
+    <string name="string_scan_other_device">Other device</string>
     <string name="string_scan_unbind_prompt">是否解除当前连接?</string>
     <string name="string_scan_conn_new_device">请先解绑再连接!</string>
 
     <!--系统设置页面-->
-    <string name="string_set_tank_pressure">气罐压力</string>
-    <string name="string_set_sensor_tool">高度尺工具</string>
-    <string name="string_set_battery_protect">电瓶保护</string>
-    <string name="string_set_start_end">点熄火设置</string>
-    <string name="string_set_preset_setting">高度记忆设置</string>
-    <string name="string_set_service_model">维修模式</string>
-    <string name="string_set_minimum_dirve">最低行驶保护气压</string>
-    <string name="string_set_ap_balance">气压平衡</string>
+    <string name="string_set_tank_pressure">Tank Pressure</string>
+    <string name="string_set_sensor_tool">Sensor Tool</string>
+    <string name="string_set_battery_protect">Battery</string>
+    <string name="string_set_start_end">Start-End</string>
+    <string name="string_set_preset_setting">Preset Setting</string>
+    <string name="string_set_service_model">Service Mode</string>
+    <string name="string_set_minimum_dirve">Minimum Drive</string>
+    <string name="string_set_ap_balance">AP Balance</string>
     <string name="string_tank_pressure_alert">高压和低压差不能超过40PSI.</string>
-    <string name="string_sensor_fl">左前传感器</string>
-    <string name="string_sensor_fr">右前传感器</string>
-    <string name="string_sensor_rl">左后传感器</string>
-    <string name="string_sensor_rr">右后传感器</string>
-    <string name="string_battery_16">16V高压保护</string>
-    <string name="string_battery_mini_b">低压保护</string>
-    <string name="string_start_end_start">点火设置</string>
+    <string name="string_sensor_fl">FL</string>
+    <string name="string_sensor_fr">FR</string>
+    <string name="string_sensor_rl">RL</string>
+    <string name="string_sensor_rr">RR</string>
+    <string name="string_battery_16">16VMax Battery</string>
+    <string name="string_battery_mini_b">Min Battery</string>
+    <string name="string_start_end_start">Start</string>
+    <string name="string_start_start_position">点火后设置联动预置位:</string>
+    <string name="string_start_end_end">End</string>
+    <string name="string_start_end_position">熄火后设置联动预置位:</string>
+    <string name="string_ap_balance_priority">气压优先</string>
+    <string name="string_ap_balance_height_priority">高度优先</string>
+    <string name="string_manual">手动自检</string>
+    <string name="string_automatic">自动检测</string>
 
+    <string name="string_sys_upgrage">System Upgrade</string>
+    <string name="string_wireless_watch">无线手环</string>
+    <string name="string_activate_device">激活设备</string>
+    <string name="string_activate_device_hid">请联系经销商获取激活码</string>
+    <string name="string_activate_success">激活成功</string>
+
+    <string name="string_not_conn_device">未连接设备</string>
+    <string name="string_go_to_official_website">去官网</string>
+    <string name="string_go_to_conn">去连接</string>
+    <string name="string_e_1">系统未自检</string>
+    <string name="string_e_2">加速度传感器故障</string>
+    <string name="string_e_3">电池电压过高</string>
+    <string name="string_e_4">电池电压过低</string>
+    <string name="string_e_5">气泵1温度传感器故障</string>
+    <string name="string_e_6">气泵2温度传感器故障</string>
+    <string name="string_e_7">系统温度传感器故障</string>
+
+    <string name="string_has_new_version">有新版本</string>
 </resources>

@@ -48,7 +48,7 @@ class CarSysScaleFragment : TitleBarFragment<CarSysSetActivity>() {
 
     override fun initData() {
         viewModel = ViewModelProvider(this)[ControlViewModel::class.java]
-        sysScaleTitleView?.setCommTitleTxt("高度尺工具")
+        sysScaleTitleView?.setCommTitleTxt(resources.getString(R.string.string_set_sensor_tool))
         sysScaleTitleView?.setOnItemClick{
             val fragmentManager = parentFragmentManager
             fragmentManager.popBackStack()

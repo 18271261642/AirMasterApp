@@ -60,7 +60,7 @@ class CarGassPressureFragment : TitleBarFragment<CarSysSetActivity>(){
         gassPressureHeightSeekBar = findViewById(R.id.gassPressureHeightSeekBar)
         gassPressureLowSeekBar = findViewById(R.id.gassPressureLowSeekBar)
 
-        sysGassTitleView?.setCommTitleTxt("气罐压力")
+        sysGassTitleView?.setCommTitleTxt(resources.getString(R.string.string_set_tank_pressure))
 
         sysGassTitleView?.setOnItemClick{
             val fragmentManager = parentFragmentManager

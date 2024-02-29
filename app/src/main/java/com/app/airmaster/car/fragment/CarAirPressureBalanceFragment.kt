@@ -55,7 +55,7 @@ class CarAirPressureBalanceFragment : TitleBarFragment<CarSysSetActivity>(){
         airBalanceSwitch = findViewById(R.id.airBalanceSwitch)
         sysAirBalanceTitleView = findViewById(R.id.sysAirBalanceTitleView)
 
-        sysAirBalanceTitleView?.setCommTitleTxt("气压平衡")
+        sysAirBalanceTitleView?.setCommTitleTxt(resources.getString(R.string.string_set_ap_balance))
         sysAirBalanceTitleView?.setOnItemClick{
             val fragmentManager = parentFragmentManager
             fragmentManager.popBackStack()

@@ -152,7 +152,7 @@
             android:layout_marginStart="@dimen/dp_10"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="高压和低压差不能超过40PSI。"
+            android:text="@string/string_tank_pressure_alert"
             android:textColor="#FFAEAEAE"
             android:textSize="@dimen/sp_13" />
     </LinearLayout>

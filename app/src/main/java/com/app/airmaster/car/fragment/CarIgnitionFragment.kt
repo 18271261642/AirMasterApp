@@ -91,7 +91,7 @@ class CarIgnitionFragment : TitleBarFragment<CarSysSetActivity>(){
         carIgnitionOnRy?.adapter = onAdapter
 
 
-        sysIngitionTitleView?.setCommTitleTxt("点火熄火设置")
+        sysIngitionTitleView?.setCommTitleTxt(resources.getString(R.string.string_set_start_end))
         sysIngitionTitleView?.setOnItemClick{
             val fragmentManager = parentFragmentManager
             fragmentManager.popBackStack()

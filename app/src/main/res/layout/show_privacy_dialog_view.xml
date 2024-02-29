@@ -7,7 +7,7 @@
     android:padding="5dp"
     android:layout_margin="@dimen/dp_10"
     app:shape_radius="@dimen/dp_15"
-    app:shape_solidColor="@color/white"
+    app:shape_solidColor="@color/play_color_theme"
     android:gravity="center"
     android:layout_height="wrap_content">
 
@@ -15,10 +15,11 @@
 
     <TextView
         android:id="@+id/privacyTitleTv"
-        android:textColor="@color/black"
+        android:textColor="@color/white"
         android:layout_gravity="center"
         android:padding="5dp"
         android:textSize="23sp"
+        android:layout_marginTop="@dimen/dp_10"
         android:gravity="center"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -37,7 +38,7 @@
            android:layout_height="wrap_content"
            android:textSize="17sp"
            android:padding="8dp"
-           android:textColor="@color/black"
+           android:textColor="@color/white"
            android:layout_margin="10dp"
            android:lineSpacingExtra="5dp"
            android:text="@string/privacy_agreement_2"/>
@@ -48,7 +49,7 @@
            android:layout_height="wrap_content"
            android:layout_gravity="center"
            android:gravity="center"
-           android:textColor="@color/black"
+           android:textColor="@color/white"
            android:textSize="16sp"
            android:text="用户协议和隐私政策"/>
 

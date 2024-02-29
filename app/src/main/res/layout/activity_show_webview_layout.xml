@@ -3,16 +3,20 @@
     android:layout_width="match_parent"
     android:orientation="vertical"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/play_color_theme"
     android:layout_height="match_parent">
 
     <com.hjq.bar.TitleBar
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:leftIcon="@drawable/ic_black_back"/>
+        app:titleColor="@color/white"
+        android:background="@color/transparent"
+        app:leftIcon="@drawable/ic_white_left_back"/>
 
     <WebView
         android:id="@+id/webView"
         android:layout_width="match_parent"
+        android:background="@color/play_color_theme"
         android:layout_height="match_parent"/>
 
 </LinearLayout>

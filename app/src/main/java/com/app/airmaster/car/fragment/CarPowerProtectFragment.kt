@@ -52,7 +52,7 @@ class CarPowerProtectFragment : TitleBarFragment<CarSysSetActivity>(){
         powerProtectValueTv = findViewById(R.id.powerProtectValueTv)
         powerSeekBar = findViewById(R.id.powerSeekBar)
 
-        sysPowerProtectTitleView?.setCommTitleTxt("电瓶保护")
+        sysPowerProtectTitleView?.setCommTitleTxt(resources.getString(R.string.string_set_battery_protect))
         sysPowerProtectTitleView?.setOnItemClick{
             val fragmentManager = parentFragmentManager
             fragmentManager.popBackStack()

@@ -49,4 +49,31 @@
     <string name="string_battery_16">16V高压保护</string>
     <string name="string_battery_mini_b">低压保护</string>
     <string name="string_start_end_start">点火设置</string>
+
+    <string name="string_start_start_position">点火后设置联动预置位:</string>
+    <string name="string_start_end_end">熄火设置</string>
+    <string name="string_start_end_position">熄火后设置联动预置位:</string>
+    <string name="string_ap_balance_priority">气压优先</string>
+    <string name="string_ap_balance_height_priority">高度优先</string>
+    <string name="string_manual">手动自检</string>
+    <string name="string_automatic">自动检测</string>
+
+    <string name="string_sys_upgrage">系统升级</string>
+    <string name="string_wireless_watch">无线手环</string>
+    <string name="string_activate_device">激活设备</string>
+    <string name="string_activate_device_hid">请联系经销商获取激活码</string>
+    <string name="string_activate_success">激活成功</string>
+
+    <string name="string_not_conn_device">未连接设备</string>
+    <string name="string_go_to_official_website">去官网</string>
+    <string name="string_go_to_conn">去连接</string>
+    <string name="string_e_1">系统未自检</string>
+    <string name="string_e_2">加速度传感器故障</string>
+    <string name="string_e_3">电池电压过高</string>
+    <string name="string_e_4">电池电压过低</string>
+    <string name="string_e_5">气泵1温度传感器故障</string>
+    <string name="string_e_6">气泵2温度传感器故障</string>
+    <string name="string_e_7">系统温度传感器故障</string>
+
+    <string name="string_has_new_version">有新版本</string>
 </resources>

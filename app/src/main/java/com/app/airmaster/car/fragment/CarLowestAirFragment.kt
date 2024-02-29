@@ -56,7 +56,7 @@ class CarLowestAirFragment : TitleBarFragment<CarSysSetActivity>() {
         carRearAddImgView?.setOnClickListener(this)
         carRearRemoveImgView?.setOnClickListener(this)
 
-        sysLowestAirTitleView?.setCommTitleTxt("最低行驶气压保护")
+        sysLowestAirTitleView?.setCommTitleTxt(resources.getString(R.string.string_set_minimum_dirve))
         sysLowestAirTitleView?.setOnItemClick{
             val fragmentManager = parentFragmentManager
             fragmentManager.popBackStack()

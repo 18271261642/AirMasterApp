@@ -48,7 +48,7 @@ class CarHeightMemoryFragment : TitleBarFragment<CarSysSetActivity>(){
         list = ArrayList<TimerBean>()
         adapter = CarTimerAdapter(attachActivity, list as ArrayList<TimerBean>)
         carHeightMemoryRy?.adapter = adapter
-        sysHeightMemoryTitleView?.setCommTitleTxt("高度记忆设置")
+        sysHeightMemoryTitleView?.setCommTitleTxt(resources.getString(R.string.string_set_preset_setting))
         sysHeightMemoryTitleView?.setOnItemClick{
             val fragmentManager = parentFragmentManager
             fragmentManager.popBackStack()

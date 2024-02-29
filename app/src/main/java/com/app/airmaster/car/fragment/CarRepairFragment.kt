@@ -41,7 +41,7 @@ class CarRepairFragment : TitleBarFragment<CarSysSetActivity>() {
     override fun initView() {
         repairModelSwitch = findViewById(R.id.repairModelSwitch)
         sysRepairTitleView = findViewById(R.id.sysRepairTitleView)
-        sysRepairTitleView?.setCommTitleTxt("维修模式")
+        sysRepairTitleView?.setCommTitleTxt(resources.getString(R.string.string_set_service_model))
         sysRepairTitleView?.setOnItemClick{
             val fragmentManager = parentFragmentManager
             fragmentManager.popBackStack()

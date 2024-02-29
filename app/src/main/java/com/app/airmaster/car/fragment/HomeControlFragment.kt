@@ -113,27 +113,6 @@ class HomeControlFragment : TitleBarFragment<CarHomeActivity>() {
             }
 
         }
-
-
-//
-//        homeBottomNumberView?.setOnTouchListener(object : OnTouchListener{
-//            override fun onTouch(p0: View?, p1: MotionEvent?): Boolean {
-//                attachActivity.showCommAlertDialog("未连接设备","去官网","去连接",object :
-//                    OnCommItemClickListener {
-//                    override fun onItemClick(position: Int) {
-//                        attachActivity.disCommAlertDialog()
-//                        if(position == 0x01){
-//                            startActivity(SecondScanActivity::class.java)
-//                        }
-//                    }
-//
-//                })
-//
-//                return true
-//            }
-//
-//        })
-
     }
 
 
@@ -226,43 +205,40 @@ class HomeControlFragment : TitleBarFragment<CarHomeActivity>() {
         map.clear()
         val chartArray = errorStr.toCharArray()
         if (chartArray[0].toString() == "1") {
-            map[0] = "系统未自检"
+            map[0] = resources.getString(R.string.string_e_1)
         }
         if (chartArray[1].toString() == "1") {
-            map[1] = "加速度传感器故障"
+            map[1] = resources.getString(R.string.string_e_2)
         }
         if (chartArray[2].toString() == "1") {
-            map[2] = "电池电压过高"
+            map[2] = resources.getString(R.string.string_e_3)
         }
         if (chartArray[3].toString() == "1") {
-            map[3] = "电池电压过低"
+            map[3] = resources.getString(R.string.string_e_4)
         }
         if (chartArray[4].toString() == "1") {
-            map[4] = "气泵1温度传感器故障"
+            map[4] = resources.getString(R.string.string_e_5)
         }
         if (chartArray[5].toString() == "1") {
-            map[5] = "气泵2温度传感器故障"
+            map[5] = resources.getString(R.string.string_e_6)
         }
         if (chartArray[6].toString() == "1") {
-            map[6] = "系统温度传感器故障"
+            map[6] = resources.getString(R.string.string_e_7)
         }
         return map
     }
 
 
     private fun showNotConnDialog(){
-        attachActivity.showCommAlertDialog("未连接设备","去官网","去连接",object :
-                    OnCommItemClickListener {
-                    override fun onItemClick(position: Int) {
-                        attachActivity.disCommAlertDialog()
-                        if(position == 0x01){
-                            startActivity(SecondScanActivity::class.java)
-                        }
-                        if(position == 0x00){
-                            startActivity(ShowWebActivity::class.java)
-                        }
-                    }
-
-                })
+        attachActivity.showCommAlertDialog(resources.getString(R.string.string_not_conn_device),resources.getString(R.string.string_go_to_official_website),resources.getString(R.string.string_go_to_conn)
+        ) { position ->
+            attachActivity.disCommAlertDialog()
+            if (position == 0x01) {
+                startActivity(SecondScanActivity::class.java)
+            }
+            if (position == 0x00) {
+                startActivity(ShowWebActivity::class.java)
+            }
+        }
     }
 }
