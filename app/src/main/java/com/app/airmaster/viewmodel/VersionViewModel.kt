@@ -124,7 +124,7 @@ class VersionViewModel : CommViewModel(){
 
 
     //检查设备的固件版本
-    fun getDeviceInfoData(life : LifecycleOwner, binCode : String,matchCode : String, versionCode : Int,broadcastId : String){
+    fun getDeviceInfoData(isWatch : Boolean,life : LifecycleOwner, binCode : String,matchCode : String, versionCode : Int,broadcastId : String){
 
         val versionParamsBean = VersionParamsBean()
         versionParamsBean.matchCode = matchCode
@@ -150,6 +150,9 @@ class VersionViewModel : CommViewModel(){
                     if(jsonObject.getInt("code") == 200){
                         val data = jsonObject.getString("data")
                         val bean = GsonUtils.getGsonObject<ServerVersionInfoBean>(data)
+                        if(bean != null){
+                            bean.isCarWatch = isWatch
+                        }
                         serverVersionInfo.postValue(bean)
 
                     }

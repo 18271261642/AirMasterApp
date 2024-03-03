@@ -37,7 +37,7 @@
     <string name="string_click_bind">click bind</string>
     <string name="string_word">size</string>
     <string name="string_firmware_version">SCREEN FIRMWARE VERSION: %s</string>
-    <string name="string_app_version">APP VERSION: %s</string>
+    <string name="string_app_version">APP VERSION</string>
 
 
     <string name="string_gig_small">The GIF is too small, please choose a normal gif!</string>

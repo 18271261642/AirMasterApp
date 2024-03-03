@@ -7,9 +7,21 @@ public class ServerVersionInfoBean {
 
 
 
+    //是否是旋钮屏配套的手表
+    private boolean isCarWatch;
+
     private String appVo;
 
     private List<FirmwareListDTO> firmwareList;
+
+
+    public boolean isCarWatch() {
+        return isCarWatch;
+    }
+
+    public void setCarWatch(boolean carWatch) {
+        isCarWatch = carWatch;
+    }
 
     public String getAppVo() {
         return appVo;

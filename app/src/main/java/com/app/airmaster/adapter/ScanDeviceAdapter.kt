@@ -38,8 +38,11 @@ class ScanDeviceAdapter(private val context: Context,private val list : MutableL
     @SuppressLint("MissingPermission")
     override fun onBindViewHolder(holder: ScanDeviceViewHolder, position: Int) {
 
+        val bean = list[position]
         holder.itemScanName.text = list[position].bluetoothDevice.name
         holder.itemScanMac.text = list[position].bluetoothDevice.address
+
+        holder.itemScanStatusTv.text = if(bean.isConnStatus == 1) "连接中.." else "连接"
 
         holder.itemView.setOnClickListener {
             val position = holder.layoutPosition

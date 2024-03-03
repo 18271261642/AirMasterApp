@@ -95,7 +95,7 @@ class CarAutoCheckActivity : AppActivity() {
     //进入或退出自检
     private fun intoOrExitCheck(into : Boolean){
         //开始自检
-        viewModel?.intoOrExit(into)
+        viewModel?.intoOrExit(into,true)
     }
 
 

@@ -1,16 +1,9 @@
 package com.blala.blalable;
 
-
-import android.os.Handler;
-import android.os.Message;
 import android.util.Log;
-import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Calendar;
 import java.util.UUID;
 
-import androidx.annotation.NonNull;
 
 /**
  * Created by Admin
@@ -51,7 +44,7 @@ public class BleConstant {
 
 
 
-    /**W560b服务UUID**/
+    /**服务UUID**/
     public UUID SERVICE_UUID = UUID.fromString("1f40eaf8-aab4-14a3-f1ba-f61f35cddbaa");
 
     /**命令发送特征uuid**/
@@ -63,25 +56,16 @@ public class BleConstant {
     public final UUID KEYBOARD_DIAL_WRITE_UUID = UUID.fromString("1f400003-aab4-14a3-f1ba-f61f35cddbaa");
 
 
+    /**旋钮屏手表的服务_UUID**/
+    public UUID CAR_WATCH_SERVICE_UUID = UUID.fromString("1f40eaf7-aab4-14a3-f1ba-f61f35cddbaa");
+    public UUID CAR_WATCH_WRITE_UUID = UUID.fromString("1f400001-aab4-14a3-f1ba-f61f35cddbaa");
+    public UUID CAR_WATCH_READ_UUID = UUID.fromString("1f400002-aab4-14a3-f1ba-f61f35cddbaa");
 
-
-
-    /**存储数据返回**/
-    public UUID SAVE_DATA_SEND_UUID = UUID.fromString("7658fd03-878a-4350-a93e-da553e719ed0");
-    /**表盘接收**/
-    public UUID WATCH_FACE_UUID = UUID.fromString("7658fd05-878a-4350-a93e-da553e719ed0");
 
 
     /**电量的serviceUUID，主动读取**/
     public UUID BATTERY_SERVER_UUID = UUID.fromString("0000180f-0000-1000-8000-00805f9b34fb");
     public UUID BATTERY_READ_UUID = UUID.fromString("00002a19-0000-1000-8000-00805f9b34fb");
-
-
-    /**心率带 W561B的服务UUID **/
-     public UUID W561B_SERVER_UUID = UUID.fromString("0000180d-0000-1000-8000-00805f9b34fb");
-     /**心率带实时返回心率的uuid**/
-     public UUID W561B_REAL_HR_UUID = UUID.fromString("00002a37-0000-1000-8000-00805f9b34fb");
-
 
 
     /**获取当前时间**/
@@ -370,133 +354,6 @@ public class BleConstant {
         alarmByte[5] = (byte) (hour & 0xff);
         alarmByte[6] = (byte) (minute &0xff);
         return alarmByte;
-    }
-
-
-    /**
-     * 发送天气
-     * @param index 下标
-     * @param airQuality 空气质量
-     * @param temperature 当前温度
-     * @param heightT 最高温度
-     * @param lowT 最低温度
-     * @param weatherStatus 天气
-     * @return
-     */
-    public byte[] weatherList(int index,int airQuality,int temperature,int heightT,int lowT,int weatherStatus){
-
-
-        byte[] weatherByte = new byte[]{0x04,0x12, (byte) index, (byte) airQuality, (byte) (airQuality>>8), (byte) (temperature &0xff), (byte) (heightT & 0xff), (byte) (lowT &0xff), (byte) (weatherStatus & 0xff)};
-
-        return weatherByte;
-    }
-
-
-    /**天气数据**/
-    public ArrayList<byte[]> weatherListByte(String cityName){
-        ArrayList<byte[]> list = new ArrayList<>();
-
-        byte[] cityByte = cityName.getBytes();
-        byte[] bt1 = new byte[20];
-        bt1[0] = 0x02;
-        bt1[1] = 12;
-        bt1[2] = 0x01;
-        byte[] tmpCity = new byte[17];
-        if(cityByte.length>=17){
-            System.arraycopy(cityByte,0,tmpCity,0,17);
-        }else{
-            System.arraycopy(cityByte,0,tmpCity,0,cityByte.length);
-        }
-
-        System.arraycopy(tmpCity,0,bt1,2,tmpCity.length);
-        list.add(bt1);
-
-        for(int i = 2;i<9;i++){
-            byte[] secondByte = new byte[20];
-            secondByte[0] = 0x04;
-            secondByte[1] = 12;
-            secondByte[2] = (byte) i;
-            secondByte[3] = 0x00;
-            secondByte[4] = 0x20;
-            secondByte[5] = (byte) (20 >> 8);
-            secondByte[6] = 0x21;
-            secondByte[7] = 0x30;
-            secondByte[8] = 0x10;
-            secondByte[9] = 0x25;
-            list.add(secondByte);
-        }
-
-
-        return list;
-    }
-
-
-    //发送表盘，
-    //从1开始，到1,2,3,4,0
-    public byte[] sendCurrWatchFace(int index){
-        return new byte[]{0x01,0x61, (byte) index, (byte) 0xA1, (byte) 0xFE,0x74,0x69,0x02};
-    }
-
-
-
-
-    /**发送音乐**/
-    public ArrayList<byte[]> sendMusic(String musicName,String musicCountTime,String musicPlayTime){
-
-        ArrayList<byte[]> musicListByte = new ArrayList<>();
-
-        //音乐名称
-        byte[] nameByte = musicName.getBytes(StandardCharsets.UTF_8);
-
-        byte[] musicByte = new byte[50];
-        musicByte[0] = 0x01;
-        musicByte[1] = 0x1f;
-        musicByte[2] = 0x01;
-
-        System.arraycopy(nameByte,0,musicByte,3,nameByte.length-1);
-
-
-        musicListByte.add(musicByte);
-
-
-        //音乐总时间
-        byte[] countTimeByte = musicCountTime.getBytes(StandardCharsets.UTF_8);
-        byte[] musicCountByte = new byte[50];
-        musicCountByte[0] = 0x01;
-        musicCountByte[1] = 0x1f;
-        musicCountByte[2] = 0x02;
-        System.arraycopy(countTimeByte,0,musicCountByte,3,countTimeByte.length-1);
-
-        musicListByte.add(musicCountByte);
-
-        //音乐播放时间
-        byte[] playByteTime = musicPlayTime.getBytes(StandardCharsets.UTF_8);
-
-        byte[] playByte = new byte[50];
-        playByte[0] = 0x01;
-        playByte[1] = 0x1f;
-        playByte[2] = 0x03;
-        System.arraycopy(playByteTime,0,playByte,3,playByteTime.length-1);
-        musicListByte.add(playByte);
-
-        return musicListByte;
-    }
-
-
-    /**提取锻炼数据**/
-    public byte[] getExerciseByte(int num){
-        return new byte[]{0x01,0x42, (byte) num};
-    }
-
-
-    /**清除所有锻炼数据**/
-    public byte[] clearExerciseByte(){
-       return new byte[]{0x01, (byte) 0x43,0x01};
-    }
-
-    /**进入工厂测试模式指令**/
-    public byte[] intoTestModel(){
-        return new byte[]{0x05, (byte) 0xfe,0x54, (byte) 0xa1, (byte) 0xfe,0x74,0x69};
     }
 
 }

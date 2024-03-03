@@ -2,6 +2,7 @@
 <resources>
 
 
+    <string name="string_air_choose">选择</string>
     <string name="string_bluetooth">蓝牙</string>
     <string name="string_home_air">AIR</string>
     <string name="string_home_control">Control</string>

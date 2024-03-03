@@ -6,6 +6,13 @@ package com.app.airmaster.car.bean;
  */
 public class DeviceBinVersionBean {
 
+    /**名称**/
+    private String deviceName;
+
+    /**mac**/
+    private String deviceMac;
+
+
     //产品编码
     private String productCode;
 
@@ -60,5 +67,21 @@ public class DeviceBinVersionBean {
 
     public void setBinCode(String binCode) {
         this.binCode = binCode;
+    }
+
+    public String getDeviceName() {
+        return deviceName;
+    }
+
+    public void setDeviceName(String deviceName) {
+        this.deviceName = deviceName;
+    }
+
+    public String getDeviceMac() {
+        return deviceMac;
+    }
+
+    public void setDeviceMac(String deviceMac) {
+        this.deviceMac = deviceMac;
     }
 }

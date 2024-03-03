@@ -16,6 +16,7 @@ import com.blala.blalable.listener.BleConnStatusListener;
 import com.blala.blalable.listener.ConnStatusListener;
 import com.blala.blalable.listener.InterfaceManager;
 import com.blala.blalable.listener.OnBleStatusBackListener;
+import com.blala.blalable.listener.OnCarWatchBackListener;
 import com.blala.blalable.listener.OnCarWriteBackListener;
 import com.blala.blalable.listener.OnCommBackDataListener;
 import com.blala.blalable.listener.OnExerciseDataListener;
@@ -342,6 +343,8 @@ public class BleManager {
                         public void run() {
                             //实时数据返回，主动通道
                             setNotifyData(bleMac,bleConstant.SERVICE_UUID,bleConstant.READ_UUID,connectResponse);
+                            setCarWatchNotify(bleMac,bleConstant.CAR_WATCH_SERVICE_UUID,bleConstant.CAR_WATCH_READ_UUID,connectResponse);
+
                         }
                     }, 2000L);
                     connectResponse.connStatus(code);
@@ -372,6 +375,31 @@ public class BleManager {
         if(interfaceManager.onExerciseDataListener != null){
             interfaceManager.onExerciseDataListener = null;
         }
+    }
+
+
+
+    /**旋钮屏手表的通知返回**/
+    private synchronized void setCarWatchNotify(String mac ,UUID serviceUUid,UUID notifyUUid,ConnStatusListener connStatusListener){
+        bluetoothClient.notify(mac, serviceUUid, notifyUUid, new BleNotifyResponse() {
+            @Override
+            public void onNotify(UUID uuid, UUID uuid1, byte[] bytes) {
+                String notifyStr = uuid1.toString() + " " + Utils.formatBtArrayToString(bytes);
+                Log.e(TAG, "------写入数据返回=" + notifyStr);
+                //stringBuffer.append("数据返回:"+notifyStr+"\n\n");
+                // sendCommBroadcast("ble_action",0);
+
+                if (interfaceManager.onCarWatchBackListener != null) {
+                    interfaceManager.onCarWatchBackListener.backWriteBytes(bytes);
+                }
+            }
+
+            @Override
+            public void onResponse(int i) {
+                connStatusListener.setNoticeStatus(i);
+            }
+
+        });
     }
 
 
@@ -614,6 +642,19 @@ public class BleManager {
     }
 
 
+
+    //写入旋钮屏配套的手表
+    public synchronized void writeCarWatchData(byte[] data, OnCarWatchBackListener onCarWatchBackListener){
+        String writeStr = Utils.formatBtArrayToString(data);
+        Log.e(TAG,"-----写入数据="+writeStr);
+        String bleMac = (String) BleSpUtils.get(mContext,SAVE_BLE_MAC_KEY,"");
+        if(TextUtils.isEmpty(bleMac))
+            return;
+        stringBuffer.append("写入数据:"+writeStr+"\n\n");
+        sendCommBroadcast("ble_action",0);
+        interfaceManager.setOnCarWatchBackListener(onCarWatchBackListener);
+        bluetoothClient.write(bleMac,bleConstant.CAR_WATCH_SERVICE_UUID,bleConstant.CAR_WATCH_WRITE_UUID,data,bleWriteResponse);
+    }
 
 
     //写入设备数据

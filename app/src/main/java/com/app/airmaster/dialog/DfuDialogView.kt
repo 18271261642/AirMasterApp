@@ -120,6 +120,10 @@ class DfuDialogView : AppCompatDialog {
     }
 
 
+    fun setTitleTxt(txt : String){
+        dfuDialogTitleTv?.text = txt
+    }
+
     //显示升级的状态
     fun setDfuModel(){
         dfuContentTv?.visibility = View.GONE

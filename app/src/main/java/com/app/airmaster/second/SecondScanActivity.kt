@@ -99,7 +99,9 @@ class SecondScanActivity : AppActivity() {
     @SingleClick()
     private fun clickToConn(){
         scanBindDeviceView?.setOnClickListener {
-
+            if(BaseApplication.getBaseApplication().connStatus == ConnStatus.CONNECTING){
+                return@setOnClickListener
+            }
             if(BaseApplication.getBaseApplication().connStatus == ConnStatus.CONNECTED){
                 return@setOnClickListener
             }
@@ -330,6 +332,8 @@ class SecondScanActivity : AppActivity() {
             if(action == BleConstant.BLE_DIS_CONNECT_ACTION){
                 hideDialog()
                 ToastUtils.show(resources.getString(R.string.string_scan_conn_failed))
+                BaseApplication.getBaseApplication().connStatus = ConnStatus.NOT_CONNECTED
+                getHasBindDevice()
             }
         }
 

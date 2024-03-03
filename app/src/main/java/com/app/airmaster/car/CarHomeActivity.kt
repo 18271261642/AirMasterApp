@@ -1,8 +1,13 @@
 package com.app.airmaster.car
 
+
+import android.content.BroadcastReceiver
+import android.content.Context
 import android.content.Intent
+import android.content.IntentFilter
 import android.view.KeyEvent
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager.widget.ViewPager
 import com.app.airmaster.BaseApplication
@@ -11,13 +16,21 @@ import com.app.airmaster.action.ActivityManager
 import com.app.airmaster.action.AppActivity
 import com.app.airmaster.action.AppFragment
 import com.app.airmaster.adapter.NavigationAdapter
+import com.app.airmaster.ble.ConnStatus
 import com.app.airmaster.car.fragment.HomeAirFragment
 import com.app.airmaster.car.fragment.HomeControlFragment
 import com.app.airmaster.car.fragment.HomeSettingFragment
+import com.app.airmaster.viewmodel.AutoConnViewModel
+import com.blala.blalable.BleConstant
 import com.blala.blalable.car.AutoBackBean
 import com.bonlala.base.FragmentPagerAdapter
 import com.hjq.toast.ToastUtils
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import timber.log.Timber
+import kotlin.system.exitProcess
+
 
 /**
  *
@@ -25,6 +38,8 @@ import timber.log.Timber
  *Date 2023/7/14
  */
 class CarHomeActivity : AppActivity() ,NavigationAdapter.OnNavigationListener{
+
+    private var autoConnViewModel : AutoConnViewModel ?= null
 
     private val INTENT_KEY_IN_FRAGMENT_INDEX: String = "fragmentIndex"
     private val INTENT_KEY_IN_FRAGMENT_CLASS: String = "fragmentClass"
@@ -36,12 +51,17 @@ class CarHomeActivity : AppActivity() ,NavigationAdapter.OnNavigationListener{
     private var mPagerAdapter: FragmentPagerAdapter<AppFragment<*>>? = null
 
 
+    private var onHomeConnListener : OnHomeConnStatusListener ?= null
+
     private var autoListener : OnHomeAutoBackListener ?= null
 
     fun setHomeAutoListener(c : OnHomeAutoBackListener){
         this.autoListener = c
     }
 
+    fun setHomeConnListener(a : OnHomeConnStatusListener){
+        this.onHomeConnListener = a
+    }
 
     private var selectorIndex = 0
 
@@ -56,6 +76,15 @@ class CarHomeActivity : AppActivity() ,NavigationAdapter.OnNavigationListener{
     }
 
     override fun initData() {
+
+        val intentFilter = IntentFilter()
+        intentFilter.addAction(BleConstant.BLE_CONNECTED_ACTION)
+        intentFilter.addAction(BleConstant.BLE_DIS_CONNECT_ACTION)
+        intentFilter.addAction(BleConstant.BLE_SCAN_COMPLETE_ACTION)
+        intentFilter.addAction(BleConstant.BLE_START_SCAN_ACTION)
+        registerReceiver(broadcastReceiver,intentFilter)
+
+        autoConnViewModel = ViewModelProvider(this)[AutoConnViewModel::class.java]
         mNavigationAdapter = NavigationAdapter(this).apply {
             addItem(
                 NavigationAdapter.MenuItem(
@@ -89,9 +118,10 @@ class CarHomeActivity : AppActivity() ,NavigationAdapter.OnNavigationListener{
         }
         onNewIntent(intent)
 
-
-
-
+        GlobalScope.launch {
+            delay(1500)
+            autoConnViewModel?.retryConnDevice(this@CarHomeActivity)
+        }
 
     }
 
@@ -142,23 +172,71 @@ class CarHomeActivity : AppActivity() ,NavigationAdapter.OnNavigationListener{
 
     private var mExitTime: Long = 0
 
-    override fun onKeyDown(keyCode: Int, event: KeyEvent): Boolean {
-        // 过滤按键动作
-        if (event.keyCode == KeyEvent.KEYCODE_BACK) {
-            if (System.currentTimeMillis() - mExitTime > 2000) {
-                mExitTime = System.currentTimeMillis()
-                ToastUtils.show(resources.getString(R.string.string_double_click_exit))
-                return true
-            } else {
-                ActivityManager.getInstance().finishAllActivities()
-                finish()
-            }
+//    override fun onKeyDown(keyCode: Int, event: KeyEvent): Boolean {
+//        // 过滤按键动作
+//        if (event.keyCode == KeyEvent.KEYCODE_BACK) {
+//            if (System.currentTimeMillis() - mExitTime > 2000) {
+//                mExitTime = System.currentTimeMillis()
+//                ToastUtils.show(resources.getString(R.string.string_double_click_exit))
+//                return true
+//            } else {
+//                BaseApplication.getBaseApplication().bleOperate.disConnYakDevice()
+//                ActivityManager.getInstance().finishAllActivities()
+//                finish()
+//            }
+//        }
+//        return super.onKeyDown(keyCode, event)
+//    }
+
+
+    override fun onBackPressed() {
+        if (System.currentTimeMillis() - mExitTime > 2000) {
+            mExitTime = System.currentTimeMillis()
+            ToastUtils.show(resources.getString(R.string.string_double_click_exit))
+            return
         }
-        return super.onKeyDown(keyCode, event)
+
+        // 移动到上一个任务栈，避免侧滑引起的不良反应
+       // moveTaskToBack(false)
+        postDelayed({
+            // 进行内存优化，销毁掉所有的界面
+            ActivityManager.getInstance().finishAllActivities()
+            exitProcess(0)
+            finish()
+        }, 300)
     }
 
 
     interface OnHomeAutoBackListener{
         fun backAutoData(autoBean : AutoBackBean)
+    }
+
+    private val broadcastReceiver : BroadcastReceiver = object : BroadcastReceiver(){
+        override fun onReceive(p0: Context?, p1: Intent?) {
+            val action = p1?.action
+            Timber.e("---------acdtion="+action)
+            if(action == BleConstant.BLE_CONNECTED_ACTION){
+                ToastUtils.show(resources.getString(R.string.string_conn_success))
+                BaseApplication.getBaseApplication().connStatus = ConnStatus.CONNECTED
+                BaseApplication.getBaseApplication().bleOperate.stopScanDevice()
+                onHomeConnListener?.onConn(true)
+            }
+            if(action == BleConstant.BLE_DIS_CONNECT_ACTION){
+                ToastUtils.show(resources.getString(R.string.string_conn_disconn))
+                onHomeConnListener?.onConn(false)
+            }
+
+        }
+
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        unregisterReceiver(broadcastReceiver)
+    }
+
+
+    interface OnHomeConnStatusListener{
+        fun onConn(isConn : Boolean)
     }
 }

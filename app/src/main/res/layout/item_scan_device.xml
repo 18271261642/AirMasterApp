@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:padding="@dimen/dp_10"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    app:shape_solidColor="@color/white"
+    app:shape_solidColor="@color/play_color_theme"
     app:shape_solidPressedColor="#EBEBEB"
     android:layout_height="wrap_content">
 
@@ -12,7 +12,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="smart windows"
-        android:textColor="#ff333333"
+        android:textColor="@color/white"
         android:textSize="20sp"
         app:layout_constraintTop_toTopOf="parent"
         android:layout_margin="@dimen/dp_5"
@@ -23,7 +23,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="smart windows"
-        android:textColor="#ff333333"
+        android:textColor="@color/white"
         android:textSize="18sp"
         app:layout_constraintTop_toBottomOf="@+id/itemScanName"
         android:layout_margin="@dimen/dp_5"
@@ -32,7 +32,8 @@
 
     <com.hjq.shape.view.ShapeTextView
         android:id="@+id/itemScanStatusTv"
-        app:shape_solidColor="#E8E9ED"
+        app:shape_solidColor="#333333"
+        android:textColor="@color/white"
         android:paddingStart="@dimen/dp_10"
         android:paddingEnd="@dimen/dp_10"
         android:paddingTop="@dimen/dp_3"
@@ -44,7 +45,10 @@
         app:layout_constraintRight_toRightOf="parent"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/string_click_bind"/>
+        android:text="@string/string_air_choose"/>
+
+
+
 
 
 </com.hjq.shape.layout.ShapeConstraintLayout>

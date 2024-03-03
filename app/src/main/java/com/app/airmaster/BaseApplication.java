@@ -1,12 +1,15 @@
 package com.app.airmaster;
 
 
+import android.app.Activity;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.os.IBinder;
 import androidx.annotation.NonNull;
+
+import com.app.airmaster.action.ActivityManager;
 import com.app.airmaster.action.DebugLoggerTree;
 import com.app.airmaster.ble.ConnStatus;
 import com.app.airmaster.ble.ConnStatusService;
@@ -24,6 +27,7 @@ import com.hjq.http.model.HttpHeaders;
 import com.hjq.http.model.HttpParams;
 import com.hjq.http.request.HttpRequest;
 import com.hjq.toast.ToastUtils;
+import com.liulishuo.filedownloader.FileDownloader;
 import com.tencent.bugly.crashreport.CrashReport;
 import com.tencent.mmkv.MMKV;
 import org.litepal.LitePal;
@@ -81,14 +85,36 @@ public class BaseApplication extends BleApplication {
         //mmkv
         MMKV.initialize(this);
         MmkvUtils.initMkv();
-
+        ActivityManager.getInstance().init(this);
         CrashReport.initCrashReport(getApplicationContext(), "5203bcf1b4", true);
 
         initNet();
 
         Intent intent = new Intent(this, ConnStatusService.class);
         this.bindService(intent,serviceConnection, Context.BIND_AUTO_CREATE);
+        FileDownloader.setupOnApplicationOnCreate(baseApplication);
 
+        ActivityManager.getInstance().registerApplicationLifecycleCallback(new ActivityManager.ApplicationLifecycleCallback() {
+            @Override
+            public void onApplicationCreate(Activity activity) {
+
+            }
+
+            @Override
+            public void onApplicationDestroy(Activity activity) {
+
+            }
+
+            @Override
+            public void onApplicationBackground(Activity activity) {
+
+            }
+
+            @Override
+            public void onApplicationForeground(Activity activity) {
+
+            }
+        });
     }
 
 
@@ -138,7 +164,7 @@ public class BaseApplication extends BleApplication {
         @Override
         public void onServiceConnected(ComponentName componentName, IBinder iBinder) {
             connStatusService =( (ConnStatusService.ConnBinder)iBinder).getService();
-            Timber.e("--------绑定服务="+(connStatusService == null));
+            Timber.e("--------service=null="+(connStatusService == null));
         }
 
         @Override

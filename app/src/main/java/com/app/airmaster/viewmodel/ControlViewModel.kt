@@ -432,10 +432,13 @@ open class ControlViewModel : CommViewModel() {
     }
 
 
-
-    //进入或退出自检
-    fun intoOrExit(into : Boolean){
-        val scrStr = "00050401"+(if(into) "1E" else "1F")+(if(into)"00" else "01")
+    /**
+     * 进入或退出自检
+     * @param into 是否进入自检模式
+     * @param auto 00自动；01手动
+     */
+    fun intoOrExit(into : Boolean,auto : Boolean){
+        val scrStr = "00050401"+(if(into) "1E" else "1F")+(if(into) (if(auto) "00" else "01") else "01")
         val crc = Utils.crcCarContentArray(scrStr)
         val str = "011E"+ CarConstant.CAR_HEAD_BYTE_STR+scrStr+crc
         val resultArray = Utils.hexStringToByte(str)

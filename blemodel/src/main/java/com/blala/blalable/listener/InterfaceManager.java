@@ -22,6 +22,8 @@ public class InterfaceManager {
     /**汽车的写，用于0x91的回调**/
     public OnCarWriteBackListener onCarWriteBackListener;
 
+    /**汽车手表的写**/
+    public OnCarWatchBackListener onCarWatchBackListener;
 
     //写入数据返回，带tag
     public WriteBack24HourDataListener writeBack24HourDataListener;
@@ -95,5 +97,9 @@ public class InterfaceManager {
 
     public void setOnCarWriteBackListener(OnCarWriteBackListener onCarWriteBackListener) {
         this.onCarWriteBackListener = onCarWriteBackListener;
+    }
+
+    public void setOnCarWatchBackListener(OnCarWatchBackListener onCarWatchBackListener) {
+        this.onCarWatchBackListener = onCarWatchBackListener;
     }
 }

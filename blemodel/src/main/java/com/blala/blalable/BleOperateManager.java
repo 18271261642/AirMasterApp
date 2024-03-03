@@ -14,6 +14,7 @@ import com.blala.blalable.keyboard.KeyBoardConstant;
 import com.blala.blalable.listener.BleConnStatusListener;
 import com.blala.blalable.listener.ConnStatusListener;
 import com.blala.blalable.listener.OnBleStatusBackListener;
+import com.blala.blalable.listener.OnCarWatchBackListener;
 import com.blala.blalable.listener.OnCarWriteBackListener;
 import com.blala.blalable.listener.OnCommBackDataListener;
 import com.blala.blalable.listener.OnKeyBoardListener;
@@ -178,6 +179,13 @@ public class BleOperateManager {
 
     public void writeCarCommByte(byte[] data, OnCarWriteBackListener onCarWriteBackListener){
         bleManager.writeCarDataToDevice(data,onCarWriteBackListener);
+    }
+
+
+
+    /**旋钮屏手表的写**/
+    public void writeCarWatchData(byte[] data, OnCarWatchBackListener onCarWriteBackListener){
+        bleManager.writeCarWatchData(data,onCarWriteBackListener);
     }
 
 

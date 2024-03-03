@@ -117,6 +117,7 @@ class HomeControlFragment : TitleBarFragment<CarHomeActivity>() {
 
 
     override fun initData() {
+
         //homeLeftAirPressureView?.setAirPressureValue(0)
         carHomeCenterView?.setFrontImage()
 //        carHomeCenterView?.setFrontHeightValue(50,50)
@@ -128,7 +129,9 @@ class HomeControlFragment : TitleBarFragment<CarHomeActivity>() {
         val carActivity = attachActivity as CarHomeActivity
         carActivity.setHomeAutoListener(object : CarHomeActivity.OnHomeAutoBackListener{
             override fun backAutoData(autoBean: AutoBackBean) {
-
+                if(carActivity.isFinishing){
+                    return
+                }
                 //档位
                 if(autoBean.curPos == 5){
                     homeBottomNumberView?.setIsLowGear(true)
@@ -158,7 +161,7 @@ class HomeControlFragment : TitleBarFragment<CarHomeActivity>() {
                     strArray.add(it.value)
                 }
 
-              //  Timber.e("-------设备异常="+errorMap.toString()+" "+isEmpty)
+                //  Timber.e("-------设备异常="+errorMap.toString()+" "+isEmpty)
 
                 homeErrorMsgTv?.text = if(isEmpty) "" else strArray[0]
                 homeDeviceErrorLayout?.visibility = if(isEmpty) View.INVISIBLE else View.VISIBLE
@@ -166,24 +169,7 @@ class HomeControlFragment : TitleBarFragment<CarHomeActivity>() {
             }
 
         })
-      /*
-        BaseApplication.getBaseApplication().bleOperate.setAutoBackDataListener {
-            BaseApplication.getBaseApplication().autoBackBean = it
-            carHomeCenterView?.setLeftRearPressureValue(it.leftRearPressure)
-            carHomeCenterView?.setRightTopPressureValue(it.rightPressure)
-            carHomeCenterView?.setLeftTopPressureValue(it.leftPressure)
-            carHomeCenterView?.setRightRearPressureValue(it.rightRearPressure)
 
-            carHomeCenterView?.setFrontHeightValue(it.leftFrontHeightRuler,it.rightFrontHeightRuler)
-            carHomeCenterView?.setAfterHeightValue(it.leftAfterHeightRuler,it.rightAfterHeightRuler)
-
-
-            homeLeftAirPressureView?.setAirPressureValue(it.cylinderPressure)
-            homeRightView?.setTempValue(it.airBottleTemperature -127)
-
-
-        }
-*/
         carHomeCenterView?.setOnPressureListener(object : OnControlPressureCheckedListener{
             override fun onItemChecked(map: MutableMap<Int, Int>?) {
 
@@ -196,6 +182,36 @@ class HomeControlFragment : TitleBarFragment<CarHomeActivity>() {
             }
 
         })
+
+
+        val homeActivity = attachActivity
+        homeActivity?.setHomeConnListener(object : CarHomeActivity.OnHomeConnStatusListener{
+            override fun onConn(isConn: Boolean) {
+               if(!isConn){
+                   showDefaultViews()
+               }
+            }
+        })
+    }
+
+
+    override fun onFragmentResume(first: Boolean) {
+        super.onFragmentResume(first)
+        val isConn = BaseApplication.getBaseApplication().connStatus == ConnStatus.CONNECTED
+        if(!isConn){
+            showDefaultViews()
+        }
+
+    }
+
+
+    private fun showDefaultViews(){
+        carHomeCenterView?.setHomeCenterDefault()
+        homeErrorMsgTv?.text = ""
+        homeDeviceErrorLayout?.visibility = View.INVISIBLE
+        homeLeftAirPressureView?.setAirPressureValue(0)
+        homeRightView?.setTempValue(0)
+        homeBottomNumberView?.clearAllClick()
     }
 
 

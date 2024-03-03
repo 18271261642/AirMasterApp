@@ -13,6 +13,8 @@ public class BleBean {
 
     private int rssi;
 
+    //0正常，1连接中，2连接成功
+    private int connStatus;
 
     //是否已经连接
     private boolean isConnected;
@@ -30,6 +32,14 @@ public class BleBean {
         this.bluetoothDevice = bluetoothDevice;
         this.rssi = rssi;
 
+    }
+
+    public int isConnStatus() {
+        return connStatus;
+    }
+
+    public void setConnStatus(int connStatus) {
+        this.connStatus = connStatus;
     }
 
     public BluetoothDevice getBluetoothDevice() {
