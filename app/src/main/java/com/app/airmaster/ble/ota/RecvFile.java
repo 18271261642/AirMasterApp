@@ -6,14 +6,16 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 
+import android.content.Context;
 import android.os.Environment;
 
 public class RecvFile {
 	private String sdPath;
 	private  String PATH;
 	private OutputStream fos;
-	public RecvFile() {
-		sdPath = Environment.getExternalStorageDirectory().getAbsolutePath();
+	public RecvFile(Context context) {
+		//sdPath = Environment.getExternalStorageDirectory().getAbsolutePath();
+		sdPath = context.getExternalFilesDir(null).getAbsolutePath();
 		PATH = sdPath +"/Freqchip/pskeys.dat";
 		 File dir = new File(sdPath +"/Freqchip/");
 		 if(!dir.exists()){

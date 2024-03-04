@@ -20,6 +20,10 @@ public class BleBean {
     private boolean isConnected;
 
 
+    //是否是旋钮屏
+    private boolean isScreenDevice;
+
+
     public boolean isConnected() {
         return isConnected;
     }
@@ -32,6 +36,12 @@ public class BleBean {
         this.bluetoothDevice = bluetoothDevice;
         this.rssi = rssi;
 
+    }
+
+    public BleBean(BluetoothDevice bluetoothDevice, int rssi, boolean isScreenDevice) {
+        this.bluetoothDevice = bluetoothDevice;
+        this.rssi = rssi;
+        this.isScreenDevice = isScreenDevice;
     }
 
     public int isConnStatus() {
@@ -56,5 +66,13 @@ public class BleBean {
 
     public void setRssi(int rssi) {
         this.rssi = rssi;
+    }
+
+    public boolean isScreenDevice() {
+        return isScreenDevice;
+    }
+
+    public void setScreenDevice(boolean screenDevice) {
+        isScreenDevice = screenDevice;
     }
 }

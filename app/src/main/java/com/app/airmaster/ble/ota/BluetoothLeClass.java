@@ -121,7 +121,7 @@ public class BluetoothLeClass {
     	
     }
 	public BluetoothLeClass(Context c) {
-		rf = new RecvFile();
+		rf = new RecvFile(c);
 		mContext = c;
 	}
 

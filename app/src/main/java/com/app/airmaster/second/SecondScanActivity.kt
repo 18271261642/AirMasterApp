@@ -243,6 +243,7 @@ class SecondScanActivity : AppActivity() {
                     bean.bluetoothDevice.name, bean.bluetoothDevice.address
                 ) { mac, status ->
                     hideDialog()
+                    MmkvUtils.saveScreenDeviceStatus(bean.isScreenDevice)
                     MmkvUtils.saveConnDeviceMac(mac)
                     MmkvUtils.saveConnDeviceName(bean.bluetoothDevice.name)
                     BaseApplication.getBaseApplication().connStatus = ConnStatus.CONNECTED
@@ -282,16 +283,17 @@ class SecondScanActivity : AppActivity() {
                         return
                     }
 
-                    if(recordStr.contains("c019") || recordStr.contains("19c0")){
+                    if(recordStr.contains("c019") || recordStr.contains("19c0") || recordStr.contains("c01b") || recordStr.contains("1bc0")){
 
 
+                        val isScreen = recordStr.contains("c019") || recordStr.contains("19c0")
 
                     //判断少于40个设备就不添加了
                     if (repeatList?.size!! > 40) {
                         return
                     }
                     p0.address?.let { repeatList?.add(it) }
-                    list?.add(BleBean(p0.device, p0.rssi))
+                    list?.add(BleBean(p0.device, p0.rssi,isScreen))
                     list?.sortBy {
                         Math.abs(it.rssi)
                     }

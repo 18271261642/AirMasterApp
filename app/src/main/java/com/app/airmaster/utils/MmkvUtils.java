@@ -60,6 +60,9 @@ public class MmkvUtils {
     /**用户的最大心率，选择后保存，未选择默认根据性别和年龄计算**/
     private static final String USER_MAX_HR_KEY = "user_max_hr";
 
+    /**是否是旋钮屏**/
+    private static final String IS_SCREEN_DEVICE = "screen_device";
+
 
     private static MMKV mmkv;
 
@@ -300,5 +303,14 @@ public class MmkvUtils {
 
     public static int getGifSpeed(){
         return (int) getSaveParams(SET_GIF_SPEED,5);
+    }
+
+
+    public static void saveScreenDeviceStatus(boolean isScreen){
+        setSaveObjParams(IS_SCREEN_DEVICE,isScreen);
+    }
+
+    public static boolean getScreenDeviceStatus(){
+        return (boolean) getSaveParams(IS_SCREEN_DEVICE,false);
     }
 }

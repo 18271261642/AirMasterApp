@@ -28,6 +28,7 @@ import com.app.airmaster.dialog.SingleAlertDialog
 import com.app.airmaster.second.SecondScanActivity
 import com.app.airmaster.utils.BikeUtils
 import com.app.airmaster.utils.ClickUtils
+import com.app.airmaster.utils.MmkvUtils
 import com.app.airmaster.viewmodel.DfuViewModel
 import com.app.airmaster.viewmodel.OnCarVersionListener
 import com.app.airmaster.viewmodel.VersionViewModel
@@ -194,13 +195,11 @@ class CarAboutActivity : AppActivity() {
             aboutCarDfuShowTv?.visibility = View.GONE
             ToastUtils.show(if(it) "升级成功!" else "升级失败,请重试!")
             isConnWatch = true
+            BaseApplication.getBaseApplication().connStatus = ConnStatus.NOT_CONNECTED
         }
-
+        val isScreen = MmkvUtils.getScreenDeviceStatus()
 
         watchOtaViewModel?.initData(this)
-
-
-
 
 
         dfuViewModel?.registerDfu(this)
@@ -249,7 +248,6 @@ class CarAboutActivity : AppActivity() {
                 if(infoBean!!.versionCode != tempDeviceVersionInfo!!.versionCode){
                     aboutCarDfuShowTv?.visibility = View.VISIBLE
                     showWatchDfuStatus(false)
-                    aboutWatchVersionTv?.text = ""
                   return@observe
                 }
                 isUpgrading = false
@@ -285,11 +283,19 @@ class CarAboutActivity : AppActivity() {
 
 
         viewModel?.deviceVersionInfo?.observe(this) { it ->
-            touchPadVersionTv?.text = it.versionStr
-            aboutDfuShowTv?.visibility = View.GONE
+
+            if(isScreen){
+                touchPadVersionTv?.text = it.versionStr
+                aboutDfuShowTv?.visibility = View.GONE
+            }else{
+                aboutWatchVersionTv?.text = it.versionStr
+
+            }
+
             tempDeviceVersionInfo = it
+            tempDeviceVersionInfo?.deviceMac = MmkvUtils.getConnDeviceMac()
             viewModel?.getDeviceInfoData(
-                false,
+                !isScreen,
                 this@CarAboutActivity,
                 it.identificationCode,
                 it.binCode,
@@ -304,8 +310,9 @@ class CarAboutActivity : AppActivity() {
             cdKeyCode = it
         }
 
+
         //获取固件版本信息
-        viewModel?.getDeviceVersion()
+        viewModel?.getDeviceVersion(isScreen)
         GlobalScope.launch {
             delay(1500)
             viewModel?.getDeviceCdKey()
@@ -541,10 +548,10 @@ class CarAboutActivity : AppActivity() {
             ToastUtils.show("正在升级中，请务退出！")
             return
         }
-        if(isConnWatch){
-            BaseApplication.getBaseApplication().connStatus = ConnStatus.NOT_CONNECTED
-            BaseApplication.getBaseApplication().bleOperate.disConnYakDevice()
-        }
+//        if(isConnWatch){
+//            BaseApplication.getBaseApplication().connStatus = ConnStatus.NOT_CONNECTED
+//            BaseApplication.getBaseApplication().bleOperate.disConnYakDevice()
+//        }
 
         super.onBackPressed()
     }
@@ -599,7 +606,7 @@ class CarAboutActivity : AppActivity() {
                     return
                 }
                 isConnWatch = true
-                isUpgrading = true
+              //  isUpgrading = true
                 tempDeviceVersionInfo = deviceBinVersionBean
                 aboutWatchVersionTv?.text =
                     deviceBinVersionBean?.deviceName + " " + deviceBinVersionBean?.versionStr
@@ -647,20 +654,26 @@ class CarAboutActivity : AppActivity() {
 
             //无线手环点击
             R.id.carWatchLayout -> {
-                if(isUpgrading){
-                    return
-                }
-                showConnWatchDialog()
+//                if(isUpgrading){
+//                    return
+//                }
+//                showConnWatchDialog()
             }
 
             //touchpad 升级
             R.id.aboutDfuShowTv -> {
+                if(isUpgrading){
+                    return
+                }
                 if (tempDeviceVersionInfo != null) {
                     showDfuDialog(false,tempServerBean!!)
                 }
             }
             //无线手环的升级
             R.id.aboutCarDfuShowTv -> {
+                if(isUpgrading){
+                    return
+                }
                 if (tempDeviceVersionInfo != null) {
                     showDfuDialog(true,tempServerBean!!)
                 }
