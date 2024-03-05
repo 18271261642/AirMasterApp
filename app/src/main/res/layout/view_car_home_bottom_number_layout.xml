@@ -64,6 +64,7 @@
 
 
         <TextView
+            android:id="@+id/gear1Tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -72,7 +73,7 @@
             android:gravity="center"
             android:text="1"
             android:textColor="@color/white"
-            android:textSize="28sp"
+            android:textSize="34sp"
             android:textStyle="bold" />
 
     </FrameLayout>
@@ -95,6 +96,7 @@
             android:visibility="invisible" />
 
         <TextView
+            android:id="@+id/gear2Tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -103,7 +105,7 @@
             android:gravity="center"
             android:text="2"
             android:textColor="@color/white"
-            android:textSize="28sp"
+            android:textSize="34sp"
             android:textStyle="bold" />
 
 
@@ -137,6 +139,7 @@
 
 
         <TextView
+            android:id="@+id/gear3Tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -145,7 +148,7 @@
             android:gravity="center"
             android:text="3"
             android:textColor="@color/white"
-            android:textSize="28sp"
+            android:textSize="34sp"
             android:textStyle="bold" />
 
         <ImageView
@@ -176,6 +179,7 @@
 
 
         <TextView
+            android:id="@+id/gear4Tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -184,7 +188,7 @@
             android:gravity="center"
             android:text="4"
             android:textColor="@color/white"
-            android:textSize="28sp"
+            android:textSize="34sp"
             android:textStyle="bold" />
 
         <ImageView

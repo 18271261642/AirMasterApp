@@ -48,6 +48,7 @@ class VersionViewModel : CommViewModel(){
 
     //获取固件版本
     fun getDeviceVersion(isScreen : Boolean){
+        Timber.e("-------isScreen="+isScreen)
         if(!isScreen){
             getWatchDeviceVersion()
             return

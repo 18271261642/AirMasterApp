@@ -122,7 +122,7 @@ class CarHomeActivity : AppActivity() ,NavigationAdapter.OnNavigationListener{
             delay(1500)
             autoConnViewModel?.retryConnDevice(this@CarHomeActivity)
         }
-
+        switchFragment(1)
     }
 
 
