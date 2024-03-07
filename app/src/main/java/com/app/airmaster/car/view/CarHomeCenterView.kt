@@ -13,6 +13,7 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import com.app.airmaster.R
 import com.app.airmaster.listeners.OnControlPressureCheckedListener
+import com.app.airmaster.widget.HomeTxtStyleView
 
 class CarHomeCenterView : LinearLayout ,OnClickListener{
 
@@ -34,13 +35,13 @@ class CarHomeCenterView : LinearLayout ,OnClickListener{
 
 
     //左前轮气压值
-    private var homeCenterLeftTopTv : TextView ?= null
+    private var homeCenterLeftTopTv : HomeTxtStyleView?= null
     //右前轮
-    private var homeCenterRightTopPressureTv : TextView ?= null
+    private var homeCenterRightTopPressureTv : HomeTxtStyleView ?= null
     //左后轮气压值
-    private var homeCenterLeftRearPressureTv : TextView ?= null
+    private var homeCenterLeftRearPressureTv : HomeTxtStyleView ?= null
     //右后方
-    private var homeCenterRightRearPressureTv : TextView ?= null
+    private var homeCenterRightRearPressureTv : HomeTxtStyleView ?= null
 
     //左前轮+
     private var homeCenterLeftTopImg : ImageView ?= null
@@ -128,22 +129,22 @@ class CarHomeCenterView : LinearLayout ,OnClickListener{
 
     //设置左前轮的气压值
     fun setLeftTopPressureValue(leftValue : Int){
-        homeCenterLeftTopTv?.text = String.format("%02d",leftValue)
+        homeCenterLeftTopTv?.setTxtValue(String.format("%02d",leftValue))
     }
 
     //设置右前方气压值
     fun setRightTopPressureValue(rightValue : Int){
-        homeCenterRightTopPressureTv?.text = String.format("%02d",rightValue)
+        homeCenterRightTopPressureTv?.setTxtValue(String.format("%02d",rightValue))
     }
 
     //设置左后方气压值
     fun setLeftRearPressureValue(leftRearValue : Int){
-        homeCenterLeftRearPressureTv?.text = String.format("%02d",leftRearValue)
+        homeCenterLeftRearPressureTv?.setTxtValue(String.format("%02d",leftRearValue))
     }
 
     //设置右后方气压值
     fun setRightRearPressureValue(rightRearValue : Int){
-        homeCenterRightRearPressureTv?.text = String.format("%02d",rightRearValue)
+        homeCenterRightRearPressureTv?.setTxtValue(String.format("%02d",rightRearValue))
     }
 
     //设置默认值

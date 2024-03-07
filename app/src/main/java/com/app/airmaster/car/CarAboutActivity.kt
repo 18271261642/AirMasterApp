@@ -62,6 +62,9 @@ class CarAboutActivity : AppActivity() {
     private var watchViewModel: WatchDeviceViewModel? = null
     private var watchOtaViewModel : WatchOTAViewModel ?= null
 
+    private var aboutTouchLayout : ConstraintLayout ?= null
+    private var aboutMcuLayout : ConstraintLayout ?= null
+
 
     //系统升级菜单
     private var aboutUpgradeLayout: ConstraintLayout? = null
@@ -118,6 +121,8 @@ class CarAboutActivity : AppActivity() {
     }
 
     override fun initView() {
+        aboutMcuLayout = findViewById(R.id.aboutMcuLayout)
+        aboutTouchLayout = findViewById(R.id.aboutTouchLayout)
         aboutActivateSubmitTv = findViewById(R.id.aboutActivateSubmitTv)
         carWatchLayout = findViewById(R.id.carWatchLayout)
         aboutActivateLayout = findViewById(R.id.aboutActivateLayout)
@@ -321,7 +326,8 @@ class CarAboutActivity : AppActivity() {
     }
 
 
-    private fun showClickOta(show: Boolean) {
+    private fun showWatchOrNot(watch: Boolean) {
+        carWatchLayout?.visibility = if(watch) View.VISIBLE else View.GONE
 
     }
 

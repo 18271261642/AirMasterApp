@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:orientation="vertical"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_height="@dimen/dp_50">
+
+    <TextView
+        android:id="@+id/homeTxtStyleTv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:fontFamily="@font/lato_regular15"
+        android:shadowColor="#80FFFFFF"
+        android:shadowRadius="3.0"
+        android:text="88"
+        android:textColor="#80FFFFFF"
+        android:textSize="35sp"
+        android:textStyle="bold" />
+
+    <LinearLayout
+        android:layout_width="@dimen/dp_50"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <View
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_weight="1"/>
+
+        <View
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:background="#4A201F1C"
+            android:layout_weight="1"/>
+
+    </LinearLayout>
+
+
+</FrameLayout>
