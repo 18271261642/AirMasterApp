@@ -147,6 +147,10 @@ public class CusVerticalScheduleView extends View {
         drawSchedule(canvas);
     }
 
+    private Shader blueShader ;
+    private Shader orangeShader;
+
+
     //开始绘制
     RectF currRectf;
     private void drawSchedule(Canvas canvas) {
@@ -168,6 +172,13 @@ public class CusVerticalScheduleView extends View {
             currRectf = new RectF();
         }
 
+        if(currScheduleValue<=80){
+            blueShader = new LinearGradient(0,0,mWidth,mHeight,new int[]{Color.parseColor("#2E7BFD"),Color.parseColor("#BED6FF")},null,Shader.TileMode.CLAMP);
+            currSchedulePaint.setShader(blueShader);
+        }else{
+            orangeShader = new LinearGradient(0,0,mWidth,mHeight,new int[]{Color.parseColor("#FF5100"),Color.parseColor("#FE8B50")},null,Shader.TileMode.CLAMP);
+            currSchedulePaint.setShader(orangeShader);
+        }
 
         currRectf.left = 0;
         currRectf.top = mHeight-currV ;

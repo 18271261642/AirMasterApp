@@ -322,13 +322,14 @@ class CarAboutActivity : AppActivity() {
             delay(1500)
             viewModel?.getDeviceCdKey()
         }
-
+        showWatchOrNot(isScreen)
     }
 
 
-    private fun showWatchOrNot(watch: Boolean) {
-        carWatchLayout?.visibility = if(watch) View.VISIBLE else View.GONE
-
+    private fun showWatchOrNot(screen: Boolean) {
+        carWatchLayout?.visibility = if(screen) View.GONE else View.GONE
+        aboutMcuLayout?.visibility = if(screen) View.VISIBLE else View.GONE
+        aboutTouchLayout?.visibility = if(screen) View.VISIBLE else View.GONE
     }
 
 

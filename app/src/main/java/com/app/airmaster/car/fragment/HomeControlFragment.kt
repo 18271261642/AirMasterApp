@@ -253,7 +253,8 @@ class HomeControlFragment : TitleBarFragment<CarHomeActivity>() {
                 startActivity(SecondScanActivity::class.java)
             }
             if (position == 0x00) {
-                startActivity(ShowWebActivity::class.java)
+               // startActivity(ShowWebActivity::class.java)
+                attachActivity?.switchFragment(0)
             }
         }
     }

@@ -126,6 +126,7 @@ class CarHomeActivity : AppActivity() ,NavigationAdapter.OnNavigationListener{
     }
 
 
+
     override fun onResume() {
         super.onResume()
         BaseApplication.getBaseApplication().bleOperate.setClearAutoBack()
@@ -143,7 +144,7 @@ class CarHomeActivity : AppActivity() ,NavigationAdapter.OnNavigationListener{
         }
     }
 
-    private fun switchFragment(fragmentIndex: Int) {
+     fun switchFragment(fragmentIndex: Int) {
         if (fragmentIndex == -1) {
             return
         }

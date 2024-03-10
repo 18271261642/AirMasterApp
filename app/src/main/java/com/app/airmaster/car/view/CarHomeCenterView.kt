@@ -2,15 +2,12 @@ package com.app.airmaster.car.view
 
 import android.content.Context
 import android.graphics.BitmapFactory
-import android.graphics.drawable.BitmapDrawable
-import android.provider.ContactsContract.CommonDataKinds.Im
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.view.View
 import android.view.View.OnClickListener
 import android.widget.ImageView
 import android.widget.LinearLayout
-import android.widget.TextView
 import com.app.airmaster.R
 import com.app.airmaster.listeners.OnControlPressureCheckedListener
 import com.app.airmaster.widget.HomeTxtStyleView

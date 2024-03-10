@@ -121,7 +121,7 @@ class CarIgnitionFragment : TitleBarFragment<CarSysSetActivity>(){
 
         //点火
         ingitionOnSwitch?.setOnCheckedChangeListener { button, checked ->
-            Timber.e("---------点火="+(button.isPressed))
+            Timber.e("---------点火="+(button.isPressed)+" "+checked)
            // setRyVisibility()
             openOrCloseOnRy(checked)
 
@@ -196,15 +196,17 @@ class CarIgnitionFragment : TitleBarFragment<CarSysSetActivity>(){
             if(it == null){
                 return@observe
             }
-            Timber.e("---------点火熄火="+it.toString())
+            Timber.e("---------点火熄火="+it.toString()+" isStirUp"+isStirUp+" isStall="+isStall)
            val isOn = it.accTurnOnValue !=0
             val isOff = it.accTurnOffValue != 0
 
             if(!isStirUp){
-                ingitionOffSwitch?.isChecked = isOff
+               // ingitionOffSwitch?.isChecked = isOff
+                ingitionOffSwitch?.setChecked(isOff,false)
             }
             if(!isStall){
-                ingitionOnSwitch?.isChecked = isOn
+             //   ingitionOnSwitch?.isChecked = isOn
+                ingitionOnSwitch?.setChecked(isOn,false)
             }
 
             setRyVisibility()

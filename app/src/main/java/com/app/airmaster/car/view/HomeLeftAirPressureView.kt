@@ -55,6 +55,8 @@ class HomeLeftAirPressureView : LinearLayout{
         cusHomeLeftVerticalTxtView?.allScheduleValue = 150F
 
         setDefaultValue()
+
+
     }
 
     //设置气压数值
@@ -62,6 +64,12 @@ class HomeLeftAirPressureView : LinearLayout{
         homeLeftAirSeekBar?.visibility = View.VISIBLE
         cusVerticalView?.currScheduleValue = value.toFloat()
         homeLeftAirSeekBar?.progress = value
+        if(value<=80){
+            homeLeftAirSeekBar?.thumb = resources.getDrawable(R.mipmap.ic_home_left_air_blue)
+        }else{
+            homeLeftAirSeekBar?.thumb = resources.getDrawable(R.mipmap.ic_home_left_air)
+        }
+
         cusHomeLeftVerticalTxtView?.currScheduleValue = if(value>150) 150 else  value
         cusHomeLeftVerticalTxtView?.showTxt = if(value>150) "150" else value.toString()
     }
