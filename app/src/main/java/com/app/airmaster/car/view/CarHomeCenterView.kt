@@ -280,8 +280,8 @@ class CarHomeCenterView : LinearLayout ,OnClickListener{
         carFrontHeightGaugeView?.setBitmap(afterLeft,afterRight)
         carAfterHeightGaugeView?.setBitmap(afterLeft,afterRight)
 
-        setFrontHeightValue(10,10)
-        setAfterHeightValue(10,10)
+//        setFrontHeightValue(10,10)
+//        setAfterHeightValue(10,10)
     }
 
     //设置前轮高度

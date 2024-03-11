@@ -76,6 +76,9 @@ class HomeAirFragment : TitleBarFragment<CarHomeActivity>(){
 
             true
         })
+
+        webView?.setBackgroundColor(0)
+        webView?.background?.alpha = 0
     }
 
 

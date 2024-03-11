@@ -11,6 +11,7 @@
         android:background="@color/transparent"
         app:titleColor="@color/white"
         app:leftIcon="@drawable/ic_white_left_back"
+        app:title="@string/app_name"
         app:lineVisible="false"/>
 
 

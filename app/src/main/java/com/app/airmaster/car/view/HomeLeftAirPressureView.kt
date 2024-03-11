@@ -63,13 +63,13 @@ class HomeLeftAirPressureView : LinearLayout{
     fun setAirPressureValue(value : Int){
         homeLeftAirSeekBar?.visibility = View.VISIBLE
         cusVerticalView?.currScheduleValue = value.toFloat()
-        homeLeftAirSeekBar?.progress = value
+
         if(value<=80){
             homeLeftAirSeekBar?.thumb = resources.getDrawable(R.mipmap.ic_home_left_air_blue)
         }else{
             homeLeftAirSeekBar?.thumb = resources.getDrawable(R.mipmap.ic_home_left_air)
         }
-
+        homeLeftAirSeekBar?.progress = value
         cusHomeLeftVerticalTxtView?.currScheduleValue = if(value>150) 150 else  value
         cusHomeLeftVerticalTxtView?.showTxt = if(value>150) "150" else value.toString()
     }

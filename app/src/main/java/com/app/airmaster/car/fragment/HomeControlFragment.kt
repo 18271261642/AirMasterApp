@@ -24,6 +24,7 @@ import com.app.airmaster.second.SecondScanActivity
 import com.app.airmaster.viewmodel.ControlViewModel
 import com.blala.blalable.Utils
 import com.blala.blalable.car.AutoBackBean
+import timber.log.Timber
 
 
 /**
@@ -120,8 +121,8 @@ class HomeControlFragment : TitleBarFragment<CarHomeActivity>() {
 
         //homeLeftAirPressureView?.setAirPressureValue(0)
         carHomeCenterView?.setFrontImage()
-//        carHomeCenterView?.setFrontHeightValue(50,50)
-//        carHomeCenterView?.setAfterHeightValue(100,80)
+        carHomeCenterView?.setFrontHeightValue(50,50)
+       // carHomeCenterView?.setAfterHeightValue(100,80)
 
 
         controlViewModel = ViewModelProvider(this)[ControlViewModel::class.java]
@@ -132,6 +133,7 @@ class HomeControlFragment : TitleBarFragment<CarHomeActivity>() {
                 if(carActivity.isFinishing){
                     return
                 }
+                Timber.e("----------自动返回数据="+autoBean.toString())
                 //档位
                 if(autoBean.curPos == 5){
                     homeBottomNumberView?.setIsLowGear(true)

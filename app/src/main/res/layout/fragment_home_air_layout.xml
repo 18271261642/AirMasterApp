@@ -17,6 +17,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:focusable="true"
+        android:background="@color/play_color_theme"
         android:focusableInTouchMode="true"
         android:paddingLeft="5dp"
         android:paddingRight="5dp" />

@@ -85,14 +85,34 @@ class CarHeightGaugeView : View{
 
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec)
-        mWidth = measuredWidth.toFloat()
-        mHeight = measuredHeight.toFloat()
+        val widthSpecMode = MeasureSpec.getMode(widthMeasureSpec)
+        val widthSpecSize = MeasureSpec.getSize(widthMeasureSpec)
+        val heightSpecMode = MeasureSpec.getMode(heightMeasureSpec)
+        val heightSpaceSize = MeasureSpec.getSize(heightMeasureSpec)
+
+        val m = measuredWidth
+        val h = measuredHeight
+        if(m != 0){
+            mWidth = measuredWidth.toFloat()
+        }
+        if(h != 0){
+            mHeight = measuredHeight.toFloat()
+        }
+
+        if(widthSpecMode == MeasureSpec.AT_MOST && heightSpecMode == MeasureSpec.AT_MOST){
+            mWidth?.toInt()?.let { mHeight?.toInt()?.let { it1 -> setMeasuredDimension(it, it1) } }
+
+        }
+
+
+
+        Timber.e("-------onMeasure=$mWidth mHeight=$mHeight")
     }
 
 
     override fun onDraw(canvas: Canvas?) {
         super.onDraw(canvas)
-
+        Timber.e("-------leftDrawable="+(leftDrawable == null))
         if(leftDrawable == null || rightDrawable == null){
             return
         }
@@ -151,6 +171,7 @@ class CarHeightGaugeView : View{
     fun setValues(leftV : Int,rightV : Int){
         this.leftValue = leftV.toFloat()
         this.rightValue = rightV.toFloat()
+        Timber.e("--------left="+leftValue+" right="+rightValue+" max"+maxValue)
         invalidate()
     }
 }
