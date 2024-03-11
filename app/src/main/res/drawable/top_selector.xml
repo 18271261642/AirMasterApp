@@ -4,6 +4,6 @@
 
     <item android:drawable="@mipmap/ic_top_pressure_click_img" android:state_pressed="true"/>
 
-    <item android:drawable="@mipmap/ic_cir_radius_top_ig" android:state_pressed="false"/>
+    <item android:drawable="@mipmap/ic_cir_radius_top_ig" android:state_focused="false"/>
 
 </selector>

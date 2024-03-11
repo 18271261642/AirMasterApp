@@ -172,11 +172,11 @@ class HomeControlFragment : TitleBarFragment<CarHomeActivity>() {
 
         carHomeCenterView?.setOnPressureListener(object : OnControlPressureCheckedListener{
             override fun onItemChecked(map: MutableMap<Int, Int>?) {
-
-                if(BaseApplication.getBaseApplication().connStatus != ConnStatus.CONNECTED){
-                    showNotConnDialog()
-                    return
-                }
+//
+//                if(BaseApplication.getBaseApplication().connStatus != ConnStatus.CONNECTED){
+//                    showNotConnDialog()
+//                    return
+//                }
 
                 controlViewModel?.setManualOperation(map!! as HashMap<Int, Int>)
             }

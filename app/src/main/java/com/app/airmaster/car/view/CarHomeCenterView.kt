@@ -1,9 +1,12 @@
 package com.app.airmaster.car.view
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.BitmapFactory
+import android.os.Vibrator
 import android.util.AttributeSet
 import android.view.LayoutInflater
+import android.view.MotionEvent
 import android.view.View
 import android.view.View.OnClickListener
 import android.widget.ImageView
@@ -11,6 +14,10 @@ import android.widget.LinearLayout
 import com.app.airmaster.R
 import com.app.airmaster.listeners.OnControlPressureCheckedListener
 import com.app.airmaster.widget.HomeTxtStyleView
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
+import timber.log.Timber
 
 class CarHomeCenterView : LinearLayout ,OnClickListener{
 
@@ -110,6 +117,23 @@ class CarHomeCenterView : LinearLayout ,OnClickListener{
         homeCenterLeftBotImg?.setOnClickListener(this)
         rightTopAddImageView?.setOnClickListener(this)
         rightTopReduceImageView?.setOnClickListener(this)
+
+        homeCenterLeftTopImg?.setOnTouchListener(onTouchListener)
+        homeCenterLeftBotImg?.setOnTouchListener(onTouchListener)
+        rightTopAddImageView?.setOnTouchListener(onTouchListener)
+        rightTopReduceImageView?.setOnTouchListener(onTouchListener)
+
+        leftRearAddImageView?.setOnTouchListener(onTouchListener)
+        homeCenterLeftBotImg2?.setOnTouchListener(onTouchListener)
+        rightRearReduceImageView?.setOnTouchListener(onTouchListener)
+        rightRearAddImageView?.setOnTouchListener(onTouchListener)
+
+        carHomeCenterTopTopImg?.setOnTouchListener(onTouchListener)
+        carCenterTopBomImg?.setOnTouchListener(onTouchListener)
+        carCenterBotTopImg?.setOnTouchListener(onTouchListener)
+        carCenterBotBomImg?.setOnTouchListener(onTouchListener)
+
+
         leftRearAddImageView?.setOnClickListener(this)
         homeCenterLeftBotImg2?.setOnClickListener(this)
         rightRearReduceImageView?.setOnClickListener(this)
@@ -120,6 +144,97 @@ class CarHomeCenterView : LinearLayout ,OnClickListener{
         carCenterBotTopImg?.setOnClickListener(this)
         carCenterBotBomImg?.setOnClickListener(this)
 
+
+
+    }
+
+
+
+
+    private val onTouchListener : OnTouchListener = object : OnTouchListener{
+        override fun onTouch(p0: View?, p1: MotionEvent?): Boolean {
+           val id = p0?.id
+            if(p1?.action == MotionEvent.ACTION_DOWN){
+                if (id != null) {
+                    isEnd = false
+                    startCountDown(id)
+                }
+            }
+
+            if(p1?.action == MotionEvent.ACTION_UP){
+                isEnd = true
+            }
+
+
+            return false
+        }
+
+    }
+
+
+    var isEnd = false
+    var count = 0
+    private  fun startCountDown(id : Int){
+
+        GlobalScope.launch {
+            while (!isEnd){
+                map.clear()
+                when (id){
+                    R.id.homeCenterLeftTopImg->{    //左前+
+                        map[0] = 1
+                    }
+                    R.id.homeCenterLeftBotImg->{    //左前-
+                        map[0] = 2
+                    }
+
+                    R.id.rightTopAddImageView->{    //右前+
+                        map[1] = 1
+                    }
+                    R.id.rightTopReduceImageView->{ //右前-
+                        map[1] = 2
+                    }
+                    R.id.leftRearAddImageView->{    //左后+
+                        map[2] = 1
+                    }
+                    R.id.homeCenterLeftBotImg2->{   //左后-
+                        map[2] = 2
+                    }
+                    R.id.rightRearAddImageView->{   //右后+
+                        map[3] = 1
+                    }
+                    R.id.rightRearReduceImageView->{    //右后-
+                        map[3] = 2
+                    }
+
+                    R.id.carHomeCenterTopTopImg->{  //前轮+
+                        map[4] = 1
+                    }
+                    R.id.carCenterTopBomImg->{  //前轮-
+                        map[4] = 2
+                    }
+                    R.id.carCenterBotTopImg->{  //后轮+
+                        map[5] = 1
+                    }
+                    R.id.carCenterBotBomImg->{  //后轮-
+                        map[5] = 2
+                    }
+                }
+                onPressureListener?.onItemChecked(map)
+
+                vibrate()
+                delay(1000)
+
+            }
+        }
+    }
+
+
+
+    //调用手机震动
+    @SuppressLint("ServiceCast")
+    private fun vibrate(){
+        val vibrator = context.getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
+        vibrator.vibrate(100)
     }
 
 
@@ -222,7 +337,7 @@ class CarHomeCenterView : LinearLayout ,OnClickListener{
                 map[5] = 2
             }
         }
-        onPressureListener?.onItemChecked(map)
+    //    onPressureListener?.onItemChecked(map)
     }
 
 
