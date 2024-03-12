@@ -1,7 +1,9 @@
 package com.app.airmaster.car
 
 import android.Manifest
+import android.content.pm.PackageManager
 import android.graphics.Color
+import android.os.Build
 import android.provider.ContactsContract.CommonDataKinds.Im
 import android.text.SpannableStringBuilder
 import android.text.Spanned
@@ -14,6 +16,7 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.app.ActivityCompat
 import androidx.lifecycle.ViewModelProvider
 import com.app.airmaster.BaseApplication
 import com.app.airmaster.R
@@ -145,6 +148,8 @@ class CarAboutActivity : AppActivity() {
         carWatchLayout?.setOnClickListener(this)
         aboutCarDfuShowTv?.setOnClickListener(this)
         aboutActivateSubmitTv?.setOnClickListener(this)
+
+        aboutDfuShowTv?.setOnClickListener(this)
 
 
         getPermission()
@@ -323,6 +328,14 @@ class CarAboutActivity : AppActivity() {
             viewModel?.getDeviceCdKey()
         }
         showWatchOrNot(isScreen)
+
+        if(isScreen){
+            val activityStatus = MmkvUtils.getSaveParams(MmkvUtils.getConnDeviceMac(),false)
+            if(activityStatus==true){
+                aboutActivateSubmitTv?.text = "已激活"
+                aboutActivateSubmitTv!!.shapeDrawableBuilder.setSolidColor(Color.parseColor("#80FD654D")).intoBackground()
+            }
+        }
     }
 
 
@@ -348,6 +361,12 @@ class CarAboutActivity : AppActivity() {
         val dialog = SingleAlertDialog(this, com.bonlala.base.R.style.BaseDialogTheme)
         dialog.show()
         dialog.setContentTxt(if (success) "激活成功!" else "激活失败,请输入正确的激活码!")
+        if(success){
+            //是否已激活
+            MmkvUtils.setSaveObjParams(MmkvUtils.getConnDeviceMac(),success)
+            aboutActivateSubmitTv?.text = "已激活"
+            aboutActivateSubmitTv!!.shapeDrawableBuilder.setSolidColor(Color.parseColor("#80FD654D")).intoBackground()
+        }
 
     }
 
@@ -414,6 +433,10 @@ class CarAboutActivity : AppActivity() {
 
     private var dfuDialog: DfuDialogView? = null
     private fun showDfuDialog(isCarWatch : Boolean,bean: ServerVersionInfoBean.FirmwareListDTO) {
+
+
+
+
         if (dfuDialog == null) {
             dfuDialog =
                 DfuDialogView(this@CarAboutActivity, com.bonlala.base.R.style.BaseDialogTheme)
@@ -498,6 +521,13 @@ class CarAboutActivity : AppActivity() {
 
     //获取权限
     private fun getPermission() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            XXPermissions.with(this).permission(arrayOf(Manifest.permission.READ_MEDIA_IMAGES,
+                Manifest.permission.READ_MEDIA_AUDIO,Manifest.permission.POST_NOTIFICATIONS)).request { permissions, allGranted ->
+
+            }
+            return
+        }
         XXPermissions.with(this).permission(
             arrayOf(
                 Manifest.permission.READ_EXTERNAL_STORAGE,
@@ -672,6 +702,18 @@ class CarAboutActivity : AppActivity() {
                 if(isUpgrading){
                     return
                 }
+                if(ActivityCompat.checkSelfPermission(this@CarAboutActivity,Manifest.permission.POST_NOTIFICATIONS) == PackageManager.PERMISSION_DENIED){
+
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                        ActivityCompat.requestPermissions(this@CarAboutActivity, arrayOf(Manifest.permission.POST_NOTIFICATIONS),0x00)
+                    }
+                    return
+                }
+
+
+
+
+
                 if (tempDeviceVersionInfo != null) {
                     showDfuDialog(false,tempServerBean!!)
                 }
@@ -695,6 +737,11 @@ class CarAboutActivity : AppActivity() {
                 }
                 if (BaseApplication.getBaseApplication().connStatus != ConnStatus.CONNECTED) {
                     showNotConnDialog()
+                    return
+                }
+                val success = MmkvUtils.getSaveParams(MmkvUtils.getConnDeviceMac(),false)
+                if(success == true){
+
                     return
                 }
                 viewModel?.setDeviceIdentificationCode(activateCode)

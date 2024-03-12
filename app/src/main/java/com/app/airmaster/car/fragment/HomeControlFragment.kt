@@ -6,6 +6,7 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.lifecycle.ViewModelProvider
 import com.app.airmaster.BaseApplication
+import com.app.airmaster.LogActivity
 import com.app.airmaster.R
 import com.app.airmaster.action.TitleBarFragment
 import com.app.airmaster.adapter.OnCommItemClickListener
@@ -74,6 +75,7 @@ class HomeControlFragment : TitleBarFragment<CarHomeActivity>() {
 
         homeBottomCheckView?.setOnItemCheck(object : OnItemCheckedListener{
             override fun onItemCheck(position: Int, isChecked: Boolean) {
+
                 if(BaseApplication.getBaseApplication().connStatus != ConnStatus.CONNECTED){
                     homeBottomCheckView?.setAllNoCheck()
                     showNotConnDialog()
@@ -133,7 +135,7 @@ class HomeControlFragment : TitleBarFragment<CarHomeActivity>() {
                 if(carActivity.isFinishing){
                     return
                 }
-                Timber.e("----------自动返回数据="+autoBean.toString())
+               // Timber.e("----------自动返回数据="+autoBean.toString())
                 //档位
                 if(autoBean.curPos == 5){
                     homeBottomNumberView?.setIsLowGear(true)

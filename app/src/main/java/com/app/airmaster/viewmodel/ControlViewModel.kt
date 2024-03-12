@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import com.app.airmaster.BaseApplication
 import com.app.airmaster.bean.CheckBean
 import com.app.airmaster.car.bean.AutoSetBean
+import com.app.airmaster.utils.MmkvUtils
 import com.blala.blalable.Utils
 import com.blala.blalable.car.CarConstant
 import com.blala.blalable.listener.OnCarWriteBackListener
@@ -162,18 +163,23 @@ open class ControlViewModel : CommViewModel() {
             valueCode = it.value
         }
 
-        val timeArray = Utils.intToSecondByteArrayHeight(1000)
+        val timeArray = Utils.intToSecondByteArray(3000)
         val timeStr = com.app.airmaster.ble.ota.Utils.bytesToHexString(timeArray)
-        val scrStr = "0008040112"+String.format("%02x",keyCode)+String.format("%02d",(valueCode))+timeStr
+       // val scrStr = "0008040112"+String.format("%02x",keyCode)+String.format("%02d",(valueCode))+timeStr
+        val scrStr = "000804012F"+String.format("%02x",keyCode)+String.format("%02d",(valueCode))+timeStr
+
+
         val crc = Utils.crcCarContentArray(scrStr)
         val str = "011E"+ CarConstant.CAR_HEAD_BYTE_STR+scrStr+crc
         val resultArray = Utils.hexStringToByte(str)
         val result = Utils.getFullPackage(resultArray)
+
+
         BaseApplication.getBaseApplication().bleOperate.writeCommonByte(result){
             //8800000000000cd6030f7ffaaf00050104920163
             if(it != null && it.size>15){
-                Timber.e("-------气罐压力="+(it[8].toInt().and(0xFF))+" "+(it[9].toInt().and(0xFF))+" "+(it[18].toInt().and(0xFF) == 1))
-                if((it[8].toInt().and(0xFF)) == 3 && (it[9].toInt().and(0xFF)) == 15 &&(it[17].toInt().and(0xFF) == 146)){
+                Timber.e("-------气罐压力="+(it[8].toInt().and(0xFF))+" "+(it[9].toInt().and(0xFF))+" "+(it[17].toInt().and(0xFF))+" "+(it[18].toInt().and(0xFF) == 1))
+                if((it[8].toInt().and(0xFF)) == 3 && (it[9].toInt().and(0xFF)) == 15 &&(it[17].toInt().and(0xFF) == 175)){
                     if(it[18].toInt().and(0xFF) == 1){
                         BaseApplication.getBaseApplication().bleOperate.setCommAllParams()
                     }
@@ -369,6 +375,9 @@ open class ControlViewModel : CommViewModel() {
                         //气罐高压值(单位PSI)
                         val gasTankHeightPressure = data[105].toInt().and(0xFF)
                         autoBean.gasTankHeightPressure = gasTankHeightPressure
+
+                        MmkvUtils.saveMaxPressureValue(gasTankHeightPressure)
+
                         //气罐低压值
                         val gasTankLowPressure = data[106].toInt().and(0xFF)
                         autoBean.gasTankLowPressure = gasTankLowPressure

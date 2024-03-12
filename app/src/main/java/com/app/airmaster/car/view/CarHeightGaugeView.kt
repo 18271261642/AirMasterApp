@@ -112,7 +112,7 @@ class CarHeightGaugeView : View{
 
     override fun onDraw(canvas: Canvas?) {
         super.onDraw(canvas)
-        Timber.e("-------leftDrawable="+(leftDrawable == null))
+       // Timber.e("-------leftDrawable="+(leftDrawable == null))
         if(leftDrawable == null || rightDrawable == null){
             return
         }
@@ -171,7 +171,7 @@ class CarHeightGaugeView : View{
     fun setValues(leftV : Int,rightV : Int){
         this.leftValue = leftV.toFloat()
         this.rightValue = rightV.toFloat()
-        Timber.e("--------left="+leftValue+" right="+rightValue+" max"+maxValue)
+//        Timber.e("--------left="+leftValue+" right="+rightValue+" max"+maxValue)
         invalidate()
     }
 }

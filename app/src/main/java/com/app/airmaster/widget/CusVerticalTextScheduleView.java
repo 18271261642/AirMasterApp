@@ -208,7 +208,7 @@ public class CusVerticalTextScheduleView extends View {
     }
 
     public void setCurrScheduleValue(int currScheduleValue) {
-        this.currScheduleValue = currScheduleValue;
+        this.currScheduleValue = currScheduleValue>=allScheduleValue ? (int) allScheduleValue : currScheduleValue;
         invalidate();
     }
 

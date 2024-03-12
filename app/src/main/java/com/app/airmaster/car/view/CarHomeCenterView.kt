@@ -40,6 +40,8 @@ class CarHomeCenterView : LinearLayout ,OnClickListener{
     private var carCenterBotBomImg : ImageView ?= null
 
 
+    private var carFrontGaugeView : GaugeHeightView ?= null
+    private var carRearGaugeView : GaugeHeightView ?= null
 
     //左前轮气压值
     private var homeCenterLeftTopTv : HomeTxtStyleView?= null
@@ -76,9 +78,13 @@ class CarHomeCenterView : LinearLayout ,OnClickListener{
     private val handlers : Handler = object : Handler(Looper.getMainLooper()){
         override fun handleMessage(msg: Message) {
             super.handleMessage(msg)
-            onPressureListener?.onItemChecked(map)
-
-            vibrate()
+            if(msg.what == 0x00){
+                onPressureListener?.onItemChecked(map)
+                vibrate()
+            }
+           if(msg.what == 0x01){
+               onPressureListener?.onItemChecked(map)
+           }
 
         }
     }
@@ -103,6 +109,9 @@ class CarHomeCenterView : LinearLayout ,OnClickListener{
         homeCenterRightTopPressureTv = view.findViewById(R.id.homeCenterRightTopPressureTv)
         homeCenterLeftRearPressureTv = view.findViewById(R.id.homeCenterLeftRearPressureTv)
         homeCenterRightRearPressureTv = view.findViewById(R.id.homeCenterRightRearPressureTv)
+
+        carFrontGaugeView = view.findViewById(R.id.carFrontGaugeView)
+        carRearGaugeView= view.findViewById(R.id.carRearGaugeView)
 
         carHomeCenterTopTopImg = view.findViewById(R.id.carHomeCenterTopTopImg)
         carCenterTopBomImg = view.findViewById(R.id.carCenterTopBomImg)
@@ -157,8 +166,6 @@ class CarHomeCenterView : LinearLayout ,OnClickListener{
         carCenterBotTopImg?.setOnClickListener(this)
         carCenterBotBomImg?.setOnClickListener(this)
 
-
-
     }
 
 
@@ -166,6 +173,7 @@ class CarHomeCenterView : LinearLayout ,OnClickListener{
 
     private val onTouchListener : OnTouchListener = object : OnTouchListener{
         override fun onTouch(p0: View?, p1: MotionEvent?): Boolean {
+            Timber.e("---------onTouch="+p1?.action)
            val id = p0?.id
             if(p1?.action == MotionEvent.ACTION_DOWN){
                 if (id != null) {
@@ -176,9 +184,17 @@ class CarHomeCenterView : LinearLayout ,OnClickListener{
 
             if(p1?.action == MotionEvent.ACTION_UP){
                 isEnd = true
+                var keyV = -1
+                map.forEach {
+                    keyV = it.key
+                }
+                Timber.e("---------onTouchkey="+keyV)
+                if(keyV != -1){
+                    map[keyV] = 0
+                    handlers.sendEmptyMessageDelayed(0x01,200)
+                }
+
             }
-
-
             return false
         }
 
@@ -188,35 +204,34 @@ class CarHomeCenterView : LinearLayout ,OnClickListener{
     var isEnd = false
     var count = 0
     private  fun startCountDown(id : Int){
-
         GlobalScope.launch {
             while (!isEnd){
                 map.clear()
                 when (id){
                     R.id.homeCenterLeftTopImg->{    //左前+
-                        map[0] = 1
+                        map[1] = 1
                     }
                     R.id.homeCenterLeftBotImg->{    //左前-
-                        map[0] = 2
+                        map[1] = 2
                     }
 
                     R.id.rightTopAddImageView->{    //右前+
-                        map[1] = 1
-                    }
-                    R.id.rightTopReduceImageView->{ //右前-
-                        map[1] = 2
-                    }
-                    R.id.leftRearAddImageView->{    //左后+
                         map[2] = 1
                     }
-                    R.id.homeCenterLeftBotImg2->{   //左后-
+                    R.id.rightTopReduceImageView->{ //右前-
                         map[2] = 2
                     }
+                    R.id.leftRearAddImageView->{    //左后+
+                        map[4] = 1
+                    }
+                    R.id.homeCenterLeftBotImg2->{   //左后-
+                        map[4] = 2
+                    }
                     R.id.rightRearAddImageView->{   //右后+
-                        map[3] = 1
+                        map[8] = 1
                     }
                     R.id.rightRearReduceImageView->{    //右后-
-                        map[3] = 2
+                        map[8] = 2
                     }
 
                     R.id.carHomeCenterTopTopImg->{  //前轮+
@@ -233,7 +248,7 @@ class CarHomeCenterView : LinearLayout ,OnClickListener{
                     }
                 }
               handlers.sendEmptyMessage(0x00)
-                delay(1000)
+                delay(200)
             }
         }
     }
@@ -287,8 +302,8 @@ class CarHomeCenterView : LinearLayout ,OnClickListener{
 
         val afterLeft = BitmapFactory.decodeResource(context.resources,R.mipmap.ic_car_mid_after_left_img)
         val afterRight = BitmapFactory.decodeResource(context.resources,R.mipmap.ic_car_mid_after_right_img)
-        carFrontHeightGaugeView?.setBitmap(afterLeft,afterRight)
-        carAfterHeightGaugeView?.setBitmap(afterLeft,afterRight)
+//        carFrontHeightGaugeView?.setBitmap(afterLeft,afterRight)
+//        carAfterHeightGaugeView?.setBitmap(afterLeft,afterRight)
 
 //        setFrontHeightValue(10,10)
 //        setAfterHeightValue(10,10)
@@ -296,57 +311,60 @@ class CarHomeCenterView : LinearLayout ,OnClickListener{
 
     //设置前轮高度
     fun setFrontHeightValue(leftValue: Int,rightValue: Int){
-        carFrontHeightGaugeView?.setValues(leftValue,rightValue)
+       // carFrontHeightGaugeView?.setValues(leftValue,rightValue)
+
+        carFrontGaugeView?.setValues(leftValue,rightValue)
     }
 
     //设置后轮高度
     fun setAfterHeightValue(afterLeft : Int,afterRight : Int){
-        carAfterHeightGaugeView?.setValues(afterLeft,afterRight)
+       // carAfterHeightGaugeView?.setValues(afterLeft,afterRight)
+        carRearGaugeView?.setValues(afterLeft,afterRight)
     }
 
     override fun onClick(p0: View?) {
-       val id = p0?.id
-        map.clear()
-        when (id){
-            R.id.homeCenterLeftTopImg->{    //左前+
-                map[0] = 1
-            }
-            R.id.homeCenterLeftBotImg->{    //左前-
-                map[0] = 2
-            }
-
-            R.id.rightTopAddImageView->{    //右前+
-                map[1] = 1
-            }
-            R.id.rightTopReduceImageView->{ //右前-
-                map[1] = 2
-            }
-            R.id.leftRearAddImageView->{    //左后+
-                map[2] = 1
-            }
-            R.id.homeCenterLeftBotImg2->{   //左后-
-                map[2] = 2
-            }
-            R.id.rightRearAddImageView->{   //右后+
-                map[3] = 1
-            }
-            R.id.rightRearReduceImageView->{    //右后-
-                map[3] = 2
-            }
-
-            R.id.carHomeCenterTopTopImg->{  //前轮+
-                map[4] = 1
-            }
-            R.id.carCenterTopBomImg->{  //前轮-
-                map[4] = 2
-            }
-            R.id.carCenterBotTopImg->{  //后轮+
-                map[5] = 1
-            }
-            R.id.carCenterBotBomImg->{  //后轮-
-                map[5] = 2
-            }
-        }
+//       val id = p0?.id
+//        map.clear()
+//        when (id){
+//            R.id.homeCenterLeftTopImg->{    //左前+
+//                map[0] = 1
+//            }
+//            R.id.homeCenterLeftBotImg->{    //左前-
+//                map[0] = 2
+//            }
+//
+//            R.id.rightTopAddImageView->{    //右前+
+//                map[1] = 1
+//            }
+//            R.id.rightTopReduceImageView->{ //右前-
+//                map[1] = 2
+//            }
+//            R.id.leftRearAddImageView->{    //左后+
+//                map[2] = 1
+//            }
+//            R.id.homeCenterLeftBotImg2->{   //左后-
+//                map[2] = 2
+//            }
+//            R.id.rightRearAddImageView->{   //右后+
+//                map[3] = 1
+//            }
+//            R.id.rightRearReduceImageView->{    //右后-
+//                map[3] = 2
+//            }
+//
+//            R.id.carHomeCenterTopTopImg->{  //前轮+
+//                map[4] = 1
+//            }
+//            R.id.carCenterTopBomImg->{  //前轮-
+//                map[4] = 2
+//            }
+//            R.id.carCenterBotTopImg->{  //后轮+
+//                map[5] = 1
+//            }
+//            R.id.carCenterBotBomImg->{  //后轮-
+//                map[5] = 2
+//            }
+//        }
     //    onPressureListener?.onItemChecked(map)
     }
 

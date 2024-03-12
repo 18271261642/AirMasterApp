@@ -63,7 +63,6 @@
         <com.hjq.shape.layout.ShapeConstraintLayout
             android:layout_width="match_parent"
             app:shape_solidColor="@color/play_color_theme"
-            app:shape_solidPressedColor="#1F2022"
             android:id="@+id/aboutTouchLayout"
             android:layout_height="wrap_content"
             android:padding="@dimen/dp_10">

@@ -96,7 +96,7 @@ class CusCarTemperView : View {
 
     private fun canvasView(canvas: Canvas?){
         val model = mHeight!! / maxValue
-        Timber.e("-----温度="+progressValue+" max="+maxValue +" "+model+" "+mHeight)
+
         val progressHeight = model * progressValue
         val progressTxt = String.format("%02d",progressValue)
         val tW = MiscUtil.getTextWidth(tempTxtPaint!!,"100")
@@ -106,8 +106,9 @@ class CusCarTemperView : View {
         canvas?.drawText("100",12F,mHeight!!/2,tempTxtPaint!!)
 
         //Timber.e("------tw="+tW+"  "+MiscUtil.getTextWidth(txtPaint!!,"100"))
-        canvas?.drawText(progressTxt,if(progressValue<=99) 12F else 0F,mHeight!!-progressHeight-tH,txtPaint!!)
+        val mH = progressHeight+tH/2
 
+        canvas?.drawText(progressTxt,if(progressValue<=99) 12F else 0F,mHeight!!-(if(mH>=mHeight!!)mHeight!!-tH else mH),txtPaint!!)
 
         val bgWidth = tW+15F+ MiscUtil.dipToPx(context,4F)
 

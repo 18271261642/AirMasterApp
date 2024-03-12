@@ -3,6 +3,7 @@ package com.app.airmaster
 import android.widget.Button
 import android.widget.TextView
 import com.app.airmaster.action.AppActivity
+import com.app.airmaster.car.view.GaugeHeightView
 import com.hjq.http.EasyHttp
 import com.hjq.http.listener.OnHttpListener
 import timber.log.Timber
@@ -21,11 +22,16 @@ class LogActivity : AppActivity() {
     private var updateLogTv : TextView ?= null
 
 
+    private var gaugeView : GaugeHeightView ?= null
+
+
+
     override fun getLayoutId(): Int {
         return R.layout.activity_log_layout
     }
 
     override fun initView() {
+        gaugeView = findViewById(R.id.gaugeView)
         updateLogTv = findViewById(R.id.updateLogTv)
         logTv = findViewById(R.id.logTv)
         clearBtn = findViewById(R.id.clearBtn)
@@ -39,6 +45,9 @@ class LogActivity : AppActivity() {
         findViewById<Button>(R.id.requestBtn).setOnClickListener {
             request()
         }
+
+
+        gaugeView?.setValues(80,50)
     }
 
 

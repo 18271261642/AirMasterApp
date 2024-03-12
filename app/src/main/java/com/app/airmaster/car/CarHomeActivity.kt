@@ -21,6 +21,7 @@ import com.app.airmaster.car.fragment.HomeAirFragment
 import com.app.airmaster.car.fragment.HomeControlFragment
 import com.app.airmaster.car.fragment.HomeSettingFragment
 import com.app.airmaster.viewmodel.AutoConnViewModel
+import com.app.airmaster.viewmodel.ControlViewModel
 import com.blala.blalable.BleConstant
 import com.blala.blalable.car.AutoBackBean
 import com.bonlala.base.FragmentPagerAdapter
@@ -40,6 +41,8 @@ import kotlin.system.exitProcess
 class CarHomeActivity : AppActivity() ,NavigationAdapter.OnNavigationListener{
 
     private var autoConnViewModel : AutoConnViewModel ?= null
+    private var controlViewModel : ControlViewModel ?= null
+
 
     private val INTENT_KEY_IN_FRAGMENT_INDEX: String = "fragmentIndex"
     private val INTENT_KEY_IN_FRAGMENT_CLASS: String = "fragmentClass"
@@ -83,7 +86,7 @@ class CarHomeActivity : AppActivity() ,NavigationAdapter.OnNavigationListener{
         intentFilter.addAction(BleConstant.BLE_SCAN_COMPLETE_ACTION)
         intentFilter.addAction(BleConstant.BLE_START_SCAN_ACTION)
         registerReceiver(broadcastReceiver,intentFilter)
-
+        controlViewModel = ViewModelProvider(this)[ControlViewModel::class.java]
         autoConnViewModel = ViewModelProvider(this)[AutoConnViewModel::class.java]
         mNavigationAdapter = NavigationAdapter(this).apply {
             addItem(
@@ -135,6 +138,7 @@ class CarHomeActivity : AppActivity() ,NavigationAdapter.OnNavigationListener{
             BaseApplication.getBaseApplication().autoBackBean = it
             autoListener?.backAutoData(it)
         }
+        controlViewModel?.writeCommonFunction()
     }
 
     override fun onNewIntent(intent: Intent?) {
@@ -221,6 +225,7 @@ class CarHomeActivity : AppActivity() ,NavigationAdapter.OnNavigationListener{
                 BaseApplication.getBaseApplication().connStatus = ConnStatus.CONNECTED
                 BaseApplication.getBaseApplication().bleOperate.stopScanDevice()
                 onHomeConnListener?.onConn(true)
+                controlViewModel?.writeCommonFunction()
             }
             if(action == BleConstant.BLE_DIS_CONNECT_ACTION){
                 ToastUtils.show(resources.getString(R.string.string_conn_disconn))

@@ -2,8 +2,8 @@
 <com.hjq.shape.layout.ShapeLinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_gravity="center"
-    android:layout_marginStart="@dimen/dp_15"
-    android:layout_marginEnd="@dimen/dp_15"
+    android:layout_marginStart="@dimen/dp_10"
+    android:layout_marginEnd="@dimen/dp_10"
     android:gravity="center"
     android:layout_width="match_parent"
     android:layout_height="@dimen/dp_60"
@@ -42,6 +42,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
+        android:layout_gravity="center"
         android:orientation="horizontal">
 
 
@@ -50,8 +51,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:background="@mipmap/ic_home_bot_n_b"
-            android:visibility="invisible" />
+            android:src="@mipmap/ic_home_bot_n_b"
+            android:visibility="visible" />
 
 
         <ImageView
@@ -59,8 +60,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:background="@mipmap/ic_home_bot_number_bg"
-            android:visibility="invisible" />
+            android:src="@mipmap/ic_home_bot_number_bg"
+            android:visibility="visible" />
 
 
         <TextView
@@ -72,6 +73,7 @@
             android:fontFamily="@font/lato_regular15"
             android:gravity="center"
             android:text="1"
+            android:layout_marginBottom="3dp"
             android:textColor="@color/white"
             android:textSize="34sp"
             android:textStyle="bold" />
@@ -84,6 +86,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
+        android:layout_gravity="center"
         android:orientation="horizontal">
 
 
@@ -92,18 +95,18 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:background="@mipmap/ic_home_bot_n_b"
-            android:visibility="invisible" />
+            android:src="@mipmap/ic_home_bot_n_b"
+            android:visibility="visible" />
 
         <TextView
             android:id="@+id/gear2Tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:button="@null"
             android:fontFamily="@font/lato_regular15"
             android:gravity="center"
             android:text="2"
+            android:layout_marginBottom="3dp"
             android:textColor="@color/white"
             android:textSize="34sp"
             android:textStyle="bold" />
@@ -114,8 +117,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:background="@mipmap/ic_home_bot_number_bg"
-            android:visibility="invisible" />
+            android:src="@mipmap/ic_home_bot_number_bg"
+            android:visibility="visible" />
 
 
     </FrameLayout>
@@ -134,7 +137,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:background="@mipmap/ic_home_bot_n_b"
+            android:src="@mipmap/ic_home_bot_n_b"
             android:visibility="invisible" />
 
 
@@ -147,6 +150,7 @@
             android:fontFamily="@font/lato_regular15"
             android:gravity="center"
             android:text="3"
+            android:layout_marginBottom="3dp"
             android:textColor="@color/white"
             android:textSize="34sp"
             android:textStyle="bold" />
@@ -156,7 +160,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:background="@mipmap/ic_home_bot_number_bg"
+            android:src="@mipmap/ic_home_bot_number_bg"
             android:visibility="invisible" />
 
     </FrameLayout>
@@ -187,6 +191,7 @@
             android:fontFamily="@font/lato_regular15"
             android:gravity="center"
             android:text="4"
+            android:layout_marginBottom="3dp"
             android:textColor="@color/white"
             android:textSize="34sp"
             android:textStyle="bold" />
@@ -196,7 +201,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:background="@mipmap/ic_home_bot_number_bg"
+            android:src="@mipmap/ic_home_bot_number_bg"
             android:visibility="invisible" />
 
     </FrameLayout>
