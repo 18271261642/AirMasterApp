@@ -96,7 +96,7 @@ class CusCarTemperView : View {
 
     private fun canvasView(canvas: Canvas?){
         val model = mHeight!! / maxValue
-
+        Timber.e("-----温度="+progressValue+" max="+maxValue +" "+model+" "+mHeight)
         val progressHeight = model * progressValue
         val progressTxt = String.format("%02d",progressValue)
         val tW = MiscUtil.getTextWidth(tempTxtPaint!!,"100")
@@ -130,8 +130,14 @@ class CusCarTemperView : View {
         progressRectF.right = bgWidth
         progressRectF.bottom = mHeight!!
         val pArray = IntArray(2)
-        pArray[0] = Color.parseColor("#616161")
-        pArray[1] = Color.parseColor("#7D7D7D")
+        if(progressValue<=80){
+            pArray[0] = Color.parseColor("#2E7BFD")
+            pArray[1] = Color.parseColor("#BED6FF")
+        }else{
+            pArray[0] = Color.parseColor("#FF0000")
+            pArray[1] = Color.parseColor("#FF5100")
+        }
+
         val pShader = LinearGradient(progressRectF.left,progressRectF.top,bgWidth,mHeight!!,pArray,null,Shader.TileMode.CLAMP)
         progressPaint?.shader = pShader
         canvas?.drawRect(progressRectF,progressPaint!!)
@@ -139,7 +145,7 @@ class CusCarTemperView : View {
 
 
     fun setProgressValue(value : Int){
-        this.progressValue = value
+        this.progressValue = if(value>=120) 120 else value
         invalidate()
     }
 

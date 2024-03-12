@@ -121,9 +121,9 @@ class HomeControlFragment : TitleBarFragment<CarHomeActivity>() {
 
         //homeLeftAirPressureView?.setAirPressureValue(0)
         carHomeCenterView?.setFrontImage()
-        carHomeCenterView?.setFrontHeightValue(50,50)
+//        carHomeCenterView?.setFrontHeightValue(50,50)
        // carHomeCenterView?.setAfterHeightValue(100,80)
-
+        homeRightView?.setTempValue(100)
 
         controlViewModel = ViewModelProvider(this)[ControlViewModel::class.java]
 
@@ -174,11 +174,11 @@ class HomeControlFragment : TitleBarFragment<CarHomeActivity>() {
 
         carHomeCenterView?.setOnPressureListener(object : OnControlPressureCheckedListener{
             override fun onItemChecked(map: MutableMap<Int, Int>?) {
-//
-//                if(BaseApplication.getBaseApplication().connStatus != ConnStatus.CONNECTED){
-//                    showNotConnDialog()
-//                    return
-//                }
+
+                if(BaseApplication.getBaseApplication().connStatus != ConnStatus.CONNECTED){
+                    showNotConnDialog()
+                    return
+                }
 
                 controlViewModel?.setManualOperation(map!! as HashMap<Int, Int>)
             }
@@ -248,9 +248,9 @@ class HomeControlFragment : TitleBarFragment<CarHomeActivity>() {
 
 
     private fun showNotConnDialog(){
-        attachActivity.showCommAlertDialog(resources.getString(R.string.string_not_conn_device),resources.getString(R.string.string_go_to_official_website),resources.getString(R.string.string_go_to_conn)
+        attachActivity?.showCommAlertDialog(resources.getString(R.string.string_not_conn_device),resources.getString(R.string.string_go_to_official_website),resources.getString(R.string.string_go_to_conn)
         ) { position ->
-            attachActivity.disCommAlertDialog()
+            attachActivity?.disCommAlertDialog()
             if (position == 0x01) {
                 startActivity(SecondScanActivity::class.java)
             }

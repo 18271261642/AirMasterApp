@@ -106,7 +106,7 @@ class CarHeightGaugeView : View{
 
 
 
-        Timber.e("-------onMeasure=$mWidth mHeight=$mHeight")
+       // Timber.e("-------onMeasure=$mWidth mHeight=$mHeight")
     }
 
 

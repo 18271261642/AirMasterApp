@@ -3,6 +3,9 @@ package com.app.airmaster.car.view
 import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.BitmapFactory
+import android.os.Handler
+import android.os.Looper
+import android.os.Message
 import android.os.Vibrator
 import android.util.AttributeSet
 import android.view.LayoutInflater
@@ -69,6 +72,16 @@ class CarHomeCenterView : LinearLayout ,OnClickListener{
     private var carFrontHeightGaugeView : CarHeightGaugeView ?= null
     private var carAfterHeightGaugeView : CarHeightGaugeView ?= null
 
+
+    private val handlers : Handler = object : Handler(Looper.getMainLooper()){
+        override fun handleMessage(msg: Message) {
+            super.handleMessage(msg)
+            onPressureListener?.onItemChecked(map)
+
+            vibrate()
+
+        }
+    }
 
     constructor(context: Context) : super (context){
         initViews(context)
@@ -219,11 +232,8 @@ class CarHomeCenterView : LinearLayout ,OnClickListener{
                         map[5] = 2
                     }
                 }
-                onPressureListener?.onItemChecked(map)
-
-                vibrate()
+              handlers.sendEmptyMessage(0x00)
                 delay(1000)
-
             }
         }
     }
