@@ -3,6 +3,7 @@ package com.app.airmaster.car.view
 import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.BitmapFactory
+import android.opengl.Visibility
 import android.os.Handler
 import android.os.Looper
 import android.os.Message
@@ -321,6 +322,23 @@ class CarHomeCenterView : LinearLayout ,OnClickListener{
        // carAfterHeightGaugeView?.setValues(afterLeft,afterRight)
         carRearGaugeView?.setValues(afterLeft,afterRight)
     }
+
+    //设置前轮目标高度
+    fun setFrontGoalValue(leftValue: Int,rightValue: Int){
+        carFrontGaugeView?.setGoalValue(leftValue,rightValue)
+    }
+
+    //设置后轮目标高度
+    fun setRearGoalValue(afterLeft : Int,afterRight : Int){
+        carRearGaugeView?.setGoalValue(afterLeft,afterRight)
+    }
+
+    //设置目标显示或隐藏
+    fun setGoalVisibility(visibility: Boolean){
+        carFrontGaugeView?.setGoalVisibility(visibility)
+        carRearGaugeView?.setGoalVisibility(visibility)
+    }
+
 
     override fun onClick(p0: View?) {
 //       val id = p0?.id

@@ -170,7 +170,7 @@ public class CusVerticalTextScheduleView extends View {
         String txtStr = String.format("%02d",Math.max(currScheduleValue, 0));
 
         float txtHeight = MiscUtil.measureTextHeight(txtPaint);
-        float topHeight = Math.max((mHeight - currV-10), txtHeight);
+        float topHeight = Math.max((mHeight - currV-10), txtHeight+5);
 
         canvas.drawText(txtStr,25,topHeight,txtPaint);
 

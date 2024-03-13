@@ -135,6 +135,7 @@ class CarHomeActivity : AppActivity() ,NavigationAdapter.OnNavigationListener{
         BaseApplication.getBaseApplication().bleOperate.setClearAutoBack()
         Timber.e("------onResumt----")
         BaseApplication.getBaseApplication().bleOperate.setAutoBackDataListener {
+            Timber.e("---------自动返回数据=$it")
             BaseApplication.getBaseApplication().autoBackBean = it
             autoListener?.backAutoData(it)
         }

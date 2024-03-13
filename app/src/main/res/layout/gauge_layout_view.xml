@@ -33,6 +33,22 @@
 
 
     <com.app.airmaster.widget.VerticalSeekBar
+        app:layout_constraintRight_toLeftOf="@id/gaugeMidView"
+        app:layout_constraintTop_toTopOf="@id/gaugeMidView"
+        app:layout_constraintBottom_toBottomOf="@id/gaugeMidView"
+        android:id="@+id/gaugeLeftGoalSeekBar"
+        android:layout_width="10dp"
+        android:progress="1"
+        android:progressTint="@color/transparent"
+        android:progressDrawable="@null"
+        android:progressBackgroundTint="@color/transparent"
+        android:layout_marginTop="-10dp"
+        android:layout_marginBottom="-10dp"
+        android:thumb="@mipmap/ic_car_home_middle_bot_left_goal"
+        android:layout_height="0dp"/>
+
+
+    <com.app.airmaster.widget.VerticalSeekBar
         app:layout_constraintLeft_toRightOf="@id/gaugeMidView"
         app:layout_constraintTop_toTopOf="@id/gaugeMidView"
         app:layout_constraintBottom_toBottomOf="@id/gaugeMidView"
@@ -47,6 +63,19 @@
         android:thumb="@mipmap/ic_car_home_middle_bot_right"
         android:layout_height="0dp"/>
 
-
+    <com.app.airmaster.widget.VerticalSeekBar
+        app:layout_constraintLeft_toRightOf="@id/gaugeMidView"
+        app:layout_constraintTop_toTopOf="@id/gaugeMidView"
+        app:layout_constraintBottom_toBottomOf="@id/gaugeMidView"
+        android:id="@+id/gaugeRightGoalSeekBar"
+        android:layout_width="10dp"
+        android:layout_marginTop="-10dp"
+        android:layout_marginBottom="-10dp"
+        android:progress="1"
+        android:progressTint="@color/transparent"
+        android:progressDrawable="@null"
+        android:progressBackgroundTint="@color/transparent"
+        android:thumb="@mipmap/ic_car_home_middle_bot_right_goal"
+        android:layout_height="0dp"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

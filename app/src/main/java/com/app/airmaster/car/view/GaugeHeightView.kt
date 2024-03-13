@@ -1,8 +1,10 @@
 package com.app.airmaster.car.view
 
 import android.content.Context
+import android.opengl.Visibility
 import android.util.AttributeSet
 import android.view.LayoutInflater
+import android.view.View
 import android.widget.LinearLayout
 import com.app.airmaster.R
 import com.app.airmaster.widget.VerticalSeekBar
@@ -14,7 +16,9 @@ class GaugeHeightView : LinearLayout{
     private var gaugeLeftSeekBar : VerticalSeekBar ?= null
     private var gaugeRightSeekBar : VerticalSeekBar ?= null
 
-
+    //目标
+    private var gaugeLeftGoalSeekBar : VerticalSeekBar ?= null
+    private var gaugeRightGoalSeekBar : VerticalSeekBar ?= null
 
     constructor(context: Context) : super (context){
         initViews(context)
@@ -35,8 +39,14 @@ class GaugeHeightView : LinearLayout{
         gaugeLeftSeekBar = view.findViewById(R.id.gaugeLeftSeekBar)
         gaugeRightSeekBar = view.findViewById(R.id.gaugeRightSeekBar)
 
+        gaugeLeftGoalSeekBar = view.findViewById(R.id.gaugeLeftGoalSeekBar)
+        gaugeRightGoalSeekBar = view.findViewById(R.id.gaugeRightGoalSeekBar)
+
         gaugeLeftSeekBar?.max = 100
         gaugeRightSeekBar?.max = 100
+
+        gaugeLeftGoalSeekBar?.max = 100
+        gaugeRightGoalSeekBar?.max = 100
     }
 
 
@@ -45,4 +55,22 @@ class GaugeHeightView : LinearLayout{
         gaugeLeftSeekBar?.progress = left
         gaugeRightSeekBar?.progress = right
     }
+
+
+    //设置目标
+    fun setGoalValue(left : Int,right: Int){
+        gaugeLeftGoalSeekBar?.progress = left
+        gaugeRightGoalSeekBar?.progress = right
+    }
+
+
+    //设置目标是否显示或隐藏
+    fun setGoalVisibility(visibility: Boolean){
+        gaugeLeftGoalSeekBar?.visibility = if(visibility) View.VISIBLE else View.GONE
+        gaugeRightGoalSeekBar?.visibility = if(visibility) View.VISIBLE else View.GONE
+
+    }
+
+
+
 }

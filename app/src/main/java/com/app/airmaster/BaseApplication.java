@@ -163,8 +163,13 @@ public class BaseApplication extends BleApplication {
     private final ServiceConnection serviceConnection = new ServiceConnection() {
         @Override
         public void onServiceConnected(ComponentName componentName, IBinder iBinder) {
-            connStatusService =( (ConnStatusService.ConnBinder)iBinder).getService();
-            Timber.e("--------service=null="+(connStatusService == null));
+            try {
+                connStatusService =( (ConnStatusService.ConnBinder)iBinder).getService();
+                Timber.e("--------service=null="+(connStatusService == null));
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+
         }
 
         @Override

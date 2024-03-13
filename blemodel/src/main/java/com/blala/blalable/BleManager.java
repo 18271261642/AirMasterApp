@@ -448,21 +448,30 @@ public class BleManager {
 
                     //左前高度尺工作量
                     int leftRulerWork = bytes[26] & 0xff;
+                    autoBackBean.setLeftFrontRulerFL(leftRulerWork);
+
                     //右前高度尺工作量
                     int rightRulerWork = bytes[27] &0xff;
+                    autoBackBean.setRightFrontRulerFL(rightRulerWork);
                     //左后高度尺工作量
                     int leftAfterRulerWork = bytes[28] &0xff;
+                    autoBackBean.setLeftRearRulerFL(leftAfterRulerWork);
                     //右后高度尺工作量
                     int rightAfterRulerWork = bytes[29] & 0xff;
+                    autoBackBean.setRightRearRulerFL(rightAfterRulerWork);
 
                     //左前高度尺目标工作量
                     int leftRulerGoalWork = bytes[30] & 0xff;
+                    autoBackBean.setLeftFrontGoalFL(leftRulerGoalWork);
                     //右前高度尺目标工作量
                     int rightRulerGoalWor = bytes[31] &0xff;
+                    autoBackBean.setRightFrontGoalFL(rightRulerGoalWor);
                     //左后高度尺目标工作量
                     int leftAfterRulerGoalWor = bytes[32] &0xff;
+                    autoBackBean.setLeftRearGoalFL(leftAfterRulerGoalWor);
                     //右后高度尺目标工作量
                     int rightAfterRulerGoalWor = bytes[33] & 0xff;
+                    autoBackBean.setRightRearGoalFL(rightAfterRulerGoalWor);
 
                     //左前高度尺实际工作量
                     int leftRuler = bytes[34] & 0xff;
@@ -546,6 +555,7 @@ public class BleManager {
                     autoBackBean.setRightPressure(rightPressure);
                     autoBackBean.setLeftRearPressure(leftRearPressure);
                     autoBackBean.setRightRearPressure(rightRearPressure);
+
                     autoBackBean.setLeftFrontHeightRuler(leftRuler);
                     autoBackBean.setRightFrontHeightRuler(rightRuler);
                     autoBackBean.setLeftAfterHeightRuler(leftAfterRuler);
@@ -573,11 +583,7 @@ public class BleManager {
                     autoBackBean.setAirBottleErrorCode(airBottleErrorCode);
                     autoBackBean.setActivationStatus(activationStatus);
 
-
-
-
-
-                    Log.e(TAG,"-------档位="+autoBackBean.getCurPos()+" "+(onCarAutoBackListener == null));
+                   // Log.e(TAG,"-------自动返回数据=="+autoBackBean.toString()+" "+(onCarAutoBackListener == null));
 
                     if(onCarAutoBackListener != null){
                         onCarAutoBackListener.backAutoData(autoBackBean);

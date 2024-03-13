@@ -1,20 +1,20 @@
 package com.app.airmaster.car.fragment
 
 
+import android.os.Handler
+import android.os.Looper
+import android.os.Message
 import android.view.View
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.lifecycle.ViewModelProvider
 import com.app.airmaster.BaseApplication
-import com.app.airmaster.LogActivity
 import com.app.airmaster.R
 import com.app.airmaster.action.TitleBarFragment
-import com.app.airmaster.adapter.OnCommItemClickListener
 import com.app.airmaster.adapter.OnItemCheckedListener
 import com.app.airmaster.ble.ConnStatus
 import com.app.airmaster.car.CarFaultNotifyActivity
 import com.app.airmaster.car.CarHomeActivity
-import com.app.airmaster.car.ShowWebActivity
 import com.app.airmaster.car.view.CarHomeCenterView
 import com.app.airmaster.car.view.HomeBottomCheckView
 import com.app.airmaster.car.view.HomeBottomNumberView
@@ -25,7 +25,8 @@ import com.app.airmaster.second.SecondScanActivity
 import com.app.airmaster.viewmodel.ControlViewModel
 import com.blala.blalable.Utils
 import com.blala.blalable.car.AutoBackBean
-import timber.log.Timber
+
+
 
 
 /**
@@ -51,6 +52,14 @@ class HomeControlFragment : TitleBarFragment<CarHomeActivity>() {
     private var homeDeviceErrorLayout : LinearLayout ?= null
 
 
+    private val handlers : Handler = object :Handler(Looper.getMainLooper()){
+        override fun handleMessage(msg: Message) {
+            super.handleMessage(msg)
+            if(msg.what == 0x00){
+                showRulerGoalVisibility(false)
+            }
+        }
+    }
 
 
     companion object{
@@ -108,7 +117,9 @@ class HomeControlFragment : TitleBarFragment<CarHomeActivity>() {
                 showNotConnDialog()
                 return@setOnItemClick
             }
-
+            handlers.removeMessages(0x00)
+            handlers.sendEmptyMessageDelayed(0x00,5000)
+            showRulerGoalVisibility(true)
             if(it == -1){
                 controlViewModel?.setOneGearReset()
             }else{
@@ -118,6 +129,8 @@ class HomeControlFragment : TitleBarFragment<CarHomeActivity>() {
         }
     }
 
+
+    private var tempGear =-1
 
     override fun initData() {
 
@@ -136,6 +149,13 @@ class HomeControlFragment : TitleBarFragment<CarHomeActivity>() {
                     return
                 }
                // Timber.e("----------自动返回数据="+autoBean.toString())
+                if(tempGear != autoBean.curPos){
+                    tempGear = autoBean.curPos
+                    handlers.removeMessages(0x00)
+                    handlers.sendEmptyMessageDelayed(0x00,5000)
+                    showRulerGoalVisibility(true)
+                }
+
                 //档位
                 if(autoBean.curPos == 5){
                     homeBottomNumberView?.setIsLowGear(true)
@@ -148,8 +168,11 @@ class HomeControlFragment : TitleBarFragment<CarHomeActivity>() {
                 carHomeCenterView?.setLeftTopPressureValue(autoBean.leftPressure)
                 carHomeCenterView?.setRightRearPressureValue(autoBean.rightRearPressure)
 
-                carHomeCenterView?.setFrontHeightValue(autoBean.leftFrontHeightRuler,autoBean.rightFrontHeightRuler)
-                carHomeCenterView?.setAfterHeightValue(autoBean.leftAfterHeightRuler,autoBean.rightAfterHeightRuler)
+                carHomeCenterView?.setFrontHeightValue(autoBean.leftFrontRulerFL,autoBean.rightFrontRulerFL)
+                carHomeCenterView?.setAfterHeightValue(autoBean.leftRearRulerFL,autoBean.rightRearRulerFL)
+
+                carHomeCenterView?.setFrontGoalValue(autoBean.leftFrontGoalFL,autoBean.rightFrontGoalFL)
+                carHomeCenterView?.setRearGoalValue(autoBean.leftRearGoalFL,autoBean.rightRearGoalFL)
 
                 homeLeftAirPressureView?.setAirPressureValue(autoBean.cylinderPressure)
                 homeRightView?.setTempValue(autoBean.airBottleTemperature )
@@ -216,6 +239,7 @@ class HomeControlFragment : TitleBarFragment<CarHomeActivity>() {
         homeLeftAirPressureView?.setAirPressureValue(0)
         homeRightView?.setTempValue(0)
         homeBottomNumberView?.clearAllClick()
+        showRulerGoalVisibility(false)
     }
 
 
@@ -261,5 +285,13 @@ class HomeControlFragment : TitleBarFragment<CarHomeActivity>() {
                 attachActivity?.switchFragment(0)
             }
         }
+    }
+
+
+
+
+    //显示或隐藏
+    private fun showRulerGoalVisibility(visibility: Boolean){
+        carHomeCenterView?.setGoalVisibility(visibility)
     }
 }

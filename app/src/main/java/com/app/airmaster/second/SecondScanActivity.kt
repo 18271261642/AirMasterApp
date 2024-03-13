@@ -69,6 +69,12 @@ class SecondScanActivity : AppActivity() {
             if (msg.what == 0x00) {
                 BaseApplication.getBaseApplication().bleOperate.stopScanDevice()
             }
+            if(msg.what == 0x01){
+                hideDialog()
+                ToastUtils.show("连接失败!")
+                BaseApplication.getBaseApplication().bleOperate.disConnYakDevice()
+                verifyScanFun(false)
+            }
         }
     }
 
@@ -239,9 +245,11 @@ class SecondScanActivity : AppActivity() {
 
                 showDialog("Connecting..")
                 handlers.sendEmptyMessageDelayed(0x00, 500)
+                handlers.sendEmptyMessageDelayed(0x01,20 * 1000)
                 service.connDeviceBack(
                     bean.bluetoothDevice.name, bean.bluetoothDevice.address
                 ) { mac, status ->
+                    handlers.removeMessages(0x01)
                     hideDialog()
                     MmkvUtils.saveScreenDeviceStatus(bean.isScreenDevice)
                     MmkvUtils.saveConnDeviceMac(mac)

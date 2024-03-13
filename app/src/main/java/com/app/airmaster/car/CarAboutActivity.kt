@@ -201,6 +201,7 @@ class CarAboutActivity : AppActivity() {
 
 
         watchOtaViewModel?.upgradeStatus?.observe(this){
+            BaseApplication.getBaseApplication().isOTAModel = false
             isUpgrading = false
             aboutCarDfuShowTv?.visibility = View.GONE
             ToastUtils.show(if(it) "升级成功!" else "升级失败,请重试!")
@@ -330,8 +331,8 @@ class CarAboutActivity : AppActivity() {
         showWatchOrNot(isScreen)
 
         if(isScreen){
-            val activityStatus = MmkvUtils.getSaveParams(MmkvUtils.getConnDeviceMac(),false)
-            if(activityStatus==true){
+            val activityStatus = BaseApplication.getBaseApplication().autoBackBean.activationStatus==1
+            if(activityStatus){
                 aboutActivateSubmitTv?.text = "已激活"
                 aboutActivateSubmitTv!!.shapeDrawableBuilder.setSolidColor(Color.parseColor("#80FD654D")).intoBackground()
             }
@@ -340,7 +341,7 @@ class CarAboutActivity : AppActivity() {
 
 
     private fun showWatchOrNot(screen: Boolean) {
-        carWatchLayout?.visibility = if(screen) View.GONE else View.GONE
+        carWatchLayout?.visibility = if(screen) View.GONE else View.VISIBLE
         aboutMcuLayout?.visibility = if(screen) View.VISIBLE else View.GONE
         aboutTouchLayout?.visibility = if(screen) View.VISIBLE else View.GONE
     }

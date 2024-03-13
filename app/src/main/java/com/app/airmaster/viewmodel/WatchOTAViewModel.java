@@ -567,10 +567,11 @@ public class WatchOTAViewModel extends CommViewModel{
                 if(!BikeUtils.isEmpty(mac) && mac.equals(goalMac)){
                     Timber.e("---------扫描到了mac="+mac);
                     // upgradeStateTv.setText("扫描到了目标设备，开始连接");
+                    handler.sendEmptyMessageDelayed(0x88,500);
                     boolean isConn =  bleclass.connect(mac);
                     Timber.e("------连接状态="+isConn);
 
-                    handler.sendEmptyMessageDelayed(0x88,500);
+
                     return;
                 }
             }

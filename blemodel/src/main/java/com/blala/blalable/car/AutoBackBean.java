@@ -59,14 +59,33 @@ public class AutoBackBean {
     private int rightRearPressure;
 
 
-    /**左前高度尺**/
+    /**左前高度尺实际工作量**/
     private int leftFrontHeightRuler;
-    /**右前高度尺**/
+    /**右前高度尺实际工作量**/
     private int rightFrontHeightRuler;
-    /**左后高度尺**/
+    /**左后高度尺实际工作量**/
     private int leftAfterHeightRuler;
-    /**右后高度尺**/
+    /**右后高度尺实际工作量**/
     private int rightAfterHeightRuler;
+
+
+    /**左前高度尺工作量**/
+    private int leftFrontRulerFL;
+    /**右前高度尺工作量**/
+    private int rightFrontRulerFL;
+    /**左后高度尺工作量**/
+    private int leftRearRulerFL;
+    /**右后高度尺工作量**/
+    private int rightRearRulerFL;
+
+    /**左前高度尺目标工作量**/
+    private int leftFrontGoalFL;
+    /**右前高度尺目标工作量**/
+    private int rightFrontGoalFL;
+    /**左后高度尺目标工作量**/
+    private int leftRearGoalFL;
+    /**右后高度尺目标工作量**/
+    private int rightRearGoalFL;
 
 
 
@@ -393,6 +412,70 @@ public class AutoBackBean {
         this.activationStatus = activationStatus;
     }
 
+    public int getLeftFrontRulerFL() {
+        return leftFrontRulerFL;
+    }
+
+    public void setLeftFrontRulerFL(int leftFrontRulerFL) {
+        this.leftFrontRulerFL = leftFrontRulerFL;
+    }
+
+    public int getRightFrontRulerFL() {
+        return rightFrontRulerFL;
+    }
+
+    public void setRightFrontRulerFL(int rightFrontRulerFL) {
+        this.rightFrontRulerFL = rightFrontRulerFL;
+    }
+
+    public int getLeftRearRulerFL() {
+        return leftRearRulerFL;
+    }
+
+    public void setLeftRearRulerFL(int leftRearRulerFL) {
+        this.leftRearRulerFL = leftRearRulerFL;
+    }
+
+    public int getRightRearRulerFL() {
+        return rightRearRulerFL;
+    }
+
+    public void setRightRearRulerFL(int rightRearRulerFL) {
+        this.rightRearRulerFL = rightRearRulerFL;
+    }
+
+    public int getLeftFrontGoalFL() {
+        return leftFrontGoalFL;
+    }
+
+    public void setLeftFrontGoalFL(int leftFrontGoalFL) {
+        this.leftFrontGoalFL = leftFrontGoalFL;
+    }
+
+    public int getRightFrontGoalFL() {
+        return rightFrontGoalFL;
+    }
+
+    public void setRightFrontGoalFL(int rightFrontGoalFL) {
+        this.rightFrontGoalFL = rightFrontGoalFL;
+    }
+
+    public int getLeftRearGoalFL() {
+        return leftRearGoalFL;
+    }
+
+    public void setLeftRearGoalFL(int leftRearGoalFL) {
+        this.leftRearGoalFL = leftRearGoalFL;
+    }
+
+    public int getRightRearGoalFL() {
+        return rightRearGoalFL;
+    }
+
+    public void setRightRearGoalFL(int rightRearGoalFL) {
+        this.rightRearGoalFL = rightRearGoalFL;
+    }
+
     @Override
     public String toString() {
         return "AutoBackBean{" +
@@ -403,16 +486,24 @@ public class AutoBackBean {
                 ", 右前气压值=" + rightPressure +
                 ", 左后气压值=" + leftRearPressure +
                 ", 右后气压值=" + rightRearPressure +
-                ", 气缸气压值=" + leftFrontHeightRuler +
-                ", 左前高度尺工作量=" + rightFrontHeightRuler +
-                ", 右前高度尺工作量=" + leftAfterHeightRuler +
-                ", 左后高度尺工作量=" + rightAfterHeightRuler +
-                ", 右后高度尺工作量=" + cylinderPressure +
-                ", 电池电压(单位0.1V)=" + batteryVal +
-                ", 气罐温度(单位摄氏度)=" + airBottleTemperature +
+                ", 左前高度尺实际工作量=" + leftFrontHeightRuler +
+                ", 右前高度尺实际工作量=" + rightFrontHeightRuler +
+                ", 左后高度尺实际工作量=" + leftAfterHeightRuler +
+                ", 右后高度尺实际工作量=" + rightAfterHeightRuler +
+                ", 左前高度尺工作量=" + leftFrontRulerFL +
+                ", 右前高度尺工作量=" + rightFrontRulerFL +
+                ", 左后高度尺工作量=" + leftRearRulerFL +
+                ", 右后高度尺工作量=" + rightRearRulerFL +
+                ", 左前高度尺目标工作量=" + leftFrontGoalFL +
+                ", 右前高度尺目标工作量=" + rightFrontGoalFL +
+                ", 左后高度尺目标工作量=" + leftRearGoalFL +
+                ", 右后高度尺目标工作量=" + rightRearGoalFL +
+                ", 气缸气压值=" + cylinderPressure +
+                ", 电池电压=" + batteryVal +
+                ", 气罐温度=" + airBottleTemperature +
                 ", ACC状态=" + accStatus +
                 ", ACC工作模式=" + accWorkModel +
-                ", 是否正在移动=" + moveStatus +
+                ", 是否在移动=" + moveStatus +
                 ", 是否休眠状态=" + sleepStatus +
                 ", 左前气压目标值=" + leftFrontGoalPressure +
                 ", 右前气压目标值=" + rightFrontGoalPressure +
