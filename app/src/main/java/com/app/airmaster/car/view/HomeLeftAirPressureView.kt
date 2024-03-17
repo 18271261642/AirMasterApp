@@ -77,7 +77,8 @@ class HomeLeftAirPressureView : LinearLayout{
             homeLeftAirSeekBar?.thumb = resources.getDrawable(R.mipmap.ic_home_left_air)
         }
         homeLeftAirSeekBar?.progress = value
-        cusHomeLeftVerticalTxtView?.currScheduleValue = if(value>max) max else  value
+        cusHomeLeftVerticalTxtView?.
+        currScheduleValue = if(value>max) max else  value
         cusHomeLeftVerticalTxtView?.showTxt = if(value>max) max.toString() else value.toString()
     }
 

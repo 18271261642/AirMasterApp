@@ -4,6 +4,7 @@ import android.widget.Button
 import android.widget.TextView
 import com.app.airmaster.action.AppActivity
 import com.app.airmaster.car.view.GaugeHeightView
+import com.google.gson.Gson
 import com.hjq.http.EasyHttp
 import com.hjq.http.listener.OnHttpListener
 import timber.log.Timber
@@ -31,12 +32,11 @@ class LogActivity : AppActivity() {
     }
 
     override fun initView() {
-        gaugeView = findViewById(R.id.gaugeView)
         updateLogTv = findViewById(R.id.updateLogTv)
         logTv = findViewById(R.id.logTv)
         clearBtn = findViewById(R.id.clearBtn)
         clearBtn?.setOnClickListener{
-            BaseApplication.getBaseApplication().logStr = "--"
+          //  BaseApplication.getBaseApplication().logStr = "--"
             BaseApplication.getBaseApplication().clearLog()
             logTv?.text = ""
             updateLogTv?.text = ""
@@ -47,35 +47,20 @@ class LogActivity : AppActivity() {
         }
 
 
-        gaugeView?.setValues(80,50)
     }
 
 
 
     private fun request(){
-        EasyHttp.get(this).api("checkUpdate?firmwareVersionCode=320&productNumber=c003").request(object :
-            OnHttpListener<String> {
-            override fun onSucceed(result: String?) {
-                logTv?.text = result
-            }
-
-            override fun onFail(e: Exception?) {
-                e?.printStackTrace()
-                Timber.e("----e="+e?.printStackTrace()+"\n"+e?.fillInStackTrace()+"\n"+e?.localizedMessage)
-                logTv?.text = e?.message
-            }
-
-        })
+        initData()
     }
 
     override fun initData() {
        // val logStr = BaseApplication.getBaseApplication().bleOperate.log.toString()
 
-        val logStr = BaseApplication.getBaseApplication().logStr
+        val logStr = BaseApplication.getBaseApplication().autoBackBean
 
-        logTv?.text = logStr
+        logTv?.text = Gson().toJson(logStr)
 
-        val updateLog = BaseApplication.getBaseApplication().getAppLog()
-        updateLogTv?.text = updateLog
     }
 }

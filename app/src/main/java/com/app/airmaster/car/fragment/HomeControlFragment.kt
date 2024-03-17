@@ -5,10 +5,13 @@ import android.os.Handler
 import android.os.Looper
 import android.os.Message
 import android.view.View
+import android.view.View.OnLongClickListener
+import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.lifecycle.ViewModelProvider
 import com.app.airmaster.BaseApplication
+import com.app.airmaster.LogActivity
 import com.app.airmaster.R
 import com.app.airmaster.action.TitleBarFragment
 import com.app.airmaster.adapter.OnItemCheckedListener
@@ -81,6 +84,15 @@ class HomeControlFragment : TitleBarFragment<CarHomeActivity>() {
         carHomeCenterView = findViewById(R.id.carHomeCenterView)
         homeBottomCheckView = findViewById(R.id.homeBottomCheckView)
         homeBottomNumberView = findViewById(R.id.homeBottomNumberView)
+
+        findViewById<ImageView>(R.id.homeLogoImgView).setOnLongClickListener(object : OnLongClickListener{
+            override fun onLongClick(v: View?): Boolean {
+
+                startActivity(LogActivity::class.java)
+                return true
+            }
+
+        })
 
         homeBottomCheckView?.setOnItemCheck(object : OnItemCheckedListener{
             override fun onItemCheck(position: Int, isChecked: Boolean) {

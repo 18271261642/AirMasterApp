@@ -29,6 +29,18 @@ public class DeviceBinVersionBean {
     //识别码
     private String identificationCode;
 
+
+
+    /******MCU********/
+    private String mcuBroadcastId;
+    private String mcuIdentificationCode;
+    private String mcuVersionCode;
+    private String mcuVersionCodeInt;
+
+
+
+
+
     public String getIdentificationCode() {
         return identificationCode;
     }
@@ -83,5 +95,37 @@ public class DeviceBinVersionBean {
 
     public void setDeviceMac(String deviceMac) {
         this.deviceMac = deviceMac;
+    }
+
+    public String getMcuBroadcastId() {
+        return mcuBroadcastId;
+    }
+
+    public void setMcuBroadcastId(String mcuBroadcastId) {
+        this.mcuBroadcastId = mcuBroadcastId;
+    }
+
+    public String getMcuIdentificationCode() {
+        return mcuIdentificationCode;
+    }
+
+    public void setMcuIdentificationCode(String mcuIdentificationCode) {
+        this.mcuIdentificationCode = mcuIdentificationCode;
+    }
+
+    public String getMcuVersionCode() {
+        return mcuVersionCode;
+    }
+
+    public void setMcuVersionCode(String mcuVersionCode) {
+        this.mcuVersionCode = mcuVersionCode;
+    }
+
+    public String getMcuVersionCodeInt() {
+        return mcuVersionCodeInt;
+    }
+
+    public void setMcuVersionCodeInt(String mcuVersionCodeInt) {
+        this.mcuVersionCodeInt = mcuVersionCodeInt;
     }
 }

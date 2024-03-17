@@ -68,6 +68,9 @@ class CarAboutActivity : AppActivity() {
     private var aboutTouchLayout : ConstraintLayout ?= null
     private var aboutMcuLayout : ConstraintLayout ?= null
 
+    //mcu
+    private var aboutMcuVersionTv : TextView ?= null
+
 
     //系统升级菜单
     private var aboutUpgradeLayout: ConstraintLayout? = null
@@ -124,6 +127,7 @@ class CarAboutActivity : AppActivity() {
     }
 
     override fun initView() {
+        aboutMcuVersionTv = findViewById(R.id.aboutMcuVersionTv)
         aboutMcuLayout = findViewById(R.id.aboutMcuLayout)
         aboutTouchLayout = findViewById(R.id.aboutTouchLayout)
         aboutActivateSubmitTv = findViewById(R.id.aboutActivateSubmitTv)
@@ -297,6 +301,7 @@ class CarAboutActivity : AppActivity() {
 
             if(isScreen){
                 touchPadVersionTv?.text = it.versionStr
+                aboutMcuVersionTv?.text = it.mcuVersionCode
                 aboutDfuShowTv?.visibility = View.GONE
             }else{
                 aboutWatchVersionTv?.text = it.versionStr
@@ -330,7 +335,7 @@ class CarAboutActivity : AppActivity() {
         }
         showWatchOrNot(isScreen)
 
-        if(isScreen){
+        if(isScreen && BaseApplication.getBaseApplication().connStatus == ConnStatus.CONNECTED){
             val activityStatus = BaseApplication.getBaseApplication().autoBackBean.activationStatus==1
             if(activityStatus){
                 aboutActivateSubmitTv?.text = "已激活"

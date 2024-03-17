@@ -85,6 +85,13 @@ class VersionViewModel : CommViewModel(){
                         bean.versionStr = version
                         bean.versionCode =versionInt
                         bean.binCode = bindCode
+
+
+                        //mcu
+                        bean.mcuBroadcastId = String.format("%02x",data[35])+String.format("%02x",data[36])
+                        bean.mcuIdentificationCode = String.format("%02x",data[37])+String.format("%02x",data[38])+String.format("%02x",data[39])+String.format("%02x",data[40])
+                        bean.mcuVersionCode = "V"+data[41].toInt()+"."+data[42].toInt()+"."+data[43]
+
                         deviceVersionInfo.postValue(bean)
                     }
                 }
