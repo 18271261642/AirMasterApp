@@ -259,6 +259,17 @@ public class BleOperateManager {
 
     }
 
+    public void syncWatchDeviceTime(){
+        byte[] timeByte = bleConstant.syncTime();
+        byte[] resultData = Utils.getFullPackage(timeByte);
+        bleManager.writeCarWatchData(resultData, new OnCarWatchBackListener() {
+            @Override
+            public void backWriteBytes(byte[] data) {
+
+            }
+        });
+    }
+
 
     /**
      * 设置设备基本信息，连接成功后就设置

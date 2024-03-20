@@ -1,35 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:orientation="vertical"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_height="match_parent">
-
-
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
 
     <TextView
         android:id="@+id/itemPlayTitleTv"
         android:layout_width="match_parent"
-       android:layout_margin="@dimen/dp_15"
         android:layout_height="wrap_content"
+        android:layout_margin="@dimen/dp_15"
+        android:gravity="center"
         android:text="Swipe the screen"
         android:textColor="#FF4D00"
-        android:textSize="20sp"
-        android:gravity="center"/>
-
-
-
+        android:textSize="20sp" />
 
 
     <TextView
         android:id="@+id/itemPlayContentFootTv"
-        android:layout_marginTop="@dimen/dp_10"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dp_10"
+        android:gravity="center"
         android:textColor="@color/white"
-        android:textSize="14sp"
-        android:gravity="center"/>
+        android:textSize="14sp" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -37,26 +32,39 @@
         android:layout_gravity="center"
         android:layerType="hardware"
         android:orientation="vertical">
+
         <ImageView
             android:id="@+id/itemGuideImgView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
+            android:layout_gravity="center"
+            android:src="@mipmap/ic_launcher"
+            android:layout_marginTop="80dp"
+
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            android:layout_gravity="center"
-            android:src="@mipmap/ic_launcher"/>
-        <TextView
-            app:layout_constraintTop_toBottomOf="@+id/itemGuideImgView"
+            app:layout_constraintTop_toTopOf="parent" />
 
+        <TextView
             android:id="@+id/itemPlayContentTv"
-            android:layout_margin="@dimen/dp_15"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_margin="@dimen/dp_15"
+            android:gravity="center"
             android:textColor="#747474"
             android:textSize="14sp"
-            android:gravity="center"/>
+            app:layout_constraintTop_toBottomOf="@+id/itemGuideImgView" />
+
+        <TextView
+            android:id="@+id/itemErrorContentTv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/dp_15"
+            android:gravity="center"
+            android:textColor="@color/white"
+            android:textSize="17sp"
+            app:layout_constraintTop_toBottomOf="@+id/itemPlayContentTv" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 

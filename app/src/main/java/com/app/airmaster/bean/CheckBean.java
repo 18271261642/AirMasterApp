@@ -12,8 +12,14 @@ public class CheckBean {
     //检测内容
     private String checkContent;
 
+    //检测步骤 1,2，3,4
+    private int checkStep;
+
     //检测状态 2 检测中，1成功，0失败
     private int checkStatus;
+
+    //错误编码
+    private int errorCode;
 
     //错误内容
     private String failDesc;
@@ -38,6 +44,15 @@ public class CheckBean {
         this.checkContent = checkContent;
         this.checkStatus = checkStatus;
         this.failDesc = failDesc;
+    }
+
+
+    public int getCheckStep() {
+        return checkStep;
+    }
+
+    public void setCheckStep(int checkStep) {
+        this.checkStep = checkStep;
     }
 
     public int getPosition() {
@@ -72,13 +87,22 @@ public class CheckBean {
         this.failDesc = failDesc;
     }
 
+    public int getErrorCode() {
+        return errorCode;
+    }
+
+    public void setErrorCode(int errorCode) {
+        this.errorCode = errorCode;
+    }
 
     @Override
     public String toString() {
         return "CheckBean{" +
                 "position=" + position +
                 ", checkContent='" + checkContent + '\'' +
+                ", checkStep=" + checkStep +
                 ", checkStatus=" + checkStatus +
+                ", errorCode=" + errorCode +
                 ", failDesc='" + failDesc + '\'' +
                 '}';
     }

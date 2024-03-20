@@ -42,6 +42,7 @@ public class GuideAdapter extends AppAdapter<CheckBean>{
         private TextView footTv;
         private ImageView showImg;
 
+        private TextView itemErrorContentTv;
 
         public GuideViewHolder() {
             super(R.layout.item_guide_play_layout);
@@ -49,17 +50,14 @@ public class GuideAdapter extends AppAdapter<CheckBean>{
             contentTv = (TextView) findViewById(R.id.itemPlayContentTv);
             showImg = (ImageView) findViewById(R.id.itemGuideImgView);
             footTv = (TextView) findViewById(R.id.itemPlayContentFootTv);
+            itemErrorContentTv = (TextView) findViewById(R.id.itemErrorContentTv);
         }
 
         @Override
         public void onBindView(int position) {
             CheckBean checkBean = getItem(position);
 
-            if(position == 2){
-                titleTv.setText("");
-            }else{
-                titleTv.setText((position+1) +"/"+getItemCount()+"  "+checkBean.getCheckContent());
-            }
+            titleTv.setText((position+1) +"/"+getItemCount()+"  "+checkBean.getCheckContent());
 
 
             //检测状态
@@ -68,7 +66,10 @@ public class GuideAdapter extends AppAdapter<CheckBean>{
 
             contentTv.setText(getCheckStateDesc(checkState));
             contentTv.setTextColor(checkState == 0 ? Color.parseColor("#747474") : Color.parseColor("#FFFFFF"));
-
+            if(checkState==0){
+                titleTv.setText("");
+                itemErrorContentTv.setText(checkBean.getFailDesc());
+            }
         }
     }
 

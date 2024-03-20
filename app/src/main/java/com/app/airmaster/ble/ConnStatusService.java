@@ -224,6 +224,11 @@ public class ConnStatusService extends Service {
     }
 
 
+    public void writeWatchTimeData(){
+
+    }
+
+
     //连接成功设置设备信息
     private void setDeviceInfo(String mac){
 

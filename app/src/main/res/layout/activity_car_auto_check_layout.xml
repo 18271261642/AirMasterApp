@@ -46,6 +46,33 @@
                 app:ci_width="@dimen/dp_5" />
 
 
+            <LinearLayout
+                android:id="@+id/autoCheckExitLayout"
+                android:visibility="gone"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+
+                <ImageView
+                    android:layout_width="15dp"
+                    android:layout_height="15dp"
+                    android:src="@drawable/ic_white_left_back"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/white"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:layout_marginStart="@dimen/dp_5"
+                    android:text="@string/common_exit"/>
+
+
+            </LinearLayout>
+
         </FrameLayout>
     </FrameLayout>
     <ImageView

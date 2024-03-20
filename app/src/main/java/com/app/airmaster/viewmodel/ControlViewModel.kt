@@ -458,15 +458,18 @@ open class ControlViewModel : CommViewModel() {
                 //88000000000016c8030f7ffaaf000f0104 a7 01 01 02 000000000000000041
                 if(into){
                     if(it[17].toInt().and(0xFF) == 167){
-                        //状态
-                        val state = it[20].toInt()
-                        //desc
-                        val descCode = it[21].toInt()
                         val bean = CheckBean()
+                        //步骤 1，2,3步骤
+                        val step = it[19].toInt()
+                        //检测状态 0失败；1成功，2进行中
+                        val state = it[20].toInt()
+                        //异常编码
+                        val errorCode = it[21].toInt()
+                        bean.checkStep = step
                         bean.checkStatus = state
-                        bean.failDesc = getDesc(descCode)
+                        bean.errorCode = errorCode
 
-                        Timber.e("-------自检="+bean.toString()+" "+descCode)
+                        Timber.e("-------自检="+bean.toString())
                         checkBackDataMap.postValue(bean)
 
                     }

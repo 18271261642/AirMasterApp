@@ -135,7 +135,7 @@ class CarHomeActivity : AppActivity() ,NavigationAdapter.OnNavigationListener{
         BaseApplication.getBaseApplication().bleOperate.setClearAutoBack()
         Timber.e("------onResumt----")
         BaseApplication.getBaseApplication().bleOperate.setAutoBackDataListener {
-            Timber.e("---------自动返回数据=$it")
+            //Timber.e("---------自动返回数据=$it")
             BaseApplication.getBaseApplication().autoBackBean = it
             autoListener?.backAutoData(it)
         }
@@ -227,6 +227,8 @@ class CarHomeActivity : AppActivity() ,NavigationAdapter.OnNavigationListener{
                 BaseApplication.getBaseApplication().bleOperate.stopScanDevice()
                 onHomeConnListener?.onConn(true)
                 controlViewModel?.writeCommonFunction()
+
+                BaseApplication.getBaseApplication()?.connStatusService?.writeWatchTimeData()
             }
             if(action == BleConstant.BLE_DIS_CONNECT_ACTION){
                 ToastUtils.show(resources.getString(R.string.string_conn_disconn))

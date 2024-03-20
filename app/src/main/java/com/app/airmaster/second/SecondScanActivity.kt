@@ -256,6 +256,7 @@ class SecondScanActivity : AppActivity() {
                     MmkvUtils.saveConnDeviceName(bean.bluetoothDevice.name)
                     BaseApplication.getBaseApplication().connStatus = ConnStatus.CONNECTED
 
+                    BaseApplication.getBaseApplication()?.connStatusService?.writeWatchTimeData()
                     getHasBindDevice()
                 }
             }
