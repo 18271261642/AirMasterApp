@@ -225,7 +225,7 @@ public class ConnStatusService extends Service {
 
 
     public void writeWatchTimeData(){
-
+        BaseApplication.getBaseApplication().getBleOperate().syncWatchDeviceTime();
     }
 
 
