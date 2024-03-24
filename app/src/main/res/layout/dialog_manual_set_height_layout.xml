@@ -42,7 +42,6 @@
             android:id="@+id/manualHeightView"
             android:layout_width="0dp"
             android:layout_weight="1"
-            android:layout_marginBottom="@dimen/dp_25"
             android:layout_height="match_parent"
             android:layout_gravity="center"
             android:gravity="center" />
