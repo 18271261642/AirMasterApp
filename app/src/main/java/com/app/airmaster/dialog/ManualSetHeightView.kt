@@ -91,7 +91,7 @@ class ManualSetHeightView : AppCompatDialog {
         manualDialogCancelTv = findViewById(R.id.manualDialogCancelTv)
         manualDialogConfirmTv = findViewById(R.id.manualDialogConfirmTv)
         manualHeightOrLowDescTv = findViewById(R.id.manualHeightOrLowDescTv)
-
+        manualHeightView?.setFrontImage()
         manualDialogCancelTv?.setOnClickListener {
             onClick?.onItemClick(0x00)
         }
