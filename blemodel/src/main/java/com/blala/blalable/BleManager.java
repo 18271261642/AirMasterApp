@@ -11,6 +11,7 @@ import android.text.TextUtils;
 import android.util.Log;
 
 import com.blala.blalable.car.AutoBackBean;
+import com.blala.blalable.car.CarCheckListener;
 import com.blala.blalable.car.OnCarAutoBackListener;
 import com.blala.blalable.listener.BleConnStatusListener;
 import com.blala.blalable.listener.ConnStatusListener;
@@ -79,6 +80,11 @@ public class BleManager {
 
     private OnCarAutoBackListener onCarAutoBackListener;
 
+    private CarCheckListener carCheckListener;
+
+    public void setCarCheckListener(CarCheckListener carCheckListener) {
+        this.carCheckListener = carCheckListener;
+    }
 
     private final InterfaceManager interfaceManager = new InterfaceManager();
 
@@ -100,6 +106,12 @@ public class BleManager {
         if(onCarAutoBackListener != null){
             onCarAutoBackListener = null;
 
+        }
+    }
+
+    public void setClearCheck(){
+        if(carCheckListener!= null){
+            carCheckListener = null;
         }
     }
 
@@ -591,6 +603,12 @@ public class BleManager {
 
                 }
 
+
+                if(bytes.length>18 && (bytes[17] & 0xff) == 167){ //自检
+                    if(carCheckListener != null){
+                        carCheckListener.backCarCheck(bytes);
+                    }
+                }
             }
 
             @Override
@@ -632,6 +650,20 @@ public class BleManager {
         interfaceManager.setWriteBackDataListener(writeBackDataListener);
         bluetoothClient.write(bleMac,bleConstant.SERVICE_UUID,bleConstant.WRITE_UUID,data,bleWriteResponse);
     }
+
+    public synchronized void writeDataToDeviceNoBack(byte[] data){
+        String writeStr = Utils.formatBtArrayToString(data);
+        Log.e(TAG,"-----写入数据="+writeStr);
+        String bleMac = (String) BleSpUtils.get(mContext,SAVE_BLE_MAC_KEY,"");
+        if(TextUtils.isEmpty(bleMac))
+            return;
+        stringBuffer.append("写入数据:"+writeStr+"\n\n");
+        sendCommBroadcast("ble_action",0);
+      //  interfaceManager.setWriteBackDataListener(writeBackDataListener);
+        bluetoothClient.write(bleMac,bleConstant.SERVICE_UUID,bleConstant.WRITE_UUID,data,bleWriteResponse);
+    }
+
+
     //OnCarWriteBackListener
 
 

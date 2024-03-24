@@ -1,17 +1,9 @@
-package com.app.airmaster.car
+package com.app.airmaster.car.check
 
-import android.content.Intent
-import android.os.Handler
-import android.os.Looper
-import android.os.Message
 import android.util.DisplayMetrics
 import android.view.Gravity
 import android.view.View
-import android.view.View.OnLongClickListener
-import android.widget.ImageView
-import android.widget.LinearLayout
 import androidx.lifecycle.ViewModelProvider
-import androidx.viewpager.widget.ViewPager
 import androidx.viewpager2.widget.ViewPager2
 import com.app.airmaster.R
 import com.app.airmaster.action.AppActivity
@@ -19,101 +11,53 @@ import com.app.airmaster.adapter.GuideAdapter
 import com.app.airmaster.adapter.OnCommItemClickListener
 import com.app.airmaster.bean.CheckBean
 import com.app.airmaster.dialog.ConfirmDialog
-import com.app.airmaster.dialog.LogDialogView
+import com.app.airmaster.dialog.ManualSetHeightView
 import com.app.airmaster.viewmodel.CarCheckViewModel
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
 import me.relex.circleindicator.CircleIndicator3
 import timber.log.Timber
 
+class ManualCheckActivity : AppActivity() {
 
-/**
- * 自动自检
- */
-class CarAutoCheckActivity : AppActivity() {
+    private var manualCheckPager : ViewPager2 ?= null
+    private var manualCheckIndicator : CircleIndicator3 ?= null
+    private var adapter : GuideAdapter?= null
+    private var viewModel : CarCheckViewModel?= null
 
-
-    private var viewModel : CarCheckViewModel ?= null
-
-
-    private var checkPager : ViewPager2 ?= null
-    private var checkIndicator : CircleIndicator3 ?= null
-    private var adapter : GuideAdapter ?= null
-
-    //退出
-    private var autoCheckExitLayout : LinearLayout ?= null
+    private var errorSb = StringBuffer()
 
     //是否正在检测
     private var isCheckIng = false
 
-    private var checkHashMap = HashMap<Int,Int>()
-
-    private var logList = mutableListOf<CheckBean>()
-
-    private var handlers : Handler = object : Handler(Looper.getMainLooper()){
-        override fun handleMessage(msg: Message) {
-            super.handleMessage(msg)
-            finish()
-        }
-    }
-
     override fun getLayoutId(): Int {
-        return R.layout.activity_car_auto_check_layout
+        return R.layout.activity_car_manual_check_layout
     }
 
     override fun initView() {
-        autoCheckExitLayout = findViewById(R.id.autoCheckExitLayout)
-        checkPager = findViewById(R.id.checkPager)
-        checkIndicator = findViewById(R.id.checkIndicator)
-
-
-        autoCheckExitLayout?.setOnClickListener {
-            intoOrExitCheck(false)
-            GlobalScope.launch {
-                delay(1000)
-                finish()
-            }
-
-        }
-
-        findViewById<ImageView>(R.id.logImgView).setOnLongClickListener(object : OnLongClickListener{
-            override fun onLongClick(v: View?): Boolean {
-                val str = StringBuffer()
-                logList.forEach {
-                    str.append(it.backHex+"\n")
-                }
-                showLogDialog(str.toString())
-
-                return true
-            }
-
-        })
+        manualCheckPager = findViewById(R.id.manualCheckPager)
+        manualCheckIndicator = findViewById(R.id.manualCheckIndicator)
     }
-
-
-    private var errorSb = StringBuffer()
 
     override fun initData() {
         viewModel = ViewModelProvider(this)[CarCheckViewModel::class.java]
         adapter = GuideAdapter(this)
-        checkPager?.adapter = adapter
-        checkPager?.isUserInputEnabled = false
-        checkPager?.registerOnPageChangeCallback(mCallback)
-        checkIndicator?.setViewPager(checkPager)
+        manualCheckPager?.adapter = adapter
+       // manualCheckPager?.isUserInputEnabled = false
+        manualCheckPager?.registerOnPageChangeCallback(mCallback)
+        manualCheckIndicator?.setViewPager(manualCheckPager)
+
 
         viewModel?.carCheckData?.observe(this){
             adapter?.data = it
-            checkIndicator?.setViewPager(checkPager)
+            manualCheckIndicator?.setViewPager(manualCheckPager)
         }
         viewModel?.dealCheckData(this)
 
 
-
-        viewModel?.checkBackDataMap?.observe(this){
+        viewModel?.manualCheckData?.observe(this){
             val bean = it
-            logList.add(bean)
-            checkHashMap[bean.checkStep] = bean.errorCode
+            Timber.e("---------自检="+it.toString())
+//            logList.add(bean)
+//            checkHashMap[bean.checkStep] = bean.errorCode
             //步骤
             val checkStep = bean?.checkStep
             val itemBean = CheckBean()
@@ -122,19 +66,23 @@ class CarAutoCheckActivity : AppActivity() {
             itemBean.errorCode = bean!!.errorCode
             itemBean.checkStep = checkStep!!
 
-           val  position = checkStep!!-1
+            val  position = checkStep!!-1
             isCheckIng = true
             if(bean.checkStatus == 0){  //失败
                 isCheckIng = false
                 errorSb.append(getErrorDesc(bean.errorCode)+"\n")
                 itemBean.failDesc = errorSb.toString()
-                autoCheckExitLayout?.visibility = View.VISIBLE
-                checkIndicator?.visibility = View.GONE
+//                autoCheckExitLayout?.visibility = View.VISIBLE
+//                checkIndicator?.visibility = View.GONE
+                manualCheckPager?.currentItem = position
+                adapter?.setItem(position,itemBean)
+                finish()
+                return@observe
             }
 
             Timber.e("-----自检--itemBean=$itemBean")
 
-            checkPager?.currentItem = position
+            manualCheckPager?.currentItem = position
             adapter?.setItem(position,itemBean)
 
             if(checkStep==6 && bean.checkStatus ==1){
@@ -142,26 +90,23 @@ class CarAutoCheckActivity : AppActivity() {
             }
         }
 
-
+        viewModel?.setManualCheckBack()
         intoOrExitCheck(true)
-
     }
-
-    //进入或退出自检
-    private fun intoOrExitCheck(into : Boolean){
-        if(into){
-            checkHashMap.clear()
-            logList.clear()
-        }
-        //开始自检
-        viewModel?.intoOrExit(into,true)
-    }
-
 
 
     override fun onDestroy() {
         super.onDestroy()
-        checkPager!!.unregisterOnPageChangeCallback(mCallback)
+        viewModel?.clearManualCheck()
+    }
+
+    private fun intoOrExitCheck(into : Boolean){
+        if(into){
+//            checkHashMap.clear()
+//            logList.clear()
+        }
+        //开始自检
+        viewModel?.intoOrExit(into,false)
     }
 
 
@@ -171,9 +116,12 @@ class CarAutoCheckActivity : AppActivity() {
             positionOffset: Float,
             positionOffsetPixels: Int
         ) {
-            if (checkPager!!.currentItem != adapter!!.itemCount - 1 || positionOffsetPixels <= 0) {
+
+            if (manualCheckPager!!.currentItem != adapter!!.itemCount - 1 || positionOffsetPixels <= 0) {
                 return
             }
+
+
 
         }
 
@@ -183,7 +131,38 @@ class CarAutoCheckActivity : AppActivity() {
             }
 
         }
+
+        override fun onPageSelected(position: Int) {
+            super.onPageSelected(position)
+            if(position == 0 || position == 3){
+                showManualDialog(position)
+            }
+        }
     }
+
+
+    private fun showManualDialog(position : Int){
+        val dialog = ManualSetHeightView(this, com.bonlala.base.R.style.BaseDialogTheme)
+        dialog.show()
+        dialog.setModel(position==3)
+        dialog.setOnDialogClickListener{
+            if(it == 0x01){ //保存了
+                dialog.dismiss()
+              //  manualCheckPager?.setCurrentItem(position+1,false)
+            }
+        }
+        val window = dialog.window
+        val windowLayout = window?.attributes
+        val metrics2: DisplayMetrics = resources.displayMetrics
+        val widthW: Int = metrics2.widthPixels
+        val height : Int = metrics2.heightPixels
+
+        windowLayout?.height= height
+        windowLayout?.width = widthW
+        windowLayout?.gravity = Gravity.CENTER_VERTICAL
+        window?.attributes = windowLayout
+    }
+
 
 
     private var titleMap = HashMap<Int,String>()
@@ -237,11 +216,10 @@ class CarAutoCheckActivity : AppActivity() {
         super.onBackPressed()
     }
 
-
     private fun showDialogShow(){
         val dialog = ConfirmDialog(this, com.bonlala.base.R.style.BaseDialogTheme)
         dialog.show()
-        dialog.setContentTxt("是否退出自动检测?")
+        dialog.setContentTxt("是否退出手动动检测?")
         dialog.setOnCommClickListener(object : OnCommItemClickListener {
             override fun onItemClick(position: Int) {
                 dialog.dismiss()
@@ -253,22 +231,5 @@ class CarAutoCheckActivity : AppActivity() {
             }
 
         })
-    }
-
-    private fun showLogDialog(txt : String){
-        val dialog = LogDialogView(this, com.bonlala.base.R.style.BaseDialogTheme)
-        dialog.show()
-        dialog.setLogTxt(txt)
-
-        val window = dialog.window
-        val windowLayout = window?.attributes
-        val metrics2: DisplayMetrics = resources.displayMetrics
-        val widthW: Int = (metrics2.widthPixels*0.7F).toInt()
-        val height : Int = (metrics2.heightPixels*0.7F).toInt()
-
-        windowLayout?.height= height
-        windowLayout?.width = widthW
-        windowLayout?.gravity = Gravity.CENTER_VERTICAL
-        window?.attributes = windowLayout
     }
 }

@@ -7,7 +7,7 @@
     <string name="string_home_air">AIR</string>
     <string name="string_home_control">Control</string>
     <string name="string_home_setting">Setting</string>
-    <string name="string_check_ing">检测中……</string>
+    <string name="string_check_ing">检测中…</string>
     <string name="string_check_success">检测成功</string>
     <string name="string_check_fail">检测失败</string>
 

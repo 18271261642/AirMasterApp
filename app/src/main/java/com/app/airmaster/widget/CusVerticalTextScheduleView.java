@@ -209,6 +209,7 @@ public class CusVerticalTextScheduleView extends View {
 
     public void setCurrScheduleValue(int currScheduleValue) {
         this.currScheduleValue = currScheduleValue>=allScheduleValue ? (int) allScheduleValue : currScheduleValue;
+       // Timber.e("----currShce="+currScheduleValue);
         invalidate();
     }
 
@@ -241,6 +242,7 @@ public class CusVerticalTextScheduleView extends View {
 
     public void setShowTxt(String showTxt) {
         this.showTxt = showTxt;
+       // Timber.e("-------气压值showTxt="+showTxt);
         invalidate();
     }
 }

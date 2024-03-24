@@ -12,7 +12,7 @@
         android:layout_height="@dimen/dp_40"/>
 
     <ImageView
-        android:id="@+id/logImgView"
+        android:id="@+id/manualLogImgView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="right"
@@ -25,7 +25,7 @@
 
 
         <androidx.viewpager2.widget.ViewPager2
-            android:id="@+id/checkPager"
+            android:id="@+id/manualCheckPager"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:paddingBottom="@dimen/dp_30" />
@@ -37,7 +37,7 @@
             android:layout_marginBottom="@dimen/dp_30">
 
             <me.relex.circleindicator.CircleIndicator3
-                android:id="@+id/checkIndicator"
+                android:id="@+id/manualCheckIndicator"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/dp_50"
                 app:ci_drawable="@drawable/guide_indicator_selected"

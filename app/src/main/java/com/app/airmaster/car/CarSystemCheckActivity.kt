@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.app.airmaster.R
 import com.app.airmaster.action.AppActivity
 import com.app.airmaster.adapter.OnCommItemClickListener
+import com.app.airmaster.car.check.ManualCheckActivity
 import com.app.airmaster.dialog.ConfirmDialog
 import com.app.airmaster.viewmodel.CarCheckViewModel
 import com.bonlala.widget.layout.SettingBar
@@ -55,7 +56,10 @@ class CarSystemCheckActivity : AppActivity() {
                         intent.putExtra("type",code)
                         startActivity(intent)
                     }else{
-                        viewModel?.intoOrExit(true,false)
+                       // viewModel?.intoOrExit(true,false)
+                        val intent = Intent(this@CarSystemCheckActivity,ManualCheckActivity::class.java)
+                        intent.putExtra("type",code)
+                        startActivity(intent)
                     }
 
                 }

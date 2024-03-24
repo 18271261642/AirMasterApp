@@ -32,6 +32,9 @@ open class ControlViewModel : CommViewModel() {
     //自检返回
     var checkBackDataMap = SingleLiveEvent<CheckBean>()
 
+
+    var manualCheckData = SingleLiveEvent<CheckBean>()
+
     //清除所有警告
     fun clearAllWarring(){
         val scrStr = "000404012B"
@@ -345,7 +348,7 @@ open class ControlViewModel : CommViewModel() {
         BaseApplication.getBaseApplication().bleOperate.setCommAllParams(object : OnCarWriteBackListener{
 
             override fun backWriteBytes(data: ByteArray?) {
-                if(data != null && data.size>15){
+                if(data != null && data.size>=115){
 
                     if((data[8].toInt().and(0xFF)) == 3 && (data[9].toInt().and(0xFF)) == 15 &&(data[17].toInt().and(0xFF) ==145 )){
 
@@ -441,13 +444,48 @@ open class ControlViewModel : CommViewModel() {
     }
 
 
+    fun clearManualCheck(){
+        BaseApplication.getBaseApplication().bleOperate.setClearCheck()
+    }
+    fun setManualCheckBack(){
+        BaseApplication.getBaseApplication().bleOperate.setCarCheckDataListener {
+            if(it != null && it.size>18){
+                //88000000000016c8030f7ffaaf000f0104 a7 01 01 02 000000000000000041
+                    if(it[17].toInt().and(0xFF) == 167){
+                        val bean = CheckBean()
+                        //步骤 1，2,3步骤
+                        val step = it[19].toInt()
+                        //检测状态 0失败；1成功，2进行中
+                        val state = it[20].toInt()
+                        //异常编码
+                        val errorCode = it[21].toInt()
+                        bean.checkStep = step
+                        bean.checkStatus = state
+                        bean.errorCode = errorCode
+                        bean.backHex = Utils.getHexString(it)+"\n"
+                        Timber.e("-------自检="+bean.toString())
+                        //checkBackDataMap.postValue(bean)
+                        manualCheckData?.postValue(bean)
+                    }
+                //  setCommRefreshDevice(it,0x9A.toByte())
+            }
+        }
+    }
+
+
     /**
      * 进入或退出自检
      * @param into 是否进入自检模式
      * @param auto 00自动；01手动
      */
     fun intoOrExit(into : Boolean,auto : Boolean){
-        val scrStr = "00050401"+(if(into) "1E" else "1F")+(if(into) (if(auto) "00" else "01") else "01")
+        var scrStr : String ?= null
+        if(auto){
+            scrStr = "00050401"+(if(into) "1E" else "1F")+"00"
+        }else{
+            scrStr = "00050401"+(if(into) "1E01" else "1F00")
+        }
+
         val crc = Utils.crcCarContentArray(scrStr)
         val str = "011E"+ CarConstant.CAR_HEAD_BYTE_STR+scrStr+crc
         val resultArray = Utils.hexStringToByte(str)
@@ -468,7 +506,7 @@ open class ControlViewModel : CommViewModel() {
                         bean.checkStep = step
                         bean.checkStatus = state
                         bean.errorCode = errorCode
-
+                        bean.backHex = Utils.getHexString(it)+"\n"
                         Timber.e("-------自检="+bean.toString())
                         checkBackDataMap.postValue(bean)
 

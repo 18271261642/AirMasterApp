@@ -24,6 +24,10 @@ public class CheckBean {
     //错误内容
     private String failDesc;
 
+
+    //返回指令
+    private String backHex;
+
     public CheckBean() {
     }
 
@@ -93,6 +97,14 @@ public class CheckBean {
 
     public void setErrorCode(int errorCode) {
         this.errorCode = errorCode;
+    }
+
+    public String getBackHex() {
+        return backHex;
+    }
+
+    public void setBackHex(String backHex) {
+        this.backHex = backHex;
     }
 
     @Override

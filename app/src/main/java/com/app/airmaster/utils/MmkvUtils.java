@@ -176,7 +176,7 @@ public class MmkvUtils {
     }
 
     public static void saveMaxPressureValue(int max){
-        Timber.e("-----保存最大值="+max);
+       // Timber.e("-----保存最大值="+max);
         setSaveObjParams(MAX_PRESSURE_VALUE,max);
     }
 

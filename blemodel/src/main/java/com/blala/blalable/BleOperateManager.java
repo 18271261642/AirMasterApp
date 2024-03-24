@@ -8,6 +8,7 @@ import android.os.Message;
 import android.util.Log;
 
 import com.blala.blalable.car.AutoBackBean;
+import com.blala.blalable.car.CarCheckListener;
 import com.blala.blalable.car.CarConstant;
 import com.blala.blalable.car.OnCarAutoBackListener;
 import com.blala.blalable.keyboard.KeyBoardConstant;
@@ -175,6 +176,10 @@ public class BleOperateManager {
     //写通用的设置，直接写数据
     public void writeCommonByte(byte[] bytes, WriteBackDataListener writeBackDataListener) {
         bleManager.writeDataToDevice(bytes, writeBackDataListener);
+    }
+
+    public void writeCommonByteNoBack(byte[] bytes){
+        bleManager.writeDataToDeviceNoBack(bytes);
     }
 
     public void writeCarCommByte(byte[] data, OnCarWriteBackListener onCarWriteBackListener){
@@ -587,12 +592,20 @@ public class BleOperateManager {
     }
 
 
+    public void setClearCheck(){
+        bleManager.setClearCheck();
+    }
+
     /**
      * 设置自动回复的数据
      * @param onCarAutoBackListener
      */
     public void setAutoBackDataListener(OnCarAutoBackListener onCarAutoBackListener){
         bleManager.setOnCarAutoBackListener(onCarAutoBackListener);
+    }
+
+    public void setCarCheckDataListener(CarCheckListener carCheckListener){
+        bleManager.setCarCheckListener(carCheckListener);
     }
 
 

@@ -62,7 +62,8 @@
         </activity>
 
 
-
+        <activity android:name=".car.check.ManualCheckActivity"
+            android:screenOrientation="portrait"/>
         <activity android:name=".car.ShowWebActivity"
             android:screenOrientation="portrait"/>
 

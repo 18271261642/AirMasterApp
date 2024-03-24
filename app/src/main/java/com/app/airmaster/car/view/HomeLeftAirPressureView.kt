@@ -12,6 +12,7 @@ import com.app.airmaster.utils.MmkvUtils
 import com.app.airmaster.widget.CusVerticalScheduleView
 import com.app.airmaster.widget.CusVerticalTextScheduleView
 import com.app.airmaster.widget.VerticalSeekBar
+import timber.log.Timber
 
 /**
  * 左侧的气压view
@@ -71,6 +72,7 @@ class HomeLeftAirPressureView : LinearLayout{
         cusVerticalView?.currScheduleValue = value.toFloat()
         val max = MmkvUtils.getMaxPressureValue()
         homeAirTopTv?.text = max.toString()
+        cusHomeLeftVerticalTxtView?.allScheduleValue = max.toFloat()
         if(value<=80){
             homeLeftAirSeekBar?.thumb = resources.getDrawable(R.mipmap.ic_home_left_air_blue)
         }else{
