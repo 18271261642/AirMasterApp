@@ -13,6 +13,9 @@ import com.app.airmaster.bean.CheckBean
 import com.app.airmaster.dialog.ConfirmDialog
 import com.app.airmaster.dialog.ManualSetHeightView
 import com.app.airmaster.viewmodel.CarCheckViewModel
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import me.relex.circleindicator.CircleIndicator3
 import timber.log.Timber
 
@@ -149,6 +152,14 @@ class ManualCheckActivity : AppActivity() {
             if(it == 0x01){ //保存了
                 dialog.dismiss()
               //  manualCheckPager?.setCurrentItem(position+1,false)
+            }
+            if(it == 0x00){
+                dialog.dismiss()
+                intoOrExitCheck(false)
+                GlobalScope.launch {
+                    delay(500)
+                    finish()
+                }
             }
         }
         val window = dialog.window

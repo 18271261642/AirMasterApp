@@ -35,9 +35,26 @@ public class DeviceBinVersionBean {
     private String mcuBroadcastId;
     private String mcuIdentificationCode;
     private String mcuVersionCode;
-    private String mcuVersionCodeInt;
+    private int mcuVersionCodeInt;
 
 
+    /**显示屏mcu**/
+    private String screenMcuBroadcastId;
+    private String screenMcuIdentificationCode;
+    private String screenVersionCode;
+    private int screenMcuVersionCodeInt;
+
+
+    /**其它mcu**/
+    private String otherScreenMcuBroadcastId;
+    private String otherMcuIdentificationCode;
+    private String otherScreenVersionCode;
+    private int otherMcuVersionCodeInt;
+
+
+
+
+    private String sourceStr;
 
 
 
@@ -121,11 +138,83 @@ public class DeviceBinVersionBean {
         this.mcuVersionCode = mcuVersionCode;
     }
 
-    public String getMcuVersionCodeInt() {
+    public int getMcuVersionCodeInt() {
         return mcuVersionCodeInt;
     }
 
-    public void setMcuVersionCodeInt(String mcuVersionCodeInt) {
+    public void setMcuVersionCodeInt(int mcuVersionCodeInt) {
         this.mcuVersionCodeInt = mcuVersionCodeInt;
+    }
+
+    public String getScreenMcuBroadcastId() {
+        return screenMcuBroadcastId;
+    }
+
+    public void setScreenMcuBroadcastId(String screenMcuBroadcastId) {
+        this.screenMcuBroadcastId = screenMcuBroadcastId;
+    }
+
+    public String getScreenMcuIdentificationCode() {
+        return screenMcuIdentificationCode;
+    }
+
+    public void setScreenMcuIdentificationCode(String screenMcuIdentificationCode) {
+        this.screenMcuIdentificationCode = screenMcuIdentificationCode;
+    }
+
+    public String getScreenVersionCode() {
+        return screenVersionCode;
+    }
+
+    public void setScreenVersionCode(String screenVersionCode) {
+        this.screenVersionCode = screenVersionCode;
+    }
+
+    public int getScreenMcuVersionCodeInt() {
+        return screenMcuVersionCodeInt;
+    }
+
+    public void setScreenMcuVersionCodeInt(int screenMcuVersionCodeInt) {
+        this.screenMcuVersionCodeInt = screenMcuVersionCodeInt;
+    }
+
+    public String getOtherScreenMcuBroadcastId() {
+        return otherScreenMcuBroadcastId;
+    }
+
+    public void setOtherScreenMcuBroadcastId(String otherScreenMcuBroadcastId) {
+        this.otherScreenMcuBroadcastId = otherScreenMcuBroadcastId;
+    }
+
+    public String getOtherMcuIdentificationCode() {
+        return otherMcuIdentificationCode;
+    }
+
+    public void setOtherMcuIdentificationCode(String otherMcuIdentificationCode) {
+        this.otherMcuIdentificationCode = otherMcuIdentificationCode;
+    }
+
+    public String getOtherScreenVersionCode() {
+        return otherScreenVersionCode;
+    }
+
+    public void setOtherScreenVersionCode(String otherScreenVersionCode) {
+        this.otherScreenVersionCode = otherScreenVersionCode;
+    }
+
+    public int getOtherMcuVersionCodeInt() {
+        return otherMcuVersionCodeInt;
+    }
+
+    public void setOtherMcuVersionCodeInt(int otherMcuVersionCodeInt) {
+        this.otherMcuVersionCodeInt = otherMcuVersionCodeInt;
+    }
+
+    public String getSourceStr() {
+        return sourceStr;
+    }
+
+    public void setSourceStr(String sourceStr) {
+        this.sourceStr = sourceStr;
     }
 }

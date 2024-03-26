@@ -169,7 +169,15 @@ open class ControlViewModel : CommViewModel() {
         val timeArray = Utils.intToSecondByteArray(3000)
         val timeStr = com.app.airmaster.ble.ota.Utils.bytesToHexString(timeArray)
        // val scrStr = "0008040112"+String.format("%02x",keyCode)+String.format("%02d",(valueCode))+timeStr
-        val scrStr = "000804012F"+String.format("%02x",keyCode)+String.format("%02d",(valueCode))+timeStr
+        var scrStr = ""
+        if(keyCode == 4 || keyCode == 5){
+            scrStr = "0008040112"+String.format("%02x",keyCode)+String.format("%02d",(valueCode))+timeStr
+        }else{
+            scrStr = "000804012F"+String.format("%02x",keyCode)+String.format("%02d",(valueCode))+timeStr
+
+        }
+
+        //val scrStr = "000804012F"+String.format("%02x",keyCode)+String.format("%02d",(valueCode))+timeStr
 
 
         val crc = Utils.crcCarContentArray(scrStr)

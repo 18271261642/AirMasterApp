@@ -80,6 +80,7 @@ class VersionViewModel : CommViewModel(){
                         //型号
                         val model = String.format("%02x",data[23])+String.format("%02x",data[24])
 
+                        //touchpad
                         bean.identificationCode = identificationCode
                         bean.productCode = model
                         bean.versionStr = version
@@ -87,11 +88,23 @@ class VersionViewModel : CommViewModel(){
                         bean.binCode = bindCode
 
 
-                        //mcu
+                        //主控mcu
                         bean.mcuBroadcastId = String.format("%02x",data[35])+String.format("%02x",data[36])
                         bean.mcuIdentificationCode = String.format("%02x",data[37])+String.format("%02x",data[38])+String.format("%02x",data[39])+String.format("%02x",data[40])
                         bean.mcuVersionCode = "V"+data[41].toInt()+"."+data[42].toInt()+"."+data[43]
 
+                        //显示屏MCU
+                        bean.screenMcuBroadcastId =String.format("%02x",data[53])+String.format("%02x",data[54])
+                        bean.screenMcuIdentificationCode = String.format("%02x",data[55])+String.format("%02x",data[56])+String.format("%02x",data[57])+String.format("%02x",data[58])
+                        bean.screenVersionCode = "V"+data[59].toInt()+"."+data[60].toInt()+"."+data[61]
+                        bean.screenMcuVersionCodeInt = Utils.getIntFromBytes(0x00,data[59],data[60],data[61])
+
+
+                        //其它mcu
+                        bean.otherScreenVersionCode = "V"+data[47].toInt()+"."+data[48].toInt()+"."+data[49]
+
+
+                        bean.sourceStr = Utils.formatBtArrayToString(data)
                         deviceVersionInfo.postValue(bean)
                     }
                 }

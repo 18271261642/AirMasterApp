@@ -9,6 +9,7 @@ import android.text.SpannableStringBuilder
 import android.text.Spanned
 import android.text.style.ForegroundColorSpan
 import android.util.DisplayMetrics
+import android.view.Gravity
 import android.view.View
 import android.view.animation.Animation
 import android.view.animation.RotateAnimation
@@ -27,6 +28,7 @@ import com.app.airmaster.car.bean.DeviceBinVersionBean
 import com.app.airmaster.car.bean.ServerVersionInfoBean
 import com.app.airmaster.dialog.DfuDialogView
 import com.app.airmaster.dialog.DialogScanDeviceView
+import com.app.airmaster.dialog.LogDialogView
 import com.app.airmaster.dialog.SingleAlertDialog
 import com.app.airmaster.second.SecondScanActivity
 import com.app.airmaster.utils.BikeUtils
@@ -63,13 +65,13 @@ class CarAboutActivity : AppActivity() {
     private var viewModel: VersionViewModel? = null
     private var dfuViewModel: DfuViewModel? = null
     private var watchViewModel: WatchDeviceViewModel? = null
-    private var watchOtaViewModel : WatchOTAViewModel ?= null
+    private var watchOtaViewModel: WatchOTAViewModel? = null
 
-    private var aboutTouchLayout : ConstraintLayout ?= null
-    private var aboutMcuLayout : ConstraintLayout ?= null
+    private var aboutTouchLayout: ConstraintLayout? = null
+    private var aboutMcuLayout: ConstraintLayout? = null
 
     //mcu
-    private var aboutMcuVersionTv : TextView ?= null
+    private var aboutMcuVersionTv: TextView? = null
 
 
     //系统升级菜单
@@ -79,6 +81,14 @@ class CarAboutActivity : AppActivity() {
     private var aboutActivateLayout: ConstraintLayout? = null
 
     private var carAboutTitleBar: TitleBar? = null
+
+    //显示屏MCU
+    private var aboutScreenMcuVersionTv: TextView? = null
+
+
+    //其它MCU
+    private var aboutOtherMcuVersionTv: TextView? = null
+
 
     //手表
     private var carWatchLayout: ConstraintLayout? = null
@@ -127,6 +137,8 @@ class CarAboutActivity : AppActivity() {
     }
 
     override fun initView() {
+        aboutOtherMcuVersionTv = findViewById(R.id.aboutOtherMcuVersionTv)
+        aboutScreenMcuVersionTv = findViewById(R.id.aboutScreenMcuVersionTv)
         aboutMcuVersionTv = findViewById(R.id.aboutMcuVersionTv)
         aboutMcuLayout = findViewById(R.id.aboutMcuLayout)
         aboutTouchLayout = findViewById(R.id.aboutTouchLayout)
@@ -177,7 +189,7 @@ class CarAboutActivity : AppActivity() {
                     ToastUtils.show("正在升级中，请务退出！")
                     return
                 }
-                if(isConnWatch){
+                if (isConnWatch) {
                     BaseApplication.getBaseApplication().connStatus = ConnStatus.NOT_CONNECTED
                     BaseApplication.getBaseApplication().bleOperate.disConnYakDevice()
                 }
@@ -189,7 +201,9 @@ class CarAboutActivity : AppActivity() {
             }
 
             override fun onRightClick(view: View?) {
-
+                if(tempDeviceVersionInfo != null){
+                    tempDeviceVersionInfo?.sourceStr?.let { showLogDialog(it) }
+                }
             }
 
         }
@@ -204,11 +218,11 @@ class CarAboutActivity : AppActivity() {
         watchOtaViewModel = ViewModelProvider(this)[WatchOTAViewModel::class.java]
 
 
-        watchOtaViewModel?.upgradeStatus?.observe(this){
+        watchOtaViewModel?.upgradeStatus?.observe(this) {
             BaseApplication.getBaseApplication().isOTAModel = false
             isUpgrading = false
             aboutCarDfuShowTv?.visibility = View.GONE
-            ToastUtils.show(if(it) "升级成功!" else "升级失败,请重试!")
+            ToastUtils.show(if (it) "升级成功!" else "升级失败,请重试!")
             isConnWatch = true
             BaseApplication.getBaseApplication().connStatus = ConnStatus.NOT_CONNECTED
         }
@@ -260,10 +274,10 @@ class CarAboutActivity : AppActivity() {
             }
             this.tempServerBean = infoBean
             if (it.isCarWatch) {
-                if(infoBean!!.versionCode != tempDeviceVersionInfo!!.versionCode){
+                if (infoBean!!.versionCode != tempDeviceVersionInfo!!.versionCode) {
                     aboutCarDfuShowTv?.visibility = View.VISIBLE
                     showWatchDfuStatus(false)
-                  return@observe
+                    return@observe
                 }
                 isUpgrading = false
                 showWatchDfuStatus(false)
@@ -299,11 +313,13 @@ class CarAboutActivity : AppActivity() {
 
         viewModel?.deviceVersionInfo?.observe(this) { it ->
 
-            if(isScreen){
+            if (isScreen) {
                 touchPadVersionTv?.text = it.versionStr
                 aboutMcuVersionTv?.text = it.mcuVersionCode
+                aboutScreenMcuVersionTv?.text = it.screenVersionCode
+                aboutOtherMcuVersionTv?.text = it.otherScreenVersionCode
                 aboutDfuShowTv?.visibility = View.GONE
-            }else{
+            } else {
                 aboutWatchVersionTv?.text = it.versionStr
 
             }
@@ -335,20 +351,22 @@ class CarAboutActivity : AppActivity() {
         }
         showWatchOrNot(isScreen)
 
-        if(isScreen && BaseApplication.getBaseApplication().connStatus == ConnStatus.CONNECTED){
-            val activityStatus = BaseApplication.getBaseApplication().autoBackBean.activationStatus==1
-            if(activityStatus){
+        if (isScreen && BaseApplication.getBaseApplication().connStatus == ConnStatus.CONNECTED) {
+            val activityStatus =
+                BaseApplication.getBaseApplication().autoBackBean.activationStatus == 1
+            if (activityStatus) {
                 aboutActivateSubmitTv?.text = "已激活"
-                aboutActivateSubmitTv!!.shapeDrawableBuilder.setSolidColor(Color.parseColor("#80FD654D")).intoBackground()
+                aboutActivateSubmitTv!!.shapeDrawableBuilder.setSolidColor(Color.parseColor("#80FD654D"))
+                    .intoBackground()
             }
         }
     }
 
 
     private fun showWatchOrNot(screen: Boolean) {
-        carWatchLayout?.visibility = if(screen) View.GONE else View.VISIBLE
-        aboutMcuLayout?.visibility = if(screen) View.VISIBLE else View.GONE
-        aboutTouchLayout?.visibility = if(screen) View.VISIBLE else View.GONE
+        carWatchLayout?.visibility = if (screen) View.GONE else View.VISIBLE
+        aboutMcuLayout?.visibility = if (screen) View.VISIBLE else View.GONE
+        aboutTouchLayout?.visibility = if (screen) View.VISIBLE else View.GONE
     }
 
 
@@ -367,11 +385,12 @@ class CarAboutActivity : AppActivity() {
         val dialog = SingleAlertDialog(this, com.bonlala.base.R.style.BaseDialogTheme)
         dialog.show()
         dialog.setContentTxt(if (success) "激活成功!" else "激活失败,请输入正确的激活码!")
-        if(success){
+        if (success) {
             //是否已激活
-            MmkvUtils.setSaveObjParams(MmkvUtils.getConnDeviceMac(),success)
+            MmkvUtils.setSaveObjParams(MmkvUtils.getConnDeviceMac(), success)
             aboutActivateSubmitTv?.text = "已激活"
-            aboutActivateSubmitTv!!.shapeDrawableBuilder.setSolidColor(Color.parseColor("#80FD654D")).intoBackground()
+            aboutActivateSubmitTv!!.shapeDrawableBuilder.setSolidColor(Color.parseColor("#80FD654D"))
+                .intoBackground()
         }
 
     }
@@ -438,9 +457,7 @@ class CarAboutActivity : AppActivity() {
 
 
     private var dfuDialog: DfuDialogView? = null
-    private fun showDfuDialog(isCarWatch : Boolean,bean: ServerVersionInfoBean.FirmwareListDTO) {
-
-
+    private fun showDfuDialog(isCarWatch: Boolean, bean: ServerVersionInfoBean.FirmwareListDTO) {
 
 
         if (dfuDialog == null) {
@@ -449,7 +466,7 @@ class CarAboutActivity : AppActivity() {
         }
         dfuDialog?.show()
         dfuDialog?.setCancelable(false)
-        dfuDialog?.setTitleTxt(if(isCarWatch) "无线手环更新" else "Touchpad新版本")
+        dfuDialog?.setTitleTxt(if (isCarWatch) "无线手环更新" else "Touchpad新版本")
         dfuDialog?.setDfuUpgradeContent("更新内容:\n" + bean.content + "\nfileName: " + bean.fileName + "\nversionCode: " + bean.versionCode)
         val saveUrl = getExternalFilesDir(null)?.path + "/OTA/" + bean.fileName
         dfuDialog?.setOnClick { position ->
@@ -465,12 +482,16 @@ class CarAboutActivity : AppActivity() {
                 intoDfuModel(isCarWatch)
                 Thread.sleep(1000)
                 //  BaseApplication.getBaseApplication().bleOperate.disConnYakDevice()
-                if(isCarWatch){
+                if (isCarWatch) {
                     isConnWatch = true
                     BaseApplication.getBaseApplication().bleOperate.disConnYakDevice()
                     showWatchDfuStatus(true)
-                    watchOtaViewModel?.downloadFile(bean.ota,bean.fileName,tempDeviceVersionInfo?.deviceMac)
-                }else{
+                    watchOtaViewModel?.downloadFile(
+                        bean.ota,
+                        bean.fileName,
+                        tempDeviceVersionInfo?.deviceMac
+                    )
+                } else {
                     showDfuStatus(true)
                     downloadOta(bean.ota, saveUrl)
                 }
@@ -528,8 +549,12 @@ class CarAboutActivity : AppActivity() {
     //获取权限
     private fun getPermission() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            XXPermissions.with(this).permission(arrayOf(Manifest.permission.READ_MEDIA_IMAGES,
-                Manifest.permission.READ_MEDIA_AUDIO,Manifest.permission.POST_NOTIFICATIONS)).request { permissions, allGranted ->
+            XXPermissions.with(this).permission(
+                arrayOf(
+                    Manifest.permission.READ_MEDIA_IMAGES,
+                    Manifest.permission.READ_MEDIA_AUDIO, Manifest.permission.POST_NOTIFICATIONS
+                )
+            ).request { permissions, allGranted ->
 
             }
             return
@@ -544,13 +569,13 @@ class CarAboutActivity : AppActivity() {
         }
     }
 
-    private fun intoDfuModel(isCarWatch : Boolean) {
+    private fun intoDfuModel(isCarWatch: Boolean) {
         val bt = ByteArray(3)
         bt[0] = 0x01
         bt[1] = 0x02
         bt[2] = 0x00
         val otaByte = Utils.getFullPackage(bt)
-        if(isCarWatch){
+        if (isCarWatch) {
             BaseApplication.getBaseApplication().bleOperate.writeCarWatchData(
                 otaByte
             ) { }
@@ -649,7 +674,7 @@ class CarAboutActivity : AppActivity() {
                     return
                 }
                 isConnWatch = true
-              //  isUpgrading = true
+                //  isUpgrading = true
                 tempDeviceVersionInfo = deviceBinVersionBean
                 aboutWatchVersionTv?.text =
                     deviceBinVersionBean?.deviceName + " " + deviceBinVersionBean?.versionStr
@@ -705,13 +730,21 @@ class CarAboutActivity : AppActivity() {
 
             //touchpad 升级
             R.id.aboutDfuShowTv -> {
-                if(isUpgrading){
+                if (isUpgrading) {
                     return
                 }
-                if(ActivityCompat.checkSelfPermission(this@CarAboutActivity,Manifest.permission.POST_NOTIFICATIONS) == PackageManager.PERMISSION_DENIED){
+                if (ActivityCompat.checkSelfPermission(
+                        this@CarAboutActivity,
+                        Manifest.permission.POST_NOTIFICATIONS
+                    ) == PackageManager.PERMISSION_DENIED
+                ) {
 
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                        ActivityCompat.requestPermissions(this@CarAboutActivity, arrayOf(Manifest.permission.POST_NOTIFICATIONS),0x00)
+                        ActivityCompat.requestPermissions(
+                            this@CarAboutActivity,
+                            arrayOf(Manifest.permission.POST_NOTIFICATIONS),
+                            0x00
+                        )
                     }
                     return
                 }
@@ -721,16 +754,16 @@ class CarAboutActivity : AppActivity() {
 
 
                 if (tempDeviceVersionInfo != null) {
-                    showDfuDialog(false,tempServerBean!!)
+                    showDfuDialog(false, tempServerBean!!)
                 }
             }
             //无线手环的升级
             R.id.aboutCarDfuShowTv -> {
-                if(isUpgrading){
+                if (isUpgrading) {
                     return
                 }
                 if (tempDeviceVersionInfo != null) {
-                    showDfuDialog(true,tempServerBean!!)
+                    showDfuDialog(true, tempServerBean!!)
                 }
             }
 
@@ -745,13 +778,31 @@ class CarAboutActivity : AppActivity() {
                     showNotConnDialog()
                     return
                 }
-                val success = MmkvUtils.getSaveParams(MmkvUtils.getConnDeviceMac(),false)
-                if(success == true){
+                val success = MmkvUtils.getSaveParams(MmkvUtils.getConnDeviceMac(), false)
+                if (success == true) {
 
                     return
                 }
                 viewModel?.setDeviceIdentificationCode(activateCode)
             }
         }
+    }
+
+
+    private fun showLogDialog(txt: String) {
+        val dialog = LogDialogView(this, com.bonlala.base.R.style.BaseDialogTheme)
+        dialog.show()
+        dialog.setLogTxt(txt)
+
+        val window = dialog.window
+        val windowLayout = window?.attributes
+        val metrics2: DisplayMetrics = resources.displayMetrics
+        val widthW: Int = (metrics2.widthPixels * 0.7F).toInt()
+        val height: Int = (metrics2.heightPixels * 0.7F).toInt()
+
+        windowLayout?.height = height
+        windowLayout?.width = widthW
+        windowLayout?.gravity = Gravity.CENTER_VERTICAL
+        window?.attributes = windowLayout
     }
 }

@@ -30,6 +30,8 @@ class ManualSetHeightView : AppCompatDialog {
 
     private var manualHeightOrLowDescTv : TextView ?= null
 
+    private var manualTitleTv : TextView ?= null
+
 
     //是否是最高
     private var isHeight = false
@@ -87,6 +89,7 @@ class ManualSetHeightView : AppCompatDialog {
 
 
     private fun initViews() {
+        manualTitleTv = findViewById(R.id.manualTitleTv)
         manualHeightView = findViewById(R.id.manualHeightView)
         manualDialogCancelTv = findViewById(R.id.manualDialogCancelTv)
         manualDialogConfirmTv = findViewById(R.id.manualDialogConfirmTv)
@@ -112,10 +115,17 @@ class ManualSetHeightView : AppCompatDialog {
             valueCode = it.value
         }
 
-        val timeArray = Utils.intToSecondByteArray(3000)
+        val timeArray = Utils.intToSecondByteArray(100)
         val timeStr = com.app.airmaster.ble.ota.Utils.bytesToHexString(timeArray)
         // val scrStr = "0008040112"+String.format("%02x",keyCode)+String.format("%02d",(valueCode))+timeStr
-        val scrStr = "000804012F"+String.format("%02x",keyCode)+String.format("%02d",(valueCode))+timeStr
+
+       var scrStr = ""
+        if(keyCode == 4 || keyCode == 5){
+            scrStr = "0008040112"+String.format("%02x",keyCode)+String.format("%02d",(valueCode))+timeStr
+        }else{
+            scrStr = "000804012F"+String.format("%02x",keyCode)+String.format("%02d",(valueCode))+timeStr
+
+        }
 
 
         val crc = Utils.crcCarContentArray(scrStr)
@@ -128,7 +138,7 @@ class ManualSetHeightView : AppCompatDialog {
             //8800000000000cd6030f7ffaaf00050104920163
             if(it != null && it.size>15){
                 Timber.e("-------气罐压力="+(it[8].toInt().and(0xFF))+" "+(it[9].toInt().and(0xFF))+" "+(it[17].toInt().and(0xFF))+" "+(it[18].toInt().and(0xFF) == 1))
-                if((it[8].toInt().and(0xFF)) == 3 && (it[9].toInt().and(0xFF)) == 15 &&(it[17].toInt().and(0xFF) == 175)){
+                if((it[8].toInt().and(0xFF)) == 3 && (it[9].toInt().and(0xFF)) == 15 &&((it[17].toInt().and(0xFF) == 175) ||(it[17].toInt().and(0xFF) == 146) )){
                     if(it[18].toInt().and(0xFF) == 1){
                         BaseApplication.getBaseApplication().bleOperate.setCommAllParams()
                     }
@@ -142,6 +152,7 @@ class ManualSetHeightView : AppCompatDialog {
     fun setModel(height: Boolean){
         this.isHeight = height
         manualHeightOrLowDescTv?.text = if(isHeight) "请设定最高高度,\n设置完成后点击保存" else "请设定最低高度,\n设置完成后点击保存"
+        manualTitleTv?.text = if(isHeight)"4/6检测最高高度" else "1/6检测最低高度"
     }
 
 
