@@ -74,7 +74,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:padding="@dimen/dp_10"
-                android:text="Touchpad"
+                android:text="Bluetooth"
                 android:textColor="#ffaeaeae"
                 android:textSize="@dimen/sp_14"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -120,6 +120,7 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/aboutMcuLayout"
             android:layout_width="match_parent"
+            android:visibility="gone"
             android:layout_height="wrap_content"
             android:padding="@dimen/dp_10">
 
@@ -161,7 +162,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:padding="@dimen/dp_10"
-                android:text="显示屏MCU"
+                android:text="Touchpad"
                 android:textColor="#ffaeaeae"
                 android:textSize="@dimen/sp_14"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -194,7 +195,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:padding="@dimen/dp_10"
-                android:text="其它MCU"
+                android:text="MCU"
                 android:textColor="#ffaeaeae"
                 android:textSize="@dimen/sp_14"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -220,6 +221,7 @@
             android:id="@+id/carWatchLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:visibility="gone"
             android:padding="@dimen/dp_10">
 
 
