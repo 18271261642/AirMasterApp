@@ -34,6 +34,7 @@ import com.app.airmaster.second.SecondScanActivity
 import com.app.airmaster.utils.BikeUtils
 import com.app.airmaster.utils.ClickUtils
 import com.app.airmaster.utils.MmkvUtils
+import com.app.airmaster.viewmodel.BridgeDfuViewModel
 import com.app.airmaster.viewmodel.DfuViewModel
 import com.app.airmaster.viewmodel.OnCarVersionListener
 import com.app.airmaster.viewmodel.VersionViewModel
@@ -62,16 +63,14 @@ import java.io.File
  */
 class CarAboutActivity : AppActivity() {
 
+
+    private var bridgeDfuViewModel : BridgeDfuViewModel ?= null
+
     private var viewModel: VersionViewModel? = null
     private var dfuViewModel: DfuViewModel? = null
     private var watchViewModel: WatchDeviceViewModel? = null
     private var watchOtaViewModel: WatchOTAViewModel? = null
 
-    private var aboutTouchLayout: ConstraintLayout? = null
-    private var aboutMcuLayout: ConstraintLayout? = null
-
-    //mcu
-    private var aboutMcuVersionTv: TextView? = null
 
 
     //系统升级菜单
@@ -82,14 +81,6 @@ class CarAboutActivity : AppActivity() {
 
     private var carAboutTitleBar: TitleBar? = null
 
-    //显示屏MCU
-    private var aboutScreenMcuVersionTv: TextView? = null
-
-
-    //其它MCU
-    private var aboutOtherMcuVersionTv: TextView? = null
-
-
     //手表
     private var carWatchLayout: ConstraintLayout? = null
     private var aboutWatchVersionTv: TextView? = null
@@ -99,14 +90,26 @@ class CarAboutActivity : AppActivity() {
     //提交激活码
     private var aboutActivateSubmitTv: ShapeTextView? = null
 
+    //旋钮的布局
+    private var screenLayout : LinearLayout ?= null
 
-    private var aboutDfuShowTv: ShapeTextView? = null
+
+    //Bluetooth版本
+    private var bluetoothDfuVersionTv : TextView ?= null
+    private var bluetoothDfuShowTv: ShapeTextView? = null
+
+    //touchpad
+    private var touchpadDfuShowTv : ShapeTextView ?= null
+    private var touchpadVersionTv : TextView? = null
+
+    //otherMcu
+    private var otherMcuDfuShowTv : ShapeTextView ?= null
+    private var aboutOtherMcuVersionTv: TextView? = null
+
 
     private var aboutActivateDeviceImageView: ImageView? = null
-
     private var aboutUpgradeImageView: ImageView? = null
 
-    private var touchPadVersionTv: TextView? = null
 
     private var appVersionTv: TextView? = null
     private var aboutUpgradeContentLayout: LinearLayout? = null
@@ -137,11 +140,12 @@ class CarAboutActivity : AppActivity() {
     }
 
     override fun initView() {
+        screenLayout = findViewById(R.id.screenLayout)
+        otherMcuDfuShowTv = findViewById(R.id.otherMcuDfuShowTv)
+        touchpadDfuShowTv = findViewById(R.id.touchpadDfuShowTv)
+        bluetoothDfuVersionTv = findViewById(R.id.bluetoothDfuVersionTv)
         aboutOtherMcuVersionTv = findViewById(R.id.aboutOtherMcuVersionTv)
-        aboutScreenMcuVersionTv = findViewById(R.id.aboutScreenMcuVersionTv)
-        aboutMcuVersionTv = findViewById(R.id.aboutMcuVersionTv)
-        aboutMcuLayout = findViewById(R.id.aboutMcuLayout)
-        aboutTouchLayout = findViewById(R.id.aboutTouchLayout)
+        touchpadVersionTv = findViewById(R.id.touchpadVersionTv)
         aboutActivateSubmitTv = findViewById(R.id.aboutActivateSubmitTv)
         carWatchLayout = findViewById(R.id.carWatchLayout)
         aboutActivateLayout = findViewById(R.id.aboutActivateLayout)
@@ -149,11 +153,10 @@ class CarAboutActivity : AppActivity() {
         aboutCarDfuShowTv = findViewById(R.id.aboutCarDfuShowTv)
         aboutWatchVersionTv = findViewById(R.id.aboutWatchVersionTv)
         carAboutTitleBar = findViewById(R.id.carAboutTitleBar)
-        aboutDfuShowTv = findViewById(R.id.aboutDfuShowTv)
+        bluetoothDfuShowTv = findViewById(R.id.bluetoothDfuShowTv)
         activateContentLayout = findViewById(R.id.activateContentLayout)
         aboutActivateDeviceImageView = findViewById(R.id.aboutActivateDeviceImageView)
         aboutUpgradeImageView = findViewById(R.id.aboutUpgradeImageView)
-        touchPadVersionTv = findViewById(R.id.touchPadVersionTv)
         aboutActivateEdit = findViewById(R.id.aboutActivateEdit)
         appVersionTv = findViewById(R.id.appVersionTv)
         aboutUpgradeContentLayout = findViewById(R.id.aboutUpgradeContentLayout)
@@ -165,7 +168,11 @@ class CarAboutActivity : AppActivity() {
         aboutCarDfuShowTv?.setOnClickListener(this)
         aboutActivateSubmitTv?.setOnClickListener(this)
 
-        aboutDfuShowTv?.setOnClickListener(this)
+        bluetoothDfuShowTv?.setOnClickListener(this)
+
+        touchpadVersionTv?.setOnClickListener {
+            bridgeDfuViewModel?.setEraseDeviceFlash()
+        }
 
 
         getPermission()
@@ -212,6 +219,7 @@ class CarAboutActivity : AppActivity() {
 
 
     override fun initData() {
+        bridgeDfuViewModel = ViewModelProvider(this)[BridgeDfuViewModel::class.java]
         watchViewModel = ViewModelProvider(this)[WatchDeviceViewModel::class.java]
         dfuViewModel = ViewModelProvider(this)[DfuViewModel::class.java]
         viewModel = ViewModelProvider(this)[VersionViewModel::class.java]
@@ -236,7 +244,7 @@ class CarAboutActivity : AppActivity() {
 
         //ota升级
         dfuViewModel?.dfuProgressData?.observe(this) {
-            aboutDfuShowTv?.text = "正在升级: $it%"
+            bluetoothDfuShowTv?.text = "正在升级: $it%"
         }
         dfuViewModel?.dfuUpgradeStatus?.observe(this) {
             BaseApplication.getBaseApplication().isOTAModel = false
@@ -287,11 +295,11 @@ class CarAboutActivity : AppActivity() {
 
 
             if (infoBean!!.versionCode != tempDeviceVersionInfo!!.versionCode) {
-                aboutDfuShowTv?.visibility = View.VISIBLE
+                bluetoothDfuShowTv?.visibility = View.VISIBLE
                 showDfuStatus(false)
             } else {
-                touchPadVersionTv?.text = tempDeviceVersionInfo?.versionStr
-                aboutDfuShowTv?.visibility = View.GONE
+                touchpadVersionTv?.text = tempDeviceVersionInfo?.versionStr
+                bluetoothDfuShowTv?.visibility = View.GONE
             }
 
         }
@@ -313,12 +321,18 @@ class CarAboutActivity : AppActivity() {
 
         viewModel?.deviceVersionInfo?.observe(this) { it ->
 
-            if (isScreen) {
-                touchPadVersionTv?.text = it.versionStr
-                aboutMcuVersionTv?.text = it.mcuVersionCode
-                aboutScreenMcuVersionTv?.text = it.screenVersionCode
-                aboutOtherMcuVersionTv?.text = it.otherScreenVersionCode
-                aboutDfuShowTv?.visibility = View.GONE
+            if (isScreen) { //旋钮
+                //bluetooth
+                bluetoothDfuVersionTv?.text = it.versionStr
+                //touchpad
+                touchpadVersionTv?.text = it.mcuVersionCode
+                //other
+                aboutOtherMcuVersionTv?.text = it.screenVersionCode
+
+                bluetoothDfuShowTv?.visibility = View.GONE
+                touchpadDfuShowTv?.visibility = View.GONE
+                otherMcuDfuShowTv?.visibility = View.GONE
+
             } else {
                 aboutWatchVersionTv?.text = it.versionStr
 
@@ -363,10 +377,10 @@ class CarAboutActivity : AppActivity() {
     }
 
 
+    //显示手表或旋钮屏
     private fun showWatchOrNot(screen: Boolean) {
         carWatchLayout?.visibility = if (screen) View.GONE else View.VISIBLE
-        aboutMcuLayout?.visibility = if (screen) View.VISIBLE else View.GONE
-        aboutTouchLayout?.visibility = if (screen) View.VISIBLE else View.GONE
+        screenLayout?.visibility = if(screen) View.VISIBLE else View.GONE
     }
 
 
@@ -599,15 +613,15 @@ class CarAboutActivity : AppActivity() {
             val upArray = IntArray(2)
             upArray[0] = Color.parseColor("#67DFD0")
             upArray[1] = Color.parseColor("#2BA6F7")
-            aboutDfuShowTv!!.shapeDrawableBuilder.setSolidGradientColors(upArray).intoBackground()
-            aboutDfuShowTv?.text = "正在升级..."
+            bluetoothDfuShowTv!!.shapeDrawableBuilder.setSolidGradientColors(upArray).intoBackground()
+            bluetoothDfuShowTv?.text = "正在升级..."
             return
         }
         val upArray = IntArray(2)
         upArray[0] = Color.parseColor("#F28D27")
         upArray[1] = Color.parseColor("#FD654D")
-        aboutDfuShowTv!!.shapeDrawableBuilder.setSolidGradientColors(upArray).intoBackground()
-        aboutDfuShowTv?.text = "有新版本更新"
+        bluetoothDfuShowTv!!.shapeDrawableBuilder.setSolidGradientColors(upArray).intoBackground()
+        bluetoothDfuShowTv?.text = "有新版本更新"
 
     }
 
@@ -729,7 +743,7 @@ class CarAboutActivity : AppActivity() {
             }
 
             //touchpad 升级
-            R.id.aboutDfuShowTv -> {
+            R.id.bluetoothDfuShowTv -> {
                 if (isUpgrading) {
                     return
                 }

@@ -69,7 +69,7 @@ public class KeyBoardConstant {
     }
 
 
-    private static String keyValue(byte[] key, byte[] key1) {
+    public static String keyValue(byte[] key, byte[] key1) {
         return Utils.getHexString(key) +
                 Utils.getHexString(key1);
 
@@ -279,4 +279,6 @@ public class KeyBoardConstant {
         Log.e("TAG","-------a_B="+re.length);
         return re;
     }
+
+
 }
