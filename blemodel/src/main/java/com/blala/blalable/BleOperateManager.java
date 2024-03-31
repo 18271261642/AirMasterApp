@@ -85,7 +85,7 @@ public class BleOperateManager {
                     detailDialList.addAll(indexData);
                     detailDialCount = 0;
                     dialCount++;
-                    handler.sendEmptyMessageDelayed(0x01, 20);
+                    handler.sendEmptyMessageDelayed(0x01, 50);
                     // sendWriteKeyBoardData(indexData);
                 } else { //发送完了
                     Log.e(TAG, "---------全部发送万了");
@@ -107,7 +107,7 @@ public class BleOperateManager {
                 } else {
                     //一个4K包里面的内容发送完了
                     Log.e(TAG, "---------一个4K包发送全部发送万了");
-                    handler.sendEmptyMessageDelayed(0x00, 50);
+                    handler.sendEmptyMessageDelayed(0x00, 80);
                 }
             }
         }
@@ -576,7 +576,7 @@ public class BleOperateManager {
 
             }
         });
-        handler.sendEmptyMessageDelayed(0x01, 20);
+        handler.sendEmptyMessageDelayed(0x01, 80);
     }
 
 

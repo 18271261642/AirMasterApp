@@ -4,17 +4,126 @@ import android.graphics.Bitmap
 import android.widget.ImageView
 import com.app.airmaster.R
 import com.app.airmaster.listeners.OnGetImgWidthListener
+import com.blala.blalable.Utils
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.request.RequestOptions
 import com.bumptech.glide.request.target.SimpleTarget
 import com.bumptech.glide.request.transition.Transition
+import timber.log.Timber
 
 import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
 
 object ImgUtil {
+
+    fun getDialContent(
+        startKey: ByteArray,
+        endKey: ByteArray,
+        count: ByteArray,
+        type: Int,
+        position: Int,
+        dialId: Int
+    ): MutableList<List<ByteArray>> {
+
+        val lenght = count.size + 17
+        var mList: MutableList<List<ByteArray>> = mutableListOf()
+        var arraySize: Int = count.size / 4096
+
+        //  var arraySize: Int = count.size / 4096
+        val list: MutableList<ByteArray> = mutableListOf()
+        if (count.size % 4096 > 0) {
+            arraySize += 1
+        }
+
+        Timber.e("-------总的4096个包:" + arraySize)
+
+        for (i in 0 until arraySize) {
+            val srcStart = i * 4096
+            var array = ByteArray(4096)
+            if (count.size - srcStart < 4096) {
+                array = ByteArray(count.size - srcStart)
+                System.arraycopy(count, srcStart, array, 0, count.size - srcStart)
+            } else
+                System.arraycopy(count, srcStart, array, 0, array.size)
+            list.add(array)
+        }
+
+
+        list.forEachIndexed { index, childrArry ->
+            val ll: MutableList<ByteArray> = mutableListOf()
+            var arraySize2: Int = childrArry.size / 243
+            if (childrArry.size % 243 > 0) {
+                arraySize2 += 1
+            }
+
+//            if (index == 0) {
+//                TLog.error("arraySize2==" + arraySize2)
+//                TLog.error("count.size==" + count.size)
+//                TLog.error("childrArry.size==" + childrArry.size)
+//            }
+
+            for (i in 0 until arraySize2) {
+                var array = ByteArray(243)
+                if (i == 0 && index == 0) { //只有第一位的第一个需要
+                    array = ByteArray(218)
+                    System.arraycopy(childrArry, 0, array, 0, array.size)
+//                    array = Utils.hexStringToByte(keyValue(startKey, endKey, array,array.size))
+                    array = Utils.hexStringToByte(keyValue(startKey, endKey, array,lenght))
+                    Timber.e("arrayi == 0 && index == 0==" + Utils.getHexString(array))
+                } else if (i == (arraySize2 - 1)) {
+                    var srcStart = i * 243
+                    if (index == 0)
+                        srcStart -= 25
+//                    TLog.error("srcStart++"+srcStart)
+//                    TLog.error("childrArry.size++"+childrArry.size)
+                    val num = childrArry.size - (srcStart)
+                    array = ByteArray(num)
+//                    TLog.error("array.size++"+array.size)
+                    System.arraycopy(childrArry, srcStart, array, 0, array.size)
+                } else {
+                    var srcStart = i * 243
+                    if (index == 0) {
+                        srcStart -= 25
+//                        TLog.error("srcStart=="+srcStart)
+//                        TLog.error("array=="+ByteUtil.getHexString(array))
+//                        TLog.error("array=="+ array.size)
+//                        TLog.error("srcStart==" +  srcStart)
+                        //                       TLog.error("array==" +  array.size)
+                    }
+
+                    System.arraycopy(childrArry, srcStart, array, 0, array.size)
+                    //  if(index==0)
+//                    TLog.error("arrayi == ${i}=="+ByteUtil.getHexString(array))
+                }
+                val arrayXOR = Utils.byteMerger(array, Utils.byteXOR(array))
+                if (i == 0 && index == 0) {
+                    Timber.e("------第一=" + Utils.formatBtArrayToString(arrayXOR))
+                }
+                ll.add(arrayXOR)
+            }
+            mList.add(ll)
+        }
+
+        Timber.e("---------第一包=" + Utils.formatBtArrayToString(mList.get(0).get(0)))
+
+        return mList
+    }
+
+
+    private fun keyValue(
+        startKey: ByteArray,
+        endKey: ByteArray,
+        sendData: ByteArray,lenght : Int
+    ): String {
+        val length = Utils.getHexString(Utils.toByteArray(lenght))
+        return "880000" + length + "000805010009" +  //索引,长度
+                Utils.getHexString(startKey) +  //起始位
+                Utils.getHexString(endKey) +  //结束位
+                "0202FFFF" +  //含crc效验包,索引2,俩个字节的长度
+                Utils.getHexString(sendData) //+
+    }
 
 
 //    fun loadImage(

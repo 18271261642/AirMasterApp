@@ -4,6 +4,9 @@ import android.Manifest
 import android.content.pm.PackageManager
 import android.graphics.Color
 import android.os.Build
+import android.os.Handler
+import android.os.Looper
+import android.os.Message
 import android.provider.ContactsContract.CommonDataKinds.Im
 import android.text.SpannableStringBuilder
 import android.text.Spanned
@@ -26,9 +29,11 @@ import com.app.airmaster.adapter.OnCommItemClickListener
 import com.app.airmaster.ble.ConnStatus
 import com.app.airmaster.car.bean.DeviceBinVersionBean
 import com.app.airmaster.car.bean.ServerVersionInfoBean
+import com.app.airmaster.car.bean.VersionParamsBean
 import com.app.airmaster.dialog.DfuDialogView
 import com.app.airmaster.dialog.DialogScanDeviceView
 import com.app.airmaster.dialog.LogDialogView
+import com.app.airmaster.dialog.ShowProgressDialog
 import com.app.airmaster.dialog.SingleAlertDialog
 import com.app.airmaster.second.SecondScanActivity
 import com.app.airmaster.utils.BikeUtils
@@ -63,6 +68,9 @@ import java.io.File
  */
 class CarAboutActivity : AppActivity() {
 
+    private val BLUETOOTH_IdentificationCode = "02fffff9"
+    private val TOUCHPAD_IdentificationCode = "03fffffe"
+    private val MCU_IdentificationCode = "04fffffd"
 
     private var bridgeDfuViewModel : BridgeDfuViewModel ?= null
 
@@ -131,9 +139,21 @@ class CarAboutActivity : AppActivity() {
 
     private var tempServerBean: ServerVersionInfoBean.FirmwareListDTO? = null
 
+    private var tempServerListBean : MutableList<ServerVersionInfoBean.FirmwareListDTO> ?= null
 
     //是否连接了手表
     private var isConnWatch = false
+
+
+    private val handlers : Handler = object : Handler(Looper.getMainLooper()){
+        override fun handleMessage(msg: Message) {
+            super.handleMessage(msg)
+            if(msg.what == 0x00){
+
+                cancelProgressDialog()
+            }
+        }
+    }
 
     override fun getLayoutId(): Int {
         return R.layout.activity_app_about_layout
@@ -168,10 +188,13 @@ class CarAboutActivity : AppActivity() {
         aboutCarDfuShowTv?.setOnClickListener(this)
         aboutActivateSubmitTv?.setOnClickListener(this)
 
+
         bluetoothDfuShowTv?.setOnClickListener(this)
+        touchpadDfuShowTv?.setOnClickListener(this)
+        otherMcuDfuShowTv?.setOnClickListener(this)
 
         touchpadVersionTv?.setOnClickListener {
-            bridgeDfuViewModel?.setEraseDeviceFlash()
+
         }
 
 
@@ -242,7 +265,29 @@ class CarAboutActivity : AppActivity() {
         dfuViewModel?.registerDfu(this)
         showAppVersion()
 
-        //ota升级
+
+        //touchpad的升级状态
+        bridgeDfuViewModel?.touchpadUpgradeStatus?.observe(this){
+            if(it.isSyncValid){
+                if(it.syncProgress != 0){
+                    showProgressDialog(resources.getString(R.string.string_upgrading)+" "+it.syncProgress+"%")
+                }
+                if(it.syncProgress == 1000){
+                    cancelProgressDialog()
+                  //  ToastUtils.show("升级成功!")
+                    isUpgrading = false
+                    ToastUtils.show("升级成功,请重新连接使用!" )
+                    startActivity(SecondScanActivity::class.java)
+                    finish()
+                }
+            }else{
+                ToastUtils.show(it.inValidDesc)
+                cancelProgressDialog()
+                isUpgrading = false
+            }
+        }
+
+        //bluetooth ota升级
         dfuViewModel?.dfuProgressData?.observe(this) {
             bluetoothDfuShowTv?.text = "正在升级: $it%"
         }
@@ -258,50 +303,53 @@ class CarAboutActivity : AppActivity() {
         }
 
 
-        //固件信息
+        //固件信息后台返回
         viewModel?.serverVersionInfo?.observe(this) {
             if (it == null) {
                 isUpgrading = false
+                showVisibilityUpgrade()
                 return@observe
             }
             if (tempDeviceVersionInfo == null) {
                 isUpgrading = false
+                showVisibilityUpgrade()
                 return@observe
             }
 
             val firmList = it.firmwareList
-            var infoBean: ServerVersionInfoBean.FirmwareListDTO? = null
-            firmList.forEachIndexed { index, firmwareListDTO ->
-                if (firmwareListDTO.identificationCode == tempDeviceVersionInfo!!.identificationCode) {
-                    infoBean = firmwareListDTO
-                }
-            }
-            if (infoBean == null) {
+
+            if(firmList == null || firmList.size == 0){
                 isUpgrading = false
+                showVisibilityUpgrade()
                 return@observe
             }
-            this.tempServerBean = infoBean
-            if (it.isCarWatch) {
-                if (infoBean!!.versionCode != tempDeviceVersionInfo!!.versionCode) {
-                    aboutCarDfuShowTv?.visibility = View.VISIBLE
-                    showWatchDfuStatus(false)
-                    return@observe
-                }
-                isUpgrading = false
+
+            var infoBean: ServerVersionInfoBean.FirmwareListDTO? = null
+            if(it.isCarWatch){  //手表
+                infoBean = firmList[0]
+                this.tempServerBean = infoBean
+                aboutCarDfuShowTv?.visibility = View.VISIBLE
                 showWatchDfuStatus(false)
                 return@observe
-
             }
 
+            tempServerListBean = firmList
+            firmList.forEachIndexed { index, firmwareListDTO ->
+                if(firmwareListDTO.identificationCode == tempDeviceVersionInfo?.identificationCode){ //bluetooth
+                    bluetoothDfuShowTv?.visibility = View.VISIBLE
+                }
 
-            if (infoBean!!.versionCode != tempDeviceVersionInfo!!.versionCode) {
-                bluetoothDfuShowTv?.visibility = View.VISIBLE
-                showDfuStatus(false)
-            } else {
-                touchpadVersionTv?.text = tempDeviceVersionInfo?.versionStr
-                bluetoothDfuShowTv?.visibility = View.GONE
+                if(firmwareListDTO.identificationCode == tempDeviceVersionInfo?.screenMcuIdentificationCode){ //touchpad
+                    touchpadDfuShowTv?.visibility = View.VISIBLE
+                }
+
+                if(firmwareListDTO.identificationCode == tempDeviceVersionInfo?.mcuIdentificationCode){ //muc
+                    otherMcuDfuShowTv?.visibility = View.VISIBLE
+                }
+
+                showDfuStatus(false,firmwareListDTO.identificationCode)
+
             }
-
         }
 
         //激活状态
@@ -319,8 +367,9 @@ class CarAboutActivity : AppActivity() {
         }
 
 
+        //读取设备的版本信息
         viewModel?.deviceVersionInfo?.observe(this) { it ->
-
+            tempDeviceVersionInfo = it
             if (isScreen) { //旋钮
                 //bluetooth
                 bluetoothDfuVersionTv?.text = it.versionStr
@@ -333,21 +382,36 @@ class CarAboutActivity : AppActivity() {
                 touchpadDfuShowTv?.visibility = View.GONE
                 otherMcuDfuShowTv?.visibility = View.GONE
 
+
+                val list = mutableListOf<VersionParamsBean.ParamsListBean>()
+                val bluetoothBean = VersionParamsBean.ParamsListBean(it.identificationCode,"0x"+it.productCode,it.versionCode.toString())
+
+                val touchpadBean = VersionParamsBean.ParamsListBean(it.mcuIdentificationCode,"0x"+it.mcuBroadcastId,it.mcuVersionCodeInt.toString())
+
+                val otherMcuBean = VersionParamsBean.ParamsListBean(it.screenMcuIdentificationCode,"0x"+it.screenMcuBroadcastId,it.screenMcuVersionCodeInt.toString())
+                list.add(bluetoothBean)
+                list.add(touchpadBean)
+                list.add(otherMcuBean)
+
+                viewModel?.getDeviceInfoData(
+                    false,
+                    this@CarAboutActivity,it.binCode,
+                   list
+                )
             } else {
                 aboutWatchVersionTv?.text = it.versionStr
 
+                tempDeviceVersionInfo?.deviceMac = MmkvUtils.getConnDeviceMac()
+                val list = mutableListOf<VersionParamsBean.ParamsListBean>()
+                val watchBean = VersionParamsBean.ParamsListBean(it.identificationCode,"0x"+it.productCode,it.versionCode.toString())
+                list.add(watchBean)
+                viewModel?.getDeviceInfoData(
+                    true,
+                    this@CarAboutActivity,it.binCode,
+                    list
+                )
             }
 
-            tempDeviceVersionInfo = it
-            tempDeviceVersionInfo?.deviceMac = MmkvUtils.getConnDeviceMac()
-            viewModel?.getDeviceInfoData(
-                !isScreen,
-                this@CarAboutActivity,
-                it.identificationCode,
-                it.binCode,
-                it.versionCode,
-                it.productCode
-            )
         }
 
 
@@ -356,18 +420,13 @@ class CarAboutActivity : AppActivity() {
             cdKeyCode = it
         }
 
+        getDeviceVersion(isScreen)
 
-        //获取固件版本信息
-        viewModel?.getDeviceVersion(isScreen)
-        GlobalScope.launch {
-            delay(1500)
-            viewModel?.getDeviceCdKey()
-        }
         showWatchOrNot(isScreen)
 
         if (isScreen && BaseApplication.getBaseApplication().connStatus == ConnStatus.CONNECTED) {
             val activityStatus =
-                BaseApplication.getBaseApplication().autoBackBean.activationStatus == 1
+                BaseApplication.getBaseApplication().autoBackBean?.activationStatus == 1
             if (activityStatus) {
                 aboutActivateSubmitTv?.text = "已激活"
                 aboutActivateSubmitTv!!.shapeDrawableBuilder.setSolidColor(Color.parseColor("#80FD654D"))
@@ -376,6 +435,15 @@ class CarAboutActivity : AppActivity() {
         }
     }
 
+
+    private fun getDeviceVersion(isScreen: Boolean){
+        //获取固件版本信息
+        viewModel?.getDeviceVersion(isScreen)
+        GlobalScope.launch {
+            delay(1500)
+            viewModel?.getDeviceCdKey()
+        }
+    }
 
     //显示手表或旋钮屏
     private fun showWatchOrNot(screen: Boolean) {
@@ -473,14 +541,13 @@ class CarAboutActivity : AppActivity() {
     private var dfuDialog: DfuDialogView? = null
     private fun showDfuDialog(isCarWatch: Boolean, bean: ServerVersionInfoBean.FirmwareListDTO) {
 
-
         if (dfuDialog == null) {
             dfuDialog =
                 DfuDialogView(this@CarAboutActivity, com.bonlala.base.R.style.BaseDialogTheme)
         }
         dfuDialog?.show()
         dfuDialog?.setCancelable(false)
-        dfuDialog?.setTitleTxt(if (isCarWatch) "无线手环更新" else "Touchpad新版本")
+        dfuDialog?.setTitleTxt(if (isCarWatch) "无线手环更新" else checkTypeTitle(bean.identificationCode))
         dfuDialog?.setDfuUpgradeContent("更新内容:\n" + bean.content + "\nfileName: " + bean.fileName + "\nversionCode: " + bean.versionCode)
         val saveUrl = getExternalFilesDir(null)?.path + "/OTA/" + bean.fileName
         dfuDialog?.setOnClick { position ->
@@ -493,7 +560,10 @@ class CarAboutActivity : AppActivity() {
                 dfuDialog?.dismiss()
                 //  dfuDialog?.setDfuModel()
                 BaseApplication.getBaseApplication().isOTAModel = true
-                intoDfuModel(isCarWatch)
+                if(isCarWatch || bean.identificationCode == BLUETOOTH_IdentificationCode){
+                    intoDfuModel(isCarWatch)
+                }
+
                 Thread.sleep(1000)
                 //  BaseApplication.getBaseApplication().bleOperate.disConnYakDevice()
                 if (isCarWatch) {
@@ -506,8 +576,8 @@ class CarAboutActivity : AppActivity() {
                         tempDeviceVersionInfo?.deviceMac
                     )
                 } else {
-                    showDfuStatus(true)
-                    downloadOta(bean.ota, saveUrl)
+                    showDfuStatus(true,bean.identificationCode)
+                    downloadOta(bean.ota, saveUrl,bean.identificationCode)
                 }
 
 
@@ -527,7 +597,9 @@ class CarAboutActivity : AppActivity() {
     }
 
     //下载
-    private fun downloadOta(url: String, saveUrl: String) {
+    private fun downloadOta(url: String, saveUrl: String,identificationCode : String) {
+        Timber.e("-------识别码="+identificationCode)
+        showProgressDialog("升级中...")
         downloadFile(url, saveUrl, object : OnDownloadListener {
             override fun onStart(file: File?) {
 
@@ -543,8 +615,16 @@ class CarAboutActivity : AppActivity() {
                     delay(1500)
                     isUpgrading = true
                     file?.path?.let {
-                        //  dfuDialog?.startDfuModel(it)
-                        dfuViewModel?.startDfuModel(file.path, this@CarAboutActivity)
+                        if(identificationCode == BLUETOOTH_IdentificationCode){   //bluetooth nordic
+                            dfuViewModel?.startDfuModel(file.path, this@CarAboutActivity)
+                        }
+                        if(identificationCode == TOUCHPAD_IdentificationCode){   //touchpad 旋钮屏的显示
+                            bridgeDfuViewModel?.setEraseDeviceFlash(file,this@CarAboutActivity)
+                        }
+                        if(identificationCode == MCU_IdentificationCode){   //其它mcu，客户mcu
+                            handlers.sendEmptyMessageDelayed(0x00,10 * 1000)
+                        }
+
                     }
                 }
             }
@@ -592,7 +672,9 @@ class CarAboutActivity : AppActivity() {
         if (isCarWatch) {
             BaseApplication.getBaseApplication().bleOperate.writeCarWatchData(
                 otaByte
-            ) { }
+            ) {
+
+            }
             return
         }
         BaseApplication.getBaseApplication().bleOperate.writeCommonByte(
@@ -608,20 +690,57 @@ class CarAboutActivity : AppActivity() {
 
 
     //旋钮是否正在升级中
-    private fun showDfuStatus(upgrading: Boolean) {
+    private fun showDfuStatus(upgrading: Boolean,identificationCode : String) {
         if (upgrading) {
             val upArray = IntArray(2)
             upArray[0] = Color.parseColor("#67DFD0")
             upArray[1] = Color.parseColor("#2BA6F7")
-            bluetoothDfuShowTv!!.shapeDrawableBuilder.setSolidGradientColors(upArray).intoBackground()
-            bluetoothDfuShowTv?.text = "正在升级..."
+
+            when (identificationCode){
+                "02fffff9"->{   //bluetooth
+                    aboutCarDfuShowTv!!.shapeDrawableBuilder.setSolidGradientColors(upArray)
+                        .intoBackground()
+                    aboutCarDfuShowTv?.text = "正在升级..."
+                }
+
+                "03fffffe" ->{  //touchpad
+                    touchpadDfuShowTv!!.shapeDrawableBuilder.setSolidGradientColors(upArray)
+                        .intoBackground()
+                    touchpadDfuShowTv?.text = "正在升级..."
+                }
+                "04fffffc" ->{  //mcu
+                    otherMcuDfuShowTv!!.shapeDrawableBuilder.setSolidGradientColors(upArray)
+                        .intoBackground()
+                    otherMcuDfuShowTv?.text = "正在升级..."
+                }
+            }
+
             return
         }
         val upArray = IntArray(2)
         upArray[0] = Color.parseColor("#F28D27")
         upArray[1] = Color.parseColor("#FD654D")
-        bluetoothDfuShowTv!!.shapeDrawableBuilder.setSolidGradientColors(upArray).intoBackground()
-        bluetoothDfuShowTv?.text = "有新版本更新"
+
+        when (identificationCode){
+            "02fffff9"->{   //bluetooth
+                bluetoothDfuShowTv!!.shapeDrawableBuilder.setSolidGradientColors(upArray).intoBackground()
+                bluetoothDfuShowTv?.text = "有新版本更新"
+            }
+
+            "03fffffe" ->{  //touchpad
+                touchpadDfuShowTv!!.shapeDrawableBuilder.setSolidGradientColors(upArray)
+                    .intoBackground()
+                touchpadDfuShowTv?.text = "有新版本更新"
+            }
+            "04fffffc" ->{  //mcu
+                otherMcuDfuShowTv!!.shapeDrawableBuilder.setSolidGradientColors(upArray)
+                    .intoBackground()
+                otherMcuDfuShowTv?.text = "有新版本更新"
+            }
+        }
+
+
+
 
     }
 
@@ -639,80 +758,8 @@ class CarAboutActivity : AppActivity() {
     }
 
 
-    //手表是否正在升级中
-    //旋钮是否正在升级中
-    private fun showWatchDfuStatus(upgrading: Boolean) {
-        if (upgrading) {
-            val upArray = IntArray(2)
-            upArray[0] = Color.parseColor("#67DFD0")
-            upArray[1] = Color.parseColor("#2BA6F7")
-            aboutCarDfuShowTv!!.shapeDrawableBuilder.setSolidGradientColors(upArray)
-                .intoBackground()
-            aboutCarDfuShowTv?.text = "正在升级..."
-            return
-        }
-        val upArray = IntArray(2)
-        upArray[0] = Color.parseColor("#F28D27")
-        upArray[1] = Color.parseColor("#FD654D")
-        aboutCarDfuShowTv!!.shapeDrawableBuilder.setSolidGradientColors(upArray).intoBackground()
-        aboutCarDfuShowTv?.text = "有新版本更新"
-
-    }
-
-    private fun showConnWatchDialog() {
-        showCommAlertDialog(
-            "连接手环需要断开当前旋钮设备，是否断开?",
-            "取消",
-            "确定"
-        ) { position ->
-            disCommAlertDialog()
-            if (position == 0x01) {
-                BaseApplication.getBaseApplication().bleOperate.disConnYakDevice()
-                showWatchScanDialog()
-            }
-        }
-    }
 
 
-    private fun showWatchScanDialog() {
-        val scanDialog = DialogScanDeviceView(this, com.bonlala.base.R.style.BaseDialogTheme)
-        scanDialog.show()
-        scanDialog.startScan()
-        scanDialog.setOnBackDataListener(object : OnCarVersionListener {
-
-            override fun backVersion(deviceBinVersionBean: DeviceBinVersionBean?) {
-                scanDialog.dismiss()
-                if (deviceBinVersionBean == null) {
-                    aboutWatchVersionTv?.text = ""
-                    isConnWatch = true
-                    return
-                }
-                isConnWatch = true
-                //  isUpgrading = true
-                tempDeviceVersionInfo = deviceBinVersionBean
-                aboutWatchVersionTv?.text =
-                    deviceBinVersionBean?.deviceName + " " + deviceBinVersionBean?.versionStr
-                viewModel?.getDeviceInfoData(
-                    true,
-                    this@CarAboutActivity,
-                    deviceBinVersionBean.identificationCode,
-                    deviceBinVersionBean.binCode,
-                    deviceBinVersionBean.versionCode,
-                    deviceBinVersionBean.productCode
-                )
-            }
-
-        })
-
-        val window = scanDialog.window
-        val windowLayout = window?.attributes
-        val metrics2: DisplayMetrics = resources.displayMetrics
-        val widthW: Int = (metrics2.widthPixels * 0.9f).toInt()
-        val height: Int = (metrics2.heightPixels * 0.6f).toInt()
-        windowLayout?.width = widthW
-        windowLayout?.height = height
-        window?.attributes = windowLayout
-    }
 
     override fun onClick(view: View?) {
         super.onClick(view)
@@ -742,7 +789,7 @@ class CarAboutActivity : AppActivity() {
 //                showConnWatchDialog()
             }
 
-            //touchpad 升级
+            //bluetooth 升级
             R.id.bluetoothDfuShowTv -> {
                 if (isUpgrading) {
                     return
@@ -762,15 +809,39 @@ class CarAboutActivity : AppActivity() {
                     }
                     return
                 }
-
-
-
-
-
-                if (tempDeviceVersionInfo != null) {
-                    showDfuDialog(false, tempServerBean!!)
+                if (tempServerListBean != null && tempServerListBean?.size!!>0) {
+                    val bean = tempServerListBean?.find { it.identificationCode =="02fffff9" }
+                    if(bean != null){
+                        showDfuDialog(false, bean)
+                    }
                 }
             }
+
+            R.id.touchpadDfuShowTv->{   //touchpad 升级
+                if (isUpgrading) {
+                    return
+                }
+                if (tempServerListBean != null && tempServerListBean?.size!!>0) {
+                    val bean = tempServerListBean?.find { it.identificationCode =="03fffffe" }
+                    if(bean != null){
+                        showDfuDialog(false, bean)
+                    }
+                }
+            }
+
+
+            R.id.otherMcuDfuShowTv->{   //other mcu
+                if (isUpgrading) {
+                    return
+                }
+                if (tempServerListBean != null && tempServerListBean?.size!!>0) {
+                    val bean = tempServerListBean?.find { it.identificationCode =="04fffffd" }
+                    if(bean != null){
+                        showDfuDialog(false, bean)
+                    }
+                }
+            }
+
             //无线手环的升级
             R.id.aboutCarDfuShowTv -> {
                 if (isUpgrading) {
@@ -811,12 +882,79 @@ class CarAboutActivity : AppActivity() {
         val window = dialog.window
         val windowLayout = window?.attributes
         val metrics2: DisplayMetrics = resources.displayMetrics
-        val widthW: Int = (metrics2.widthPixels * 0.7F).toInt()
+        val widthW: Int = (metrics2.widthPixels * 0.8F).toInt()
         val height: Int = (metrics2.heightPixels * 0.7F).toInt()
 
         windowLayout?.height = height
         windowLayout?.width = widthW
         windowLayout?.gravity = Gravity.CENTER_VERTICAL
         window?.attributes = windowLayout
+    }
+
+
+    private fun checkTypeTitle(identificationCode : String) : String{
+        if(identificationCode == BLUETOOTH_IdentificationCode){   //bluetooth nordic
+           return String.format(resources.getString(R.string.string_air_upgrade),"Bluetooth")
+        }
+        if(identificationCode == TOUCHPAD_IdentificationCode){   //bluetooth nordic
+            return String.format(resources.getString(R.string.string_air_upgrade),"Touchpad")
+        }
+
+        return String.format(resources.getString(R.string.string_air_upgrade),"MCU")
+    }
+
+
+    fun cancelProgressDialog() {
+        if (progressDialog != null) {
+            progressDialog?.dismiss()
+        }
+    }
+
+    private var progressDialog: ShowProgressDialog? = null
+
+    //显示弹窗
+    private fun showProgressDialog(msg: String) {
+        Timber.e("--------Dialog="+(isFinishing))
+        if (progressDialog == null) {
+            progressDialog = ShowProgressDialog(this, com.bonlala.base.R.style.BaseDialogTheme)
+        }
+        if (progressDialog?.isShowing == false) {
+            if(isFinishing){
+                return
+            }
+            progressDialog?.show()
+        }
+        progressDialog?.setCancelable(false)
+        progressDialog?.setShowMsg(msg)
+    }
+
+
+    //手表是否正在升级中
+    private fun showWatchDfuStatus(upgrading: Boolean) {
+        if (upgrading) {
+            val upArray = IntArray(2)
+            upArray[0] = Color.parseColor("#67DFD0")
+            upArray[1] = Color.parseColor("#2BA6F7")
+
+
+            aboutCarDfuShowTv!!.shapeDrawableBuilder.setSolidGradientColors(upArray)
+                .intoBackground()
+            aboutCarDfuShowTv?.text = "正在升级..."
+
+            return
+        }
+        val upArray = IntArray(2)
+        upArray[0] = Color.parseColor("#F28D27")
+        upArray[1] = Color.parseColor("#FD654D")
+        aboutCarDfuShowTv!!.shapeDrawableBuilder.setSolidGradientColors(upArray).intoBackground()
+        aboutCarDfuShowTv?.text = "有新版本更新"
+
+    }
+
+
+    private fun showVisibilityUpgrade(){
+        bluetoothDfuShowTv?.visibility = View.GONE
+        touchpadDfuShowTv?.visibility = View.GONE
+        otherMcuDfuShowTv?.visibility = View.GONE
     }
 }

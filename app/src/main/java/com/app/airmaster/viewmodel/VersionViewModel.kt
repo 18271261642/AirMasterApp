@@ -92,14 +92,13 @@ class VersionViewModel : CommViewModel(){
                         bean.mcuBroadcastId = String.format("%02x",data[35])+String.format("%02x",data[36])
                         bean.mcuIdentificationCode = String.format("%02x",data[37])+String.format("%02x",data[38])+String.format("%02x",data[39])+String.format("%02x",data[40])
                         bean.mcuVersionCode = "V"+data[41].toInt()+"."+data[42].toInt()+"."+data[43]
+                        bean.mcuVersionCodeInt = Utils.getIntFromBytes(0x00,data[41],data[42],data[43])
 
                         //客户主板MCU，其它mcu
                         bean.screenMcuBroadcastId =String.format("%02x",data[53])+String.format("%02x",data[54])
                         bean.screenMcuIdentificationCode = String.format("%02x",data[55])+String.format("%02x",data[56])+String.format("%02x",data[57])+String.format("%02x",data[58])
                         bean.screenVersionCode = "V"+data[59].toInt()+"."+data[60].toInt()+"."+data[61]
                         bean.screenMcuVersionCodeInt = Utils.getIntFromBytes(0x00,data[59],data[60],data[61])
-
-
 
                         bean.sourceStr = Utils.formatBtArrayToString(data)
                         deviceVersionInfo.postValue(bean)
@@ -190,18 +189,18 @@ class VersionViewModel : CommViewModel(){
 
 
     //检查设备的固件版本
-    fun getDeviceInfoData(isWatch : Boolean,life : LifecycleOwner, binCode : String,matchCode : String, versionCode : Int,broadcastId : String){
+    fun getDeviceInfoData(isWatch : Boolean,life : LifecycleOwner,matchCode : String,list : MutableList<VersionParamsBean.ParamsListBean>){
 
         val versionParamsBean = VersionParamsBean()
         versionParamsBean.matchCode = matchCode
 
-        val list = ArrayList<VersionParamsBean.ParamsListBean>()
-
-        val touchBean = VersionParamsBean.ParamsListBean()
-        touchBean.identificationCode = binCode
-        touchBean.versionCode = versionCode.toString()
-        touchBean.broadcastId = broadcastId
-        list.add(touchBean)
+//        val list = ArrayList<VersionParamsBean.ParamsListBean>()
+//
+//        val touchBean = VersionParamsBean.ParamsListBean()
+//        touchBean.identificationCode = binCode
+//        touchBean.versionCode = versionCode.toString()
+//        touchBean.broadcastId = broadcastId
+//        list.add(touchBean)
 
         versionParamsBean.mcuList = list
         val str = Gson().toJson(versionParamsBean)

@@ -69,7 +69,7 @@ class DfuViewModel : ViewModel(){
                 if(BikeUtils.isEmpty(name)){
                     return
                 }
-                if(name!!.lowercase() == "sl_ota"){
+                if(name!!.lowercase() == "sl_ota" || name!!.lowercase().contains("ota")){
                     handlers.sendEmptyMessageDelayed(0x00,1000)
                     MmkvUtils.setSaveObjParams("ota_mac",p0?.device?.address)
                     connOta(p0?.device!!.address, context)
@@ -164,7 +164,7 @@ class DfuViewModel : ViewModel(){
         ) {
             Timber.e("------onProgressChanged--------="+percent+" "+currentPart)
           //  dfuStateTv?.text = "升级中: "+percent
-            dfuProgressData.postValue(percent)
+           // dfuProgressData.postValue(percent)
         }
 
         override fun onFirmwareValidating(deviceAddress: String?) {

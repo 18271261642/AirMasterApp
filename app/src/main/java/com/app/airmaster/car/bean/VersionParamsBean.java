@@ -32,6 +32,15 @@ public class VersionParamsBean {
 
         private String versionCode;
 
+        public ParamsListBean() {
+        }
+
+        public ParamsListBean(String identificationCode, String broadcastId, String versionCode) {
+            this.identificationCode = identificationCode;
+            this.broadcastId = broadcastId;
+            this.versionCode = versionCode;
+        }
+
         public String getIdentificationCode() {
             return identificationCode;
         }
