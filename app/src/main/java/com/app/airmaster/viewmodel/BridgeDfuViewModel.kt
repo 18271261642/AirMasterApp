@@ -62,7 +62,6 @@ class BridgeDfuViewModel : CommViewModel(){
                         touchpadUpgradeStatus.postValue(bean)
                     }
 
-
                 }
             }
 

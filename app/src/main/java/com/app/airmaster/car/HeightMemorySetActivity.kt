@@ -62,17 +62,13 @@ class HeightMemorySetActivity : AppActivity(){
             heightMemoryView?.setLeftTopPressureValue(autoBean.leftPressure)
             heightMemoryView?.setRightRearPressureValue(autoBean.rightRearPressure)
 
-            heightMemoryView?.setFrontHeightValue(autoBean.leftFrontHeightRuler,autoBean.rightFrontHeightRuler)
-            heightMemoryView?.setAfterHeightValue(autoBean.leftAfterHeightRuler,autoBean.rightAfterHeightRuler)
+            heightMemoryView?.setFrontHeightValue(autoBean.leftFrontRulerFL,autoBean.rightFrontRulerFL)
+            heightMemoryView?.setAfterHeightValue(autoBean.leftRearRulerFL,autoBean.rightRearRulerFL)
 
             memoryLeftAirPressureView?.setAirPressureValue(autoBean.cylinderPressure)
             memoryRightView?.setTempValue(autoBean.airBottleTemperature -86)
         }
-        heightMemoryView?.setOnPressureListener(object : OnControlPressureCheckedListener {
-            override fun onItemChecked(map: MutableMap<Int, Int>?) {
-                controlViewModel?.setManualOperation(map!! as HashMap<Int, Int>)
-            }
-        })
+        heightMemoryView?.setOnPressureListener { map -> controlViewModel?.setManualOperation(map!! as HashMap<Int, Int>) }
 
 
         controlViewModel?.commControlStatus?.observe(this){

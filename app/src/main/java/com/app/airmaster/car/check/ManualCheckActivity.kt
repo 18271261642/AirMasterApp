@@ -1,5 +1,8 @@
 package com.app.airmaster.car.check
 
+import android.os.Handler
+import android.os.Looper
+import android.os.Message
 import android.util.DisplayMetrics
 import android.view.Gravity
 import android.view.View
@@ -30,6 +33,16 @@ class ManualCheckActivity : AppActivity() {
 
     //是否正在检测
     private var isCheckIng = false
+
+
+    private val handlers : Handler = object : Handler(Looper.getMainLooper()){
+        override fun handleMessage(msg: Message) {
+            super.handleMessage(msg)
+            if(msg.what == 0x00){
+                finish()
+            }
+        }
+    }
 
     override fun getLayoutId(): Int {
         return R.layout.activity_car_manual_check_layout
@@ -89,7 +102,9 @@ class ManualCheckActivity : AppActivity() {
             adapter?.setItem(position,itemBean)
 
             if(checkStep==6 && bean.checkStatus ==1){
-                finish()
+
+                handlers.sendEmptyMessageDelayed(0x00,3000)
+              //  finish()
             }
         }
 

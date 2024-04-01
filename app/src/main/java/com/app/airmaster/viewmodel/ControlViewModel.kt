@@ -166,7 +166,7 @@ open class ControlViewModel : CommViewModel() {
             valueCode = it.value
         }
 
-        val timeArray = Utils.intToSecondByteArray(3000)
+        val timeArray = Utils.intToSecondByteArray(150)
         val timeStr = com.app.airmaster.ble.ota.Utils.bytesToHexString(timeArray)
        // val scrStr = "0008040112"+String.format("%02x",keyCode)+String.format("%02d",(valueCode))+timeStr
         var scrStr = ""

@@ -149,7 +149,7 @@ class CarAboutActivity : AppActivity() {
         override fun handleMessage(msg: Message) {
             super.handleMessage(msg)
             if(msg.what == 0x00){
-
+                isUpgrading = false
                 cancelProgressDialog()
             }
         }
@@ -616,6 +616,7 @@ class CarAboutActivity : AppActivity() {
                     isUpgrading = true
                     file?.path?.let {
                         if(identificationCode == BLUETOOTH_IdentificationCode){   //bluetooth nordic
+                            showDfuStatus(true,BLUETOOTH_IdentificationCode)
                             dfuViewModel?.startDfuModel(file.path, this@CarAboutActivity)
                         }
                         if(identificationCode == TOUCHPAD_IdentificationCode){   //touchpad 旋钮屏的显示
@@ -781,32 +782,10 @@ class CarAboutActivity : AppActivity() {
             }
 
 
-            //无线手环点击
-            R.id.carWatchLayout -> {
-//                if(isUpgrading){
-//                    return
-//                }
-//                showConnWatchDialog()
-            }
-
             //bluetooth 升级
             R.id.bluetoothDfuShowTv -> {
+                checkConnStatus()
                 if (isUpgrading) {
-                    return
-                }
-                if (ActivityCompat.checkSelfPermission(
-                        this@CarAboutActivity,
-                        Manifest.permission.POST_NOTIFICATIONS
-                    ) == PackageManager.PERMISSION_DENIED
-                ) {
-
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                        ActivityCompat.requestPermissions(
-                            this@CarAboutActivity,
-                            arrayOf(Manifest.permission.POST_NOTIFICATIONS),
-                            0x00
-                        )
-                    }
                     return
                 }
                 if (tempServerListBean != null && tempServerListBean?.size!!>0) {
@@ -818,6 +797,7 @@ class CarAboutActivity : AppActivity() {
             }
 
             R.id.touchpadDfuShowTv->{   //touchpad 升级
+                checkConnStatus()
                 if (isUpgrading) {
                     return
                 }
@@ -831,6 +811,7 @@ class CarAboutActivity : AppActivity() {
 
 
             R.id.otherMcuDfuShowTv->{   //other mcu
+                checkConnStatus()
                 if (isUpgrading) {
                     return
                 }
@@ -956,5 +937,13 @@ class CarAboutActivity : AppActivity() {
         bluetoothDfuShowTv?.visibility = View.GONE
         touchpadDfuShowTv?.visibility = View.GONE
         otherMcuDfuShowTv?.visibility = View.GONE
+    }
+
+    private fun checkConnStatus(){
+        val isConn = BaseApplication.getBaseApplication().connStatus == ConnStatus.CONNECTED
+        if(!isConn){
+            ToastUtils.show(resources.getString(R.string.string_device_not_connect))
+            return
+        }
     }
 }
