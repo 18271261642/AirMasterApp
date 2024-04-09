@@ -263,8 +263,8 @@ class CarAboutActivity : AppActivity() {
         bridgeDfuViewModel?.touchpadUpgradeStatus?.observe(this) {
             if (it.isSyncValid) {
                 if (it.syncProgress != 0) {
-                    touchpadDfuShowTv?.textColorBuilder
-                    showProgressDialog(resources.getString(R.string.string_upgrading) + " " + it.syncProgress + "%")
+                    touchpadDfuShowTv?.text = resources.getString(R.string.string_upgrading) + " " + it.syncProgress + "%"
+                   // showProgressDialog(resources.getString(R.string.string_upgrading) + " " + it.syncProgress + "%")
                 }
                 if (it.syncProgress == 1000) {
                     cancelProgressDialog()

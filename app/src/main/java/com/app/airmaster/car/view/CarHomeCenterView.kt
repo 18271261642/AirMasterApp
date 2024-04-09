@@ -236,16 +236,16 @@ class CarHomeCenterView : LinearLayout ,OnClickListener{
                     }
 
                     R.id.carHomeCenterTopTopImg->{  //前轮+
-                        map[4] = 1
+                        map[-1] = 1
                     }
                     R.id.carCenterTopBomImg->{  //前轮-
-                        map[4] = 2
+                        map[-1] = 2
                     }
                     R.id.carCenterBotTopImg->{  //后轮+
-                        map[5] = 1
+                        map[-2] = 1
                     }
                     R.id.carCenterBotBomImg->{  //后轮-
-                        map[5] = 2
+                        map[-2] = 2
                     }
                 }
               handlers.sendEmptyMessage(0x00)
