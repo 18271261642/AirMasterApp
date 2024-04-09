@@ -40,6 +40,7 @@ import com.app.airmaster.viewmodel.VersionViewModel
 import com.app.airmaster.viewmodel.WatchDeviceViewModel
 import com.app.airmaster.viewmodel.WatchOTAViewModel
 import com.blala.blalable.Utils
+import com.google.gson.Gson
 import com.hjq.bar.OnTitleBarListener
 import com.hjq.bar.TitleBar
 import com.hjq.http.listener.OnDownloadListener
@@ -134,6 +135,8 @@ class CarAboutActivity : AppActivity() {
     //是否连接了手表
     private var isConnWatch = false
 
+    private var serverStr = "--"
+
 
     private val handlers: Handler = object : Handler(Looper.getMainLooper()) {
         override fun handleMessage(msg: Message) {
@@ -222,7 +225,8 @@ class CarAboutActivity : AppActivity() {
 
             override fun onRightClick(view: View?) {
                 if (tempDeviceVersionInfo != null) {
-                    tempDeviceVersionInfo?.sourceStr?.let { showLogDialog(it) }
+                    showLogDialog(Gson().toJson(tempDeviceVersionInfo)+"\n"+serverStr)
+                  //  tempDeviceVersionInfo?.sourceStr?.let { showLogDialog(it) }
                 }
             }
 
@@ -329,11 +333,11 @@ class CarAboutActivity : AppActivity() {
                     bluetoothDfuShowTv?.visibility = View.VISIBLE
                 }
 
-                if (firmwareListDTO.identificationCode == tempDeviceVersionInfo?.screenMcuIdentificationCode) { //touchpad
+                if (firmwareListDTO.identificationCode == tempDeviceVersionInfo?.mcuIdentificationCode) { //touchpad
                     touchpadDfuShowTv?.visibility = View.VISIBLE
                 }
 
-                if (firmwareListDTO.identificationCode == tempDeviceVersionInfo?.mcuIdentificationCode) { //muc
+                if (firmwareListDTO.identificationCode == tempDeviceVersionInfo?.screenMcuIdentificationCode) { //muc
                     otherMcuDfuShowTv?.visibility = View.VISIBLE
                 }
 
@@ -394,6 +398,8 @@ class CarAboutActivity : AppActivity() {
                 list.add(bluetoothBean)
                 list.add(touchpadBean)
                 list.add(otherMcuBean)
+
+                serverStr = it.binCode+" "+Gson().toJson(list)
 
                 viewModel?.getDeviceInfoData(
                     false,
