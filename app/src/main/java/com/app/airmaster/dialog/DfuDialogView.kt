@@ -96,7 +96,7 @@ class DfuDialogView : AppCompatDialog {
 
 
     private fun initData(){
-        DfuServiceListenerHelper.registerProgressListener(context, mDfuProgressListener)
+       // DfuServiceListenerHelper.registerProgressListener(context, mDfuProgressListener)
     }
 
     private fun initViews(){
@@ -287,7 +287,7 @@ class DfuDialogView : AppCompatDialog {
 
 
      fun unregister(){
-        DfuServiceListenerHelper.unregisterProgressListener(context, mDfuProgressListener)
+       // DfuServiceListenerHelper.unregisterProgressListener(context, mDfuProgressListener)
     }
 
 

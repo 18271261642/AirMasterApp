@@ -131,6 +131,8 @@ class CarAboutActivity : AppActivity() {
 
     //是否正在升级中
     private var isUpgrading = false
+    //正在升级的类型识别码，Bluetooth、touchpad、手表或者mcu
+    private var upgradingIdentificationCode : String ?= null
 
     private var tempDeviceVersionInfo: DeviceBinVersionBean? = null
 
@@ -307,6 +309,7 @@ class CarAboutActivity : AppActivity() {
             isUpgrading = false
             ToastUtils.show(if (it) "升级成功,请重新连接使用!" else "升级失败,请重新升级!")
             if (it) {
+                dfuViewModel?.unregister(this)
                 startActivity(SecondScanActivity::class.java)
                 finish()
             }
@@ -586,6 +589,7 @@ class CarAboutActivity : AppActivity() {
             }
             if (position == 0x01) {
                 dfuDialog?.dismiss()
+                upgradingIdentificationCode = bean.identificationCode
                 //  dfuDialog?.setDfuModel()
                 BaseApplication.getBaseApplication().isOTAModel = true
                 if (isCarWatch || bean.identificationCode == BLUETOOTH_IdentificationCode) {
@@ -633,7 +637,7 @@ class CarAboutActivity : AppActivity() {
                     isUpgrading = true
                     file?.path?.let {
                         if (identificationCode == BLUETOOTH_IdentificationCode) {   //bluetooth nordic
-                            showDfuStatus(true, BLUETOOTH_IdentificationCode)
+                          //  showDfuStatus(true, BLUETOOTH_IdentificationCode)
                             dfuViewModel?.startDfuModel(file.path, this@CarAboutActivity)
                         }
                         if (identificationCode == TOUCHPAD_IdentificationCode) {   //touchpad 旋钮屏的显示
@@ -717,9 +721,9 @@ class CarAboutActivity : AppActivity() {
 
             when (identificationCode) {
                 "02fffff9" -> {   //bluetooth
-                    aboutCarDfuShowTv!!.shapeDrawableBuilder.setSolidGradientColors(upArray)
+                    bluetoothDfuShowTv!!.shapeDrawableBuilder.setSolidGradientColors(upArray)
                         .intoBackground()
-                    aboutCarDfuShowTv?.text = "正在升级..."
+                    bluetoothDfuShowTv?.text = "正在升级..."
                 }
 
                 "03fffffe" -> {  //touchpad
@@ -975,11 +979,15 @@ class CarAboutActivity : AppActivity() {
 
             }
             if(action == BleConstant.BLE_DIS_CONNECT_ACTION){
-                ToastUtils.show(resources.getString(R.string.string_conn_disconn))
-                showInit()
-                if(isUpgrading){
-                    showDisConnectDialog()
+                //ToastUtils.show(resources.getString(R.string.string_conn_disconn))
+                if(upgradingIdentificationCode != null && upgradingIdentificationCode == TOUCHPAD_IdentificationCode){
+                    ToastUtils.show(resources.getString(R.string.string_conn_disconn))
+                    showInit()
+                    if(isUpgrading){
+                        showDisConnectDialog()
+                    }
                 }
+
             }
 
         }
@@ -1000,6 +1008,7 @@ class CarAboutActivity : AppActivity() {
         dialog.setContentTxt("连接已断开，请保存正常连接!")
        dialog.setOnDialogClickListener(object : OnCommItemClickListener {
            override fun onItemClick(position: Int) {
+               dialog.dismiss()
                startActivity(SecondScanActivity::class.java)
                finish()
            }

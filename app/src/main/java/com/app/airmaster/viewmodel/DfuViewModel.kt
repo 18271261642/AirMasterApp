@@ -165,6 +165,7 @@ class DfuViewModel : ViewModel(){
             Timber.e("------onProgressChanged--------="+percent+" "+currentPart)
           //  dfuStateTv?.text = "升级中: "+percent
            // dfuProgressData.postValue(percent)
+            dfuProgressData.postValue(percent)
         }
 
         override fun onFirmwareValidating(deviceAddress: String?) {
