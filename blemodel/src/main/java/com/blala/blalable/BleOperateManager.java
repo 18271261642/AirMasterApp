@@ -85,7 +85,7 @@ public class BleOperateManager {
                     detailDialList.addAll(indexData);
                     detailDialCount = 0;
                     dialCount++;
-                    handler.sendEmptyMessageDelayed(0x01, 100);
+                    handler.sendEmptyMessageDelayed(0x01, 80);
                     // sendWriteKeyBoardData(indexData);
                 } else { //发送完了
                     Log.e(TAG, "---------全部发送万了");

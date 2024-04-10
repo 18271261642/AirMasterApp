@@ -1,6 +1,10 @@
 package com.app.airmaster.car
 
 import android.Manifest
+import android.content.BroadcastReceiver
+import android.content.Context
+import android.content.Intent
+import android.content.IntentFilter
 import android.graphics.Color
 import android.os.Build
 import android.os.Handler
@@ -22,6 +26,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.app.airmaster.BaseApplication
 import com.app.airmaster.R
 import com.app.airmaster.action.AppActivity
+import com.app.airmaster.adapter.OnCommItemClickListener
 import com.app.airmaster.ble.ConnStatus
 import com.app.airmaster.car.bean.DeviceBinVersionBean
 import com.app.airmaster.car.bean.ServerVersionInfoBean
@@ -39,6 +44,7 @@ import com.app.airmaster.viewmodel.DfuViewModel
 import com.app.airmaster.viewmodel.VersionViewModel
 import com.app.airmaster.viewmodel.WatchDeviceViewModel
 import com.app.airmaster.viewmodel.WatchOTAViewModel
+import com.blala.blalable.BleConstant
 import com.blala.blalable.Utils
 import com.google.gson.Gson
 import com.hjq.bar.OnTitleBarListener
@@ -234,7 +240,17 @@ class CarAboutActivity : AppActivity() {
     }
 
 
+
     override fun initData() {
+
+        val intentFilter = IntentFilter()
+        intentFilter.addAction(BleConstant.BLE_CONNECTED_ACTION)
+        intentFilter.addAction(BleConstant.BLE_DIS_CONNECT_ACTION)
+        intentFilter.addAction(BleConstant.BLE_START_SCAN_ACTION)
+        registerReceiver(broadcastReceiver,intentFilter)
+
+
+
         bridgeDfuViewModel = ViewModelProvider(this)[BridgeDfuViewModel::class.java]
         watchViewModel = ViewModelProvider(this)[WatchDeviceViewModel::class.java]
         dfuViewModel = ViewModelProvider(this)[DfuViewModel::class.java]
@@ -592,18 +608,8 @@ class CarAboutActivity : AppActivity() {
                     downloadOta(bean.ota, saveUrl, bean.identificationCode)
                 }
 
-
             }
         }
-//        dfuDialog?.setOnDfuStateListener {
-//            BaseApplication.getBaseApplication().isOTAModel = false
-//            dfuDialog?.dismiss()
-//            ToastUtils.show(if (it == 1) "升级成功,请重新连接使用!" else "升级失败,请重新升级!")
-//            if (it == 1) {
-//                startActivity(SecondScanActivity::class.java)
-//                finish()
-//            }
-//        }
 
     }
 
@@ -698,6 +704,7 @@ class CarAboutActivity : AppActivity() {
     override fun onDestroy() {
         super.onDestroy()
         dfuViewModel?.unregister(this)
+        unregisterReceiver(broadcastReceiver)
     }
 
 
@@ -955,4 +962,49 @@ class CarAboutActivity : AppActivity() {
             return
         }
     }
+
+
+    private val broadcastReceiver : BroadcastReceiver = object : BroadcastReceiver(){
+        override fun onReceive(p0: Context?, p1: Intent?) {
+            val action = p1?.action
+            Timber.e("---------acdtion="+action)
+            if(action == BleConstant.BLE_CONNECTED_ACTION){
+                ToastUtils.show(resources.getString(R.string.string_conn_success))
+                BaseApplication.getBaseApplication().connStatus = ConnStatus.CONNECTED
+                BaseApplication.getBaseApplication().bleOperate.stopScanDevice()
+
+            }
+            if(action == BleConstant.BLE_DIS_CONNECT_ACTION){
+                ToastUtils.show(resources.getString(R.string.string_conn_disconn))
+                showInit()
+                if(isUpgrading){
+                    showDisConnectDialog()
+                }
+            }
+
+        }
+
+    }
+
+
+    private fun showInit(){
+        bluetoothDfuVersionTv?.text = ""
+        touchpadVersionTv?.text = ""
+        aboutOtherMcuVersionTv?.text = ""
+        showVisibilityUpgrade()
+    }
+
+    private fun showDisConnectDialog(){
+        val dialog = SingleAlertDialog(this, com.bonlala.base.R.style.BaseDialogTheme)
+        dialog.show()
+        dialog.setContentTxt("连接已断开，请保存正常连接!")
+       dialog.setOnDialogClickListener(object : OnCommItemClickListener {
+           override fun onItemClick(position: Int) {
+               startActivity(SecondScanActivity::class.java)
+               finish()
+           }
+
+       })
+    }
+
 }

@@ -5,9 +5,17 @@ import android.os.Bundle
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatDialog
 import com.app.airmaster.R
+import com.app.airmaster.adapter.OnCommItemClickListener
 import com.hjq.shape.view.ShapeTextView
 
 class SingleAlertDialog : AppCompatDialog {
+
+
+    private var onClick : OnCommItemClickListener?= null
+
+    fun setOnDialogClickListener(onCommItemClickListener: OnCommItemClickListener){
+        this.onClick = onCommItemClickListener
+    }
 
 
     private var singleContentTv : TextView ?= null
@@ -28,8 +36,9 @@ class SingleAlertDialog : AppCompatDialog {
         singleContentTv = findViewById(R.id.singleContentTv)
 
         findViewById<ShapeTextView>(R.id.singleSubmitTv)?.setOnClickListener {
-
             dismiss()
+            onClick?.onItemClick(0x00)
+
         }
     }
 
