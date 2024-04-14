@@ -307,9 +307,10 @@ class CarAboutActivity : AppActivity() {
             BaseApplication.getBaseApplication().isOTAModel = false
             dfuDialog?.dismiss()
             isUpgrading = false
+
             ToastUtils.show(if (it) "升级成功,请重新连接使用!" else "升级失败,请重新升级!")
+            dfuViewModel?.unregister(this@CarAboutActivity)
             if (it) {
-                dfuViewModel?.unregister(this)
                 startActivity(SecondScanActivity::class.java)
                 finish()
             }
@@ -357,7 +358,7 @@ class CarAboutActivity : AppActivity() {
                 }
 
                 if (firmwareListDTO.identificationCode == tempDeviceVersionInfo?.screenMcuIdentificationCode) { //muc
-                    otherMcuDfuShowTv?.visibility = View.VISIBLE
+                  //  otherMcuDfuShowTv?.visibility = View.VISIBLE
                 }
 
                 showDfuStatus(false, firmwareListDTO.identificationCode)
@@ -809,7 +810,7 @@ class CarAboutActivity : AppActivity() {
                     return
                 }
                 if (tempServerListBean != null && tempServerListBean?.size!! > 0) {
-                    val bean = tempServerListBean?.find { it.identificationCode == "02fffff9" }
+                    val bean = tempServerListBean?.find { it.identificationCode == BLUETOOTH_IdentificationCode }
                     if (bean != null) {
                         showDfuDialog(false, bean)
                     }
@@ -822,7 +823,7 @@ class CarAboutActivity : AppActivity() {
                     return
                 }
                 if (tempServerListBean != null && tempServerListBean?.size!! > 0) {
-                    val bean = tempServerListBean?.find { it.identificationCode == "03fffffe" }
+                    val bean = tempServerListBean?.find { it.identificationCode == TOUCHPAD_IdentificationCode }
                     if (bean != null) {
                         showDfuDialog(false, bean)
                     }
@@ -836,7 +837,7 @@ class CarAboutActivity : AppActivity() {
                     return
                 }
                 if (tempServerListBean != null && tempServerListBean?.size!! > 0) {
-                    val bean = tempServerListBean?.find { it.identificationCode == "04fffffd" }
+                    val bean = tempServerListBean?.find { it.identificationCode == MCU_IdentificationCode }
                     if (bean != null) {
                         showDfuDialog(false, bean)
                     }

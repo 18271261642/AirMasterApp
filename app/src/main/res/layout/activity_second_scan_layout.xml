@@ -5,6 +5,7 @@
     android:background="@color/play_color_theme"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:keepScreenOn="true"
     android:layout_height="match_parent">
 
     <com.hjq.bar.TitleBar

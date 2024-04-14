@@ -16,7 +16,11 @@ import com.blala.blalable.listener.ConnStatusListener
 import com.hjq.toast.ToastUtils
 import com.inuker.bluetooth.library.search.SearchResult
 import com.inuker.bluetooth.library.search.response.SearchResponse
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import no.nordicsemi.android.dfu.DfuProgressListener
+import no.nordicsemi.android.dfu.DfuServiceController
 import no.nordicsemi.android.dfu.DfuServiceInitiator
 import no.nordicsemi.android.dfu.DfuServiceListenerHelper
 import timber.log.Timber
@@ -31,7 +35,10 @@ class DfuViewModel : ViewModel(){
     //进度
     var dfuProgressData = SingleLiveEvent<Int>()
 
+    private var isDfuConn = false
 
+
+    private var dfuServiceController : DfuServiceController ?= null
 
     private val handlers : Handler = object : Handler(Looper.getMainLooper()){
         override fun handleMessage(msg: Message) {
@@ -70,8 +77,12 @@ class DfuViewModel : ViewModel(){
                     return
                 }
                 if(name!!.lowercase() == "sl_ota" || name!!.lowercase().contains("ota")){
-                    handlers.sendEmptyMessageDelayed(0x00,1000)
+                    handlers.sendEmptyMessageDelayed(0x00,100)
                     MmkvUtils.setSaveObjParams("ota_mac",p0?.device?.address)
+
+//                    if(isDfuConn){
+//                        return
+//                    }
                     connOta(p0?.device!!.address, context)
                 }
 
@@ -92,6 +103,8 @@ class DfuViewModel : ViewModel(){
 
     //连接
     private fun connOta(mac : String,context: Context){
+        Timber.e("---------dfu连接中====")
+        isDfuConn = true
         BaseApplication.getBaseApplication().bleOperate.connYakDevice("ota",mac,object :
             ConnStatusListener {
             override fun connStatus(status: Int) {
@@ -112,17 +125,17 @@ class DfuViewModel : ViewModel(){
         val mac = MmkvUtils.getSaveParams("ota_mac","") as String
         val dfuServiceInitiator = DfuServiceInitiator(mac)
             .setDeviceName("SL_OTA")
-            .setKeepBond(true)
+            .setKeepBond(false)
             .setForceDfu(false)
-            .setPacketsReceiptNotificationsEnabled(true)
-            .setPacketsReceiptNotificationsValue(6)
+            .setPacketsReceiptNotificationsEnabled(false)
+            .setPacketsReceiptNotificationsValue(12) //6
             .setUnsafeExperimentalButtonlessServiceInSecureDfuEnabled(true);
         dfuServiceInitiator.disableResume()
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             DfuServiceInitiator.createDfuNotificationChannel(context)
         }
         dfuServiceInitiator.setZip(url)
-        dfuServiceInitiator.start(context, DfuService::class.java)
+        dfuServiceController = dfuServiceInitiator.start(context, DfuService::class.java)
     }
 
 
@@ -186,7 +199,15 @@ class DfuViewModel : ViewModel(){
           //  ToastUtils.show(context.getString(R.string.string_upgrade_success))
             //  dfuNoUpdateTv.visibility = View.GONE
           //  failOrSuccess(true)
-            dfuUpgradeStatus.postValue(true)
+            BaseApplication.getBaseApplication().bleOperate.disConnYakDevice()
+
+            dfuServiceController?.abort()
+            isDfuConn = false
+            GlobalScope.launch {
+                delay(3000)
+                dfuUpgradeStatus.postValue(true)
+            }
+
 //            val saveMac = MmkvUtils.getConnDeviceMac()
 //            if(!BikeUtils.isEmpty(saveMac)){
 ////                BaseApplication.getInstance().connStatusService.autoConnDevice(saveMac,true)
@@ -197,12 +218,13 @@ class DfuViewModel : ViewModel(){
         override fun onDfuAborted(deviceAddress: String?) {
             Timber.e("------onDfuAborted--------")
           //  failOrSuccess(false)
-            dfuUpgradeStatus.postValue(false)
+           // dfuUpgradeStatus.postValue(false)
         }
 
         override fun onError(deviceAddress: String?, error: Int, errorType: Int, message: String?) {
             Timber.e("--------onError------="+error+" "+message)
           //  failOrSuccess(false)
+            isDfuConn = false
             dfuUpgradeStatus.postValue(false)
         }
 

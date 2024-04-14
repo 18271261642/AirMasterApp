@@ -42,9 +42,17 @@ class HomeSettingFragment : TitleBarFragment<CarHomeActivity>() {
             startActivity(CarSysSetActivity::class.java)
         }
         findViewById<SettingBar>(R.id.sysCheckBar).setOnClickListener {
+            if(BaseApplication.getBaseApplication().connStatus != ConnStatus.CONNECTED){
+                showNotConnDialog()
+                return@setOnClickListener
+            }
             startActivity(CarSystemCheckActivity::class.java)
         }
         findViewById<SettingBar>(R.id.sysAboutBar).setOnClickListener {
+            if(BaseApplication.getBaseApplication().connStatus != ConnStatus.CONNECTED){
+                showNotConnDialog()
+                return@setOnClickListener
+            }
             startActivity(CarAboutActivity::class.java)
         }
     }
@@ -54,18 +62,15 @@ class HomeSettingFragment : TitleBarFragment<CarHomeActivity>() {
     }
 
     private fun showNotConnDialog(){
-        attachActivity?.showCommAlertDialog("未连接设备","去官网","去连接",object :
-            OnCommItemClickListener {
-            override fun onItemClick(position: Int) {
-                attachActivity.disCommAlertDialog()
-                if(position == 0x01){
-                    startActivity(SecondScanActivity::class.java)
-                }
-                if(position == 0x00){
-                    startActivity(ShowWebActivity::class.java)
-                }
+        attachActivity?.showCommAlertDialog("未连接设备","去官网","去连接"
+        ) { position ->
+            attachActivity.disCommAlertDialog()
+            if (position == 0x01) {
+                startActivity(SecondScanActivity::class.java)
             }
-
-        })
+            if (position == 0x00) {
+                startActivity(ShowWebActivity::class.java)
+            }
+        }
     }
 }

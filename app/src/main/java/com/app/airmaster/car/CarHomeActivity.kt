@@ -231,7 +231,9 @@ class CarHomeActivity : AppActivity() ,NavigationAdapter.OnNavigationListener{
                 BaseApplication.getBaseApplication()?.connStatusService?.writeWatchTimeData()
             }
             if(action == BleConstant.BLE_DIS_CONNECT_ACTION){
-                ToastUtils.show(resources.getString(R.string.string_conn_disconn))
+                if(!BaseApplication.getBaseApplication().isOTAModel){
+                    ToastUtils.show(resources.getString(R.string.string_conn_disconn))
+                }
                 onHomeConnListener?.onConn(false)
             }
 
