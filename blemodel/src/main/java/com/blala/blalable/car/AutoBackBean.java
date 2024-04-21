@@ -169,6 +169,7 @@ public class AutoBackBean {
     private int activationStatus ;
 
 
+    private String autoStr;
 
 
     public int getWorkModel() {
@@ -474,6 +475,14 @@ public class AutoBackBean {
 
     public void setRightRearGoalFL(int rightRearGoalFL) {
         this.rightRearGoalFL = rightRearGoalFL;
+    }
+
+    public String getAutoStr() {
+        return autoStr;
+    }
+
+    public void setAutoStr(String autoStr) {
+        this.autoStr = autoStr;
     }
 
     @Override

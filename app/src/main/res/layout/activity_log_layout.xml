@@ -9,7 +9,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/transparent"
+        app:lineVisible="false"
         app:titleColor="@color/white"
+        app:leftIcon="@drawable/ic_white_left_back"
         app:title="Log"/>
 
   <Button
@@ -24,6 +26,7 @@
         android:id="@+id/requestBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:visibility="gone"
         android:text="Request"/>
 
 

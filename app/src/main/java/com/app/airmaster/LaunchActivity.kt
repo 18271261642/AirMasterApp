@@ -26,6 +26,7 @@ class LaunchActivity : AppActivity() {
                 if (!isFirstOpen) {
                     showPrivacyDialog()
                 } else {
+                    BaseApplication.getBaseApplication().setAgree()
                     startActivity(CarHomeActivity::class.java)
                     finish()
                 }

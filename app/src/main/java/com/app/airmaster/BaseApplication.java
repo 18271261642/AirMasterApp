@@ -74,6 +74,15 @@ public class BaseApplication extends BleApplication {
         return BleOperateManager.getInstance();
     }
 
+
+    public  void setAgree(){
+        boolean isFirstOpen = MmkvUtils.getPrivacy();
+        if(isFirstOpen){
+            CrashReport.initCrashReport(baseApplication, "5203bcf1b4", true);
+        }
+
+    }
+
     private void initApp(){
         baseApplication = this;
         //log
@@ -86,8 +95,8 @@ public class BaseApplication extends BleApplication {
         MMKV.initialize(this);
         MmkvUtils.initMkv();
         ActivityManager.getInstance().init(this);
-        CrashReport.initCrashReport(getApplicationContext(), "5203bcf1b4", true);
 
+        setAgree();
         initNet();
 
         Intent intent = new Intent(this, ConnStatusService.class);

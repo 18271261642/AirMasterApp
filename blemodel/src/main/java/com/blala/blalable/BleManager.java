@@ -595,6 +595,8 @@ public class BleManager {
                     autoBackBean.setAirBottleErrorCode(airBottleErrorCode);
                     autoBackBean.setActivationStatus(activationStatus);
 
+                    autoBackBean.setAutoStr(notifyStr);
+
                    // Log.e(TAG,"-------自动返回数据=="+autoBackBean.toString()+" "+(onCarAutoBackListener == null));
 
                     if(onCarAutoBackListener != null){
