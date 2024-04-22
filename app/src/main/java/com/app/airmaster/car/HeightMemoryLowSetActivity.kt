@@ -2,6 +2,7 @@ package com.app.airmaster.car
 
 import android.content.Intent
 import android.view.View
+import android.widget.CheckBox
 import android.widget.ImageView
 import androidx.lifecycle.ViewModelProvider
 import com.app.airmaster.BaseApplication
@@ -19,7 +20,7 @@ class HeightMemoryLowSetActivity : AppActivity(){
 
     private var viewModel : ControlViewModel?= null
 
-    private var memoryLowOnSwitch : SwitchButton ?= null
+    private var memoryLowOnSwitch : CheckBox ?= null
     private var memoryLowCusLayout : ShapeConstraintLayout ?= null
     private var memoryLowRightImg : ImageView ?= null
 
@@ -46,10 +47,13 @@ class HeightMemoryLowSetActivity : AppActivity(){
         }
 
         memoryLowOnSwitch?.setOnCheckedChangeListener { button, checked ->
-            setCusStatus(!checked)
-            if(checked){
-                viewModel?.setHeightMemory(false)
+            Timber.e("---------状态="+button.isPressed)
+            if(!button.isPressed){
+                return@setOnCheckedChangeListener
             }
+            setCusStatus(checked)
+            viewModel?.setAirOutData(checked)
+
         }
     }
 
@@ -60,13 +64,14 @@ class HeightMemoryLowSetActivity : AppActivity(){
             if(it == null){
                 return@observe
             }
-            val model = it.modelType
-            memoryLowOnSwitch?.isChecked = model ==1
+            val model = it.lowestPosition
+            Timber.e("----------AIROUT="+it.lowestPosition)
+            memoryLowOnSwitch?.isChecked = model ==0
             setCusStatus(model == 0)
         }
 
         viewModel?.writeCommonFunction()
-
+        //memoryLowOnSwitch?.isChecked = true
     }
 
 

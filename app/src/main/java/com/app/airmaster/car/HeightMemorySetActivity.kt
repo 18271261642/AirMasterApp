@@ -43,7 +43,8 @@ class HeightMemorySetActivity : AppActivity(){
         findViewById<ShapeTextView>(R.id.heightMemorySaveTv).setOnClickListener {
             val isH = modelIndex !=0 && modelIndex != 5
 
-            controlViewModel?.setHeightMemory(isH)
+          //  controlViewModel?.setHeightMemory(isH)
+            controlViewModel?.setLogMemoryData(modelIndex)
         }
     }
 

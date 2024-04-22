@@ -180,6 +180,7 @@ class CarHomeCenterView : LinearLayout ,OnClickListener{
                 if (id != null) {
                     isEnd = false
                     startCountDown(id)
+                    return true
                 }
             }
 
@@ -192,9 +193,10 @@ class CarHomeCenterView : LinearLayout ,OnClickListener{
                 Timber.e("---------onTouchkey="+keyV)
                 if(keyV != -1){
                     map[keyV] = 0
-                    handlers.sendEmptyMessageDelayed(0x01,200)
+                    handlers.sendEmptyMessageDelayed(0x01,10)
                 }
 
+                return true
             }
             return false
         }
@@ -249,7 +251,7 @@ class CarHomeCenterView : LinearLayout ,OnClickListener{
                     }
                 }
               handlers.sendEmptyMessage(0x00)
-                delay(200)
+                delay(100)
             }
         }
     }

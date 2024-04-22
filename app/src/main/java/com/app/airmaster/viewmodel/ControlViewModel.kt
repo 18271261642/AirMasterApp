@@ -310,6 +310,47 @@ open class ControlViewModel : CommViewModel() {
         }
     }
 
+    //设置高度记忆的档位1~5
+    fun setLogMemoryData(gear: Int){
+        val scrStr = "000504011C"+String.format("%02x",gear)
+        val crc = Utils.crcCarContentArray(scrStr)
+        val str = "011E"+ CarConstant.CAR_HEAD_BYTE_STR+scrStr+crc
+        val resultArray = Utils.hexStringToByte(str)
+        val result = Utils.getFullPackage(resultArray)
+        BaseApplication.getBaseApplication().bleOperate.writeCommonByte(result){
+            //8800000000000ce6030f7ffaaf000501049a015b
+            if(it != null){
+                setCommRefreshDevice(it,0x9C.toByte())
+                GlobalScope.launch {
+                    delay(1000)
+                    commControlStatus.postValue(1)
+                }
+            }
+        }
+    }
+
+
+
+    fun setAirOutData(isOpen : Boolean){
+        val scrStr = "0005040126"+String.format("%02x",if(isOpen) 0 else 1)
+        val crc = Utils.crcCarContentArray(scrStr)
+        val str = "011E"+ CarConstant.CAR_HEAD_BYTE_STR+scrStr+crc
+        val resultArray = Utils.hexStringToByte(str)
+        val result = Utils.getFullPackage(resultArray)
+        BaseApplication.getBaseApplication().bleOperate.writeCommonByte(result){
+            //8800000000000ce6030f7ffaaf000501049a015b
+            if(it != null){
+                setCommRefreshDevice(it,0xA6.toByte())
+                GlobalScope.launch {
+                    delay(1000)
+                    commControlStatus.postValue(1)
+                }
+            }
+        }
+    }
+
+
+
     //设置高度尺
     fun setHeightRuler( leftFront : Int,leftRear : Int,rightFront : Int,rightRear : Int ){
         val scrStr = "000804012E"+String.format("%02x",leftFront)+String.format("%02x",leftRear)+String.format("%02x",rightFront)+String.format("%02x",rightRear)
