@@ -192,7 +192,7 @@ class CarHomeCenterView : LinearLayout ,OnClickListener{
                 Timber.e("---------onTouchkey="+keyV)
                 if(keyV != -1){
                     map[keyV] = 0
-                    handlers.sendEmptyMessageDelayed(0x01,10)
+                    handlers.sendEmptyMessageDelayed(0x01,20)
                 }
 
                 return true
