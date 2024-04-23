@@ -26,8 +26,51 @@
         android:id="@+id/requestBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:visibility="gone"
-        android:text="Request"/>
+        android:text="获取气压"/>
+
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:orientation="horizontal"
+        android:layout_height="wrap_content">
+
+        <Button
+            android:id="@+id/lefAddBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/white"
+            android:text="不带停止左前+"/>
+        <Button
+            android:id="@+id/leftRemoveBtn"
+            android:layout_width="wrap_content"
+            android:layout_marginStart="@dimen/dp_15"
+            android:layout_height="wrap_content"
+            android:textColor="@color/white"
+            android:text="不带停止左前-"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:orientation="horizontal"
+        android:layout_height="wrap_content">
+
+        <Button
+            android:id="@+id/lefAddBtn2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/white"
+            android:text="带停止左前+"/>
+        <Button
+            android:id="@+id/leftRemoveBtn2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/dp_15"
+            android:textColor="@color/white"
+            android:text="带停止左前-"/>
+
+    </LinearLayout>
 
 
    <androidx.core.widget.NestedScrollView

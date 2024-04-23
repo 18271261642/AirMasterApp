@@ -29,6 +29,8 @@ open class ControlViewModel : CommViewModel() {
     var commControlStatus = SingleLiveEvent<Int>()
 
 
+     var airLog = SingleLiveEvent<String>()
+
     //自检返回
     var checkBackDataMap = SingleLiveEvent<CheckBean>()
 
@@ -166,17 +168,17 @@ open class ControlViewModel : CommViewModel() {
             valueCode = it.value
         }
 
-        val timeArray = Utils.intToSecondByteArray(150)
+        val timeArray = Utils.intToSecondByteArrayHeight(500)
         val timeStr = com.app.airmaster.ble.ota.Utils.bytesToHexString(timeArray)
        // val scrStr = "0008040112"+String.format("%02x",keyCode)+String.format("%02d",(valueCode))+timeStr
         var scrStr = ""
-        if(keyCode == -1 || keyCode == -2){
-            scrStr = "0008040112"+String.format("%02x",if(keyCode==-1) 4 else 5)+String.format("%02d",(valueCode))+timeStr
-        }else{
-            scrStr = "000804012F"+String.format("%02x",keyCode)+String.format("%02d",(valueCode))+timeStr
-
-        }
-
+//        if(keyCode == -1 || keyCode == -2){
+//            scrStr = "0008040112"+String.format("%02x",if(keyCode==-1) 4 else 5)+String.format("%02d",(valueCode))+timeStr
+//        }else{
+//            scrStr = "000804012F"+String.format("%02x",keyCode)+String.format("%02d",(valueCode))+timeStr
+//
+//        }
+        scrStr = "000804012F"+String.format("%02x",keyCode)+String.format("%02d",(valueCode))+timeStr
         //val scrStr = "000804012F"+String.format("%02x",keyCode)+String.format("%02d",(valueCode))+timeStr
 
 
@@ -185,6 +187,7 @@ open class ControlViewModel : CommViewModel() {
         val resultArray = Utils.hexStringToByte(str)
         val result = Utils.getFullPackage(resultArray)
 
+        airLog.postValue("发送指令="+map.toString()+" "+str+"\n")
 
         BaseApplication.getBaseApplication().bleOperate.writeCommonByte(result){
             //8800000000000cd6030f7ffaaf00050104920163

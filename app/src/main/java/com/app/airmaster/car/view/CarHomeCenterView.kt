@@ -171,7 +171,6 @@ class CarHomeCenterView : LinearLayout ,OnClickListener{
 
 
 
-
     private val onTouchListener : OnTouchListener = object : OnTouchListener{
         override fun onTouch(p0: View?, p1: MotionEvent?): Boolean {
             Timber.e("---------onTouch="+p1?.action)
@@ -238,20 +237,20 @@ class CarHomeCenterView : LinearLayout ,OnClickListener{
                     }
 
                     R.id.carHomeCenterTopTopImg->{  //前轮+
-                        map[-1] = 1
+                        map[3] = 1
                     }
                     R.id.carCenterTopBomImg->{  //前轮-
-                        map[-1] = 2
+                        map[3] = 2
                     }
                     R.id.carCenterBotTopImg->{  //后轮+
-                        map[-2] = 1
+                        map[12] = 1
                     }
                     R.id.carCenterBotBomImg->{  //后轮-
-                        map[-2] = 2
+                        map[12] = 2
                     }
                 }
               handlers.sendEmptyMessage(0x00)
-                delay(100)
+                delay(200)
             }
         }
     }

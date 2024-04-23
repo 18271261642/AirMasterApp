@@ -115,7 +115,7 @@ class ManualSetHeightView : AppCompatDialog {
             valueCode = it.value
         }
 
-        val timeArray = Utils.intToSecondByteArray(100)
+        val timeArray = Utils.intToSecondByteArrayHeight(500)
         val timeStr = com.app.airmaster.ble.ota.Utils.bytesToHexString(timeArray)
         // val scrStr = "0008040112"+String.format("%02x",keyCode)+String.format("%02d",(valueCode))+timeStr
 
