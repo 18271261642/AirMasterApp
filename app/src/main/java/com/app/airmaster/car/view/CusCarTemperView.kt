@@ -68,7 +68,7 @@ class CusCarTemperView : View {
         txtPaint?.isAntiAlias = true
         txtPaint?.strokeWidth = 1F
         txtPaint?.color = Color.WHITE
-        txtPaint?.textSize = MiscUtil.dipToPxFloat(context,12F)
+        txtPaint?.textSize = MiscUtil.dipToPxFloat(context,10F)
 
 
         tempTxtPaint = Paint(Paint.ANTI_ALIAS_FLAG)
@@ -76,7 +76,7 @@ class CusCarTemperView : View {
         tempTxtPaint?.isAntiAlias = true
         tempTxtPaint?.strokeWidth = 1F
         tempTxtPaint?.color = Color.TRANSPARENT
-        tempTxtPaint?.textSize = MiscUtil.dipToPxFloat(context,12F)
+        tempTxtPaint?.textSize = MiscUtil.dipToPxFloat(context,10F)
 
     }
 
@@ -106,9 +106,9 @@ class CusCarTemperView : View {
         canvas?.drawText("100",12F,mHeight!!/2,tempTxtPaint!!)
 
         //Timber.e("------tw="+tW+"  "+MiscUtil.getTextWidth(txtPaint!!,"100"))
-        val mH = progressHeight+tH/2
+        val mH = if(progressHeight==0F) mHeight!!-2F else  mHeight!!-progressHeight+tH+5F
 
-        canvas?.drawText(progressTxt,if(progressValue<=99) 12F else 0F,mHeight!!-(if(mH>=mHeight!!)mHeight!!-tH else mH),txtPaint!!)
+        canvas?.drawText(progressTxt,if(progressValue<=99) 12F else 0F, mH,txtPaint!!)
 
         val bgWidth = tW+15F+ MiscUtil.dipToPx(context,4F)
 

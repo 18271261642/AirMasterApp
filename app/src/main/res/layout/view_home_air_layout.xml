@@ -62,9 +62,9 @@
         android:progress="50"
         android:progressTint="@color/transparent"
         android:progressDrawable="@null"
+        android:layout_marginTop="@dimen/dp_2"
         android:progressBackgroundTint="@color/transparent"
         android:layout_marginStart="@dimen/dp_20"
-        android:layout_marginTop="@dimen/dp_10"
         android:thumb="@mipmap/ic_home_left_air"
         android:layout_height="match_parent"/>
 

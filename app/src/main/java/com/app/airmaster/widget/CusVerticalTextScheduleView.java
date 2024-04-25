@@ -117,7 +117,7 @@ public class CusVerticalTextScheduleView extends View {
         txtPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         txtPaint.setStyle(Paint.Style.FILL_AND_STROKE);
         txtPaint.setColor(Color.WHITE);
-        txtPaint.setTextSize(DisplayUtils.dip2px(getContext(),12f));
+        txtPaint.setTextSize(DisplayUtils.dip2px(getContext(),10f));
         txtPaint.setTextAlign(Paint.Align.CENTER);
         txtPaint.setAntiAlias(true);
 
@@ -147,8 +147,10 @@ public class CusVerticalTextScheduleView extends View {
     //开始绘制
     RectF currRectf;
     private void drawSchedule(Canvas canvas) {
-        float currV = (currScheduleValue * mHeight /allScheduleValue);
-       // Timber.e("-----currV="+currV+" "+mHeight);
+        float model = mHeight/allScheduleValue;
+
+        float currV = mHeight - model * currScheduleValue;
+     //   Timber.e("-----currV="+currV+" "+currScheduleValue+" "+allScheduleValue);
         if(currV>mHeight){
             currV = mHeight;
         }
@@ -164,13 +166,13 @@ public class CusVerticalTextScheduleView extends View {
 
 
         currRectf.left = 0;
-        currRectf.top = mHeight-currV ;
+        currRectf.top = currV ;
         currRectf.right = mWidth;
         currRectf.bottom = mHeight;
         String txtStr = String.format("%02d",Math.max(currScheduleValue, 0));
 
         float txtHeight = MiscUtil.measureTextHeight(txtPaint);
-        float topHeight = Math.max((mHeight - currV-10), txtHeight+5);
+        float topHeight = Math.max((currV-10), txtHeight+5);
 
         canvas.drawText(txtStr,25,topHeight,txtPaint);
 
@@ -180,13 +182,6 @@ public class CusVerticalTextScheduleView extends View {
         path.op(bgPath,currPath,Path.Op.INTERSECT);
        // Timber.e("----isShow="+isShowTxt+" "+showTxt);
         currSchedulePaint.setColor(currShceduleColor);
-       // canvas.drawPath(path,currSchedulePaint);
-//        if(isShowTxt){
-//            if(showTxt != null){
-//                float txtHeight = MiscUtil.measureTextHeight(txtPaint);
-//                canvas.drawText(showTxt,mWidth/2,mHeight/2+txtHeight/2,txtPaint);
-//            }
-//        }
         currPath.reset();
         bgPath.reset();
         path.reset();

@@ -71,6 +71,7 @@ class HomeLeftAirPressureView : LinearLayout{
         homeLeftAirSeekBar?.visibility = View.VISIBLE
         cusVerticalView?.currScheduleValue = value.toFloat()
         val max = MmkvUtils.getMaxPressureValue()
+        homeLeftAirSeekBar?.max = max
         homeAirTopTv?.text = max.toString()
         cusHomeLeftVerticalTxtView?.allScheduleValue = max.toFloat()
         if(value<=80){

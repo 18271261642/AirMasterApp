@@ -286,6 +286,7 @@ class CarAboutActivity : AppActivity() {
                 }
                 if (it.syncProgress == 1000) {
                     cancelProgressDialog()
+                    BaseApplication.getBaseApplication().isOTAModel = false
                     //  ToastUtils.show("升级成功!")
                     isUpgrading = false
                     ToastUtils.show("升级成功,请重新连接使用!")
@@ -293,9 +294,11 @@ class CarAboutActivity : AppActivity() {
                     finish()
                 }
             } else {
+                BaseApplication.getBaseApplication().isOTAModel = false
                 ToastUtils.show(it.inValidDesc)
                 cancelProgressDialog()
                 isUpgrading = false
+                showDfuStatus(false,TOUCHPAD_IdentificationCode)
             }
         }
 

@@ -569,6 +569,10 @@ public class BleOperateManager {
                 if (data.length == 11 && ((data[0] & 0xff) == 136) && data[8] == 8 && data[9] == 6) {
                     int code = data[10] & 0xff;
 
+                    if(code == 0x06){
+                        handler.removeMessages(0x01);
+                    }
+
                     if (keyBoardListener != null) {
                         keyBoardListener.onSyncFlash(code);
                     }
