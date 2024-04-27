@@ -25,11 +25,11 @@ import com.app.airmaster.car.view.HomeLeftAirPressureView
 import com.app.airmaster.car.view.HomeRightTemperatureView
 import com.app.airmaster.listeners.OnControlPressureCheckedListener
 import com.app.airmaster.second.SecondScanActivity
+import com.app.airmaster.utils.MmkvUtils
 import com.app.airmaster.viewmodel.ControlViewModel
 import com.blala.blalable.Utils
 import com.blala.blalable.car.AutoBackBean
-
-
+import timber.log.Timber
 
 
 /**
@@ -145,7 +145,7 @@ class HomeControlFragment : TitleBarFragment<CarHomeActivity>() {
     private var tempGear =-1
 
     override fun initData() {
-
+        showRulerGoalVisibility(false)
         //homeLeftAirPressureView?.setAirPressureValue(0)
         carHomeCenterView?.setFrontImage()
 //        carHomeCenterView?.setFrontHeightValue(50,50)
@@ -160,7 +160,13 @@ class HomeControlFragment : TitleBarFragment<CarHomeActivity>() {
                 if(carActivity.isFinishing){
                     return
                 }
-               // Timber.e("----------自动返回数据="+autoBean.toString())
+              //  Timber.e("----------自动返回数据="+autoBean.toString())
+
+                if(tempGear == -1){
+                    showRulerGoalVisibility(false)
+                    tempGear = autoBean.curPos
+                }
+
                 if(tempGear != autoBean.curPos){
                     tempGear = autoBean.curPos
                     handlers.removeMessages(0x00)
@@ -189,6 +195,13 @@ class HomeControlFragment : TitleBarFragment<CarHomeActivity>() {
                 homeLeftAirPressureView?.setAirPressureValue(autoBean.cylinderPressure)
                 homeRightView?.setTempValue(autoBean.airBottleTemperature )
 
+
+                val max = MmkvUtils.getMaxPressureValue()
+                if(autoBean.cylinderPressure>=max){
+                    homeBottomCheckView?.setDefaultPushAir()
+                }
+
+
                 //设备异常
                 val deviceErrorCode = autoBean.deviceErrorCode
                 val errorArray = Utils.byteToBit(deviceErrorCode)
@@ -216,10 +229,8 @@ class HomeControlFragment : TitleBarFragment<CarHomeActivity>() {
                     showNotConnDialog()
                     return
                 }
-
                 controlViewModel?.setManualOperation(map!! as HashMap<Int, Int>)
             }
-
         })
 
 
@@ -229,6 +240,7 @@ class HomeControlFragment : TitleBarFragment<CarHomeActivity>() {
                if(!isConn){
                    showDefaultViews()
                }
+                handlers.sendEmptyMessage(0x00)
             }
         })
     }
@@ -298,9 +310,6 @@ class HomeControlFragment : TitleBarFragment<CarHomeActivity>() {
             }
         }
     }
-
-
-
 
     //显示或隐藏
     private fun showRulerGoalVisibility(visibility: Boolean){

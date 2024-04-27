@@ -113,4 +113,9 @@ class HomeBottomCheckView : LinearLayout,OnCheckedChangeListener{
       //  itemHomeBottomWarringCheckBox?.isChecked = false
       //  itemHomeBottomDrainageCheckBox?.isChecked = false
     }
+
+
+    fun setDefaultPushAir(){
+        homeBottomEncourageCheckBox?.isChecked = false
+    }
 }

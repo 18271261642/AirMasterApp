@@ -76,8 +76,6 @@ class HomeLeftAirPressureView : LinearLayout{
         homeLeftAirSeekBar?.max = max
         homeAirTopTv?.text = max.toString()
 
-
-
         cusHomeLeftVerticalTxtView?.allScheduleValue = max.toFloat()
         if(value<=80){
             homeLeftAirSeekBar?.thumb = resources.getDrawable(R.mipmap.ic_home_left_air_blue)
