@@ -47,6 +47,8 @@ class GaugeHeightView : LinearLayout{
 
         gaugeLeftGoalSeekBar?.max = 100
         gaugeRightGoalSeekBar?.max = 100
+
+        setValues(0,0)
     }
 
 

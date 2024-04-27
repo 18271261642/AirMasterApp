@@ -595,7 +595,7 @@ public class BleManager {
                     autoBackBean.setAirBottleErrorCode(airBottleErrorCode);
                     autoBackBean.setActivationStatus(activationStatus);
 
-                    autoBackBean.setAutoStr(notifyStr);
+                    autoBackBean.setAutoStr(notifyStr+"  温度= "+String.format("%02x", bytes[39]));
 
                    // Log.e(TAG,"-------自动返回数据=="+autoBackBean.toString()+" "+(onCarAutoBackListener == null));
 

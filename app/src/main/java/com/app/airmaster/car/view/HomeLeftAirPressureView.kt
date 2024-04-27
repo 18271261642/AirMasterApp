@@ -68,11 +68,16 @@ class HomeLeftAirPressureView : LinearLayout{
 
     //设置气压数值
     fun setAirPressureValue(value : Int){
+        val max = MmkvUtils.getMaxPressureValue()
+        cusVerticalView?.allScheduleValue = max.toFloat()
         homeLeftAirSeekBar?.visibility = View.VISIBLE
         cusVerticalView?.currScheduleValue = value.toFloat()
-        val max = MmkvUtils.getMaxPressureValue()
+
         homeLeftAirSeekBar?.max = max
         homeAirTopTv?.text = max.toString()
+
+
+
         cusHomeLeftVerticalTxtView?.allScheduleValue = max.toFloat()
         if(value<=80){
             homeLeftAirSeekBar?.thumb = resources.getDrawable(R.mipmap.ic_home_left_air_blue)
@@ -82,6 +87,10 @@ class HomeLeftAirPressureView : LinearLayout{
         homeLeftAirSeekBar?.progress = value
         cusHomeLeftVerticalTxtView?. currScheduleValue = if(value>max) max else  value
         cusHomeLeftVerticalTxtView?.showTxt = if(value>max) max.toString() else value.toString()
+
+
+        Timber.e("---------气压值="+max +"  value="+value)
+
     }
 
 
