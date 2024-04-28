@@ -85,10 +85,6 @@ class HomeLeftAirPressureView : LinearLayout{
         homeLeftAirSeekBar?.progress = value
         cusHomeLeftVerticalTxtView?. currScheduleValue = if(value>max) max else  value
         cusHomeLeftVerticalTxtView?.showTxt = if(value>max) max.toString() else value.toString()
-
-
-        Timber.e("---------气压值="+max +"  value="+value)
-
     }
 
 

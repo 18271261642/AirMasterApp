@@ -556,6 +556,8 @@ public class BleManager {
                      * bit4:气泵状态异常
                      */
                     byte airBottleErrorCode = bytes[54];
+
+
                     //是否激活
                     int activationStatus = bytes[55];
 
@@ -597,7 +599,7 @@ public class BleManager {
 
                     autoBackBean.setAutoStr(notifyStr+"  温度= "+String.format("%02x", bytes[39]));
 
-                   // Log.e(TAG,"-------自动返回数据=="+autoBackBean.toString()+" "+(onCarAutoBackListener == null));
+                    //Log.e(TAG,"-------自动返回数据=="+autoBackBean.toString()+" "+(String.format("%02x",deviceErrorCode))+" "+String.format("%02x",leftFrontErrorCode)+" "+String.format("%02x",rightFrontErrorCode)+" "+String.format("%02x",leftRearErrorCode)+" "+String.format("%02x",rightRearErrorCode)+" "+String.format("%02x",airBottleErrorCode));
 
                     if(onCarAutoBackListener != null){
                         onCarAutoBackListener.backAutoData(autoBackBean);

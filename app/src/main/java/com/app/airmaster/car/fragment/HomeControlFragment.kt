@@ -26,6 +26,7 @@ import com.app.airmaster.car.view.HomeRightTemperatureView
 import com.app.airmaster.listeners.OnControlPressureCheckedListener
 import com.app.airmaster.second.SecondScanActivity
 import com.app.airmaster.utils.MmkvUtils
+import com.app.airmaster.viewmodel.CarErrorNotifyViewModel
 import com.app.airmaster.viewmodel.ControlViewModel
 import com.blala.blalable.Utils
 import com.blala.blalable.car.AutoBackBean
@@ -40,6 +41,7 @@ class HomeControlFragment : TitleBarFragment<CarHomeActivity>() {
 
 
     private var controlViewModel : ControlViewModel ?= null
+    private var errorNotifyViewModel : CarErrorNotifyViewModel ?= null
 
 
     private var homeBottomCheckView : HomeBottomCheckView ?= null
@@ -54,12 +56,18 @@ class HomeControlFragment : TitleBarFragment<CarHomeActivity>() {
     private var homeErrorMsgTv : TextView ?= null
     private var homeDeviceErrorLayout : LinearLayout ?= null
 
+    private var tempErrorCount = 0
 
     private val handlers : Handler = object :Handler(Looper.getMainLooper()){
         override fun handleMessage(msg: Message) {
             super.handleMessage(msg)
             if(msg.what == 0x00){
                 showRulerGoalVisibility(false)
+            }
+
+            if(msg.what == 0x08){   //显示异常
+                homeBottomCheckView?.setErrorChecked(true)
+                homeDeviceErrorLayout?.visibility = View.GONE
             }
         }
     }
@@ -145,6 +153,7 @@ class HomeControlFragment : TitleBarFragment<CarHomeActivity>() {
     private var tempGear =-1
 
     override fun initData() {
+        errorNotifyViewModel = ViewModelProvider(this)[CarErrorNotifyViewModel::class.java]
         showRulerGoalVisibility(false)
         //homeLeftAirPressureView?.setAirPressureValue(0)
         carHomeCenterView?.setFrontImage()
@@ -153,6 +162,14 @@ class HomeControlFragment : TitleBarFragment<CarHomeActivity>() {
         homeRightView?.setTempValue(100)
 
         controlViewModel = ViewModelProvider(this)[ControlViewModel::class.java]
+
+        errorNotifyViewModel?.carErrorDescList?.observe(this){
+          if(it.isNotEmpty()){
+              homeErrorMsgTv?.text = it[0]
+          }
+        }
+
+
 
         val carActivity = attachActivity as CarHomeActivity
         carActivity.setHomeAutoListener(object : CarHomeActivity.OnHomeAutoBackListener{
@@ -201,22 +218,42 @@ class HomeControlFragment : TitleBarFragment<CarHomeActivity>() {
                     homeBottomCheckView?.setDefaultPushAir()
                 }
 
-
                 //设备异常
                 val deviceErrorCode = autoBean.deviceErrorCode
+                //气罐故障
+                val airErrorCode = autoBean.airBottleErrorCode
+                //左前
+                val leftFrontCode = autoBean.leftFrontErrorCode
+                //左后
+                val leftRearCode = autoBean.leftRearErrorCode
+                //右前
+                val rightFront = autoBean.rightFrontErrorCode
+                //右后
+                val rightRearCode = autoBean.rightRearErrorCode
+
                 val errorArray = Utils.byteToBit(deviceErrorCode)
                 val errorMap = getDeviceErrorMsg(errorArray)
                 val isEmpty =errorMap.size==0
 
-                val strArray = mutableListOf<String>()
-                errorMap.forEach {
-                    strArray.add(it.value)
-                }
 
                 //  Timber.e("-------设备异常="+errorMap.toString()+" "+isEmpty)
 
-                homeErrorMsgTv?.text = if(isEmpty) "" else strArray[0]
-                homeDeviceErrorLayout?.visibility = if(isEmpty) View.INVISIBLE else View.VISIBLE
+                val errorCount = deviceErrorCode+airErrorCode+leftFrontCode+leftRearCode+rightFront+rightRearCode
+                if(errorCount ==0){
+                    tempErrorCount = 0
+                    homeDeviceErrorLayout?.visibility = View.GONE
+                    homeBottomCheckView?.setErrorChecked(false)
+                }else{
+                    if(tempErrorCount != errorCount){
+                        homeDeviceErrorLayout?.visibility = View.VISIBLE
+                        handlers.sendEmptyMessageDelayed(0x08,15000)
+                        tempErrorCount = errorCount
+                        errorNotifyViewModel?.getAllErrorDesc(deviceErrorCode,airErrorCode,
+                            leftFrontCode,leftRearCode,rightFront,rightRearCode)
+                    }
+                }
+//                homeErrorMsgTv?.text = if(isEmpty) "" else strArray[0]
+//                homeDeviceErrorLayout?.visibility = if(isEmpty) View.INVISIBLE else View.VISIBLE
 
             }
 

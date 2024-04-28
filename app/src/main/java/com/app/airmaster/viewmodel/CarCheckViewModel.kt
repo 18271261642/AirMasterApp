@@ -16,7 +16,7 @@ class CarCheckViewModel : ControlViewModel() {
         val list = mutableListOf<CheckBean>()
         val bean1 = CheckBean(1,context.resources.getString(R.string.string_check1_desc),2)
         val bean2 = CheckBean(2,context.resources.getString(R.string.string_check2_desc),2)
-        val bean3 = CheckBean(3,"",2)
+        val bean3 = CheckBean(3,context.resources.getString(R.string.string_check3_desc),2)
         val bean4 = CheckBean(4,context.resources.getString(R.string.string_check4_desc),2)
         val bean5 = CheckBean(5,context.resources.getString(R.string.string_check5_desc),2)
         val bean6 = CheckBean(5,context.resources.getString(R.string.string_check6_desc),2)

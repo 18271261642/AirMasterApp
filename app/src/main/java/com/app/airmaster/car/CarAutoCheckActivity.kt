@@ -133,12 +133,18 @@ class CarAutoCheckActivity : AppActivity() {
             }
 
             Timber.e("-----自检--itemBean=$itemBean")
+            val p = if(position>=adapter?.itemCount!!-1) adapter?.itemCount!!-1 else position
+            checkPager?.currentItem = p
+            adapter?.setItem(p,itemBean)
 
-            checkPager?.currentItem = position
-            adapter?.setItem(position,itemBean)
+            if(checkStep==7 && bean.checkStatus ==1){
+                checkPager?.currentItem = p
+                adapter?.setItem(p,itemBean)
+                GlobalScope.launch {
+                    delay(2000)
+                    finish()
+                }
 
-            if(checkStep==6 && bean.checkStatus ==1){
-                finish()
             }
         }
 

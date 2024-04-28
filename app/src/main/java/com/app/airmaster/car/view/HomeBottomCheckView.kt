@@ -97,6 +97,10 @@ class HomeBottomCheckView : LinearLayout,OnCheckedChangeListener{
     }
 
 
+     fun setErrorChecked(checked : Boolean){
+        itemHomeBottomWarringCheckBox?.setImageResource(if(checked) R.mipmap.ic_home_warring_checked else R.mipmap.ic_home_warring_normal)
+    }
+
     //设置选中的
     private fun showCheckView(index : Int){
         setAllNoCheck()
@@ -110,7 +114,7 @@ class HomeBottomCheckView : LinearLayout,OnCheckedChangeListener{
      fun setAllNoCheck(){
         homeBottomEncourageCheckBox?.isChecked = false
         homeBottomPrepareHeightCheckBox?.isChecked = false
-      //  itemHomeBottomWarringCheckBox?.isChecked = false
+       // itemHomeBottomWarringCheckBox?.isChecked = false
       //  itemHomeBottomDrainageCheckBox?.isChecked = false
     }
 

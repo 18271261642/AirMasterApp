@@ -70,6 +70,10 @@ public class GuideAdapter extends AppAdapter<CheckBean>{
                 titleTv.setText("");
                 itemErrorContentTv.setText(checkBean.getFailDesc());
             }
+
+            if(checkState == 1){
+                titleTv.setText("");
+            }
         }
     }
 
