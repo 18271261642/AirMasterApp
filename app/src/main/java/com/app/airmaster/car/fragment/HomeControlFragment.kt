@@ -4,6 +4,8 @@ package com.app.airmaster.car.fragment
 import android.os.Handler
 import android.os.Looper
 import android.os.Message
+import android.util.DisplayMetrics
+import android.view.Gravity
 import android.view.View
 import android.view.View.OnLongClickListener
 import android.widget.ImageView
@@ -23,6 +25,7 @@ import com.app.airmaster.car.view.HomeBottomCheckView
 import com.app.airmaster.car.view.HomeBottomNumberView
 import com.app.airmaster.car.view.HomeLeftAirPressureView
 import com.app.airmaster.car.view.HomeRightTemperatureView
+import com.app.airmaster.dialog.ManualSetHeightView
 import com.app.airmaster.listeners.OnControlPressureCheckedListener
 import com.app.airmaster.second.SecondScanActivity
 import com.app.airmaster.utils.MmkvUtils
@@ -30,6 +33,9 @@ import com.app.airmaster.viewmodel.CarErrorNotifyViewModel
 import com.app.airmaster.viewmodel.ControlViewModel
 import com.blala.blalable.Utils
 import com.blala.blalable.car.AutoBackBean
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import timber.log.Timber
 
 
@@ -95,7 +101,7 @@ class HomeControlFragment : TitleBarFragment<CarHomeActivity>() {
 
         findViewById<ImageView>(R.id.homeLogoImgView).setOnLongClickListener(object : OnLongClickListener{
             override fun onLongClick(v: View?): Boolean {
-
+              //  showManualDialog(0)
                 startActivity(LogActivity::class.java)
                 return true
             }
@@ -352,4 +358,31 @@ class HomeControlFragment : TitleBarFragment<CarHomeActivity>() {
     private fun showRulerGoalVisibility(visibility: Boolean){
         carHomeCenterView?.setGoalVisibility(visibility)
     }
+
+    private fun showManualDialog(position : Int){
+        val dialog = ManualSetHeightView(attachActivity, com.bonlala.base.R.style.CusDialogTheme)
+        dialog.show()
+        dialog.setModel(position==3)
+        dialog.setOnDialogClickListener{
+            if(it == 0x01){ //保存了
+                dialog.dismiss()
+                //  manualCheckPager?.setCurrentItem(position+1,false)
+            }
+            if(it == 0x00){
+                dialog.dismiss()
+
+            }
+        }
+        val window = dialog.window
+        val windowLayout = window?.attributes
+        val metrics2: DisplayMetrics = resources.displayMetrics
+        val widthW: Int = metrics2.widthPixels
+        val height : Int = metrics2.heightPixels
+
+        windowLayout?.height= height
+        windowLayout?.width = widthW
+        windowLayout?.gravity = Gravity.CENTER_VERTICAL
+        window?.attributes = windowLayout
+    }
+
 }

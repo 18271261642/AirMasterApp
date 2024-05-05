@@ -26,6 +26,6 @@
     <color name="second_press_theme_color">#80161718</color>
 
     <!--玩车主题色-->
-    <color name="play_color_theme">#FF161718</color>
+    <color name="play_color_theme">#161718</color>
 
 </resources>

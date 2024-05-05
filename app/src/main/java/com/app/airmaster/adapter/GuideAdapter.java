@@ -71,7 +71,7 @@ public class GuideAdapter extends AppAdapter<CheckBean>{
                 itemErrorContentTv.setText(checkBean.getFailDesc());
             }
 
-            if(checkState == 1){
+            if(checkState == 1){    //检测成功
                 titleTv.setText("");
             }
         }

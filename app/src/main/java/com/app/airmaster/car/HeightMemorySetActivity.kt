@@ -66,6 +66,11 @@ class HeightMemorySetActivity : AppActivity(){
             heightMemoryView?.setFrontHeightValue(autoBean.leftFrontRulerFL,autoBean.rightFrontRulerFL)
             heightMemoryView?.setAfterHeightValue(autoBean.leftRearRulerFL,autoBean.rightRearRulerFL)
 
+            heightMemoryView?.setFrontGoalValue(autoBean.leftFrontGoalFL,autoBean.rightFrontGoalFL)
+            heightMemoryView?.setRearGoalValue(autoBean.leftRearGoalFL,autoBean.rightRearGoalFL)
+
+
+
             memoryLeftAirPressureView?.setAirPressureValue(autoBean.cylinderPressure)
             memoryRightView?.setTempValue(autoBean.airBottleTemperature -86)
         }

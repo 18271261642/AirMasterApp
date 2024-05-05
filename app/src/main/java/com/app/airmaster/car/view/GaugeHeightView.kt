@@ -56,15 +56,15 @@ class GaugeHeightView : LinearLayout{
 
     fun setValues(left : Int,right : Int){
        // Timber.e("-----setValue高度尺="+left+" right="+right)
-        gaugeLeftSeekBar?.progress = left
-        gaugeRightSeekBar?.progress = right
+        gaugeLeftSeekBar?.progress = if(left>=100) 100 else left
+        gaugeRightSeekBar?.progress = if(right>=100) 100 else right
     }
 
 
     //设置目标
     fun setGoalValue(left : Int,right: Int){
-        gaugeLeftGoalSeekBar?.progress = left
-        gaugeRightGoalSeekBar?.progress = right
+        gaugeLeftGoalSeekBar?.progress = if(left>=100) 100 else left
+        gaugeRightGoalSeekBar?.progress = if(right>=100) 100 else right
     }
 
 

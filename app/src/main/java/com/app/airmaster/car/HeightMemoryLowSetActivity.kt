@@ -38,7 +38,7 @@ class HeightMemoryLowSetActivity : AppActivity(){
 
         memoryLowCusLayout?.setOnClickListener {
 
-            if(!isEnable){
+            if(isEnable){
                 return@setOnClickListener
             }
             val intent = Intent(this@HeightMemoryLowSetActivity,HeightMemorySetActivity::class.java)
@@ -78,7 +78,7 @@ class HeightMemoryLowSetActivity : AppActivity(){
     //是否可以进入自定义
     private fun setCusStatus(enable : Boolean){
         isEnable = enable
-        memoryLowRightImg?.visibility = if(enable) View.VISIBLE else View.GONE
+        memoryLowRightImg?.visibility = if(enable) View.GONE else View.VISIBLE
     }
 
 }
