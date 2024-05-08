@@ -1,11 +1,13 @@
 package com.app.airmaster.car.check
 
+import android.content.Intent
 import android.os.Handler
 import android.os.Looper
 import android.os.Message
 import android.util.DisplayMetrics
 import android.view.Gravity
 import android.view.View
+import androidx.core.view.size
 import androidx.lifecycle.ViewModelProvider
 import androidx.viewpager2.widget.ViewPager2
 import com.app.airmaster.R
@@ -102,8 +104,11 @@ class ManualCheckActivity : AppActivity() {
             adapter?.setItem(position,itemBean)
 
             if(checkStep==6 && bean.checkStatus ==1){
-
-                handlers.sendEmptyMessageDelayed(0x00,3000)
+                val intent = Intent(this@ManualCheckActivity,CheckSuccessActivity::class.java)
+                intent.putExtra("isAuto",false)
+                startActivity(intent)
+                finish()
+              //  handlers.sendEmptyMessageDelayed(0x00,3000)
               //  finish()
             }
         }

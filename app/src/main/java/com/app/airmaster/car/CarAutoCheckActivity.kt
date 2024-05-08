@@ -18,6 +18,7 @@ import com.app.airmaster.action.AppActivity
 import com.app.airmaster.adapter.GuideAdapter
 import com.app.airmaster.adapter.OnCommItemClickListener
 import com.app.airmaster.bean.CheckBean
+import com.app.airmaster.car.check.CheckSuccessActivity
 import com.app.airmaster.dialog.ConfirmDialog
 import com.app.airmaster.dialog.LogDialogView
 import com.app.airmaster.viewmodel.CarCheckViewModel
@@ -139,11 +140,15 @@ class CarAutoCheckActivity : AppActivity() {
 
             if(checkStep==7 && bean.checkStatus ==1){
                 checkPager?.currentItem = p
-                adapter?.setItem(p,itemBean)
-                GlobalScope.launch {
-                    delay(2000)
-                    finish()
-                }
+                val intent = Intent(this@CarAutoCheckActivity,CheckSuccessActivity::class.java)
+                intent.putExtra("isAuto",true)
+                startActivity(intent)
+                finish()
+//                adapter?.setItem(p,itemBean)
+//                GlobalScope.launch {
+//                    delay(2000)
+//                    finish()
+//                }
 
             }
         }

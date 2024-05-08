@@ -115,17 +115,19 @@ class ManualSetHeightView : AppCompatDialog {
             valueCode = it.value
         }
 
-        val timeArray = Utils.intToSecondByteArrayHeight(500)
+        val timeArray = Utils.intToSecondByteArrayHeight(150)
         val timeStr = com.app.airmaster.ble.ota.Utils.bytesToHexString(timeArray)
         // val scrStr = "0008040112"+String.format("%02x",keyCode)+String.format("%02d",(valueCode))+timeStr
 
        var scrStr = ""
-        if(keyCode == -1 || keyCode == -2){
-            scrStr = "0008040112"+String.format("%02x",if(keyCode==-1) 4 else 5)+String.format("%02d",(valueCode))+timeStr
-        }else{
-            scrStr = "000804012F"+String.format("%02x",keyCode)+String.format("%02d",(valueCode))+timeStr
+//        if(keyCode == -1 || keyCode == -2){
+//            scrStr = "0008040112"+String.format("%02x",if(keyCode==-1) 4 else 5)+String.format("%02d",(valueCode))+timeStr
+//        }else{
+//            scrStr = "000804012F"+String.format("%02x",keyCode)+String.format("%02d",(valueCode))+timeStr
+//
+//        }
 
-        }
+        scrStr = "000804012F"+String.format("%02x",keyCode)+String.format("%02d",(valueCode))+timeStr
 
 
         val crc = Utils.crcCarContentArray(scrStr)

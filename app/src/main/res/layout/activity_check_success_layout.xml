@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_40" />
+
+    <ImageView
+        android:id="@+id/manualLogImgView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="right"
+        android:src="@mipmap/ic_check_top_img" />
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"/>
+
+
+        <com.hjq.shape.view.ShapeTextView
+            android:id="@+id/checkSuccessBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+
+            android:gravity="center"
+            android:paddingStart="@dimen/dp_25"
+            android:paddingTop="@dimen/dp_5"
+            android:paddingEnd="@dimen/dp_25"
+            android:layout_marginBottom="@dimen/dp_55"
+            android:paddingBottom="@dimen/dp_5"
+            android:text="检测成功"
+            android:textColor="@color/white"
+            android:textSize="20sp"
+            app:shape_radius="@dimen/dp_25"
+            app:shape_solidColor="#FF4B00"
+            app:shape_solidPressedColor="#80FF4B00" />
+
+
+    </LinearLayout>
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@mipmap/ic_check_top_img" />
+</LinearLayout>

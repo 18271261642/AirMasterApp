@@ -87,7 +87,8 @@
         <activity android:name="com.app.airmaster.car.CarFaultNotifyActivity"/>
         <activity android:name=".car.CarAutoCheckActivity"
             android:screenOrientation="portrait"/>
-
+        <activity android:name=".car.check.CheckSuccessActivity"
+            android:screenOrientation="portrait"/>
 
 
 

@@ -73,7 +73,7 @@ class HomeControlFragment : TitleBarFragment<CarHomeActivity>() {
 
             if(msg.what == 0x08){   //显示异常
                 homeBottomCheckView?.setErrorChecked(true)
-                homeDeviceErrorLayout?.visibility = View.GONE
+                homeDeviceErrorLayout?.visibility = View.INVISIBLE
             }
         }
     }
@@ -247,7 +247,7 @@ class HomeControlFragment : TitleBarFragment<CarHomeActivity>() {
                 val errorCount = deviceErrorCode+airErrorCode+leftFrontCode+leftRearCode+rightFront+rightRearCode
                 if(errorCount ==0){
                     tempErrorCount = 0
-                    homeDeviceErrorLayout?.visibility = View.GONE
+                    homeDeviceErrorLayout?.visibility = View.INVISIBLE
                     homeBottomCheckView?.setErrorChecked(false)
                 }else{
                     if(tempErrorCount != errorCount){
