@@ -67,6 +67,9 @@ class GaugeHeightView : LinearLayout{
         gaugeRightGoalSeekBar?.progress = if(right>=100) 100 else right
     }
 
+    fun setGoalShow(show : Boolean){
+
+    }
 
     //设置目标是否显示或隐藏
     fun setGoalVisibility(visibility: Boolean){

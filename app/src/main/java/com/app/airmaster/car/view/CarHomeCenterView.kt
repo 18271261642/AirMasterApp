@@ -324,6 +324,13 @@ class CarHomeCenterView : LinearLayout ,OnClickListener{
         carRearGaugeView?.setValues(afterLeft,afterRight)
     }
 
+
+    //是否显示目标高度
+    fun setGoalHeightVisibility(show : Boolean){
+
+    }
+
+
     //设置前轮目标高度
     fun setFrontGoalValue(leftValue: Int,rightValue: Int){
         carFrontGaugeView?.setGoalValue(leftValue,rightValue)

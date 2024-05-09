@@ -18,6 +18,7 @@ import com.app.airmaster.bean.CheckBean
 import com.app.airmaster.dialog.ConfirmDialog
 import com.app.airmaster.dialog.ManualSetHeightView
 import com.app.airmaster.viewmodel.CarCheckViewModel
+import com.hjq.shape.view.ShapeTextView
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -32,7 +33,7 @@ class ManualCheckActivity : AppActivity() {
     private var viewModel : CarCheckViewModel?= null
 
     private var errorSb = StringBuffer()
-
+    private var checkConfirmBtn : ShapeTextView ?= null
     //是否正在检测
     private var isCheckIng = false
 
@@ -51,8 +52,13 @@ class ManualCheckActivity : AppActivity() {
     }
 
     override fun initView() {
+        checkConfirmBtn = findViewById(R.id.checkConfirmBtn)
         manualCheckPager = findViewById(R.id.manualCheckPager)
         manualCheckIndicator = findViewById(R.id.manualCheckIndicator)
+
+        checkConfirmBtn?.setOnClickListener {
+            finish()
+        }
     }
 
     override fun initData() {
@@ -94,7 +100,9 @@ class ManualCheckActivity : AppActivity() {
 //                checkIndicator?.visibility = View.GONE
                 manualCheckPager?.currentItem = position
                 adapter?.setItem(position,itemBean)
-                finish()
+             //   finish()
+                checkConfirmBtn?.visibility = View.VISIBLE
+                manualCheckPager?.isUserInputEnabled = false
                 return@observe
             }
 
@@ -103,12 +111,16 @@ class ManualCheckActivity : AppActivity() {
             manualCheckPager?.currentItem = position
             adapter?.setItem(position,itemBean)
 
-            if(checkStep==6 && bean.checkStatus ==1){
-                val intent = Intent(this@ManualCheckActivity,CheckSuccessActivity::class.java)
-                intent.putExtra("isAuto",false)
-                startActivity(intent)
-                finish()
-              //  handlers.sendEmptyMessageDelayed(0x00,3000)
+            if(checkStep==6 ){
+
+                checkConfirmBtn?.visibility = View.VISIBLE
+                manualCheckPager?.isUserInputEnabled = false
+
+//                val intent = Intent(this@ManualCheckActivity,CheckSuccessActivity::class.java)
+//                intent.putExtra("isAuto",false)
+//                startActivity(intent)
+//                finish()
+                handlers.sendEmptyMessageDelayed(0x00,5000)
               //  finish()
             }
         }

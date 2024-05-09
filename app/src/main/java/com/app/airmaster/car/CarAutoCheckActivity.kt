@@ -22,6 +22,7 @@ import com.app.airmaster.car.check.CheckSuccessActivity
 import com.app.airmaster.dialog.ConfirmDialog
 import com.app.airmaster.dialog.LogDialogView
 import com.app.airmaster.viewmodel.CarCheckViewModel
+import com.hjq.shape.view.ShapeTextView
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -44,6 +45,7 @@ class CarAutoCheckActivity : AppActivity() {
 
     //退出
     private var autoCheckExitLayout : LinearLayout ?= null
+    private var autoCheckConfirmBtn : ShapeTextView ?= null
 
     //是否正在检测
     private var isCheckIng = false
@@ -64,10 +66,19 @@ class CarAutoCheckActivity : AppActivity() {
     }
 
     override fun initView() {
+        autoCheckConfirmBtn = findViewById(R.id.autoCheckConfirmBtn)
         autoCheckExitLayout = findViewById(R.id.autoCheckExitLayout)
         checkPager = findViewById(R.id.checkPager)
         checkIndicator = findViewById(R.id.checkIndicator)
 
+
+        autoCheckConfirmBtn?.setOnClickListener {
+            intoOrExitCheck(false)
+            GlobalScope.launch {
+                delay(800)
+                finish()
+            }
+        }
 
         autoCheckExitLayout?.setOnClickListener {
             intoOrExitCheck(false)
@@ -82,7 +93,7 @@ class CarAutoCheckActivity : AppActivity() {
             override fun onLongClick(v: View?): Boolean {
                 val str = StringBuffer()
                 logList.forEach {
-                    str.append(it.backHex+"\n")
+                    str.append(it.toString()+"\n\n")
                 }
                 showLogDialog(str.toString())
 
@@ -129,8 +140,9 @@ class CarAutoCheckActivity : AppActivity() {
                 isCheckIng = false
                 errorSb.append(getErrorDesc(bean.errorCode)+"\n")
                 itemBean.failDesc = errorSb.toString()
-                autoCheckExitLayout?.visibility = View.VISIBLE
+              //  autoCheckExitLayout?.visibility = View.VISIBLE
                 checkIndicator?.visibility = View.GONE
+                autoCheckConfirmBtn?.visibility = View.VISIBLE
             }
 
             Timber.e("-----自检--itemBean=$itemBean")
@@ -138,17 +150,19 @@ class CarAutoCheckActivity : AppActivity() {
             checkPager?.currentItem = p
             adapter?.setItem(p,itemBean)
 
-            if(checkStep==7 && bean.checkStatus ==1){
+            if(checkStep== 6 && bean.checkStatus==1){
                 checkPager?.currentItem = p
-                val intent = Intent(this@CarAutoCheckActivity,CheckSuccessActivity::class.java)
-                intent.putExtra("isAuto",true)
-                startActivity(intent)
-                finish()
+                autoCheckConfirmBtn?.visibility = View.VISIBLE
+//                val intent = Intent(this@CarAutoCheckActivity,CheckSuccessActivity::class.java)
+//                intent.putExtra("isAuto",true)
+//                startActivity(intent)
+//                finish()
 //                adapter?.setItem(p,itemBean)
-//                GlobalScope.launch {
-//                    delay(2000)
-//                    finish()
-//                }
+                GlobalScope.launch {
+                    delay(5000)
+                    intoOrExitCheck(false)
+                    finish()
+                }
 
             }
         }

@@ -35,6 +35,7 @@ class ManualSetHeightView : AppCompatDialog {
 
     //是否是最高
     private var isHeight = false
+    private var isShowGoal = false
 
 
     constructor(context: Context) : super (context){
@@ -56,8 +57,14 @@ class ManualSetHeightView : AppCompatDialog {
     }
 
 
+    //不显示目标高度
+     fun setNoShowGoal(show : Boolean){
+        isShowGoal = show
+    }
+
 
     private fun initData(){
+        manualHeightView?.setGoalVisibility(false)
         BaseApplication.getBaseApplication().bleOperate.setAutoBackDataListener{
             manualHeightView?.setLeftRearPressureValue(it.leftRearPressure)
             manualHeightView?.setRightTopPressureValue(it.rightPressure)
@@ -67,8 +74,11 @@ class ManualSetHeightView : AppCompatDialog {
             manualHeightView?.setFrontHeightValue(it.leftFrontRulerFL,it.rightFrontRulerFL)
             manualHeightView?.setAfterHeightValue(it.leftRearRulerFL,it.rightRearRulerFL)
 
-            manualHeightView?.setFrontGoalValue(it.leftFrontGoalFL,it.rightFrontGoalFL)
-            manualHeightView?.setRearGoalValue(it.leftRearGoalFL,it.rightRearGoalFL)
+            if(isShowGoal){
+                manualHeightView?.setFrontGoalValue(it.leftFrontGoalFL,it.rightFrontGoalFL)
+                manualHeightView?.setRearGoalValue(it.leftRearGoalFL,it.rightRearGoalFL)
+
+            }
 
         }
 

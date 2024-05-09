@@ -91,7 +91,7 @@ dependencies {
     // Gson 解析容错：https://github.com/getActivity/GsonFactory
     implementation 'com.github.getActivity:GsonFactory:5.2'
 
-    implementation 'pl.droidsonroids.gif:android-gif-drawable:1.2.25'
+    api 'pl.droidsonroids.gif:android-gif-drawable:1.2.25'
     api 'com.github.yalantis:ucrop:2.2.6'
 
     implementation 'com.github.lzyzsd:jsbridge:1.0.4'

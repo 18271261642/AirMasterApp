@@ -34,7 +34,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
-            android:layout_marginBottom="@dimen/dp_30">
+            android:layout_marginBottom="@dimen/dp_20">
 
             <me.relex.circleindicator.CircleIndicator3
                 android:id="@+id/manualCheckIndicator"
@@ -45,6 +45,27 @@
                 app:ci_height="@dimen/dp_5"
                 app:ci_margin="@dimen/dp_5"
                 app:ci_width="@dimen/dp_5" />
+
+
+
+            <com.hjq.shape.view.ShapeTextView
+                android:id="@+id/checkConfirmBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:visibility="gone"
+                android:paddingStart="@dimen/dp_25"
+                android:paddingTop="@dimen/dp_5"
+                android:paddingEnd="@dimen/dp_25"
+                android:paddingBottom="@dimen/dp_5"
+                android:text="@string/common_confirm"
+                android:textColor="@color/white"
+                android:textSize="20sp"
+                app:shape_radius="@dimen/dp_25"
+                app:shape_solidColor="#FF4B00"
+                app:shape_solidPressedColor="#80FF4B00" />
+
 
 
             <LinearLayout
