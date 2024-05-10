@@ -170,7 +170,7 @@ public class Utils {
         return (high_h & 0xff) << 24 | (high_l & 0xff) << 16 | (low_h & 0xff) << 8 | low_l & 0xff;
     }
 
-    public static   int getIntFromBytes( byte low_h, byte low_l) {
+    public static   int getIntFromBytes(byte low_h, byte low_l) {
         return (low_h & 0xff) << 8 | low_l & 0xff;
     }
 

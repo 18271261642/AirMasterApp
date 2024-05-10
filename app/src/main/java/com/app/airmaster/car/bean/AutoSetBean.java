@@ -1,5 +1,7 @@
 package com.app.airmaster.car.bean;
 
+import java.util.HashMap;
+
 /**
  * 发送指令返回状态
  */
@@ -43,6 +45,11 @@ public class AutoSetBean {
     private int  pressureBalance ;
     //自动气压调平功能-级别
     private int  autoPressureBalanceLevel ;
+
+
+    //档位的遇设位
+    private HashMap<Integer,GearBean> gearHashMap;
+
 
 
     public int getModelType() {
@@ -189,6 +196,14 @@ public class AutoSetBean {
         this.accTurnOffValue = accTurnOffValue;
     }
 
+    public HashMap<Integer, GearBean> getGearHashMap() {
+        return gearHashMap;
+    }
+
+    public void setGearHashMap(HashMap<Integer, GearBean> gearHashMap) {
+        this.gearHashMap = gearHashMap;
+    }
+
     @Override
     public String toString() {
         return "AutoSetBean{" +
@@ -211,5 +226,56 @@ public class AutoSetBean {
                 ", pressureBalance=" + pressureBalance +
                 ", autoPressureBalanceLevel=" + autoPressureBalanceLevel +
                 '}';
+    }
+
+
+    public static class GearBean{
+        //左前
+        private int leftFront;
+        private int rightFront;
+        private int leftRear;
+        private int rightRear;
+
+        public GearBean() {
+        }
+
+        public GearBean(int leftFront, int rightFront, int leftRear, int rightRear) {
+            this.leftFront = leftFront;
+            this.rightFront = rightFront;
+            this.leftRear = leftRear;
+            this.rightRear = rightRear;
+        }
+
+        public int getLeftFront() {
+            return leftFront;
+        }
+
+        public void setLeftFront(int leftFront) {
+            this.leftFront = leftFront;
+        }
+
+        public int getRightFront() {
+            return rightFront;
+        }
+
+        public void setRightFront(int rightFront) {
+            this.rightFront = rightFront;
+        }
+
+        public int getLeftRear() {
+            return leftRear;
+        }
+
+        public void setLeftRear(int leftRear) {
+            this.leftRear = leftRear;
+        }
+
+        public int getRightRear() {
+            return rightRear;
+        }
+
+        public void setRightRear(int rightRear) {
+            this.rightRear = rightRear;
+        }
     }
 }

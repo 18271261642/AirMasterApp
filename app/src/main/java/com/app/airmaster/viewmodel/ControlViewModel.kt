@@ -396,6 +396,8 @@ open class ControlViewModel : CommViewModel() {
         }
     }
 
+    private var hashMap = HashMap<Int,AutoSetBean.GearBean>()
+
     fun writeCommonFunction(){
         BaseApplication.getBaseApplication().bleOperate.setCommAllParams(object : OnCarWriteBackListener{
 
@@ -403,6 +405,8 @@ open class ControlViewModel : CommViewModel() {
                 if(data != null && data.size>=115){
 
                     if((data[8].toInt().and(0xFF)) == 3 && (data[9].toInt().and(0xFF)) == 15 &&(data[17].toInt().and(0xFF) ==145 )){
+
+                        hashMap.clear()
 
                         val autoBean = AutoSetBean()
 
@@ -424,6 +428,51 @@ open class ControlViewModel : CommViewModel() {
                         autoBean.accTurnOnValue = accTurnOnValue
                         val accTurnOffValue = data[23].toInt().and(0xFF)
                         autoBean.accTurnOffValue = accTurnOffValue
+
+                        //处理档位预置位
+                        //一档
+                        val gear1LeftFront = Utils.getIntFromBytes(data[24],data[25])
+                        val gear1RightFront = Utils.getIntFromBytes(data[26],data[27])
+                        val gear1LeftRear = Utils.getIntFromBytes(data[28],data[29])
+                        val gear1RightRear = Utils.getIntFromBytes(data[30],data[31])
+                        val gear1 = AutoSetBean.GearBean(gear1LeftFront,gear1RightFront,gear1LeftRear,gear1RightRear)
+                        hashMap[1] = gear1
+
+
+                        //二档
+                        val gear2LeftFront = Utils.getIntFromBytes(data[32],data[33])
+                        val gear2RightFront = Utils.getIntFromBytes(data[34],data[35])
+                        val gear2LeftRear = Utils.getIntFromBytes(data[36],data[37])
+                        val gear2RightRear = Utils.getIntFromBytes(data[38],data[39])
+                        val gear2 = AutoSetBean.GearBean(gear2LeftFront,gear2RightFront,gear2LeftRear,gear2RightRear)
+                        hashMap[2] = gear2
+
+                        //三挡
+                        val gear3LeftFront = Utils.getIntFromBytes(data[40],data[41])
+                        val gear3RightFront = Utils.getIntFromBytes(data[42],data[43])
+                        val gear3LeftRear = Utils.getIntFromBytes(data[44],data[45])
+                        val gear3RightRear = Utils.getIntFromBytes(data[46],data[47])
+                        val gear3 = AutoSetBean.GearBean(gear3LeftFront,gear3RightFront,gear3LeftRear,gear3RightRear)
+                        hashMap[3] = gear3
+
+                        //四挡
+                        val gear4LeftFront = Utils.getIntFromBytes(data[48],data[49])
+                        val gear4RightFront = Utils.getIntFromBytes(data[50],data[51])
+                        val gear4LeftRear = Utils.getIntFromBytes(data[52],data[53])
+                        val gear4RightRear = Utils.getIntFromBytes(data[54],data[55])
+                        val gear4 = AutoSetBean.GearBean(gear4LeftFront,gear4RightFront,gear4LeftRear,gear4RightRear)
+                        hashMap[4] = gear4
+
+                        //低趴
+                        val gearLowLeftFront = Utils.getIntFromBytes(data[56],data[57])
+                        val gearLowRightFront = Utils.getIntFromBytes(data[58],data[59])
+                        val gearLowLeftRear = Utils.getIntFromBytes(data[60],data[61])
+                        val gearLowRightRear = Utils.getIntFromBytes(data[62],data[63])
+                        val gear0 = AutoSetBean.GearBean(gearLowLeftFront,gearLowRightFront,gearLowLeftRear,gearLowRightRear)
+                        hashMap[0] = gear0
+
+                        autoBean.gearHashMap = hashMap
+
                         //水平静止状态下超过5S,自动预置位调节开关 0不能 1能
                         val presetPosition = data[104].toInt().and(0xFF)
                         autoBean.presetPosition = presetPosition

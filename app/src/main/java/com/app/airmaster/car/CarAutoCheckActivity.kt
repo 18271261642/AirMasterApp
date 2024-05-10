@@ -150,7 +150,7 @@ class CarAutoCheckActivity : AppActivity() {
             checkPager?.currentItem = p
             adapter?.setItem(p,itemBean)
 
-            if(checkStep== 6 && bean.checkStatus==1){
+            if(checkStep== 7 && bean.checkStatus==1){
                 checkPager?.currentItem = p
                 autoCheckConfirmBtn?.visibility = View.VISIBLE
 //                val intent = Intent(this@CarAutoCheckActivity,CheckSuccessActivity::class.java)
@@ -163,7 +163,7 @@ class CarAutoCheckActivity : AppActivity() {
                     intoOrExitCheck(false)
                     finish()
                 }
-
+                return@observe
             }
         }
 

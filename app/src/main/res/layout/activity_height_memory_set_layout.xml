@@ -6,10 +6,14 @@
     android:layout_height="match_parent">
 
     <com.hjq.bar.TitleBar
+        android:id="@+id/heightMemoryTitleBar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:lineVisible="false"
         app:titleColor="@color/white"
+        app:rightTitle="log"
+        app:rightTitleSize="@dimen/sp_18"
+        app:rightTitleColor="@color/white"
         android:background="@color/transparent"
         app:leftIcon="@drawable/ic_white_left_back"/>
 
