@@ -5,6 +5,9 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
+import android.os.Handler
+import android.os.Looper
+import android.os.Message
 import android.view.KeyEvent
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
@@ -67,6 +70,18 @@ class CarHomeActivity : AppActivity() ,NavigationAdapter.OnNavigationListener{
     }
 
     private var selectorIndex = 0
+
+
+    private val handlers : Handler = object :Handler(Looper.getMainLooper()){
+        override fun handleMessage(msg: Message) {
+            super.handleMessage(msg)
+            if(msg.what == 0x00){
+                controlViewModel?.setHeightMemory(true)
+            }
+        }
+    }
+
+
 
 
     override fun getLayoutId(): Int {
@@ -140,6 +155,7 @@ class CarHomeActivity : AppActivity() ,NavigationAdapter.OnNavigationListener{
             autoListener?.backAutoData(it)
         }
         controlViewModel?.writeCommonFunction()
+        handlers.sendEmptyMessageDelayed(0x00,2000)
     }
 
     override fun onNewIntent(intent: Intent?) {
@@ -229,6 +245,7 @@ class CarHomeActivity : AppActivity() ,NavigationAdapter.OnNavigationListener{
                 controlViewModel?.writeCommonFunction()
 
                 BaseApplication.getBaseApplication()?.connStatusService?.writeWatchTimeData()
+                handlers.sendEmptyMessageDelayed(0x00,3000)
             }
             if(action == BleConstant.BLE_DIS_CONNECT_ACTION){
                 if(!BaseApplication.getBaseApplication().isOTAModel){

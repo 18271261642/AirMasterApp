@@ -67,6 +67,15 @@ class LogActivity : AppActivity() {
             updateLogTv?.text = ""
         }
 
+        findViewById<Button>(R.id.intoBtn).setOnClickListener {
+            controlViewModel?.setHeightMemory(false)
+        }
+        findViewById<Button>(R.id.outBtn).setOnClickListener {
+            controlViewModel?.setHeightMemory(true)
+        }
+
+
+
         findViewById<Button>(R.id.requestBtn).setOnClickListener {
             request()
         }

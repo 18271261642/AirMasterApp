@@ -25,6 +25,7 @@
     <Button
         android:id="@+id/requestBtn"
         android:layout_width="wrap_content"
+        android:visibility="gone"
         android:layout_height="wrap_content"
         android:text="获取气压"/>
 
@@ -38,14 +39,17 @@
         <Button
             android:id="@+id/lefAddBtn"
             android:layout_width="wrap_content"
+            android:visibility="gone"
             android:layout_height="wrap_content"
             android:textColor="@color/white"
             android:text="不带停止左前+"/>
+
         <Button
             android:id="@+id/leftRemoveBtn"
             android:layout_width="wrap_content"
             android:layout_marginStart="@dimen/dp_15"
             android:layout_height="wrap_content"
+            android:visibility="gone"
             android:textColor="@color/white"
             android:text="不带停止左前-"/>
 
@@ -60,15 +64,34 @@
             android:id="@+id/lefAddBtn2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:visibility="gone"
             android:textColor="@color/white"
             android:text="带停止左前+"/>
         <Button
             android:id="@+id/leftRemoveBtn2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:visibility="gone"
             android:layout_marginStart="@dimen/dp_15"
             android:textColor="@color/white"
             android:text="带停止左前-"/>
+
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/intoBtn"
+            android:visibility="gone"
+            android:layout_margin="@dimen/dp_10"
+            android:text="进入低压模式"/>
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/outBtn"
+            android:layout_margin="@dimen/dp_10"
+            android:text="退出di压模式"/>
+
 
     </LinearLayout>
 
