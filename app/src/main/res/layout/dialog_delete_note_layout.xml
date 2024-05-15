@@ -21,6 +21,7 @@
 
 
     <TextView
+        android:id="@+id/detelteContentTv"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/string_is_delete_note"

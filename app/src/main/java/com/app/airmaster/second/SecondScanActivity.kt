@@ -12,6 +12,8 @@ import android.os.Build
 import android.os.Handler
 import android.os.Looper
 import android.os.Message
+import android.util.DisplayMetrics
+import android.view.Gravity
 import android.view.View
 import android.view.View.OnLongClickListener
 import androidx.core.app.ActivityCompat
@@ -129,8 +131,13 @@ class SecondScanActivity : AppActivity() {
         intentFilter.addAction(BleConstant.BLE_SCAN_COMPLETE_ACTION)
         registerReceiver(broadcastReceiver,intentFilter)
 
+        val isGet = ActivityCompat.checkSelfPermission(this,Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED
+        if(isGet){
+            verifyScanFun(false)
+        }else{
+            showLocalDialog()
+        }
 
-        verifyScanFun(false)
 
         getHasBindDevice()
     }
@@ -188,8 +195,6 @@ class SecondScanActivity : AppActivity() {
                 //verifyScanFun()
             }
         }
-
-
 
         //判断权限
         val isPermission = ActivityCompat.checkSelfPermission(
@@ -369,5 +374,29 @@ class SecondScanActivity : AppActivity() {
 
         }
 
+    }
+
+
+    private fun showLocalDialog(){
+        val dialog = DeleteNoteDialog(this, com.bonlala.base.R.style.BaseDialogTheme)
+        dialog.show()
+        dialog.setContent("搜索手机附近的蓝牙设备需要位置权限,是否授权?")
+        dialog.setOnCommClickListener(object : OnCommItemClickListener{
+            override fun onItemClick(position: Int) {
+              dialog.dismiss()
+                if(position == 0x01){
+                    verifyScanFun(false)
+                }
+            }
+
+        })
+        val window = dialog.window
+        val windowLayout = window?.attributes
+        val metrics2: DisplayMetrics = resources.displayMetrics
+        val widthW: Int = metrics2.widthPixels
+
+        windowLayout?.width = widthW
+        windowLayout?.gravity = Gravity.BOTTOM
+        window?.attributes = windowLayout
     }
 }

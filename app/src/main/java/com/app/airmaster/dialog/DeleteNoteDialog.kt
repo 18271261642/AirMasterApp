@@ -4,6 +4,7 @@ import android.content.Context
 import android.os.Bundle
 import android.view.View
 import android.view.View.OnClickListener
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatDialog
 import com.app.airmaster.R
 import com.app.airmaster.adapter.OnCommItemClickListener
@@ -29,6 +30,8 @@ class DeleteNoteDialog : AppCompatDialog,OnClickListener{
     //确定
     private var dialogDeleteConfirmTv : ShapeTextView ?= null
 
+    private var detelteContentTv : TextView ?= null
+
 
 
 
@@ -46,6 +49,7 @@ class DeleteNoteDialog : AppCompatDialog,OnClickListener{
         super.onCreate(savedInstanceState)
         setContentView(R.layout.dialog_delete_note_layout)
 
+        detelteContentTv = findViewById(R.id.detelteContentTv)
         dialogDeleteCancelTv = findViewById(R.id.dialogDeleteCancelTv)
         dialogDeleteConfirmTv = findViewById(R.id.dialogDeleteConfirmTv)
 
@@ -65,5 +69,10 @@ class DeleteNoteDialog : AppCompatDialog,OnClickListener{
         if(id == R.id.dialogDeleteConfirmTv){
             onItemClickListener?.onItemClick(0x01)
         }
+    }
+
+
+    fun setContent(content : String){
+        detelteContentTv?.text = content
     }
 }
