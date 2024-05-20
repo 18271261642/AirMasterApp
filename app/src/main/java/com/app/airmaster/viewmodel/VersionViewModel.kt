@@ -1,10 +1,12 @@
 package com.app.airmaster.viewmodel
 
+import android.os.Build
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ViewModel
 import com.app.airmaster.BaseApplication
 import com.app.airmaster.bean.CdkBean
 import com.app.airmaster.ble.ota.BluetoothLeClass.OnWriteDataListener
+import com.app.airmaster.car.bean.AppVoBean
 import com.app.airmaster.car.bean.DeviceBinVersionBean
 import com.app.airmaster.car.bean.ServerVersionInfoBean
 import com.app.airmaster.car.bean.VersionParamsBean
@@ -17,18 +19,22 @@ import com.blala.blalable.listener.WriteBackDataListener
 import com.google.gson.Gson
 import com.hjq.http.EasyHttp
 import com.hjq.http.listener.OnHttpListener
+import com.tencent.bugly.crashreport.CrashReport
 import okhttp3.MediaType
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.RequestBody
 import org.json.JSONObject
 import timber.log.Timber
 import java.lang.Exception
+import java.util.concurrent.TimeUnit
 
 /**
  * 版本相关的
  */
 class VersionViewModel : CommViewModel(){
 
+    //app版本
+    var appVersionData = SingleLiveEvent<AppVoBean?>()
 
     //设备的固件版本
     var deviceVersionInfo = SingleLiveEvent<DeviceBinVersionBean>()
@@ -312,4 +318,36 @@ class VersionViewModel : CommViewModel(){
 
         })
     }
+
+
+
+
+    //检查App版本
+    fun checkAppVersion(life: LifecycleOwner,versionCode: Int) {
+        val map = HashMap<String,Any>()
+        map["appVersion"] = versionCode
+        map["appType"] = 1
+        val requestBody = RequestBody.create(JSON, Gson().toJson(map))
+        EasyHttp.post(life).api("checkUpdate")
+            .body(requestBody)
+            .request(object : OnHttpListener<String>{
+            override fun onSucceed(result: String?) {
+                val jsonObject = JSONObject(result)
+                if(jsonObject.getInt("code") == 200){
+                    val data = jsonObject.getJSONObject("data")
+                    val voStr = data.getString("appVo")
+                    val bean = GsonUtils.getGsonObject<AppVoBean>(voStr)
+                    appVersionData.postValue(bean)
+                }
+            }
+
+            override fun onFail(e: Exception?) {
+
+            }
+
+        })
+
+
+    }
+
 }

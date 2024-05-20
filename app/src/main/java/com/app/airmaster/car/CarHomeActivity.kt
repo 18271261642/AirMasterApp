@@ -19,12 +19,16 @@ import com.app.airmaster.action.ActivityManager
 import com.app.airmaster.action.AppActivity
 import com.app.airmaster.action.AppFragment
 import com.app.airmaster.adapter.NavigationAdapter
+import com.app.airmaster.adapter.OnCommItemClickListener
 import com.app.airmaster.ble.ConnStatus
+import com.app.airmaster.car.bean.AppVoBean
 import com.app.airmaster.car.fragment.HomeAirFragment
 import com.app.airmaster.car.fragment.HomeControlFragment
 import com.app.airmaster.car.fragment.HomeSettingFragment
+import com.app.airmaster.dialog.AppUpdateDialog
 import com.app.airmaster.viewmodel.AutoConnViewModel
 import com.app.airmaster.viewmodel.ControlViewModel
+import com.app.airmaster.viewmodel.VersionViewModel
 import com.blala.blalable.BleConstant
 import com.blala.blalable.car.AutoBackBean
 import com.bonlala.base.FragmentPagerAdapter
@@ -42,6 +46,8 @@ import kotlin.system.exitProcess
  *Date 2023/7/14
  */
 class CarHomeActivity : AppActivity() ,NavigationAdapter.OnNavigationListener{
+
+    private var versionViewModel : VersionViewModel ?= null
 
     private var autoConnViewModel : AutoConnViewModel ?= null
     private var controlViewModel : ControlViewModel ?= null
@@ -94,7 +100,7 @@ class CarHomeActivity : AppActivity() ,NavigationAdapter.OnNavigationListener{
     }
 
     override fun initData() {
-
+        versionViewModel = ViewModelProvider(this)[VersionViewModel::class.java]
         val intentFilter = IntentFilter()
         intentFilter.addAction(BleConstant.BLE_CONNECTED_ACTION)
         intentFilter.addAction(BleConstant.BLE_DIS_CONNECT_ACTION)
@@ -141,6 +147,18 @@ class CarHomeActivity : AppActivity() ,NavigationAdapter.OnNavigationListener{
             autoConnViewModel?.retryConnDevice(this@CarHomeActivity)
         }
         switchFragment(1)
+
+        versionViewModel?.appVersionData?.observe(this){
+            if(it != null){
+                val info = packageManager.getPackageInfo(packageName,0)
+                val versionCode = info.versionCode
+                if(versionCode<it.versionCode){ //提示升级
+                    showAppUpdateDialog(it)
+                }
+            }
+        }
+
+        versionViewModel?.checkAppVersion(this,1)
     }
 
 
@@ -266,5 +284,26 @@ class CarHomeActivity : AppActivity() ,NavigationAdapter.OnNavigationListener{
 
     interface OnHomeConnStatusListener{
         fun onConn(isConn : Boolean)
+    }
+
+
+    private fun showAppUpdateDialog(bean : AppVoBean){
+        val dialog = AppUpdateDialog(this, com.bonlala.base.R.style.BaseDialogTheme)
+        dialog.show()
+        dialog.setCancelable(false)
+        dialog.setTitleTxt(resources.getString(R.string.string_has_new_version))
+        dialog.setContent(bean.content)
+        dialog.setIsFocusUpdate(bean.isForceUpdate)
+        dialog.setOnDialogClickListener(object : OnCommItemClickListener{
+            override fun onItemClick(position: Int) {
+                if(position == 0x00){
+                    dialog.dismiss()
+                }
+                if(position == 0x01){
+                    dialog.startDownload(this@CarHomeActivity,bean.ota,"airmaster_"+bean.versionCode.toString()+".apk")
+                }
+            }
+
+        })
     }
 }

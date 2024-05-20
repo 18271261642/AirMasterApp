@@ -103,6 +103,7 @@
                 android:text="下次再说"/>
 
             <View
+                android:id="@+id/appUpdateDialogTmpView"
                 android:layout_width="@dimen/dp_10"
                 android:layout_height="1dp"/>
 
