@@ -63,6 +63,9 @@
         </activity>
 
 
+        <activity android:name=".car.McuOtaActivity"
+            android:screenOrientation="portrait"/>
+
         <activity android:name=".car.check.ManualCheckActivity"
             android:screenOrientation="portrait"/>
         <activity android:name=".car.ShowWebActivity"

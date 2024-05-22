@@ -40,7 +40,9 @@ import com.app.airmaster.utils.BikeUtils
 import com.app.airmaster.utils.ClickUtils
 import com.app.airmaster.utils.MmkvUtils
 import com.app.airmaster.viewmodel.BridgeDfuViewModel
+import com.app.airmaster.viewmodel.ControlViewModel
 import com.app.airmaster.viewmodel.DfuViewModel
+import com.app.airmaster.viewmodel.McuUpgradeViewModel
 import com.app.airmaster.viewmodel.VersionViewModel
 import com.app.airmaster.viewmodel.WatchDeviceViewModel
 import com.app.airmaster.viewmodel.WatchOTAViewModel
@@ -70,6 +72,8 @@ class CarAboutActivity : AppActivity() {
     private val TOUCHPAD_IdentificationCode = "03fffffe"
     private val MCU_IdentificationCode = "04fffffd"
 
+    //mcu 的ota升级
+    private var mcuViewModel : McuUpgradeViewModel ?= null
     private var bridgeDfuViewModel: BridgeDfuViewModel? = null
 
     private var viewModel: VersionViewModel? = null
@@ -108,6 +112,7 @@ class CarAboutActivity : AppActivity() {
     private var touchpadVersionTv: TextView? = null
 
     //otherMcu
+    private var aboutOtherMcuLayout : ConstraintLayout ?= null
     private var otherMcuDfuShowTv: ShapeTextView? = null
     private var aboutOtherMcuVersionTv: TextView? = null
 
@@ -161,6 +166,7 @@ class CarAboutActivity : AppActivity() {
     }
 
     override fun initView() {
+        aboutOtherMcuLayout = findViewById(R.id.aboutOtherMcuLayout)
         screenLayout = findViewById(R.id.screenLayout)
         otherMcuDfuShowTv = findViewById(R.id.otherMcuDfuShowTv)
         touchpadDfuShowTv = findViewById(R.id.touchpadDfuShowTv)
@@ -182,6 +188,10 @@ class CarAboutActivity : AppActivity() {
         appVersionTv = findViewById(R.id.appVersionTv)
         aboutUpgradeContentLayout = findViewById(R.id.aboutUpgradeContentLayout)
 
+
+        aboutOtherMcuLayout?.setOnClickListener {
+            startActivity(McuOtaActivity::class.java)
+        }
 
         aboutUpgradeLayout?.setOnClickListener(this)
         aboutActivateLayout?.setOnClickListener(this)
@@ -252,7 +262,7 @@ class CarAboutActivity : AppActivity() {
         registerReceiver(broadcastReceiver,intentFilter)
 
 
-
+        mcuViewModel = ViewModelProvider(this)[McuUpgradeViewModel::class.java]
         bridgeDfuViewModel = ViewModelProvider(this)[BridgeDfuViewModel::class.java]
         watchViewModel = ViewModelProvider(this)[WatchDeviceViewModel::class.java]
         dfuViewModel = ViewModelProvider(this)[DfuViewModel::class.java]
@@ -361,7 +371,7 @@ class CarAboutActivity : AppActivity() {
                 }
 
                 if (firmwareListDTO.identificationCode == tempDeviceVersionInfo?.screenMcuIdentificationCode) { //muc
-                  //  otherMcuDfuShowTv?.visibility = View.VISIBLE
+                    otherMcuDfuShowTv?.visibility = View.VISIBLE
                 }
 
                 showDfuStatus(false, firmwareListDTO.identificationCode)
@@ -649,6 +659,8 @@ class CarAboutActivity : AppActivity() {
                         }
                         if (identificationCode == MCU_IdentificationCode) {   //其它mcu，客户mcu
                             handlers.sendEmptyMessageDelayed(0x00, 10 * 1000)
+
+
                         }
 
                     }
@@ -835,16 +847,19 @@ class CarAboutActivity : AppActivity() {
 
 
             R.id.otherMcuDfuShowTv -> {   //other mcu
-                checkConnStatus()
-                if (isUpgrading) {
-                    return
-                }
-                if (tempServerListBean != null && tempServerListBean?.size!! > 0) {
-                    val bean = tempServerListBean?.find { it.identificationCode == MCU_IdentificationCode }
-                    if (bean != null) {
-                        showDfuDialog(false, bean)
-                    }
-                }
+
+
+
+//                checkConnStatus()
+//                if (isUpgrading) {
+//                    return
+//                }
+//                if (tempServerListBean != null && tempServerListBean?.size!! > 0) {
+//                    val bean = tempServerListBean?.find { it.identificationCode == MCU_IdentificationCode }
+//                    if (bean != null) {
+//                        showDfuDialog(false, bean)
+//                    }
+//                }
             }
 
             //无线手环的升级
