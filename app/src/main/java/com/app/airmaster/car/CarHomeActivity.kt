@@ -150,6 +150,10 @@ class CarHomeActivity : AppActivity() ,NavigationAdapter.OnNavigationListener{
 
         versionViewModel?.appVersionData?.observe(this){
             if(it != null){
+                if(!it.fileName.contains(".apk")){
+                    return@observe
+                }
+
                 val info = packageManager.getPackageInfo(packageName,0)
                 val versionCode = info.versionCode
                 if(versionCode<it.versionCode){ //提示升级

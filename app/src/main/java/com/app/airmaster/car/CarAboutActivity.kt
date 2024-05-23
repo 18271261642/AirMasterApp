@@ -423,10 +423,11 @@ class CarAboutActivity : AppActivity() {
                     it.mcuVersionCodeInt.toString()
                 )
 
+                //it.screenMcuVersionCodeInt.toString()
                 val otherMcuBean = VersionParamsBean.ParamsListBean(
                     it.screenMcuIdentificationCode,
                     "0x" + it.screenMcuBroadcastId,
-                    it.screenMcuVersionCodeInt.toString()
+                    "780"
                 )
                 list.add(bluetoothBean)
                 list.add(touchpadBean)
@@ -658,8 +659,11 @@ class CarAboutActivity : AppActivity() {
                             bridgeDfuViewModel?.setEraseDeviceFlash(file, this@CarAboutActivity)
                         }
                         if (identificationCode == MCU_IdentificationCode) {   //其它mcu，客户mcu
-                            handlers.sendEmptyMessageDelayed(0x00, 10 * 1000)
+                           // handlers.sendEmptyMessageDelayed(0x00, 10 * 1000)
 
+                            GlobalScope.launch {
+                                mcuViewModel?.dealDfuFile(file)
+                            }
 
                         }
 
@@ -847,19 +851,16 @@ class CarAboutActivity : AppActivity() {
 
 
             R.id.otherMcuDfuShowTv -> {   //other mcu
-
-
-
-//                checkConnStatus()
-//                if (isUpgrading) {
-//                    return
-//                }
-//                if (tempServerListBean != null && tempServerListBean?.size!! > 0) {
-//                    val bean = tempServerListBean?.find { it.identificationCode == MCU_IdentificationCode }
-//                    if (bean != null) {
-//                        showDfuDialog(false, bean)
-//                    }
-//                }
+                checkConnStatus()
+                if (isUpgrading) {
+                    return
+                }
+                if (tempServerListBean != null && tempServerListBean?.size!! > 0) {
+                    val bean = tempServerListBean?.find { it.identificationCode == MCU_IdentificationCode }
+                    if (bean != null) {
+                        showDfuDialog(false, bean)
+                    }
+                }
             }
 
             //无线手环的升级
