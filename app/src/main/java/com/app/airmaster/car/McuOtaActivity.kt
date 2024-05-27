@@ -26,10 +26,11 @@ class McuOtaActivity : AppActivity() {
         }
 
         findViewById<Button>(R.id.mcuThirdBtn).setOnClickListener {
-            val btArray = byteArrayOf(0x58, 0x4C, 0x37, 0x30, 0x30, 0x5F, 0x53, 0x54, 0x5F, 0x4D, 0x5F, 0x30, 0x30, 0x31, 0x00, 0x00)
+            //584C3730315F53545F4D5F3030310000
+            val btArray = byteArrayOf(0x58,0x4C,0x37,0x30,0x31,0x5F,0x53,0x54,0x5F,0x4D,0x5F,0x30,0x30,0x31,0x00,0x00)
            //58 4C 37 30 30 5F 53 54 5F 4D 5F 30 30 31 00 00
             //58 4C 37 30 31 5F 53 54 5F 4D 5F 30 30 31 00 00
-            mcuViewModel?.setThirdData(btArray)
+            mcuViewModel?.setThirdData()
         }
     }
 

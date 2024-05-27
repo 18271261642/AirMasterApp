@@ -189,9 +189,9 @@ class CarAboutActivity : AppActivity() {
         aboutUpgradeContentLayout = findViewById(R.id.aboutUpgradeContentLayout)
 
 
-        aboutOtherMcuLayout?.setOnClickListener {
-            startActivity(McuOtaActivity::class.java)
-        }
+//        aboutOtherMcuLayout?.setOnClickListener {
+//            startActivity(McuOtaActivity::class.java)
+//        }
 
         aboutUpgradeLayout?.setOnClickListener(this)
         aboutActivateLayout?.setOnClickListener(this)
@@ -252,6 +252,23 @@ class CarAboutActivity : AppActivity() {
     }
 
 
+    private fun checkMcuViewModel(){
+        //升级中
+        mcuViewModel?.mcuDfuProgress?.observe(this){
+            otherMcuDfuShowTv?.text  = resources.getString(R.string.string_upgrading) + " " + it
+        }
+
+        mcuViewModel?.mcuBootTimeOut?.observe(this){
+            if(it){
+                ToastUtils.show("升级超时，请重新升级!")
+                GlobalScope.launch {
+                    delay(2000)
+                    finish()
+                }
+            }
+        }
+    }
+
 
     override fun initData() {
 
@@ -269,7 +286,7 @@ class CarAboutActivity : AppActivity() {
         viewModel = ViewModelProvider(this)[VersionViewModel::class.java]
         watchOtaViewModel = ViewModelProvider(this)[WatchOTAViewModel::class.java]
 
-
+        checkMcuViewModel()
         watchOtaViewModel?.upgradeStatus?.observe(this) {
             BaseApplication.getBaseApplication().isOTAModel = false
             isUpgrading = false
@@ -662,6 +679,7 @@ class CarAboutActivity : AppActivity() {
                            // handlers.sendEmptyMessageDelayed(0x00, 10 * 1000)
 
                             GlobalScope.launch {
+                                mcuViewModel?.setInit()
                                 mcuViewModel?.dealDfuFile(file)
                             }
 
@@ -752,7 +770,7 @@ class CarAboutActivity : AppActivity() {
                     touchpadDfuShowTv?.text = "正在升级..."
                 }
 
-                "04fffffc" -> {  //mcu
+                MCU_IdentificationCode -> {  //mcu
                     otherMcuDfuShowTv!!.shapeDrawableBuilder.setSolidGradientColors(upArray)
                         .intoBackground()
                     otherMcuDfuShowTv?.text = "正在升级..."
@@ -778,7 +796,7 @@ class CarAboutActivity : AppActivity() {
                 touchpadDfuShowTv?.text = resources.getString(R.string.string_has_new_version)
             }
 
-            "04fffffc" -> {  //mcu
+            MCU_IdentificationCode -> {  //mcu
                 otherMcuDfuShowTv!!.shapeDrawableBuilder.setSolidGradientColors(upArray)
                     .intoBackground()
                 otherMcuDfuShowTv?.text = resources.getString(R.string.string_has_new_version)
