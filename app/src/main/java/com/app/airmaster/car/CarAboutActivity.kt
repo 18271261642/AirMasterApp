@@ -189,9 +189,9 @@ class CarAboutActivity : AppActivity() {
         aboutUpgradeContentLayout = findViewById(R.id.aboutUpgradeContentLayout)
 
 
-//        aboutOtherMcuLayout?.setOnClickListener {
-//            startActivity(McuOtaActivity::class.java)
-//        }
+        aboutOtherMcuLayout?.setOnClickListener {
+            mcuViewModel?.sendCheckMcuData()
+        }
 
         aboutUpgradeLayout?.setOnClickListener(this)
         aboutActivateLayout?.setOnClickListener(this)
@@ -261,6 +261,12 @@ class CarAboutActivity : AppActivity() {
         mcuViewModel?.mcuBootTimeOut?.observe(this){
             if(it){
                 ToastUtils.show("升级超时，请重新升级!")
+                GlobalScope.launch {
+                    delay(2000)
+                    finish()
+                }
+            }else{
+                ToastUtils.show("C600正常退出!")
                 GlobalScope.launch {
                     delay(2000)
                     finish()

@@ -166,6 +166,8 @@ class McuUpgradeViewModel : ViewModel(){
         val count = fileByteArray.size/512
         val remain = fileByteArray.size % 512
 
+        Timber.e("------MCU--bin文件大小="+count+"  remain="+remain)
+
         val listByteArray = mutableListOf<ByteArray>()
 
         for(i in 0 until count){
@@ -177,10 +179,14 @@ class McuUpgradeViewModel : ViewModel(){
                 System.arraycopy(btArray,6,matchByteArray,0,matchByteArray.size)
             }
         }
-        val lastBtArray = ByteArray(remain)
-        System.arraycopy(fileByteArray,listByteArray.size*512,lastBtArray,0,lastBtArray.size)
-        lastDoubleByte[0] = lastBtArray[lastBtArray.size-2]
-        lastDoubleByte[1] = lastBtArray[lastBtArray.size-1]
+
+        val lastBtArray = ByteArray(512)
+        System.arraycopy(fileByteArray,listByteArray.size*512,lastBtArray,0,remain)
+        lastDoubleByte[0] = lastBtArray[remain-2]
+        lastDoubleByte[1] = lastBtArray[remain-1]
+
+        val lt = Utils.formatBtArrayToString(lastBtArray)
+        Timber.e("--------最后一包="+lt)
         listByteArray.add(lastBtArray)
         Timber.e("MCU----------最后一包="+"所有包的总数:"+listByteArray.size+"  "+lastBtArray.size+"    "+Utils.formatBtArrayToString(lastBtArray))
         sourceBinList.addAll(listByteArray)
@@ -240,16 +246,17 @@ class McuUpgradeViewModel : ViewModel(){
                     GlobalScope.launch {
                         //数据内容
                         var currDataArray = mcuListData[currentPackIndex]
-                        Timber.e("MCU-------写入="+currDataArray.size+"  序号="+currentPackIndex)
                         //长度 2个byte
-                        var lengthArray = Utils.toByteArrayLength(currDataArray.size,2)
+                        val lengthArray = Utils.toByteArrayLength(currDataArray.size,2)
                         //序号 2个byte
                         val positionArray = Utils.toByteArrayLength(currentPackIndex,2)
-                        if(currDataArray.size != 512){
-                            val lastMcuDataArray = ByteArray(512)
-                            System.arraycopy(mcuListData[currentPackIndex],0,lastMcuDataArray,0,currDataArray.size)
-                            currDataArray = lastMcuDataArray
-                        }
+                        Timber.e("MCU---序号="+currentPackIndex+"  包大小="+currDataArray.size)
+//                        if(currDataArray.size != 512){
+//                            val lastMcuDataArray = ByteArray(512)
+//                            System.arraycopy(mcuListData[currentPackIndex],0,lastMcuDataArray,0,currDataArray.size)
+//                            currDataArray = lastMcuDataArray
+//
+//                        }
 
                         val positionStr = Utils.formatBtArrayToString(positionArray)
                         val lengthStr = Utils.formatBtArrayToString(lengthArray)
@@ -292,26 +299,36 @@ class McuUpgradeViewModel : ViewModel(){
 
                 }else{
                     Timber.e("MCU---------所有的包都写完了")
-                    //校验 7FFAAF
-                    val str = "0006040145"+Utils.getHexString(lastDoubleByte)
-                    val crc = Utils.crcCarContentArray(str)
-                    val allStr = "011e7FFAAF"+str+crc
-                    val rA = Utils.hexStringToByte(allStr)
-                    val resultArray = Utils.getFullPackage(rA)
-                    BaseApplication.getBaseApplication().bleOperate.writeCommonByte(resultArray,object : WriteBackDataListener{
-                        override fun backWriteData(data: ByteArray?) {
-                           Timber.e("---------校验="+Utils.formatBtArrayToString(data))
-                            checkTimeOut(data)
-
-
-                        }
-
-                    })
+                    sendCheckMcuData()
                 }
             }
 
         }
     }
+
+
+    //所有包都发完了，去校验
+    fun sendCheckMcuData(){
+        //校验 7FFAAF
+        val str = "0006040145"+Utils.getHexString(lastDoubleByte)
+        val crc = Utils.crcCarContentArray(str)
+        val allStr = "011E7FFAAF"+str+crc
+        val rA = Utils.hexStringToByte(allStr)
+        val resultArray = Utils.getFullPackage(rA)
+        BaseApplication.getBaseApplication().bleOperate.writeCommonByte(resultArray,object : WriteBackDataListener{
+            override fun backWriteData(data: ByteArray?) {
+                Timber.e("---------校验="+Utils.formatBtArrayToString(data))
+
+
+
+                checkTimeOut(data)
+
+
+            }
+
+        })
+    }
+
 
     private fun startToWriteMcuData(list : MutableList<ByteArray>){
         currentPackIndex = 0
@@ -350,9 +367,9 @@ class McuUpgradeViewModel : ViewModel(){
         mergeIndex =  0
         val list = mutableListOf<ByteArray>()
         var tempCount = 0
-        val firstArray = ByteArray(181)
+        val firstArray = ByteArray(200)
         System.arraycopy(array,0,firstArray,0,firstArray.size)
-        val secondArray = ByteArray(181)
+        val secondArray = ByteArray(200)
         System.arraycopy(array,firstArray.size,secondArray,0,secondArray.size)
 
         val thirdArray = ByteArray(array.size-firstArray.size*2)
@@ -363,17 +380,6 @@ class McuUpgradeViewModel : ViewModel(){
 
         mergeList.addAll(list)
         hds.sendEmptyMessage(0x09)
-//        while (tempCount<3){
-//            val itemArray = list[tempCount]
-//            Timber.e("----------循环写入指令="+Utils.formatBtArrayToString(itemArray))
-//            val msg = hds.obtainMessage()
-//            msg.what = 0x09
-//            msg.obj = itemArray
-//            hds.handleMessage(msg)
-//
-//            Thread.sleep(1000)
-//            tempCount++
-//        }
     }
 
 
