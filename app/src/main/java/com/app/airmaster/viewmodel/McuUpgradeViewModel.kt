@@ -25,7 +25,7 @@ class McuUpgradeViewModel : ViewModel(){
     //读取校验值状态
     var readCheckValue = SingleLiveEvent<Int>()
     //超时
-    var mcuBootTimeOut = SingleLiveEvent<Boolean>()
+    var mcuBootTimeOut = SingleLiveEvent<Int>()
 
 
     //最后两个byte
@@ -180,10 +180,10 @@ class McuUpgradeViewModel : ViewModel(){
             }
         }
 
-        val lastBtArray = ByteArray(512)
+        val lastBtArray = ByteArray(remain)
         System.arraycopy(fileByteArray,listByteArray.size*512,lastBtArray,0,remain)
-        lastDoubleByte[0] = lastBtArray[remain-2]
-        lastDoubleByte[1] = lastBtArray[remain-1]
+        lastDoubleByte[0] = lastBtArray[lastBtArray.size-2]
+        lastDoubleByte[1] = lastBtArray[lastBtArray.size-1]
 
         val lt = Utils.formatBtArrayToString(lastBtArray)
         Timber.e("--------最后一包="+lt)
@@ -250,13 +250,13 @@ class McuUpgradeViewModel : ViewModel(){
                         val lengthArray = Utils.toByteArrayLength(currDataArray.size,2)
                         //序号 2个byte
                         val positionArray = Utils.toByteArrayLength(currentPackIndex,2)
-                        Timber.e("MCU---序号="+currentPackIndex+"  包大小="+currDataArray.size)
-//                        if(currDataArray.size != 512){
-//                            val lastMcuDataArray = ByteArray(512)
-//                            System.arraycopy(mcuListData[currentPackIndex],0,lastMcuDataArray,0,currDataArray.size)
-//                            currDataArray = lastMcuDataArray
-//
-//                        }
+                        Timber.e("MCU---序号="+currentPackIndex+"  包大小="+currDataArray.size+" "+Utils.formatBtArrayToString(lengthArray))
+                        if(currDataArray.size != 512){
+                            val lastMcuDataArray = ByteArray(512)
+                            System.arraycopy(mcuListData[currentPackIndex],0,lastMcuDataArray,0,currDataArray.size)
+                            currDataArray = lastMcuDataArray
+                            Timber.e("-----------最后一个包="+Utils.formatBtArrayToString(currDataArray))
+                        }
 
                         val positionStr = Utils.formatBtArrayToString(positionArray)
                         val lengthStr = Utils.formatBtArrayToString(lengthArray)
@@ -287,13 +287,15 @@ class McuUpgradeViewModel : ViewModel(){
                         val contentStr = Utils.formatBtArrayToString(contentArray)
 
                         val crc = Utils.crcCarContentByteArray(contentArray)
-                        val fullMcuStr = "7FFAAF$contentStr$crc"
-                        val resultFullStr = "8800000000020f000120"+fullMcuStr
-                        val resultArray = Utils.hexStringToByte(resultFullStr)
+                        val fullMcuStr = "01207FFAAF$contentStr$crc"
+                        val resultFullStr = "8800000000020f00"+fullMcuStr
 
+                        //   val resultFullStr = "8800000000020f000120"+fullMcuStr
+                        val resultArray = Utils.hexStringToByte(fullMcuStr)
+                        val r = Utils.getFullPackage(resultArray)
                         val msg = hds.obtainMessage()
                         msg.what = 0x88
-                        msg.obj = resultArray
+                        msg.obj = r
                         hds.sendMessage(msg)
                     }
 
@@ -311,18 +313,25 @@ class McuUpgradeViewModel : ViewModel(){
     fun sendCheckMcuData(){
         //校验 7FFAAF
         val str = "0006040145"+Utils.getHexString(lastDoubleByte)
-        val crc = Utils.crcCarContentArray(str)
+        val crc = Utils.crcCarContentArray(str)  //0120
         val allStr = "011E7FFAAF"+str+crc
         val rA = Utils.hexStringToByte(allStr)
         val resultArray = Utils.getFullPackage(rA)
         BaseApplication.getBaseApplication().bleOperate.writeCommonByte(resultArray,object : WriteBackDataListener{
             override fun backWriteData(data: ByteArray?) {
                 Timber.e("---------校验="+Utils.formatBtArrayToString(data))
+                //校验
+                //88 00 00 00 00 00 0c d2 03 0f 7f fa af 00 05 01 04 c5 01 30
+                if(data == null){
+                    return
+                }
+                if(data.size == 20 && data[17].toInt().and(0xFF) == 197){
+                    val status = data[18].toInt().and(0xFF)
+                    readCheckValue.postValue(status)
 
-
-
-                checkTimeOut(data)
-
+                }else{
+                    checkTimeOut(data)
+                }
 
             }
 
@@ -339,6 +348,7 @@ class McuUpgradeViewModel : ViewModel(){
 
 
     private fun writeIndexPack(array : ByteArray){
+
         currentPackIndex++
         Timber.e("MCU---总长度="+array.size)
 
@@ -383,7 +393,13 @@ class McuUpgradeViewModel : ViewModel(){
     }
 
 
+
+    private var tempItemArray : ByteArray ?= null
+    private var tempItemCount = 0
+
     private fun write(data : ByteArray){
+        tempItemArray = data
+        tempItemCount++
         BaseApplication.getBaseApplication().bleOperate.writeCommonByte(data,object : WriteBackDataListener{
             override fun backWriteData(data: ByteArray?) {
                 checkTimeOut(data)
@@ -396,6 +412,7 @@ class McuUpgradeViewModel : ViewModel(){
                 if(data.size== 20 && data[17].toInt().and(0xFF) == 196){
                     val status = data[18].toInt().and(0xFF)
                     if(status == 1){    //成功，进入下一个
+                        tempItemCount = 0
                         handlers.sendEmptyMessageDelayed(0x00,20)
                     }else{  //失败
 
@@ -439,7 +456,7 @@ class McuUpgradeViewModel : ViewModel(){
         }
         if(byteArray.size == 20 && byteArray[17].toInt().and(0xFF) == 198){
             val lastValue = byteArray[18].toInt().and(0xFF)
-            mcuBootTimeOut.postValue(lastValue == 1)
+            mcuBootTimeOut.postValue(lastValue)
         }
     }
 }

@@ -258,19 +258,26 @@ class CarAboutActivity : AppActivity() {
             otherMcuDfuShowTv?.text  = resources.getString(R.string.string_upgrading) + " " + it
         }
 
+        //校验码状态值
+        mcuViewModel?.readCheckValue?.observe(this){
+            ToastUtils.show("校验返回=$it")
+            if(it == 0){
+
+                ToastUtils.show("升级成功!")
+
+            }
+        }
+
         mcuViewModel?.mcuBootTimeOut?.observe(this){
-            if(it){
+            if(it==1){
                 ToastUtils.show("升级超时，请重新升级!")
                 GlobalScope.launch {
                     delay(2000)
-                    finish()
+                 //   finish()
                 }
             }else{
-                ToastUtils.show("C600正常退出!")
-                GlobalScope.launch {
-                    delay(2000)
-                    finish()
-                }
+                ToastUtils.show("退出Boot状态码:$it")
+
             }
         }
     }
