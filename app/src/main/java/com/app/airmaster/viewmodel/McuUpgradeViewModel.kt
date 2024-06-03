@@ -150,7 +150,13 @@ class McuUpgradeViewModel : ViewModel(){
                     //匹配码成功
                     Timber.e("-----------匹配码成功")
                     BaseApplication.getBaseApplication().bleOperate.setClearListener()
-                    startToWriteMcu()
+                    handlers.postAtTime(object : Runnable{
+                        override fun run() {
+                            startToWriteMcu()
+                        }
+
+                    },1000)
+
                 }
             }
 
@@ -173,7 +179,7 @@ class McuUpgradeViewModel : ViewModel(){
         for(i in 0 until count){
             val btArray = ByteArray(512)
             System.arraycopy(fileByteArray,i * 512,btArray,0,btArray.size)
-            Timber.e("MCU---------itemArray="+btArray[1].toInt())
+           // Timber.e("MCU---------itemArray="+btArray[1].toInt())
             listByteArray.add(btArray)
             if(i == 0){
                 System.arraycopy(btArray,6,matchByteArray,0,matchByteArray.size)
@@ -216,12 +222,22 @@ class McuUpgradeViewModel : ViewModel(){
                 writeIndexPack(array)
             }
             if(msg.what == 0x09){
+                Timber.e("---------分包序号="+currentPackIndex+" "+mergeIndex+" "+sourceBinList.size)
                 if(mergeIndex<3){
                     val itemArray = mergeList[mergeIndex]
                     write(itemArray)
-                    if(currentPackIndex == sourceBinList.size-1 && mergeIndex == 2){
-                        handlers.removeMessages(0x00)
-                        handlers.sendEmptyMessageDelayed(0x00,50)
+
+                }else{
+                    if(currentPackIndex == sourceBinList.size-1 && mergeIndex == 3){
+
+                        Timber.e("----------最后一包发送完了11111")
+                        //   handlers.removeMessages(0x00)
+                        handlers.postAtTime(object : Runnable{
+                            override fun run() {
+                                sendCheckMcuData()
+                            }
+
+                        },3000)
                     }
                 }
 
@@ -233,7 +249,9 @@ class McuUpgradeViewModel : ViewModel(){
     private val handlers : Handler = object : Handler(Looper.getMainLooper()){
         override fun handleMessage(msg: Message) {
             super.handleMessage(msg)
-
+            if(msg.what == 100){
+                Timber.e("---------超时处理="+currentPackIndex)
+            }
 
             if(msg.what == 0x00){
                 Timber.e("MCU-----111-------当前写入的包序号=$currentPackIndex"+" 总包数"+mcuListData.size)
@@ -349,9 +367,8 @@ class McuUpgradeViewModel : ViewModel(){
 
     private fun writeIndexPack(array : ByteArray){
 
-        currentPackIndex++
-        Timber.e("MCU---总长度="+array.size)
-
+        tempItemArray = array
+        Timber.e("MCU---总长度="+array.size+" 序号="+currentPackIndex)
         mergePackData(array)
 
 //        BaseApplication.getBaseApplication().bleOperate.writeCommonByte(array,object : WriteBackDataListener{
@@ -398,7 +415,7 @@ class McuUpgradeViewModel : ViewModel(){
     private var tempItemCount = 0
 
     private fun write(data : ByteArray){
-        tempItemArray = data
+
         tempItemCount++
         BaseApplication.getBaseApplication().bleOperate.writeCommonByte(data,object : WriteBackDataListener{
             override fun backWriteData(data: ByteArray?) {
@@ -413,22 +430,28 @@ class McuUpgradeViewModel : ViewModel(){
                     val status = data[18].toInt().and(0xFF)
                     if(status == 1){    //成功，进入下一个
                         tempItemCount = 0
-                        handlers.sendEmptyMessageDelayed(0x00,20)
+                        currentPackIndex++
+                        handlers.removeMessages(100)
+                        handlers.sendEmptyMessageDelayed(0x00,50)
                     }else{  //失败
-
+                        handlers.sendEmptyMessageDelayed(100,5000)
                     }
+                }else{
+
                 }
 
                 if(data.size == 20 && data[17].toInt().and(0xFF) == 192 && data[18].toInt().and(0xFF) == 1){
                     //匹配码成功
                     Timber.e("---------分包--匹配码成功")
-                    handlers.sendEmptyMessageDelayed(0x00,20)
+                    currentPackIndex++
+                    handlers.removeMessages(100)
+                    handlers.sendEmptyMessageDelayed(0x00,50)
                 }
 
             }
         })
         mergeIndex++
-        hds.sendEmptyMessageDelayed(0x09,50)
+        hds.sendEmptyMessageDelayed(0x09,80)
     }
 
     private fun readBinFile(file: File): ByteArray? {
@@ -457,6 +480,10 @@ class McuUpgradeViewModel : ViewModel(){
         if(byteArray.size == 20 && byteArray[17].toInt().and(0xFF) == 198){
             val lastValue = byteArray[18].toInt().and(0xFF)
             mcuBootTimeOut.postValue(lastValue)
+
+            if(lastValue == 0x01){
+              //  setFirstReset()
+            }
         }
     }
 }

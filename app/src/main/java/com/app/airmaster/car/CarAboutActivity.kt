@@ -260,7 +260,8 @@ class CarAboutActivity : AppActivity() {
 
         //校验码状态值
         mcuViewModel?.readCheckValue?.observe(this){
-            ToastUtils.show("校验返回=$it")
+            ToastUtils.show("校验返回=$it"+checkStatus(it))
+            isUpgrading = false
             if(it == 0){
 
                 ToastUtils.show("升级成功!")
@@ -269,6 +270,7 @@ class CarAboutActivity : AppActivity() {
         }
 
         mcuViewModel?.mcuBootTimeOut?.observe(this){
+            isUpgrading = false
             if(it==1){
                 ToastUtils.show("升级超时，请重新升级!")
                 GlobalScope.launch {
@@ -1065,6 +1067,23 @@ class CarAboutActivity : AppActivity() {
            }
 
        })
+    }
+
+
+    private fun checkStatus(code : Int) : String{
+        if(code == 0){
+            return "升级成功"
+        }
+        if(code == 1){
+            return "数据错误"
+        }
+        if(code == 2){
+            return "擦除错误"
+        }
+        if(code == 3){
+            return "写入错误"
+        }
+        return "写入校验错误"
     }
 
 }
