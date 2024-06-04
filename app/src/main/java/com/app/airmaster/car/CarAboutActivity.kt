@@ -293,7 +293,6 @@ class CarAboutActivity : AppActivity() {
         intentFilter.addAction(BleConstant.BLE_START_SCAN_ACTION)
         registerReceiver(broadcastReceiver,intentFilter)
 
-
         mcuViewModel = ViewModelProvider(this)[McuUpgradeViewModel::class.java]
         bridgeDfuViewModel = ViewModelProvider(this)[BridgeDfuViewModel::class.java]
         watchViewModel = ViewModelProvider(this)[WatchDeviceViewModel::class.java]
@@ -302,6 +301,8 @@ class CarAboutActivity : AppActivity() {
         watchOtaViewModel = ViewModelProvider(this)[WatchOTAViewModel::class.java]
 
         checkMcuViewModel()
+
+
         watchOtaViewModel?.upgradeStatus?.observe(this) {
             BaseApplication.getBaseApplication().isOTAModel = false
             isUpgrading = false
@@ -318,6 +319,9 @@ class CarAboutActivity : AppActivity() {
         dfuViewModel?.registerDfu(this)
         showAppVersion()
 
+
+        val logUrl = getExternalFilesDir(null)?.path+"/log/"
+        mcuViewModel?.setLogUrl(logUrl)
 
         //touchpad的升级状态
         bridgeDfuViewModel?.touchpadUpgradeStatus?.observe(this) {
@@ -455,11 +459,11 @@ class CarAboutActivity : AppActivity() {
                     it.mcuVersionCodeInt.toString()
                 )
 
-                //it.screenMcuVersionCodeInt.toString()
+                //it.screenMcuVersionCodeInt.toString()  //"780"
                 val otherMcuBean = VersionParamsBean.ParamsListBean(
                     it.screenMcuIdentificationCode,
                     "0x" + it.screenMcuBroadcastId,
-                    "780"
+                    it.screenMcuVersionCodeInt.toString()
                 )
                 list.add(bluetoothBean)
                 list.add(touchpadBean)
@@ -656,7 +660,11 @@ class CarAboutActivity : AppActivity() {
                     )
                 } else {
                     showDfuStatus(true, bean.identificationCode)
+
+                    val url = "https://otaitem.oss-cn-shenzhen.aliyuncs.com/upgrade/firmware/check_BIN_BA0059CS_0XFFFE_V00015C_0X00800001_0X04FFFFFD_202403222023.xlbin"
                     downloadOta(bean.ota, saveUrl, bean.identificationCode)
+
+//                    downloadOta(url, saveUrl, bean.identificationCode)
                 }
 
             }

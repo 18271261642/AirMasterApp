@@ -6,6 +6,7 @@ import android.os.Message
 import androidx.lifecycle.ViewModel
 import com.app.airmaster.BaseApplication
 import com.app.airmaster.utils.CalculateUtils
+import com.app.airmaster.utils.GetJsonDataUtil
 import com.blala.blalable.Utils
 import com.blala.blalable.car.CarConstant
 import com.blala.blalable.listener.WriteBackDataListener
@@ -40,6 +41,18 @@ class McuUpgradeViewModel : ViewModel(){
     private var isIntoBoot = false
     private var isMatchStatus = false
 
+
+
+
+    private var logUrl : String ?= null
+    private var currentLogName : String ?= null
+
+
+    fun setLogUrl(url :String){
+        this.logUrl = url
+    }
+
+
     private val operateHandlers : Handler = object : Handler(Looper.getMainLooper()){
         override fun handleMessage(msg: Message) {
             super.handleMessage(msg)
@@ -70,6 +83,7 @@ class McuUpgradeViewModel : ViewModel(){
 
     //第一步，主机复位
     fun setFirstReset(){
+        currentLogName = (System.currentTimeMillis()/1000).toString()+"_"+".json"
         operateHandlers.sendEmptyMessageDelayed(0x00,2000)
 
         val data = byteArrayOf(0x01,0x1E,0x7F, 0xFA.toByte(),
@@ -155,7 +169,7 @@ class McuUpgradeViewModel : ViewModel(){
                             startToWriteMcu()
                         }
 
-                    },1000)
+                    },2000)
 
                 }
             }
@@ -169,27 +183,40 @@ class McuUpgradeViewModel : ViewModel(){
         if(fileByteArray == null){
             return
         }
-        val count = fileByteArray.size/512
-        val remain = fileByteArray.size % 512
 
-        Timber.e("------MCU--bin文件大小="+count+"  remain="+remain)
+        Timber.e("-------原始固件包大小="+fileByteArray.size)
+
+        System.arraycopy(fileByteArray,6,matchByteArray,0,matchByteArray.size)
+        lastDoubleByte[0] = fileByteArray[fileByteArray.size-2]
+        lastDoubleByte[1] = fileByteArray[fileByteArray.size-1]
+
+
+        val resultFileArray = ByteArray(fileByteArray.size-32-2)
+
+        System.arraycopy(fileByteArray,32,resultFileArray,0,resultFileArray.size)
+
+        val count = resultFileArray.size/512
+        val remain = resultFileArray.size % 512
+
+        val t = resultFileArray.size/512F
+
+        Timber.e("------MCU--bin文件大小="+resultFileArray.size+"  "+count+"  remain="+remain+"  "+t)
 
         val listByteArray = mutableListOf<ByteArray>()
 
         for(i in 0 until count){
             val btArray = ByteArray(512)
-            System.arraycopy(fileByteArray,i * 512,btArray,0,btArray.size)
+            System.arraycopy(resultFileArray,i * 512,btArray,0,btArray.size)
            // Timber.e("MCU---------itemArray="+btArray[1].toInt())
             listByteArray.add(btArray)
-            if(i == 0){
-                System.arraycopy(btArray,6,matchByteArray,0,matchByteArray.size)
-            }
+//            if(i == 0){
+//                System.arraycopy(btArray,6,matchByteArray,0,matchByteArray.size)
+//            }
         }
 
         val lastBtArray = ByteArray(remain)
-        System.arraycopy(fileByteArray,listByteArray.size*512,lastBtArray,0,remain)
-        lastDoubleByte[0] = lastBtArray[lastBtArray.size-2]
-        lastDoubleByte[1] = lastBtArray[lastBtArray.size-1]
+        System.arraycopy(resultFileArray,listByteArray.size*512,lastBtArray,0,remain)
+
 
         val lt = Utils.formatBtArrayToString(lastBtArray)
         Timber.e("--------最后一包="+lt)
@@ -217,6 +244,12 @@ class McuUpgradeViewModel : ViewModel(){
     private val hds : Handler = object : Handler(Looper.getMainLooper()){
         override fun handleMessage(msg: Message) {
             super.handleMessage(msg)
+            if(msg.what == 100){
+                val data = msg.obj as String
+                GetJsonDataUtil().writeTxtToFile(data,logUrl,currentLogName)
+            }
+
+
             if(msg.what == 0x88){
                 val array = msg.obj as ByteArray
                 writeIndexPack(array)
@@ -234,7 +267,7 @@ class McuUpgradeViewModel : ViewModel(){
                         //   handlers.removeMessages(0x00)
                         handlers.postAtTime(object : Runnable{
                             override fun run() {
-                                sendCheckMcuData()
+                               // sendCheckMcuData()
                             }
 
                         },3000)
@@ -306,6 +339,10 @@ class McuUpgradeViewModel : ViewModel(){
 
                         val crc = Utils.crcCarContentByteArray(contentArray)
                         val fullMcuStr = "01207FFAAF$contentStr$crc"
+
+
+
+
                         val resultFullStr = "8800000000020f00"+fullMcuStr
 
                         //   val resultFullStr = "8800000000020f000120"+fullMcuStr
@@ -315,6 +352,11 @@ class McuUpgradeViewModel : ViewModel(){
                         msg.what = 0x88
                         msg.obj = r
                         hds.sendMessage(msg)
+
+                        val m2 = hds.obtainMessage()
+                        m2.what = 100
+                        m2.obj = fullMcuStr
+                        hds.sendMessage(m2)
                     }
 
                 }else{

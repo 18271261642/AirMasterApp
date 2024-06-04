@@ -104,8 +104,9 @@ class VersionViewModel : CommViewModel(){
                         bean.screenMcuBroadcastId =String.format("%02x",data[53])+String.format("%02x",data[54])
                         bean.screenMcuIdentificationCode = String.format("%02x",data[55])+String.format("%02x",data[56])+String.format("%02x",data[57])+String.format("%02x",data[58])
                         bean.screenVersionCode = "V"+data[59].toInt()+"."+data[60].toInt()+"."+data[61]
-                        bean.screenMcuVersionCodeInt = Utils.getIntFromBytes(0x00,data[59],data[60],data[61])
+                        bean.screenMcuVersionCodeInt = Utils.getIntFromBytes(0x00,0x00,data[60],data[61])
 
+                        Timber.e("-----------screenMcuVersionCodeInt="+bean.screenMcuVersionCodeInt)
                         bean.sourceStr = Utils.formatBtArrayToString(data)
                         deviceVersionInfo.postValue(bean)
                     }
