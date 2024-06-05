@@ -28,9 +28,11 @@ import com.app.airmaster.R
 import com.app.airmaster.action.AppActivity
 import com.app.airmaster.adapter.OnCommItemClickListener
 import com.app.airmaster.ble.ConnStatus
+import com.app.airmaster.car.bean.AppVoBean
 import com.app.airmaster.car.bean.DeviceBinVersionBean
 import com.app.airmaster.car.bean.ServerVersionInfoBean
 import com.app.airmaster.car.bean.VersionParamsBean
+import com.app.airmaster.dialog.AppUpdateDialog
 import com.app.airmaster.dialog.DfuDialogView
 import com.app.airmaster.dialog.LogDialogView
 import com.app.airmaster.dialog.ShowProgressDialog
@@ -81,6 +83,8 @@ class CarAboutActivity : AppActivity() {
     private var watchViewModel: WatchDeviceViewModel? = null
     private var watchOtaViewModel: WatchOTAViewModel? = null
 
+    private var appVoBean : AppVoBean ?= null
+
 
     //系统升级菜单
     private var aboutUpgradeLayout: ConstraintLayout? = null
@@ -115,6 +119,9 @@ class CarAboutActivity : AppActivity() {
     private var aboutOtherMcuLayout : ConstraintLayout ?= null
     private var otherMcuDfuShowTv: ShapeTextView? = null
     private var aboutOtherMcuVersionTv: TextView? = null
+
+    //app升级
+    private var aboutAppVersionShowTv : ShapeTextView ?= null
 
 
     private var aboutActivateDeviceImageView: ImageView? = null
@@ -166,6 +173,7 @@ class CarAboutActivity : AppActivity() {
     }
 
     override fun initView() {
+        aboutAppVersionShowTv = findViewById(R.id.aboutAppVersionShowTv)
         aboutOtherMcuLayout = findViewById(R.id.aboutOtherMcuLayout)
         screenLayout = findViewById(R.id.screenLayout)
         otherMcuDfuShowTv = findViewById(R.id.otherMcuDfuShowTv)
@@ -203,6 +211,8 @@ class CarAboutActivity : AppActivity() {
         bluetoothDfuShowTv?.setOnClickListener(this)
         touchpadDfuShowTv?.setOnClickListener(this)
         otherMcuDfuShowTv?.setOnClickListener(this)
+
+        aboutAppVersionShowTv?.setOnClickListener(this)
 
         touchpadVersionTv?.setOnClickListener {
 
@@ -263,9 +273,11 @@ class CarAboutActivity : AppActivity() {
             ToastUtils.show("校验返回=$it"+checkStatus(it))
             isUpgrading = false
             if(it == 0){
-
                 ToastUtils.show("升级成功!")
-
+                GlobalScope.launch {
+                    delay(1000)
+                    finish()
+                }
             }
         }
 
@@ -515,6 +527,32 @@ class CarAboutActivity : AppActivity() {
                     .intoBackground()
             }
         }
+
+
+
+        viewModel?.appVersionData?.observe(this){
+            if(it != null){
+                if(!it.fileName.contains(".apk")){
+                    return@observe
+                }
+
+                val info = packageManager.getPackageInfo(packageName,0)
+                val versionCode = info.versionCode
+                appVoBean = it
+                if(versionCode<it.versionCode){ //提示升级
+
+                    aboutAppVersionShowTv?.visibility = View.VISIBLE
+
+
+                }else{
+                    aboutAppVersionShowTv?.visibility = View.GONE
+                }
+            }
+        }
+
+        val versionInfo = packageManager.getPackageInfo(packageName,0)
+        viewModel?.checkAppVersion(this,versionInfo.versionCode)
+
     }
 
 
@@ -862,6 +900,16 @@ class CarAboutActivity : AppActivity() {
                 isAcFoldState(isActivateFold)
             }
 
+            //app升级
+            R.id.aboutAppVersionShowTv->{
+                if (isUpgrading) {
+                    return
+                }
+                if(appVoBean != null){
+                    showAppUpdateDialog(appVoBean!!)
+                }
+
+            }
 
             //bluetooth 升级
             R.id.bluetoothDfuShowTv -> {
@@ -1092,6 +1140,26 @@ class CarAboutActivity : AppActivity() {
             return "写入错误"
         }
         return "写入校验错误"
+    }
+
+    private fun showAppUpdateDialog(bean : AppVoBean){
+        val dialog = AppUpdateDialog(this, com.bonlala.base.R.style.BaseDialogTheme)
+        dialog.show()
+        dialog.setCancelable(false)
+        dialog.setTitleTxt(resources.getString(R.string.string_has_new_version))
+        dialog.setContent(bean.content)
+        dialog.setIsFocusUpdate(bean.isForceUpdate)
+        dialog.setOnDialogClickListener(object : OnCommItemClickListener{
+            override fun onItemClick(position: Int) {
+                if(position == 0x00){
+                    dialog.dismiss()
+                }
+                if(position == 0x01){
+                    dialog.startDownload(this@CarAboutActivity,bean.ota,"airmaster_"+bean.versionCode.toString()+".apk")
+                }
+            }
+
+        })
     }
 
 }

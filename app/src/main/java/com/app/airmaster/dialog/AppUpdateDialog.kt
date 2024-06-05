@@ -44,6 +44,9 @@ class AppUpdateDialog : AppCompatDialog {
     private var appUpdateDialogTmpView : View ?= null
 
 
+    private var appUpdateStateTv : TextView ?= null
+
+
     constructor(context: Context) : super (context){
 
     }
@@ -71,6 +74,7 @@ class AppUpdateDialog : AppCompatDialog {
     }
 
     private fun initViews(){
+        appUpdateStateTv = findViewById(R.id.appUpdateStateTv)
         appUpdateDialogTmpView = findViewById(R.id.appUpdateDialogTmpView)
         appUpdateBtnLayout = findViewById(R.id.appUpdateBtnLayout)
         appUpdateIngLayout = findViewById(R.id.appUpdateIngLayout)
@@ -110,6 +114,8 @@ class AppUpdateDialog : AppCompatDialog {
         showDowning()
         val saveUrl = context.getExternalFilesDir(null)?.path+"/App/"+fileName
 
+       // val u = "http://imtt2.dd.qq.com/sjy.00009/sjy.00004/16891/apk/6C8C3C8CCB60BD085D41159877CCEE33.apk?fsname=com.tencent.mm_8.0.49.apk"
+
         EasyHttp.download(lifecycleOwner).url(url)
             .file(saveUrl)
             .listener(object : OnDownloadListener{
@@ -118,7 +124,7 @@ class AppUpdateDialog : AppCompatDialog {
                 }
 
                 override fun onProgress(file: File?, progress: Int) {
-
+                    appUpdateStateTv?.text = context.resources.getString(R.string.string_downloading)+": "+progress+"%"
                 }
 
                 override fun onComplete(file: File?) {

@@ -323,8 +323,8 @@ class McuUpgradeViewModel : ViewModel(){
 
                         //内容str
                         val contentArray = ByteArray(5+516)
-                        contentArray[0] = dataLengthStr[0]
-                        contentArray[1] = dataLengthStr[1]
+                        contentArray[0] = 0x02 //dataLengthStr[0]
+                        contentArray[1] = 0x08//dataLengthStr[1]
                         contentArray[2] = 0x04
                         contentArray[3] = 0x01
                         contentArray[4] = 0x44
@@ -382,6 +382,7 @@ class McuUpgradeViewModel : ViewModel(){
                 Timber.e("---------校验="+Utils.formatBtArrayToString(data))
                 //校验
                 //88 00 00 00 00 00 0c d2 03 0f 7f fa af 00 05 01 04 c5 01 30
+                //88 00 00 00 00 00 0c d2 03 0f 7f fa af 00 05 01 04 c5 00 31
                 if(data == null){
                     return
                 }

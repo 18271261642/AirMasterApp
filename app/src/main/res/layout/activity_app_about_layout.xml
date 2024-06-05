@@ -301,6 +301,25 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
 
+
+
+            <com.hjq.shape.view.ShapeTextView
+                android:id="@+id/aboutAppVersionShowTv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/white"
+                android:text="有新版本"
+                android:visibility="gone"
+                app:shape_startColor="#92E062"
+                app:shape_endColor="#16E3A7"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                android:paddingStart="@dimen/dp_10"
+                android:paddingEnd="@dimen/dp_10"
+                android:paddingTop="@dimen/dp_2"
+                app:shape_radius="@dimen/dp_15"
+                android:paddingBottom="@dimen/dp_2"/>
             <TextView
                 android:id="@+id/appVersionTv"
                 android:layout_width="wrap_content"
@@ -310,7 +329,7 @@
                 android:textColor="#ffffffff"
                 android:textSize="@dimen/sp_14"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintRight_toLeftOf="@+id/aboutAppVersionShowTv"
                 app:layout_constraintTop_toTopOf="parent" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>

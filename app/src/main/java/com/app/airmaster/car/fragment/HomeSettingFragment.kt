@@ -49,10 +49,10 @@ class HomeSettingFragment : TitleBarFragment<CarHomeActivity>() {
             startActivity(CarSystemCheckActivity::class.java)
         }
         findViewById<SettingBar>(R.id.sysAboutBar).setOnClickListener {
-            if(BaseApplication.getBaseApplication().connStatus != ConnStatus.CONNECTED){
-                showNotConnDialog()
-                return@setOnClickListener
-            }
+//            if(BaseApplication.getBaseApplication().connStatus != ConnStatus.CONNECTED){
+//                showNotConnDialog()
+//                return@setOnClickListener
+//            }
             startActivity(CarAboutActivity::class.java)
         }
     }

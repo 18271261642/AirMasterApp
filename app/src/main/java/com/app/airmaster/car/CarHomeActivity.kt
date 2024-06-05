@@ -162,7 +162,8 @@ class CarHomeActivity : AppActivity() ,NavigationAdapter.OnNavigationListener{
             }
         }
 
-        versionViewModel?.checkAppVersion(this,1)
+        val versionInfo = packageManager.getPackageInfo(packageName,0)
+        versionViewModel?.checkAppVersion(this,versionInfo.versionCode)
     }
 
 
