@@ -16,6 +16,7 @@ import android.text.style.ForegroundColorSpan
 import android.util.DisplayMetrics
 import android.view.Gravity
 import android.view.View
+import android.view.View.OnLongClickListener
 import android.view.animation.Animation
 import android.view.animation.RotateAnimation
 import android.widget.ImageView
@@ -200,6 +201,20 @@ class CarAboutActivity : AppActivity() {
         aboutOtherMcuLayout?.setOnClickListener {
             mcuViewModel?.sendCheckMcuData()
         }
+
+        aboutOtherMcuLayout?.setOnLongClickListener(object : OnLongClickListener{
+            override fun onLongClick(v: View?): Boolean {
+                val logUrl = getExternalFilesDir(null)?.path+"/log/"
+                val f = File(logUrl)
+                if(f.isFile && f.exists()){
+
+                }
+
+                return true
+            }
+
+        })
+
 
         aboutUpgradeLayout?.setOnClickListener(this)
         aboutActivateLayout?.setOnClickListener(this)
