@@ -7,9 +7,11 @@ import android.util.Log;
 import org.apache.commons.lang.StringUtils;
 import java.io.UnsupportedEncodingException;
 import java.nio.charset.StandardCharsets;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.Timer;
@@ -703,6 +705,10 @@ public class Utils {
 
 
 
+    private static final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss",Locale.CHINA);
+    public static String formatCurrentTime(){
+        return sdf.format(new Date(System.currentTimeMillis()));
+    }
 
 
 }

@@ -48,6 +48,8 @@ class McuUpgradeViewModel : ViewModel(){
     private var currentLogName : String ?= null
 
 
+    private var logSb = StringBuffer()
+
     fun setLogUrl(url :String){
         this.logUrl = url
     }
@@ -77,7 +79,7 @@ class McuUpgradeViewModel : ViewModel(){
         isReset =false
         isIntoBoot =false
         isMatchStatus = false
-
+        clearMcuLog()
     }
 
 
@@ -90,15 +92,19 @@ class McuUpgradeViewModel : ViewModel(){
             0xAF.toByte(), 0x00, 0x05, 0x04, 0x01, 0x41, 0x00, 0xB5.toByte()
         )
         val resultArray = Utils.getFullPackage(data)
+        logSb.append("第一步复位："+Utils.formatBtArrayToString(resultArray)+"\n\n")
         BaseApplication.getBaseApplication().bleOperate.writeCommonByte(resultArray,object : WriteBackDataListener{
             override fun backWriteData(data: ByteArray?) {
                 if(data == null){
                     return
                 }
-                Timber.e("----------复位="+Utils.formatBtArrayToString(data))
+                val str = Utils.formatBtArrayToString(data)
+                Timber.e("----------复位="+str)
                 //88 00 00 00 00 00 0c d2 03 0f 7f fa af 00 05 01 04 c1 01 34
+                logSb.append("复位返回："+str+"\n\n")
                 if(data.size == 20 && data[17].toInt().and(0xFF) == 193){   //复位成功
                     Timber.e("--------复位成功")
+                    logSb.append("复位成功：$str\n\n")
                     isReset = true
                     operateHandlers.removeMessages(0x00)
                     setSecondModel()
@@ -117,15 +123,19 @@ class McuUpgradeViewModel : ViewModel(){
             0xAF.toByte(), 0x00, 0x05, 0x04, 0x01, 0x42, 0x00, 0xB4.toByte()
         )
         val resultArray = Utils.getFullPackage(data)
+        logSb.append("第二步进入Boot模式："+Utils.formatBtArrayToString(resultArray)+"\n\n")
         BaseApplication.getBaseApplication().bleOperate.writeCommonByte(resultArray,object : WriteBackDataListener{
             override fun backWriteData(data: ByteArray?) {
                 if(data == null){
                     return
                 }
+                val str = Utils.formatBtArrayToString(data)
                 Timber.e("----------进入Boot模式="+Utils.formatBtArrayToString(data))
+                logSb.append("进入Boot模式返回："+str+"\n\n")
                 //88 00 00 00 00 00 0c d6 03 0f 7f fa af 00 05 01 04 c2 01 33
                 if(data.size == 20 && data[17].toInt().and(0xFF) == 194){   //进入Boot成功
                     Timber.e("--------进入Boot模式成功")
+                    logSb.append("进入Boot模式成功："+str+"\n\n")
                     isIntoBoot = true
                     operateHandlers.removeMessages(0x01)
                     setThirdData()
@@ -151,14 +161,20 @@ class McuUpgradeViewModel : ViewModel(){
         //584C3730315F53545F4D5F3030310000
         val tmpStr = "8800000000001b00011e7ffaaf0014040140584C3730315F53545F4D5F3030310000ca"
         val tmpR = Utils.hexStringToByte(tmpStr)
+
+        logSb.append("第三步发送匹配码："+contentStr+"\n\n")
+
         BaseApplication.getBaseApplication().bleOperate.writeCommonByte(resultArray,object : WriteBackDataListener{
             override fun backWriteData(data: ByteArray?) {
                 if(data == null){
                     return
                 }
-                Timber.e("----------发送匹配码返回="+Utils.formatBtArrayToString(data))
+                val str = Utils.formatBtArrayToString(data)
+                Timber.e("----------发送匹配码返回="+str)
                 //88 00 00 00 00 00 0c d2 03 0f 7f fa af 00 05 01 04 c0 01 35
+                logSb.append("发送匹配码返回："+str+"\n\n")
                 if(data.size == 20 && data[17].toInt().and(0xFF) == 192 && data[18].toInt().and(0xFF) == 1){
+                    logSb.append("发送匹配码成功："+str+"\n\n")
                     isMatchStatus = true
                     operateHandlers.removeMessages(0x02)
                     //匹配码成功
@@ -241,12 +257,25 @@ class McuUpgradeViewModel : ViewModel(){
     //当前发送的序号，从0开始
     private var currentPackIndex = 0
 
+
+    fun getMcuOtaLog() : String{
+        return logSb.toString()
+    }
+
+    fun clearMcuLog(){
+        logSb.delete(0,logSb.length)
+    }
+
+
+
+
+
     private val hds : Handler = object : Handler(Looper.getMainLooper()){
         override fun handleMessage(msg: Message) {
             super.handleMessage(msg)
             if(msg.what == 100){
                 val data = msg.obj as String
-                GetJsonDataUtil().writeTxtToFile(data,logUrl,currentLogName)
+               // GetJsonDataUtil().writeTxtToFile(data,logUrl,currentLogName)
             }
 
 
@@ -255,7 +284,9 @@ class McuUpgradeViewModel : ViewModel(){
                 writeIndexPack(array)
             }
             if(msg.what == 0x09){
-                Timber.e("---------分包序号="+currentPackIndex+" "+mergeIndex+" "+sourceBinList.size)
+                val str = currentPackIndex.toString()+" "+mergeIndex+" "+sourceBinList.size
+                Timber.e("---------分包序号="+str)
+
                 if(mergeIndex<3){
                     val itemArray = mergeList[mergeIndex]
                     write(itemArray)
@@ -287,7 +318,9 @@ class McuUpgradeViewModel : ViewModel(){
             }
 
             if(msg.what == 0x00){
+                val str = "当前写入的包序号=$currentPackIndex"+" 总包数"+mcuListData.size
                 Timber.e("MCU-----111-------当前写入的包序号=$currentPackIndex"+" 总包数"+mcuListData.size)
+                logSb.append("当前写入的包序号="+str+"\n\n")
                 if(currentPackIndex<mcuListData.size){
 
                     val progress = CalculateUtils.div(((currentPackIndex+1).toDouble()),120.0,3)
@@ -340,9 +373,6 @@ class McuUpgradeViewModel : ViewModel(){
                         val crc = Utils.crcCarContentByteArray(contentArray)
                         val fullMcuStr = "01207FFAAF$contentStr$crc"
 
-
-
-
                         val resultFullStr = "8800000000020f00"+fullMcuStr
 
                         //   val resultFullStr = "8800000000020f000120"+fullMcuStr
@@ -377,6 +407,7 @@ class McuUpgradeViewModel : ViewModel(){
         val allStr = "011E7FFAAF"+str+crc
         val rA = Utils.hexStringToByte(allStr)
         val resultArray = Utils.getFullPackage(rA)
+        logSb.append("校验="+allStr+"\n\n")
         BaseApplication.getBaseApplication().bleOperate.writeCommonByte(resultArray,object : WriteBackDataListener{
             override fun backWriteData(data: ByteArray?) {
                 Timber.e("---------校验="+Utils.formatBtArrayToString(data))
@@ -390,8 +421,12 @@ class McuUpgradeViewModel : ViewModel(){
                     val status = data[18].toInt().and(0xFF)
                     readCheckValue.postValue(status)
 
-                }else{
-                    checkTimeOut(data)
+                }else if(data.size == 20 && data[17].toInt().and(0xFF) == 198){
+
+                }
+
+                else{
+                  //  checkTimeOut(data)
                 }
 
             }
@@ -401,6 +436,7 @@ class McuUpgradeViewModel : ViewModel(){
 
 
     private fun startToWriteMcuData(list : MutableList<ByteArray>){
+        logSb.append("开始写入固件包："+Utils.formatCurrentTime()+"\n\n")
         currentPackIndex = 0
         mcuListData.clear()
         mcuListData.addAll(list)

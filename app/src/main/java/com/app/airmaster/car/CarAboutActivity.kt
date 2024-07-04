@@ -6,12 +6,15 @@ import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 import android.graphics.Color
+import android.net.Uri
 import android.os.Build
 import android.os.Handler
 import android.os.Looper
 import android.os.Message
+import android.os.StrictMode
 import android.text.SpannableStringBuilder
 import android.text.Spanned
+import android.text.TextUtils
 import android.text.style.ForegroundColorSpan
 import android.util.DisplayMetrics
 import android.view.Gravity
@@ -41,9 +44,9 @@ import com.app.airmaster.dialog.SingleAlertDialog
 import com.app.airmaster.second.SecondScanActivity
 import com.app.airmaster.utils.BikeUtils
 import com.app.airmaster.utils.ClickUtils
+import com.app.airmaster.utils.GetJsonDataUtil
 import com.app.airmaster.utils.MmkvUtils
 import com.app.airmaster.viewmodel.BridgeDfuViewModel
-import com.app.airmaster.viewmodel.ControlViewModel
 import com.app.airmaster.viewmodel.DfuViewModel
 import com.app.airmaster.viewmodel.McuUpgradeViewModel
 import com.app.airmaster.viewmodel.VersionViewModel
@@ -64,6 +67,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import java.io.File
+
 
 /**
  * Created by Admin
@@ -204,11 +208,7 @@ class CarAboutActivity : AppActivity() {
 
         aboutOtherMcuLayout?.setOnLongClickListener(object : OnLongClickListener{
             override fun onLongClick(v: View?): Boolean {
-                val logUrl = getExternalFilesDir(null)?.path+"/log/"
-                val f = File(logUrl)
-                if(f.isFile && f.exists()){
-
-                }
+               // openFilePath()
 
                 return true
             }
@@ -267,13 +267,64 @@ class CarAboutActivity : AppActivity() {
             }
 
             override fun onRightClick(view: View?) {
+
                 if (tempDeviceVersionInfo != null) {
                     showLogDialog(Gson().toJson(tempDeviceVersionInfo)+"\n"+serverStr)
                   //  tempDeviceVersionInfo?.sourceStr?.let { showLogDialog(it) }
+
                 }
             }
 
         })
+    }
+
+
+    private fun openFilePath(){
+        val path = getExternalFilesDir(null)?.path+"/log/"
+        val f = File(path)
+        if(!f.exists()){
+            f.mkdirs()
+        }
+        val logContent = mcuViewModel?.getMcuOtaLog()
+        val name = System.currentTimeMillis().toString()+".json"
+        GlobalScope.launch {
+            GetJsonDataUtil().writeTxtToFile(logContent,path,name)
+
+            val sharePath = path+name
+            openFileThirdApp(this@CarAboutActivity,sharePath)
+        }
+    }
+
+    /**
+     * 调用系统应用打开文件（系统分享）
+     *
+     * @param context
+     * @param filePath 文件路径
+     */
+    fun openFileThirdApp(context: Context, filePath: String?) {
+        if (TextUtils.isEmpty(filePath)) {
+            ToastUtils.show("文件不存在，请重新选择")
+            return
+        }
+        val file = File(filePath)
+        checkFileUriExposure()
+        val intent = Intent(Intent.ACTION_SEND)
+        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+        intent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(file))
+        intent.type = "*/*" //分享文件类型
+        context.startActivity(Intent.createChooser(intent, "分享"))
+    }
+
+    /**
+     * 分享前必须执行本代码，主要用于兼容SDK18以上的系统
+     * 否则会报android.os.FileUriExposedException: file:///xxx.pdf exposed beyond app through ClipData.Item.getUri()
+     */
+    private fun checkFileUriExposure() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2) {
+            val builder = StrictMode.VmPolicy.Builder()
+            StrictMode.setVmPolicy(builder.build())
+            builder.detectFileUriExposure()
+        }
     }
 
 
@@ -288,9 +339,10 @@ class CarAboutActivity : AppActivity() {
             ToastUtils.show("校验返回=$it"+checkStatus(it))
             isUpgrading = false
             if(it == 0){
+                otherMcuDfuShowTv?.text = "升级成功"
                 ToastUtils.show("升级成功!")
                 GlobalScope.launch {
-                    delay(1000)
+                    delay(2000)
                     finish()
                 }
             }
@@ -302,9 +354,12 @@ class CarAboutActivity : AppActivity() {
                 ToastUtils.show("升级超时，请重新升级!")
                 GlobalScope.launch {
                     delay(2000)
-                 //   finish()
+                    finish()
                 }
-            }else{
+            }else if(it == 0){
+                ToastUtils.show("升级成功!")
+            }
+            else{
                 ToastUtils.show("退出Boot状态码:$it")
 
             }
@@ -348,6 +403,10 @@ class CarAboutActivity : AppActivity() {
 
 
         val logUrl = getExternalFilesDir(null)?.path+"/log/"
+        val f = File(logUrl)
+        if(!f.exists()){
+            f.mkdirs()
+        }
         mcuViewModel?.setLogUrl(logUrl)
 
         //touchpad的升级状态
