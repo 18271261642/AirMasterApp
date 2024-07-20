@@ -124,7 +124,7 @@ class AppUpdateDialog : AppCompatDialog {
                 }
 
                 override fun onProgress(file: File?, progress: Int) {
-                    appUpdateStateTv?.text = context.resources.getString(R.string.string_downloading)+": "+progress+"%"
+                    appUpdateStateTv?.text = context.resources.getString(R.string.string_downloading)
                 }
 
                 override fun onComplete(file: File?) {

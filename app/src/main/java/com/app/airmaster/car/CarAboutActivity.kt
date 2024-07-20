@@ -234,7 +234,7 @@ class CarAboutActivity : AppActivity() {
         }
 
 
-        getPermission()
+       // getPermission()
 
         isUpgradeFoldState(true)
         isAcFoldState(true)
@@ -383,7 +383,12 @@ class CarAboutActivity : AppActivity() {
         watchOtaViewModel = ViewModelProvider(this)[WatchOTAViewModel::class.java]
 
         checkMcuViewModel()
-
+//        val aB = AppVoBean()
+//        aB.versionCode = 1
+//        aB.content = "dfsfas"
+//        aB.fileName = "123"
+//        aB.ota = "http://47.113.195.211:8090/app/download?url=upgrade/app/AIRMASTER_V1.0.6.5.apk"
+//        showAppUpdateDialog(aB)
 
         watchOtaViewModel?.upgradeStatus?.observe(this) {
             BaseApplication.getBaseApplication().isOTAModel = false
