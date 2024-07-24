@@ -76,7 +76,7 @@ import java.io.File
 class CarAboutActivity : AppActivity() {
 
     private val BLUETOOTH_IdentificationCode = "02fffff9"
-    private val TOUCHPAD_IdentificationCode = "03fffffe"
+    private var TOUCHPAD_IdentificationCode = "03fffffe"
     private val MCU_IdentificationCode = "04fffffd"
 
     //mcu 的ota升级
@@ -494,6 +494,7 @@ class CarAboutActivity : AppActivity() {
                 }
 
                 if (firmwareListDTO.identificationCode == tempDeviceVersionInfo?.mcuIdentificationCode) { //touchpad
+                    TOUCHPAD_IdentificationCode = firmwareListDTO.identificationCode
                     touchpadDfuShowTv?.visibility = View.VISIBLE
                 }
 
@@ -525,6 +526,7 @@ class CarAboutActivity : AppActivity() {
         viewModel?.deviceVersionInfo?.observe(this) { it ->
             tempDeviceVersionInfo = it
             if (isScreen) { //旋钮
+                TOUCHPAD_IdentificationCode = it.mcuIdentificationCode
                 //bluetooth
                 bluetoothDfuVersionTv?.text = it.versionStr
                 //touchpad
@@ -898,13 +900,13 @@ class CarAboutActivity : AppActivity() {
             upArray[1] = Color.parseColor("#2BA6F7")
 
             when (identificationCode) {
-                "02fffff9" -> {   //bluetooth
+                BLUETOOTH_IdentificationCode -> {   //bluetooth
                     bluetoothDfuShowTv!!.shapeDrawableBuilder.setSolidGradientColors(upArray)
                         .intoBackground()
                     bluetoothDfuShowTv?.text = "正在升级..."
                 }
 
-                "03fffffe" -> {  //touchpad
+                TOUCHPAD_IdentificationCode -> {  //touchpad
                     touchpadDfuShowTv!!.shapeDrawableBuilder.setSolidGradientColors(upArray)
                         .intoBackground()
                     touchpadDfuShowTv?.text = "正在升级..."
@@ -924,13 +926,13 @@ class CarAboutActivity : AppActivity() {
         upArray[1] = Color.parseColor("#FD654D")
 
         when (identificationCode) {
-            "02fffff9" -> {   //bluetooth
+            BLUETOOTH_IdentificationCode -> {   //bluetooth
                 bluetoothDfuShowTv!!.shapeDrawableBuilder.setSolidGradientColors(upArray)
                     .intoBackground()
                 bluetoothDfuShowTv?.text = resources.getString(R.string.string_has_new_version)
             }
 
-            "03fffffe" -> {  //touchpad
+            TOUCHPAD_IdentificationCode -> {  //touchpad
                 touchpadDfuShowTv!!.shapeDrawableBuilder.setSolidGradientColors(upArray)
                     .intoBackground()
                 touchpadDfuShowTv?.text = resources.getString(R.string.string_has_new_version)
