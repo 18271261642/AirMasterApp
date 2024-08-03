@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+<!--
+    <string name="string_privacy_txt">隐私政策</string>
+    <string name="string_user_protocol">用户协议</string>-->
+
 
     <string name="string_air_upgrade">%1s新版本</string>
     <string name="string_air_choose">选择</string>

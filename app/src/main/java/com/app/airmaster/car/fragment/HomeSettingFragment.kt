@@ -1,9 +1,10 @@
 package com.app.airmaster.car.fragment
 
+import android.content.Intent
 import com.app.airmaster.BaseApplication
 import com.app.airmaster.R
+import com.app.airmaster.ShowWebViewActivity
 import com.app.airmaster.action.TitleBarFragment
-import com.app.airmaster.adapter.OnCommItemClickListener
 import com.app.airmaster.ble.ConnStatus
 import com.app.airmaster.car.CarAboutActivity
 import com.app.airmaster.car.CarHomeActivity
@@ -34,6 +35,31 @@ class HomeSettingFragment : TitleBarFragment<CarHomeActivity>() {
         findViewById<SettingBar>(R.id.sysConnDeviceBar).setOnClickListener {
             startActivity(SecondScanActivity::class.java)
         }
+
+        findViewById<SettingBar>(R.id.sysPrivacyBar).setOnClickListener {
+
+            val intent = Intent(context, ShowWebViewActivity::class.java)
+            intent.putExtra("url", "file:///android_asset/airmaster_privacy.html")
+            intent.putExtra("title", resources.getString(R.string.privacy_agreement_tips))
+            startActivity(intent)
+        }
+
+        findViewById<SettingBar>(R.id.sysProtocolBar).setOnClickListener {
+
+//                Intent intent = new Intent(getContext(), ShowWebActivity.class);
+//                intent.putExtra("url", MmkvUtils.getUserAgreement());
+//                intent.putExtra("title",getContext().getResources().getString(R.string.user_agreement_tips));
+//                getContext().startActivity(intent);
+            //                intent.putExtra("url", "file:///android_asset/keyboard_privacy.html");
+            // String url = "http://www.airmaster-performance.com";
+            val intent = Intent(context, ShowWebViewActivity::class.java)
+            intent.putExtra("url", "file:///android_asset/airmaster_protocol.html")
+            intent.putExtra("title", resources.getString(R.string.user_agreement_tips))
+            //  intent.putExtra("url", url);
+            //  intent.putExtra("url", url);
+            startActivity(intent)
+        }
+
         findViewById<SettingBar>(R.id.sysSysBar).setOnClickListener {
             if(BaseApplication.getBaseApplication().connStatus != ConnStatus.CONNECTED){
                 showNotConnDialog()
