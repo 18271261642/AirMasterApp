@@ -1,12 +1,15 @@
 package com.app.airmaster.viewmodel
 
 import android.annotation.SuppressLint
+import android.content.Context
 import androidx.lifecycle.ViewModel
+import com.app.airmaster.R
 import com.blala.blalable.Utils
 import timber.log.Timber
 
 class CarErrorNotifyViewModel : ViewModel() {
 
+    private var mContext : Context ?= null
 
     var carErrorDescList = SingleLiveEvent<List<String>>()
 
@@ -15,7 +18,8 @@ class CarErrorNotifyViewModel : ViewModel() {
 
 
     @SuppressLint("TimberArgCount")
-    fun getAllErrorDesc(deviceErrorCode : Byte, airErrorCode : Byte, leftFrontCode : Byte, leftRearCode : Byte, rightFront : Byte, rightRearCode : Byte){
+    fun getAllErrorDesc(context : Context, deviceErrorCode : Byte, airErrorCode : Byte, leftFrontCode : Byte, leftRearCode : Byte, rightFront : Byte, rightRearCode : Byte){
+        this.mContext = context
         list.clear()
 
         //设备故障
@@ -95,47 +99,54 @@ class CarErrorNotifyViewModel : ViewModel() {
     private val wheelMap = HashMap<Int,String>()
     private fun getWheelsError(errorStr: String,code :Int) : HashMap<Int,String>{
         wheelMap.clear()
+        if(mContext == null){
+            return wheelMap
+        }
+
         val wheel = getWheelType(code)
         val chartArray = errorStr.toCharArray()
         if (chartArray[0].toString() == "1") {
-            wheelMap[0] = wheel+"高度传感器超量程"
+            wheelMap[0] = wheel+ mContext!!.resources.getString(R.string.string_car_h_e_1)//"高度传感器超量程"
         }
         if (chartArray[1].toString() == "1") {
             wheelMap[1] = wheel+"None"
         }
         if (chartArray[2].toString() == "1") {
-            wheelMap[2] = wheel+"高度传感器线序错误"
+            wheelMap[2] = wheel+mContext!!.resources.getString(R.string.string_car_h_e_2)//"高度传感器线序错误"
         }
         if (chartArray[3].toString() == "1") {
-            wheelMap[3] = wheel+"高度传感器测量范围过小"
+            wheelMap[3] = wheel+mContext!!.resources.getString(R.string.string_car_h_e_3)//"高度传感器测量范围过小"
         }
         if (chartArray[4].toString() == "1") {
-            wheelMap[4] = wheel+"高度传感器装反"
+            wheelMap[4] = wheel+mContext!!.resources.getString(R.string.string_car_h_e_4)//"高度传感器装反"
         }
         if(chartArray[5].toString()=="1"){
-            wheelMap[5] = wheel+"高度传感器故障"
+            wheelMap[5] = wheel+mContext!!.resources.getString(R.string.string_car_h_e_5)//"高度传感器故障"
         }
         if(chartArray[6].toString()=="1"){
-            wheelMap[5] = wheel+"气压传感器故障"
+            wheelMap[5] = wheel+mContext!!.resources.getString(R.string.string_car_h_e_6)//"气压传感器故障"
         }
         if(chartArray[7].toString()=="1"){
-            wheelMap[5] = wheel+"空气弹簧漏气"
+            wheelMap[5] = wheel+mContext!!.resources.getString(R.string.string_car_h_e_7)//"空气弹簧漏气"
         }
         return wheelMap
     }
 
 
     private fun getWheelType(code: Int) : String{
+        if(mContext == null){
+            return ""
+        }
         if(code ==0){
-            return "左前"
+            return mContext!!.resources.getString(R.string.string_car_lr)//"左前"
         }
         if(code == 1){
-            return "右前"
+            return mContext!!.resources.getString(R.string.string_car_rr)//"右前"
         }
         if(code == 2){
-            return "左后"
+            return mContext!!.resources.getString(R.string.string_car_ll)//"左后"
         }
-        return "右后"
+        return mContext!!.resources.getString(R.string.string_car_rl)//"右后"
     }
 
     /**

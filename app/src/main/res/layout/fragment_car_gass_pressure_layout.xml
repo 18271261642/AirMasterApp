@@ -35,7 +35,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/dp_10"
             android:layout_marginTop="@dimen/dp_30"
-            android:text="高压（PSI）"
+            android:text="@string/string_pressure_h"
             android:textColor="@color/white"
             android:textSize="@dimen/sp_14" />
 
@@ -95,7 +95,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/dp_10"
             android:layout_marginTop="@dimen/dp_30"
-            android:text="低压（PSI）"
+            android:text="@string/string_pressure_l"
             android:textColor="@color/white"
             android:textSize="@dimen/sp_14" />
 

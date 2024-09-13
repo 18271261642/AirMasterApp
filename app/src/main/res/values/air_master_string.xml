@@ -1,6 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <string name="string_car_auto_check_prompt">Whethere to perform automatic self-test?</string>
+    <string name="string_car_check_failed">Fail</string>
+    <string name="string_car_check_success">OK</string>
+    <string name="string_car_reset">Cancel</string>
+    <string name="string_car_save">Save</string>
+
     <string name="string_air_upgrade">%1s New version</string>
     <string name="string_air_choose">选择</string>
     <string name="string_bluetooth">蓝牙</string>
@@ -55,8 +61,8 @@
     <string name="string_start_start_position">点火后设置联动预置位:</string>
     <string name="string_start_end_end">熄火设置</string>
     <string name="string_start_end_position">熄火后设置联动预置位:</string>
-    <string name="string_ap_balance_priority">气压优先</string>
-    <string name="string_ap_balance_height_priority">高度优先</string>
+    <string name="string_ap_balance_priority">Pressure priority</string>
+    <string name="string_ap_balance_height_priority">Height  priority</string>
     <string name="string_manual">手动自检</string>
     <string name="string_automatic">自动检测</string>
 

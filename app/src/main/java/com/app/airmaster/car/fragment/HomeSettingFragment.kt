@@ -5,12 +5,16 @@ import com.app.airmaster.BaseApplication
 import com.app.airmaster.R
 import com.app.airmaster.ShowWebViewActivity
 import com.app.airmaster.action.TitleBarFragment
+import com.app.airmaster.adapter.OnCommItemClickListener
 import com.app.airmaster.ble.ConnStatus
 import com.app.airmaster.car.CarAboutActivity
+import com.app.airmaster.car.CarAutoCheckActivity
 import com.app.airmaster.car.CarHomeActivity
 import com.app.airmaster.car.CarSysSetActivity
 import com.app.airmaster.car.CarSystemCheckActivity
 import com.app.airmaster.car.ShowWebActivity
+import com.app.airmaster.car.check.ManualCheckActivity
+import com.app.airmaster.dialog.ConfirmDialog
 import com.app.airmaster.second.SecondScanActivity
 import com.bonlala.widget.layout.SettingBar
 
@@ -72,7 +76,8 @@ class HomeSettingFragment : TitleBarFragment<CarHomeActivity>() {
                 showNotConnDialog()
                 return@setOnClickListener
             }
-            startActivity(CarSystemCheckActivity::class.java)
+           // startActivity(CarSystemCheckActivity::class.java)
+            showDialogShow(1)
         }
         findViewById<SettingBar>(R.id.sysAboutBar).setOnClickListener {
 //            if(BaseApplication.getBaseApplication().connStatus != ConnStatus.CONNECTED){
@@ -88,7 +93,7 @@ class HomeSettingFragment : TitleBarFragment<CarHomeActivity>() {
     }
 
     private fun showNotConnDialog(){
-        attachActivity?.showCommAlertDialog("未连接设备","去官网","去连接"
+        attachActivity?.showCommAlertDialog(resources.getString(R.string.string_not_conn_device),resources.getString(R.string.string_go_to_official_website),resources.getString(R.string.string_go_to_conn)
         ) { position ->
             attachActivity.disCommAlertDialog()
             if (position == 0x01) {
@@ -98,5 +103,33 @@ class HomeSettingFragment : TitleBarFragment<CarHomeActivity>() {
                 startActivity(ShowWebActivity::class.java)
             }
         }
+    }
+
+
+
+    private fun showDialogShow(code : Int){
+        val dialog = ConfirmDialog(attachActivity, com.bonlala.base.R.style.BaseDialogTheme)
+        dialog.show()
+        dialog.setContentTxt(if(code == 0) "是否进行手动检测?" else resources.getString(R.string.string_car_auto_check_prompt))
+        dialog.setOnCommClickListener(object : OnCommItemClickListener {
+            override fun onItemClick(position: Int) {
+                dialog.dismiss()
+
+                if(position==1){
+                    if(code == 1){
+                        val intent = Intent(attachActivity, CarAutoCheckActivity::class.java)
+                        intent.putExtra("type",code)
+                        startActivity(intent)
+                    }else{
+                        // viewModel?.intoOrExit(true,false)
+                        val intent = Intent(attachActivity, ManualCheckActivity::class.java)
+                        intent.putExtra("type",code)
+                        startActivity(intent)
+                    }
+
+                }
+            }
+
+        })
     }
 }

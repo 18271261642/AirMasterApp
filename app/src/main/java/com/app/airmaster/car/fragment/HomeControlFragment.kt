@@ -254,7 +254,7 @@ class HomeControlFragment : TitleBarFragment<CarHomeActivity>() {
                         homeDeviceErrorLayout?.visibility = View.VISIBLE
                         handlers.sendEmptyMessageDelayed(0x08,15000)
                         tempErrorCount = errorCount
-                        errorNotifyViewModel?.getAllErrorDesc(deviceErrorCode,airErrorCode,
+                        errorNotifyViewModel?.getAllErrorDesc(attachActivity,deviceErrorCode,airErrorCode,
                             leftFrontCode,leftRearCode,rightFront,rightRearCode)
                     }
                 }
