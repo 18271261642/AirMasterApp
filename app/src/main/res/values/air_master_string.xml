@@ -1,6 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <string name="string_car_minute">min</string>
+    <string name="string_car_work_model">Working mode</string>
+    <string name="string_car_memory_model">Memory mode</string>
+    <string name="string_car_height_memory">Height Pre-Set</string>
+    <string name="string_car_pressure_memory">Pressure Pre-Set</string>
+
+    <string name="string_car_lr">FL</string>
+    <string name="string_car_rr">FR</string>
+    <string name="string_car_ll">RL</string>
+    <string name="string_car_rl">RR</string>
+
+    <string name="string_car_h_e_1">height sensor limit out of range</string>
+    <string name="string_car_h_e_2">height sensor wiring error</string>
+    <string name="string_car_h_e_3">height sensor range fault</string>
+    <string name="string_car_h_e_4">height sensor upside down</string>
+    <string name="string_car_h_e_5">height sensor failure</string>
+    <string name="string_car_h_e_6">pressure sensor failure</string>
+    <string name="string_car_h_e_7">leak detected on air suspension</string>
+
     <string name="string_car_auto_check_prompt">Whethere to perform automatic self-test?</string>
     <string name="string_car_check_failed">Fail</string>
     <string name="string_car_check_success">OK</string>

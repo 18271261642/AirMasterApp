@@ -10,6 +10,7 @@ import android.view.View
 import androidx.core.view.size
 import androidx.lifecycle.ViewModelProvider
 import androidx.viewpager2.widget.ViewPager2
+import com.app.airmaster.BaseApplication
 import com.app.airmaster.R
 import com.app.airmaster.action.AppActivity
 import com.app.airmaster.adapter.GuideAdapter
@@ -177,8 +178,10 @@ class ManualCheckActivity : AppActivity() {
 
 
     private fun showManualDialog(position : Int){
+        val deviceModel = BaseApplication.getBaseApplication().autoBackBean?.deviceMode==0
         val dialog = ManualSetHeightView(this, com.bonlala.base.R.style.BaseDialogTheme)
         dialog.show()
+        dialog.setShowHeightModel(deviceModel)
         dialog.setModel(position==3)
         dialog.setOnDialogClickListener{
             if(it == 0x01){ //保存了

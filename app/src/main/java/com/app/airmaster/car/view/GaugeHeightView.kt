@@ -75,9 +75,13 @@ class GaugeHeightView : LinearLayout{
     fun setGoalVisibility(visibility: Boolean){
         gaugeLeftGoalSeekBar?.visibility = if(visibility) View.VISIBLE else View.GONE
         gaugeRightGoalSeekBar?.visibility = if(visibility) View.VISIBLE else View.GONE
-
     }
 
+
+    fun setRealHeightVisibility(show : Boolean){
+        gaugeLeftSeekBar?.visibility  = if(show) View.VISIBLE else View.INVISIBLE
+        gaugeRightSeekBar?.visibility = if(show) View.VISIBLE else View.INVISIBLE
+    }
 
 
 }

@@ -348,6 +348,20 @@ class CarHomeCenterView : LinearLayout ,OnClickListener{
     }
 
 
+
+    //设置是否显示所有高度，气压版本不显示所有的高度
+    fun setShowHeightIndicator(show : Boolean){
+        Timber.e("----ssssshow="+show)
+        if(show){
+            setGoalVisibility(true)
+        }else{
+            setGoalVisibility(false)
+            carFrontGaugeView?.setRealHeightVisibility(false)
+            carRearGaugeView?.setRealHeightVisibility(false)
+        }
+    }
+
+
     override fun onClick(p0: View?) {
 //       val id = p0?.id
 //        map.clear()

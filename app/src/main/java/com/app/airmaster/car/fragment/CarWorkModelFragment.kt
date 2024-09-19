@@ -54,7 +54,7 @@ class CarWorkModelFragment : TitleBarFragment<CarSysSetActivity>() {
         adapter = CarTimerAdapter(attachActivity, list as ArrayList<TimerBean>)
         workModelRy?.adapter = adapter
 
-        sysWorkModelTitleView?.setCommTitleTxt("工作模式")
+        sysWorkModelTitleView?.setCommTitleTxt(resources.getString(R.string.string_car_work_model))
         sysWorkModelTitleView?.setOnItemClick{
             val fragmentManager = parentFragmentManager
             fragmentManager.popBackStack()
@@ -64,12 +64,13 @@ class CarWorkModelFragment : TitleBarFragment<CarSysSetActivity>() {
     override fun initData() {
         viewModel = ViewModelProvider(this)[ControlViewModel::class.java]
         list?.clear()
-        val array = arrayListOf<TimerBean>(TimerBean("5分钟",5,false),
-            TimerBean("10分钟",10,false),
-            TimerBean("15分钟",15,false),
-            TimerBean("20分钟",20,false),
-            TimerBean("30分钟",30,false),
-            TimerBean("60分钟",60,false))
+        val minStr = resources.getString(R.string.string_car_minute)
+        val array = arrayListOf<TimerBean>(TimerBean("5$minStr",5,false),
+            TimerBean("10$minStr",10,false),
+            TimerBean("15$minStr",15,false),
+            TimerBean("20$minStr",20,false),
+            TimerBean("30$minStr",30,false),
+            TimerBean("60$minStr",60,false))
         list?.addAll(array)
         adapter?.notifyDataSetChanged()
 

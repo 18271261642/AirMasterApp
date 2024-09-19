@@ -1,6 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <string name="string_car_minute">min</string>
+    <string name="string_car_work_model">Working mode</string>
+    <string name="string_car_memory_model">Memory mode</string>
+    <string name="string_car_height_memory">Height Pre-Set</string>
+    <string name="string_car_pressure_memory">Pressure Pre-Set</string>
+
     <string name="string_car_lr">FL</string>
     <string name="string_car_rr">FR</string>
     <string name="string_car_ll">RL</string>

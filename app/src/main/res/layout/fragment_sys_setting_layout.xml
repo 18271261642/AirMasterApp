@@ -41,15 +41,29 @@
 
 
         <com.bonlala.widget.layout.SettingBar
-            android:id="@+id/sysWorkModelBar"
+            android:id="@+id/sysMemoryModelBar"
             android:layout_width="match_parent"
-            app:bar_leftDrawable="@mipmap/ic_sys_work_model"
-            app:bar_leftText="工作模式"
+            app:bar_leftDrawable="@mipmap/ic_sys_memory_model"
+            app:bar_leftText="@string/string_car_memory_model"
             android:background="@color/transparent"
             app:bar_leftTextColor="@color/white"
             app:bar_rightDrawable="@mipmap/ic_set_right_back"
             app:bar_lineVisible="false"
+            android:layout_height="wrap_content"/>
+
+
+
+
+        <com.bonlala.widget.layout.SettingBar
+            android:id="@+id/sysWorkModelBar"
             android:visibility="gone"
+            android:layout_width="match_parent"
+            app:bar_leftDrawable="@mipmap/ic_sys_work_model"
+            app:bar_leftText="@string/string_car_work_model"
+            android:background="@color/transparent"
+            app:bar_leftTextColor="@color/white"
+            app:bar_rightDrawable="@mipmap/ic_set_right_back"
+            app:bar_lineVisible="false"
             android:layout_height="wrap_content"/>
 
 

@@ -76,8 +76,17 @@ class HomeSettingFragment : TitleBarFragment<CarHomeActivity>() {
                 showNotConnDialog()
                 return@setOnClickListener
             }
-           // startActivity(CarSystemCheckActivity::class.java)
-            showDialogShow(1)
+            val autoBean = BaseApplication.getBaseApplication().autoBackBean
+            if(autoBean ==null){
+                startActivity(CarSystemCheckActivity::class.java)
+                return@setOnClickListener
+            }
+            if(autoBean.deviceMode == 1){   //气压模式
+                showDialogShow(1)
+            }else{
+                startActivity(CarSystemCheckActivity::class.java)
+            }
+
         }
         findViewById<SettingBar>(R.id.sysAboutBar).setOnClickListener {
 //            if(BaseApplication.getBaseApplication().connStatus != ConnStatus.CONNECTED){

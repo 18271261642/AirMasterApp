@@ -559,7 +559,9 @@ public class BleManager {
 
                     //是否激活
                     int activationStatus = bytes[55];
-
+                    //设备模式 0:支持高度+气压
+                    //1;支持气压
+                    int deviceModel = bytes[56] & 0xFF;
 
                     autoBackBean.setWorkModel(workModel);
                     autoBackBean.setSelfCheckModel(selfCheckModel);

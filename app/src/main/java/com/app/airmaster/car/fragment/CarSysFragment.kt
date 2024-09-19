@@ -1,6 +1,7 @@
 package com.app.airmaster.car.fragment
 
 import android.view.View
+import com.app.airmaster.BaseApplication
 import com.app.airmaster.R
 import com.app.airmaster.action.TitleBarFragment
 import com.app.airmaster.adapter.OnCommItemClickListener
@@ -24,6 +25,9 @@ class CarSysFragment : TitleBarFragment<CarSysSetActivity>() {
 
     private var sysSettingTitleView : CommTitleView ?= null
 
+    //记忆模式
+    private var sysMemoryModelBar : SettingBar ?= null
+
     companion object{
         fun getInstance() : CarSysFragment{
             return CarSysFragment()
@@ -36,6 +40,7 @@ class CarSysFragment : TitleBarFragment<CarSysSetActivity>() {
     }
 
     override fun initView() {
+        sysMemoryModelBar = findViewById(R.id.sysMemoryModelBar)
         sysSettingTitleView = findViewById(R.id.sysSettingTitleView)
 
         val fragmentManager = parentFragmentManager
@@ -50,6 +55,19 @@ class CarSysFragment : TitleBarFragment<CarSysSetActivity>() {
             fragmentTransaction.addToBackStack(null)
             fragmentTransaction.commit()
         }
+
+        //记忆模式
+        sysMemoryModelBar?.setOnClickListener {
+            if(ClickUtils.isFastDoubleClick()){
+                return@setOnClickListener
+            }
+            fragmentTransaction.replace(R.id.stsSetFrameLayout,CarMemoryModelFragment.getInstance())
+            fragmentTransaction.addToBackStack(null)
+            fragmentTransaction.commit()
+
+        }
+
+
         //工作模式
         findViewById<SettingBar>(R.id.sysWorkModelBar).setOnClickListener {
             if(ClickUtils.isFastDoubleClick()){
@@ -128,7 +146,7 @@ class CarSysFragment : TitleBarFragment<CarSysSetActivity>() {
             fragmentTransaction.commit()
         }
 
-        sysSettingTitleView?.setCommTitleTxt("系统设置")
+        sysSettingTitleView?.setCommTitleTxt(resources.getString(R.string.string_setting_menu_set))
         sysSettingTitleView?.setOnItemClick{
             finish()
         }
@@ -138,6 +156,13 @@ class CarSysFragment : TitleBarFragment<CarSysSetActivity>() {
 
     }
 
+
+    override fun onResume() {
+        super.onResume()
+
+        val autoBean = BaseApplication.getBaseApplication().autoBackBean
+        sysMemoryModelBar?.visibility = if(autoBean.deviceMode == 0) View.VISIBLE else View.GONE
+    }
 
 
 }

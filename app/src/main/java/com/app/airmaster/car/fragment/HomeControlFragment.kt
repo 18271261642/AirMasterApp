@@ -145,7 +145,12 @@ class HomeControlFragment : TitleBarFragment<CarHomeActivity>() {
             }
             handlers.removeMessages(0x00)
             handlers.sendEmptyMessageDelayed(0x00,5000)
-            showRulerGoalVisibility(true)
+            if(BaseApplication.getBaseApplication().autoBackBean?.deviceMode==0){  //高度模式
+                showRulerGoalVisibility(true)
+            }else{
+                showRulerGoalVisibility(false)
+            }
+
             if(it == -1){
                 controlViewModel?.setOneGearReset()
             }else{
@@ -174,8 +179,7 @@ class HomeControlFragment : TitleBarFragment<CarHomeActivity>() {
               homeErrorMsgTv?.text = it[0]
           }
         }
-
-
+        //carHomeCenterView?.setShowHeightIndicator(false)
 
         val carActivity = attachActivity as CarHomeActivity
         carActivity.setHomeAutoListener(object : CarHomeActivity.OnHomeAutoBackListener{
@@ -261,6 +265,7 @@ class HomeControlFragment : TitleBarFragment<CarHomeActivity>() {
 //                homeErrorMsgTv?.text = if(isEmpty) "" else strArray[0]
 //                homeDeviceErrorLayout?.visibility = if(isEmpty) View.INVISIBLE else View.VISIBLE
 
+                carHomeCenterView?.setShowHeightIndicator(autoBean.deviceMode==0)
             }
 
         })

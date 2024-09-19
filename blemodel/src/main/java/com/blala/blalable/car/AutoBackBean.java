@@ -167,7 +167,9 @@ public class AutoBackBean {
     private byte airBottleErrorCode ;
     //是否激活
     private int activationStatus ;
-
+    //设备模式 00:支持高度+气压
+    //1;支持气压
+    private int deviceMode;
 
     private String autoStr;
 
@@ -485,6 +487,14 @@ public class AutoBackBean {
         this.autoStr = autoStr;
     }
 
+    public int getDeviceMode() {
+        return deviceMode;
+    }
+
+    public void setDeviceMode(int deviceMode) {
+        this.deviceMode = deviceMode;
+    }
+
     @Override
     public String toString() {
         return "AutoBackBean{" +
@@ -525,7 +535,7 @@ public class AutoBackBean {
                 ", 左后故障状态码=" + leftRearErrorCode +
                 ", 右后故障状态码=" + rightRearErrorCode +
                 ", 气罐故障状态码=" + airBottleErrorCode +
-                ", 是否激活=" + activationStatus +
+                ", 是否激活=" + activationStatus + "设备模式="+deviceMode+
                 '}';
     }
 }

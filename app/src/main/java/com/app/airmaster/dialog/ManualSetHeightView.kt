@@ -115,6 +115,18 @@ class ManualSetHeightView : AppCompatDialog {
         }
     }
 
+
+
+    //是否显示高度相关的，只支持气压版本的不显示高度相关
+    fun setShowHeightModel(show : Boolean){
+        manualHeightView?.setShowHeightIndicator(show)
+    }
+
+
+
+
+
+
     //手动调整轮子充气或放气
     private fun setManualOperation(map : HashMap<Int,Int>){
         Timber.e("---map="+map.toString())
