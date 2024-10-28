@@ -114,6 +114,7 @@ class SecondScanActivity : AppActivity() {
                 return@setOnClickListener
             }
             showDialog("Connecting..")
+            handlers.sendEmptyMessageDelayed(0x01,20 * 1000)
             BaseApplication.getBaseApplication().connStatusService?.autoConnDevice(MmkvUtils.getConnDeviceMac(),false)
         }
 
@@ -297,10 +298,10 @@ class SecondScanActivity : AppActivity() {
                         return
                     }
 
-                    if(recordStr.contains("c019") || recordStr.contains("19c0") || recordStr.contains("c01b") || recordStr.contains("1bc0")){
+                    if(recordStr.contains("c019") || recordStr.contains("19c0") || recordStr.contains("c01b") || recordStr.contains("1bc0") || recordStr.contains("1dc0") || recordStr.contains("c01d")){
 
 
-                        val isScreen = recordStr.contains("c019") || recordStr.contains("19c0")
+                        val isScreen = recordStr.contains("c019") || recordStr.contains("19c0")|| recordStr.contains("1dc0") || recordStr.contains("c01d")
 
                     //判断少于40个设备就不添加了
                     if (repeatList?.size!! > 40) {
@@ -341,11 +342,13 @@ class SecondScanActivity : AppActivity() {
         override fun onReceive(p0: Context?, p1: Intent?) {
             val action = p1?.action
             if(action == BleConstant.BLE_CONNECTED_ACTION){
+                handlers.removeMessages(0x01)
                 hideDialog()
                 ToastUtils.show(resources.getString(R.string.string_scan_conn_success))
                 getHasBindDevice()
             }
             if(action == BleConstant.BLE_DIS_CONNECT_ACTION){
+                handlers.removeMessages(0x01)
                 hideDialog()
                 ToastUtils.show(resources.getString(R.string.string_scan_conn_failed))
                 BaseApplication.getBaseApplication().connStatus = ConnStatus.NOT_CONNECTED
@@ -380,16 +383,13 @@ class SecondScanActivity : AppActivity() {
     private fun showLocalDialog(){
         val dialog = DeleteNoteDialog(this, com.bonlala.base.R.style.BaseDialogTheme)
         dialog.show()
-        dialog.setContent("搜索手机附近的蓝牙设备需要位置权限,是否授权?")
-        dialog.setOnCommClickListener(object : OnCommItemClickListener{
-            override fun onItemClick(position: Int) {
-              dialog.dismiss()
-                if(position == 0x01){
-                    verifyScanFun(false)
-                }
+        dialog.setContent(resources.getString(R.string.string_scan_device_location_desc))
+        dialog.setOnCommClickListener { position ->
+            dialog.dismiss()
+            if (position == 0x01) {
+                verifyScanFun(false)
             }
-
-        })
+        }
         val window = dialog.window
         val windowLayout = window?.attributes
         val metrics2: DisplayMetrics = resources.displayMetrics

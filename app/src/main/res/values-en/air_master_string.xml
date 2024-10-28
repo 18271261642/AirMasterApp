@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <string name="string_scan_device_location_desc">搜索手机附近的蓝牙设备需要位置权限,是否授权?</string>
     <string name="string_car_minute">min</string>
     <string name="string_car_work_model">Working mode</string>
     <string name="string_car_memory_model">Memory mode</string>

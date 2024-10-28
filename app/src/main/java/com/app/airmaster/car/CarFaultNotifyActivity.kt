@@ -15,6 +15,9 @@ import com.app.airmaster.viewmodel.ControlViewModel
 import com.blala.blalable.Utils
 import timber.log.Timber
 
+/**
+ * 系统自检异常信息
+ */
 class CarFaultNotifyActivity : AppActivity() {
 
     private var controlViewModel : ControlViewModel ?= null
@@ -311,43 +314,43 @@ class CarFaultNotifyActivity : AppActivity() {
         val wheel = getWheelType(code)
         val chartArray = errorStr.toCharArray()
         if (chartArray[0].toString() == "1") {
-            wheelMap[0] = wheel+"高度传感器超量程"
+            wheelMap[0] = wheel+resources.getString(R.string.string_car_h_e_1)
         }
         if (chartArray[1].toString() == "1") {
             wheelMap[1] = wheel+"None"
         }
         if (chartArray[2].toString() == "1") {
-            wheelMap[2] = wheel+"高度传感器线序错误"
+            wheelMap[2] = wheel+resources.getString(R.string.string_car_h_e_2)
         }
         if (chartArray[3].toString() == "1") {
-            wheelMap[3] = wheel+"高度传感器测量范围过小"
+            wheelMap[3] = wheel+resources.getString(R.string.string_car_h_e_3)
         }
         if (chartArray[4].toString() == "1") {
-            wheelMap[4] = wheel+"高度传感器装反"
+            wheelMap[4] = wheel+resources.getString(R.string.string_car_h_e_4)
         }
         if(chartArray[5].toString()=="1"){
-            wheelMap[5] = wheel+"高度传感器故障"
+            wheelMap[5] = wheel+resources.getString(R.string.string_car_h_e_5)
         }
         if(chartArray[6].toString()=="1"){
-            wheelMap[5] = wheel+"气压传感器故障"
+            wheelMap[5] = wheel+resources.getString(R.string.string_car_h_e_6)
         }
         if(chartArray[7].toString()=="1"){
-            wheelMap[5] = wheel+"空气弹簧漏气"
+            wheelMap[5] = wheel+resources.getString(R.string.string_car_h_e_7)
         }
         return wheelMap
     }
 
     private fun getWheelType(code: Int) : String{
         if(code ==0){
-            return "左前"
+            return resources.getString(R.string.string_car_lr)
         }
         if(code == 1){
-            return "右前"
+            return resources.getString(R.string.string_car_rr)
         }
         if(code == 2){
-            return "左后"
+            return resources.getString(R.string.string_car_ll)
         }
-        return "右后"
+        return resources.getString(R.string.string_car_rl)
     }
 
     override fun onDestroy() {

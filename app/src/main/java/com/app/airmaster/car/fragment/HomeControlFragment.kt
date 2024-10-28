@@ -125,7 +125,7 @@ class HomeControlFragment : TitleBarFragment<CarHomeActivity>() {
                     controlViewModel?.setPreAutoIsEnable(isChecked)
                 }
 
-               if(position == 2){
+               if(position == 2){  //异常信息
                    startActivity(CarFaultNotifyActivity::class.java)
                }
 
