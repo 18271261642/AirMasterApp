@@ -28,6 +28,11 @@ class CarSysFragment : TitleBarFragment<CarSysSetActivity>() {
     //记忆模式
     private var sysMemoryModelBar : SettingBar ?= null
 
+    //高度尺
+    private var sysScaleSettingBar : SettingBar ?= null
+    //气压平衡
+    private var sysAirBalanceBar : SettingBar ?= null
+
     companion object{
         fun getInstance() : CarSysFragment{
             return CarSysFragment()
@@ -40,6 +45,8 @@ class CarSysFragment : TitleBarFragment<CarSysSetActivity>() {
     }
 
     override fun initView() {
+        sysAirBalanceBar = findViewById(R.id.sysAirBalanceBar)
+        sysScaleSettingBar = findViewById(R.id.sysScaleSettingBar)
         sysMemoryModelBar = findViewById(R.id.sysMemoryModelBar)
         sysSettingTitleView = findViewById(R.id.sysSettingTitleView)
 
@@ -79,7 +86,7 @@ class CarSysFragment : TitleBarFragment<CarSysSetActivity>() {
         }
 
         //高度尺
-        findViewById<SettingBar>(R.id.sysScaleSettingBar).setOnClickListener {
+        sysScaleSettingBar?.setOnClickListener {
             if(ClickUtils.isFastDoubleClick()){
                 return@setOnClickListener
             }
@@ -137,7 +144,7 @@ class CarSysFragment : TitleBarFragment<CarSysSetActivity>() {
         }
 
         //气压平衡
-        findViewById<SettingBar>(R.id.sysAirBalanceBar).setOnClickListener {
+        sysAirBalanceBar?.setOnClickListener {
             if(ClickUtils.isFastDoubleClick()){
                 return@setOnClickListener
             }
@@ -162,6 +169,17 @@ class CarSysFragment : TitleBarFragment<CarSysSetActivity>() {
 
         val autoBean = BaseApplication.getBaseApplication().autoBackBean
         sysMemoryModelBar?.visibility = if(autoBean.deviceMode == 0) View.VISIBLE else View.GONE
+
+
+        //气压模式下高度尺和气压平衡没有
+        if(autoBean.deviceMode == 1){    //气压版本
+            sysScaleSettingBar?.visibility = View.GONE
+            sysAirBalanceBar?.visibility = View.GONE
+        }else{
+            sysScaleSettingBar?.visibility = View.VISIBLE
+            sysAirBalanceBar?.visibility = View.VISIBLE
+
+        }
     }
 
 

@@ -601,7 +601,7 @@ public class BleManager {
                     autoBackBean.setDeviceMode(deviceModel);
                     autoBackBean.setAutoStr(notifyStr+"  温度= "+String.format("%02x", bytes[39]));
 
-                    //Log.e(TAG,"-------自动返回数据=="+autoBackBean.toString()+" "+(String.format("%02x",deviceErrorCode))+" "+String.format("%02x",leftFrontErrorCode)+" "+String.format("%02x",rightFrontErrorCode)+" "+String.format("%02x",leftRearErrorCode)+" "+String.format("%02x",rightRearErrorCode)+" "+String.format("%02x",airBottleErrorCode));
+                    Log.e(TAG,"-------自动返回数据=="+autoBackBean.toString()+" "+(String.format("%02x",deviceErrorCode))+" "+String.format("%02x",leftFrontErrorCode)+" "+String.format("%02x",rightFrontErrorCode)+" "+String.format("%02x",leftRearErrorCode)+" "+String.format("%02x",rightRearErrorCode)+" "+String.format("%02x",airBottleErrorCode)+" deviceModel="+deviceModel);
 
                     if(onCarAutoBackListener != null){
                         onCarAutoBackListener.backAutoData(autoBackBean);
