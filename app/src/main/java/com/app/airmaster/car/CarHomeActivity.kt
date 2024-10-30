@@ -67,6 +67,9 @@ class CarHomeActivity : AppActivity() ,NavigationAdapter.OnNavigationListener{
 
     private var autoListener : OnHomeAutoBackListener ?= null
 
+    private var isHeightModel = false
+
+
     fun setHomeAutoListener(c : OnHomeAutoBackListener){
         this.autoListener = c
     }
@@ -82,7 +85,7 @@ class CarHomeActivity : AppActivity() ,NavigationAdapter.OnNavigationListener{
         override fun handleMessage(msg: Message) {
             super.handleMessage(msg)
             if(msg.what == 0x00){
-                controlViewModel?.setHeightMemory(true)
+               // controlViewModel?.setHeightMemory(true)
             }
         }
     }
@@ -164,9 +167,19 @@ class CarHomeActivity : AppActivity() ,NavigationAdapter.OnNavigationListener{
 
         val versionInfo = packageManager.getPackageInfo(packageName,0)
         versionViewModel?.checkAppVersion(this,versionInfo.versionCode)
+
+
+//        controlViewModel?.autoSetBeanData?.observe(this){
+//            if(it != null){
+//                isHeightModel = it.modelType ==0
+//            }
+//        }
     }
 
 
+    fun getHomeIsHeightModel() : Boolean{
+        return isHeightModel
+    }
 
     override fun onResume() {
         super.onResume()
@@ -177,7 +190,7 @@ class CarHomeActivity : AppActivity() ,NavigationAdapter.OnNavigationListener{
             BaseApplication.getBaseApplication().autoBackBean = it
             autoListener?.backAutoData(it)
         }
-        controlViewModel?.writeCommonFunction()
+       // controlViewModel?.writeCommonFunction()
         handlers.sendEmptyMessageDelayed(0x00,2000)
     }
 
@@ -265,7 +278,7 @@ class CarHomeActivity : AppActivity() ,NavigationAdapter.OnNavigationListener{
                 BaseApplication.getBaseApplication().connStatus = ConnStatus.CONNECTED
                 BaseApplication.getBaseApplication().bleOperate.stopScanDevice()
                 onHomeConnListener?.onConn(true)
-                controlViewModel?.writeCommonFunction()
+               // controlViewModel?.writeCommonFunction()
 
                 BaseApplication.getBaseApplication()?.connStatusService?.writeWatchTimeData()
                 handlers.sendEmptyMessageDelayed(0x00,3000)

@@ -181,13 +181,41 @@ class HomeControlFragment : TitleBarFragment<CarHomeActivity>() {
         }
         //carHomeCenterView?.setShowHeightIndicator(false)
 
+
+
+        controlViewModel?.autoSetBeanData?.observe(this){
+            if(it != null){
+                val autoBackBean =  BaseApplication.getBaseApplication().autoBackBean
+                if(autoBackBean != null){
+                    val isHeightModel = it.modelType==0
+                    Timber.e("------onResume-----backHorPMode="+autoBackBean.deviceMode+" isHeightModel="+isHeightModel)
+
+                    if(autoBackBean.deviceMode == 0){  //气压+高度
+                        carHomeCenterView?.setShowHeightIndicator(isHeightModel)
+                    }else{  //气压
+                        carHomeCenterView?.setShowHeightIndicator(false)
+                    }
+                }
+            }
+        }
+
+        carHomeCenterView?.setOnPressureListener(object : OnControlPressureCheckedListener{
+            override fun onItemChecked(map: MutableMap<Int, Int>?) {
+
+                if(BaseApplication.getBaseApplication().connStatus != ConnStatus.CONNECTED){
+                    showNotConnDialog()
+                    return
+                }
+                controlViewModel?.setManualOperation(map!! as HashMap<Int, Int>)
+            }
+        })
         val carActivity = attachActivity as CarHomeActivity
         carActivity.setHomeAutoListener(object : CarHomeActivity.OnHomeAutoBackListener{
             override fun backAutoData(autoBean: AutoBackBean) {
                 if(carActivity.isFinishing){
                     return
                 }
-              //  Timber.e("----------自动返回数据="+autoBean.toString())
+                  Timber.e("----监听------自动返回数据="+autoBean.toString())
 
                 if(tempGear == -1){
                     showRulerGoalVisibility(false)
@@ -265,19 +293,7 @@ class HomeControlFragment : TitleBarFragment<CarHomeActivity>() {
 //                homeErrorMsgTv?.text = if(isEmpty) "" else strArray[0]
 //                homeDeviceErrorLayout?.visibility = if(isEmpty) View.INVISIBLE else View.VISIBLE
 
-                carHomeCenterView?.setShowHeightIndicator(autoBean.deviceMode==0)
-            }
-
-        })
-
-        carHomeCenterView?.setOnPressureListener(object : OnControlPressureCheckedListener{
-            override fun onItemChecked(map: MutableMap<Int, Int>?) {
-
-                if(BaseApplication.getBaseApplication().connStatus != ConnStatus.CONNECTED){
-                    showNotConnDialog()
-                    return
-                }
-                controlViewModel?.setManualOperation(map!! as HashMap<Int, Int>)
+                //carHomeCenterView?.setShowHeightIndicator(autoBean.deviceMode==0)
             }
         })
 
@@ -288,6 +304,7 @@ class HomeControlFragment : TitleBarFragment<CarHomeActivity>() {
                if(!isConn){
                    showDefaultViews()
                }
+                controlViewModel?.writeCommonFunction()
                 handlers.sendEmptyMessage(0x00)
             }
         })
@@ -299,8 +316,9 @@ class HomeControlFragment : TitleBarFragment<CarHomeActivity>() {
         val isConn = BaseApplication.getBaseApplication().connStatus == ConnStatus.CONNECTED
         if(!isConn){
             showDefaultViews()
+        }else{
+            controlViewModel?.writeCommonFunction()
         }
-
     }
 
 

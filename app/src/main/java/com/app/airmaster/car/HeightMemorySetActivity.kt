@@ -92,7 +92,11 @@ class HeightMemorySetActivity : AppActivity(){
         controlViewModel?.autoSetBeanData?.observe(this){
             autoBean = it
             val hashMap = it.gearHashMap
-
+            if(it.modelType == 0){ //高度版本
+                heightMemoryView?.setShowHeightIndicator(true)
+            }else{
+                heightMemoryView?.setShowHeightIndicator(false)
+            }
             val bean = hashMap[if(modelIndex == 5) 0 else modelIndex]
             if(bean != null){
                 heightMemoryView?.setFrontGoalValue(bean.leftFront,bean.rightFront)
@@ -112,7 +116,9 @@ class HeightMemorySetActivity : AppActivity(){
             heightMemoryView?.setFrontHeightValue(autoBean.leftFrontRulerFL,autoBean.rightFrontRulerFL)
             heightMemoryView?.setAfterHeightValue(autoBean.leftRearRulerFL,autoBean.rightRearRulerFL)
 
-
+            if(autoBean.deviceMode == 1){  //气压版本
+                heightMemoryView?.setShowHeightIndicator(false)
+            }
 //
 //            heightMemoryView?.setFrontGoalValue(autoBean.leftFrontGoalFL,autoBean.rightFrontGoalFL)
 //            heightMemoryView?.setRearGoalValue(autoBean.leftRearGoalFL,autoBean.rightRearGoalFL)

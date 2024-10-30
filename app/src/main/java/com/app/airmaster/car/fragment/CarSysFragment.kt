@@ -1,6 +1,7 @@
 package com.app.airmaster.car.fragment
 
 import android.view.View
+import androidx.lifecycle.ViewModelProvider
 import com.app.airmaster.BaseApplication
 import com.app.airmaster.R
 import com.app.airmaster.action.TitleBarFragment
@@ -8,6 +9,7 @@ import com.app.airmaster.adapter.OnCommItemClickListener
 import com.app.airmaster.car.CarSysSetActivity
 import com.app.airmaster.second.SecondScanActivity
 import com.app.airmaster.utils.ClickUtils
+import com.app.airmaster.viewmodel.ControlViewModel
 import com.app.airmaster.widget.CommTitleView
 import com.bonlala.widget.layout.SettingBar
 import com.hjq.bar.OnTitleBarListener
@@ -22,12 +24,12 @@ import timber.log.Timber
  */
 class CarSysFragment : TitleBarFragment<CarSysSetActivity>() {
 
+    private var viewModel : ControlViewModel?= null
 
     private var sysSettingTitleView : CommTitleView ?= null
 
     //记忆模式
     private var sysMemoryModelBar : SettingBar ?= null
-
     //高度尺
     private var sysScaleSettingBar : SettingBar ?= null
     //气压平衡
@@ -160,7 +162,31 @@ class CarSysFragment : TitleBarFragment<CarSysSetActivity>() {
     }
 
     override fun initData() {
+        viewModel = ViewModelProvider(this)[ControlViewModel::class.java]
 
+        viewModel?.autoSetBeanData?.observe(this){
+            if(it == null){
+                return@observe
+            }
+
+            //高度记忆或压力记忆 0高度记忆；1压力记忆
+            val model = it.modelType
+
+            if(model == 0){ //高度记忆
+                //高度尺
+                sysScaleSettingBar?.visibility = View.VISIBLE
+                //气压平衡
+                sysAirBalanceBar?.visibility = View.VISIBLE
+            }
+
+            if(model == 1){  //压力记忆
+                //高度尺
+                sysScaleSettingBar?.visibility = View.GONE
+                //气压平衡
+                sysAirBalanceBar?.visibility = View.GONE
+            }
+
+        }
     }
 
 
@@ -173,13 +199,21 @@ class CarSysFragment : TitleBarFragment<CarSysSetActivity>() {
 
         //气压模式下高度尺和气压平衡没有
         if(autoBean.deviceMode == 1){    //气压版本
+            //记忆模式
+            sysMemoryModelBar?.visibility = View.GONE
+            //高度尺工具
             sysScaleSettingBar?.visibility = View.GONE
+            //气压平衡
             sysAirBalanceBar?.visibility = View.GONE
-        }else{
+        }else{  //气压+高度版本
+            sysMemoryModelBar?.visibility = View.VISIBLE
             sysScaleSettingBar?.visibility = View.VISIBLE
             sysAirBalanceBar?.visibility = View.VISIBLE
 
         }
+
+
+        viewModel?.writeCommonFunction()
     }
 
 

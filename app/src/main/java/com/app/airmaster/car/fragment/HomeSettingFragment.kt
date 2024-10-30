@@ -1,6 +1,8 @@
 package com.app.airmaster.car.fragment
 
 import android.content.Intent
+import android.view.View
+import androidx.lifecycle.ViewModelProvider
 import com.app.airmaster.BaseApplication
 import com.app.airmaster.R
 import com.app.airmaster.ShowWebViewActivity
@@ -16,6 +18,7 @@ import com.app.airmaster.car.ShowWebActivity
 import com.app.airmaster.car.check.ManualCheckActivity
 import com.app.airmaster.dialog.ConfirmDialog
 import com.app.airmaster.second.SecondScanActivity
+import com.app.airmaster.viewmodel.ControlViewModel
 import com.bonlala.widget.layout.SettingBar
 
 /**
@@ -24,6 +27,11 @@ import com.bonlala.widget.layout.SettingBar
  */
 class HomeSettingFragment : TitleBarFragment<CarHomeActivity>() {
 
+    private var viewModel : ControlViewModel?= null
+
+
+    //是否是气压记忆
+    private var isAirPressureModel = false
 
     companion object{
         fun getInstance() : HomeSettingFragment{
@@ -84,6 +92,10 @@ class HomeSettingFragment : TitleBarFragment<CarHomeActivity>() {
             if(autoBean.deviceMode == 1){   //气压模式
                 showDialogShow(1)
             }else{
+                if(isAirPressureModel){
+                    showDialogShow(1)
+                    return@setOnClickListener
+                }
                 startActivity(CarSystemCheckActivity::class.java)
             }
 
@@ -98,7 +110,29 @@ class HomeSettingFragment : TitleBarFragment<CarHomeActivity>() {
     }
 
     override fun initData() {
+        viewModel = ViewModelProvider(this)[ControlViewModel::class.java]
 
+        viewModel?.autoSetBeanData?.observe(this){
+            if(it == null){
+                return@observe
+            }
+
+            //高度记忆或压力记忆 0高度记忆；1压力记忆
+            val model = it.modelType
+
+            if(model == 0){ //高度记忆
+                isAirPressureModel = false
+            }
+
+            if(model == 1){  //压力记忆
+                isAirPressureModel = true
+            }
+        }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        viewModel?.writeCommonFunction()
     }
 
     private fun showNotConnDialog(){
