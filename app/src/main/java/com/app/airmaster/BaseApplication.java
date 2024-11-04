@@ -13,6 +13,7 @@ import com.app.airmaster.action.ActivityManager;
 import com.app.airmaster.action.DebugLoggerTree;
 import com.app.airmaster.ble.ConnStatus;
 import com.app.airmaster.ble.ConnStatusService;
+import com.app.airmaster.car.bean.AutoSetBean;
 import com.app.airmaster.dialog.OkHttpRetryInterceptor;
 import com.app.airmaster.http.RequestHandler;
 import com.app.airmaster.http.RequestServer;
@@ -31,6 +32,9 @@ import com.liulishuo.filedownloader.FileDownloader;
 import com.tencent.bugly.crashreport.CrashReport;
 import com.tencent.mmkv.MMKV;
 import org.litepal.LitePal;
+
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 import okhttp3.OkHttpClient;
 import timber.log.Timber;
@@ -53,8 +57,14 @@ public class BaseApplication extends BleApplication {
 
     private AutoBackBean autoBackBean;
 
+
+    private AutoSetBean autoSetBean;
+
     //是否是OTA模式
     private boolean isOTAModel = false;
+
+    //过滤的编码
+    private List<String> filterList = new ArrayList<>();
 
     @Override
     public void onCreate() {
@@ -231,5 +241,22 @@ public class BaseApplication extends BleApplication {
 
     public void setOTAModel(boolean OTAModel) {
         isOTAModel = OTAModel;
+    }
+
+    public AutoSetBean getAutoSetBean() {
+        return autoSetBean;
+    }
+
+    public void setAutoSetBean(AutoSetBean autoSetBean) {
+        this.autoSetBean = autoSetBean;
+    }
+
+    public List<String> getFilterList() {
+        return filterList;
+    }
+
+    public void setFilterList(List<String> filterList) {
+        this.filterList.clear();
+        this.filterList.addAll(filterList);
     }
 }

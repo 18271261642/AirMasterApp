@@ -53,6 +53,7 @@ import com.app.airmaster.viewmodel.VersionViewModel
 import com.app.airmaster.viewmodel.WatchDeviceViewModel
 import com.app.airmaster.viewmodel.WatchOTAViewModel
 import com.blala.blalable.BleConstant
+import com.blala.blalable.BleOperateManager
 import com.blala.blalable.Utils
 import com.google.gson.Gson
 import com.hjq.bar.OnTitleBarListener
@@ -1054,8 +1055,11 @@ class CarAboutActivity : AppActivity() {
                     showNotConnDialog()
                     return
                 }
-                val success = MmkvUtils.getSaveParams(MmkvUtils.getConnDeviceMac(), false)
-                if (success == true) {
+
+                val autoBean = BleOperateManager.getInstance().getmAutoBean()
+
+                //val success = MmkvUtils.getSaveParams(MmkvUtils.getConnDeviceMac(), false)
+                if (autoBean.activationStatus == 1) {
 
                     return
                 }

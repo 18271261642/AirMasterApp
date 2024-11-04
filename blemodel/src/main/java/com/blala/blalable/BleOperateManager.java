@@ -62,12 +62,9 @@ public class BleOperateManager {
 
 
     public AutoBackBean getmAutoBean() {
-        return mAutoBean;
+        return bleManager.getAutoBackBean();
     }
 
-    public void setmAutoBean(AutoBackBean mAutoBean) {
-        this.mAutoBean = mAutoBean;
-    }
 
     private List<byte[]> detailDialList = new ArrayList<>();
     private int detailDialCount = 0;

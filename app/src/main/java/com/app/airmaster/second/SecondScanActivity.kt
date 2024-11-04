@@ -43,6 +43,7 @@ import com.inuker.bluetooth.library.search.SearchResult
 import com.inuker.bluetooth.library.search.response.SearchResponse
 import timber.log.Timber
 import java.nio.file.WatchEvent
+import java.util.Locale
 
 /**
  * Created by Admin
@@ -298,10 +299,18 @@ class SecondScanActivity : AppActivity() {
                         return
                     }
 
-                    if(recordStr.contains("c019") || recordStr.contains("19c0") || recordStr.contains("c01b") || recordStr.contains("1bc0") || recordStr.contains("1dc0") || recordStr.contains("c01d")){
+                    val filterList = BaseApplication.getBaseApplication().filterList
+                    if(filterList.isEmpty()){
+                        return
+                    }
+
+                    val checkState = checkFilterData(recordStr)
+
+                    //recordStr.contains("c019") || recordStr.contains("19c0") || recordStr.contains("c01b") || recordStr.contains("1bc0") || recordStr.contains("1dc0") || recordStr.contains("c01d")
+                    if(checkState){
 
 
-                        val isScreen = recordStr.contains("c019") || recordStr.contains("19c0")|| recordStr.contains("1dc0") || recordStr.contains("c01d")
+                        val isScreen =checkState //recordStr.contains("c019") || recordStr.contains("19c0")|| recordStr.contains("1dc0") || recordStr.contains("c01d")
 
                     //判断少于40个设备就不添加了
                     if (repeatList?.size!! > 40) {
@@ -330,6 +339,24 @@ class SecondScanActivity : AppActivity() {
 
         }, 15 * 1000, 1)
     }
+
+
+    //过滤
+    private fun checkFilterData(recordStr : String) : Boolean{
+        val filterList = BaseApplication.getBaseApplication().filterList
+        run outside@{
+            filterList.forEachIndexed { index, s ->
+                val tempK = Utils.changeStr(s)
+                if(recordStr.contains(s.toLowerCase(Locale.ROOT)) || recordStr.contains(tempK.toLowerCase(Locale.ROOT))){
+                    return true
+                    return@outside
+                }
+            }
+        }
+
+        return false
+    }
+
 
     override fun onDestroy() {
         super.onDestroy()

@@ -512,6 +512,7 @@ open class ControlViewModel : CommViewModel() {
                         //自动气压调平功能-级别
                         val autoPressureBalanceLevel = data[115].toInt().and(0xFF)
                         autoBean.autoPressureBalanceLevel = autoPressureBalanceLevel
+                        BaseApplication.getBaseApplication().autoSetBean = autoBean
                         Timber.e("----------autoBean=$autoBean")
                         autoSetBeanData.postValue(autoBean)
                     }

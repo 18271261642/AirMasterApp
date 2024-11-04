@@ -260,6 +260,8 @@ public class BleManager {
 
 
 
+
+
     /**
      * 停止搜索
      */
@@ -413,6 +415,10 @@ public class BleManager {
         });
     }
 
+
+    public AutoBackBean getAutoBackBean(){
+        return autoBackBean;
+    }
 
     private AutoBackBean autoBackBean = new AutoBackBean();
 

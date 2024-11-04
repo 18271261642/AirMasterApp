@@ -194,25 +194,24 @@ class CarSysFragment : TitleBarFragment<CarSysSetActivity>() {
         super.onResume()
 
         val autoBean = BaseApplication.getBaseApplication().autoBackBean
-        sysMemoryModelBar?.visibility = if(autoBean.deviceMode == 0) View.VISIBLE else View.GONE
+        if(autoBean != null){
+            sysMemoryModelBar?.visibility = if(autoBean.deviceMode == 0) View.VISIBLE else View.GONE
 
+            //气压模式下高度尺和气压平衡没有
+            if(autoBean.deviceMode == 1){    //气压版本
+                //记忆模式
+                sysMemoryModelBar?.visibility = View.GONE
+                //高度尺工具
+                sysScaleSettingBar?.visibility = View.GONE
+                //气压平衡
+                sysAirBalanceBar?.visibility = View.GONE
+            }else{  //气压+高度版本
+                sysMemoryModelBar?.visibility = View.VISIBLE
+                sysScaleSettingBar?.visibility = View.VISIBLE
+                sysAirBalanceBar?.visibility = View.VISIBLE
 
-        //气压模式下高度尺和气压平衡没有
-        if(autoBean.deviceMode == 1){    //气压版本
-            //记忆模式
-            sysMemoryModelBar?.visibility = View.GONE
-            //高度尺工具
-            sysScaleSettingBar?.visibility = View.GONE
-            //气压平衡
-            sysAirBalanceBar?.visibility = View.GONE
-        }else{  //气压+高度版本
-            sysMemoryModelBar?.visibility = View.VISIBLE
-            sysScaleSettingBar?.visibility = View.VISIBLE
-            sysAirBalanceBar?.visibility = View.VISIBLE
-
+            }
         }
-
-
         viewModel?.writeCommonFunction()
     }
 

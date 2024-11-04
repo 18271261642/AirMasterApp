@@ -67,6 +67,17 @@ public class Utils {
         return language.endsWith("zh");
     }
 
+    private static StringBuffer stringBuffer = new StringBuffer();
+    public static String changeStr(String str){
+        stringBuffer.delete(0,stringBuffer.length());
+        if(str.length() == 4){
+            byte[] arr = hexStringToByte(str);
+            stringBuffer.append(String.format("%02x",arr[1]));
+            stringBuffer.append(String.format("%02x",arr[0]));
+            return stringBuffer.toString();
+        }
+        return null;
+    }
 
     public static String formatBtArrayToString(byte[] bt){
         StringBuilder stringBuilder = new StringBuilder();

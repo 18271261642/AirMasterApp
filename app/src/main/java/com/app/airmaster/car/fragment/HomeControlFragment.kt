@@ -144,9 +144,15 @@ class HomeControlFragment : TitleBarFragment<CarHomeActivity>() {
                 return@setOnItemClick
             }
             handlers.removeMessages(0x00)
-            handlers.sendEmptyMessageDelayed(0x00,5000)
             if(BaseApplication.getBaseApplication().autoBackBean?.deviceMode==0){  //高度模式
-                showRulerGoalVisibility(true)
+                val autoSetBean = BaseApplication.getBaseApplication().autoSetBean
+                if(autoSetBean != null){
+                    if(autoSetBean.modelType == 0){
+                        handlers.sendEmptyMessageDelayed(0x00,5000)
+                        showRulerGoalVisibility(true)
+                    }
+                }
+
             }else{
                 showRulerGoalVisibility(false)
             }
@@ -185,6 +191,7 @@ class HomeControlFragment : TitleBarFragment<CarHomeActivity>() {
 
         controlViewModel?.autoSetBeanData?.observe(this){
             if(it != null){
+                BaseApplication.getBaseApplication().autoSetBean = it
                 val autoBackBean =  BaseApplication.getBaseApplication().autoBackBean
                 if(autoBackBean != null){
                     val isHeightModel = it.modelType==0
@@ -225,8 +232,14 @@ class HomeControlFragment : TitleBarFragment<CarHomeActivity>() {
                 if(tempGear != autoBean.curPos){
                     tempGear = autoBean.curPos
                     handlers.removeMessages(0x00)
-                    handlers.sendEmptyMessageDelayed(0x00,5000)
-                    showRulerGoalVisibility(true)
+                    val autoSetBean = BaseApplication.getBaseApplication().autoSetBean
+                    if(autoSetBean != null){
+                        if(autoSetBean.modelType == 0){
+                            handlers.sendEmptyMessageDelayed(0x00,5000)
+                            showRulerGoalVisibility(true)
+                        }
+                    }
+
                 }
 
                 //档位

@@ -3,12 +3,14 @@ package com.app.airmaster
 import android.os.Handler
 import android.os.Looper
 import android.os.Message
+import androidx.lifecycle.ViewModelProvider
 import com.app.airmaster.action.ActivityManager
 import com.app.airmaster.action.AppActivity
 import com.app.airmaster.ble.ConnStatus
 import com.app.airmaster.car.CarHomeActivity
 import com.app.airmaster.dialog.ShowPrivacyDialogView
 import com.app.airmaster.utils.MmkvUtils
+import com.app.airmaster.viewmodel.FilterViewModel
 
 /**
  * Created by Admin
@@ -16,6 +18,7 @@ import com.app.airmaster.utils.MmkvUtils
  */
 class LaunchActivity : AppActivity() {
 
+    private var filterViewModel : FilterViewModel ?= null
 
     private val handlers : Handler = object : Handler(Looper.getMainLooper()){
         override fun handleMessage(msg: Message) {
@@ -44,8 +47,19 @@ class LaunchActivity : AppActivity() {
     }
 
     override fun initData() {
-        handlers.sendEmptyMessageDelayed(0x00,3000)
+        filterViewModel = ViewModelProvider(this)[FilterViewModel::class.java]
+        filterViewModel?.filterState?.observe(this){
+            handlers.sendEmptyMessageDelayed(0x00,1000)
+        }
+
+        filterViewModel?.getFilterDevice(this)
+
+
     }
+
+
+
+
 
 
     //显示隐私弹窗
