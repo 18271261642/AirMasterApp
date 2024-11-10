@@ -74,7 +74,7 @@ class SecondScanActivity : AppActivity() {
             }
             if(msg.what == 0x01){
                 hideDialog()
-                ToastUtils.show("连接失败!")
+                ToastUtils.show(resources.getString(R.string.string_scan_conn_failed))
                 BaseApplication.getBaseApplication().bleOperate.disConnYakDevice()
                 verifyScanFun(false)
             }

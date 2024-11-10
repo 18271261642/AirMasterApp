@@ -4,6 +4,33 @@
     <string name="string_privacy_txt">隐私政策</string>
     <string name="string_user_protocol">用户协议</string>-->
 
+    <string name="string_not_exit_dfu">正在升级中,请务退出!</string>
+    <string name="string_upgradge_success">升级成功</string>
+    <string name="string_upgradge_failed">升级失败</string>
+    <string name="string_upgradge_failed_try_again">升级失败,请重新升级</string>
+    <string name="string_upgradge_time_out">升级超时，请重新升级</string>
+    <string name="string_exit_bot_code">退出Boot状态码:%1s</string>
+    <string name="string_upgradge_success_re_conn">升级成功,请重新连接使用</string>
+    <string name="string_upgradge_progress">升级中:%1s</string>
+    <string name="string_has_activation">已激活</string>
+    <string name="string_activation_success">激活成功!</string>
+    <string name="string_activation_failed">激活失败</string>
+    <string name="string_activation_failed_input_code">激活失败,请重新输入正确的激活码!</string>
+    <string name="string_watch_upgradge">无线手环更新</string>
+    <string name="string_upgradge_contents">更新内容:\n</string>
+    <string name="string_upgradge_state_ing">正在升级...</string>
+    <string name="string_input_activation_code">请输入激活码!</string>
+    <string name="string_conn_has_dis_please_conn">连接已断开，请保持正常连接</string>
+
+    <string name="string_mcu_ota_data_error">数据错误</string>
+    <string name="string_mcu_ota_erase_error">擦除错误</string>
+    <string name="string_mcu_write_error">写入错误</string>
+    <string name="string_mcu_ota_write_check_error">写入校验错误</string>
+    <string name="string_check_upgradge">检查更新</string>
+
+
+
+
     <string name="string_exit_auto_check_prompt">是否退出自动检测?</string>
     <string name="string_scan_device_location_desc">搜索手机附近的蓝牙设备需要位置权限,是否授权?</string>
     <string name="string_car_minute">分钟</string>
@@ -11,6 +38,7 @@
     <string name="string_car_memory_model">记忆模式</string>
     <string name="string_car_height_memory">高度记忆</string>
     <string name="string_car_pressure_memory">压力记忆</string>
+
 
     <string name="string_car_lr">左前</string>
     <string name="string_car_rr">右前</string>

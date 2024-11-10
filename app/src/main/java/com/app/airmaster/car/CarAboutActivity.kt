@@ -241,7 +241,7 @@ class CarAboutActivity : AppActivity() {
         isAcFoldState(true)
 
 
-        val buildS = SpannableStringBuilder("请联系经销商获取激活码")
+        val buildS = SpannableStringBuilder(resources.getString(R.string.string_activate_device_hid))
         buildS.setSpan(
             ForegroundColorSpan(Color.parseColor("#4A4A4B")),
             0,
@@ -253,7 +253,7 @@ class CarAboutActivity : AppActivity() {
         carAboutTitleBar?.setOnTitleBarListener(object : OnTitleBarListener {
             override fun onLeftClick(view: View?) {
                 if (isUpgrading) {
-                    ToastUtils.show("正在升级中，请务退出！")
+                    ToastUtils.show(resources.getString(R.string.string_not_exit_dfu))
                     return
                 }
                 if (isConnWatch) {
@@ -340,8 +340,8 @@ class CarAboutActivity : AppActivity() {
             ToastUtils.show("校验返回=$it"+checkStatus(it))
             isUpgrading = false
             if(it == 0){
-                otherMcuDfuShowTv?.text = "升级成功"
-                ToastUtils.show("升级成功!")
+                otherMcuDfuShowTv?.text = resources.getString(R.string.string_upgradge_success)
+                ToastUtils.show(resources.getString(R.string.string_upgradge_success))
                 GlobalScope.launch {
                     delay(2000)
                     finish()
@@ -352,16 +352,16 @@ class CarAboutActivity : AppActivity() {
         mcuViewModel?.mcuBootTimeOut?.observe(this){
             isUpgrading = false
             if(it==1){
-                ToastUtils.show("升级超时，请重新升级!")
+                ToastUtils.show(resources.getString(R.string.string_upgradge_time_out))
                 GlobalScope.launch {
                     delay(2000)
                     finish()
                 }
             }else if(it == 0){
-                ToastUtils.show("升级成功!")
+                ToastUtils.show(resources.getString(R.string.string_upgradge_success))
             }
             else{
-                ToastUtils.show("退出Boot状态码:$it")
+                ToastUtils.show(String.format(resources.getString(R.string.string_exit_bot_code),it))
 
             }
         }
@@ -374,7 +374,11 @@ class CarAboutActivity : AppActivity() {
         intentFilter.addAction(BleConstant.BLE_CONNECTED_ACTION)
         intentFilter.addAction(BleConstant.BLE_DIS_CONNECT_ACTION)
         intentFilter.addAction(BleConstant.BLE_START_SCAN_ACTION)
-        registerReceiver(broadcastReceiver,intentFilter)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            registerReceiver(broadcastReceiver,intentFilter,Context.RECEIVER_EXPORTED)
+        }else{
+            registerReceiver(broadcastReceiver,intentFilter)
+        }
 
         mcuViewModel = ViewModelProvider(this)[McuUpgradeViewModel::class.java]
         bridgeDfuViewModel = ViewModelProvider(this)[BridgeDfuViewModel::class.java]
@@ -395,7 +399,7 @@ class CarAboutActivity : AppActivity() {
             BaseApplication.getBaseApplication().isOTAModel = false
             isUpgrading = false
             aboutCarDfuShowTv?.visibility = View.GONE
-            ToastUtils.show(if (it) "升级成功!" else "升级失败,请重试!")
+            ToastUtils.show(if (it) resources.getString(R.string.string_upgradge_success) else resources.getString(R.string.string_upgradge_failed_try_again))
             isConnWatch = true
             BaseApplication.getBaseApplication().connStatus = ConnStatus.NOT_CONNECTED
         }
@@ -427,7 +431,7 @@ class CarAboutActivity : AppActivity() {
                     BaseApplication.getBaseApplication().isOTAModel = false
                     //  ToastUtils.show("升级成功!")
                     isUpgrading = false
-                    ToastUtils.show("升级成功,请重新连接使用!")
+                    ToastUtils.show(resources.getString(R.string.string_upgradge_success_re_conn))
                     startActivity(SecondScanActivity::class.java)
                     finish()
                 }
@@ -442,14 +446,14 @@ class CarAboutActivity : AppActivity() {
 
         //bluetooth ota升级
         dfuViewModel?.dfuProgressData?.observe(this) {
-            bluetoothDfuShowTv?.text = "正在升级: $it%"
+            bluetoothDfuShowTv?.text = String.format(resources.getString(R.string.string_upgradge_progress),it)
         }
         dfuViewModel?.dfuUpgradeStatus?.observe(this) {
             BaseApplication.getBaseApplication().isOTAModel = false
             dfuDialog?.dismiss()
             isUpgrading = false
 
-            ToastUtils.show(if (it) "升级成功,请重新连接使用!" else "升级失败,请重新升级!")
+            ToastUtils.show(if (it) resources.getString(R.string.string_upgradge_success_re_conn) else resources.getString(R.string.string_upgradge_failed_try_again)
             dfuViewModel?.unregister(this@CarAboutActivity)
             if (it) {
                 startActivity(SecondScanActivity::class.java)
@@ -604,7 +608,7 @@ class CarAboutActivity : AppActivity() {
             val activityStatus =
                 BaseApplication.getBaseApplication().autoBackBean?.activationStatus == 1
             if (activityStatus) {
-                aboutActivateSubmitTv?.text = "已激活"
+                aboutActivateSubmitTv?.text = resources.getString(R.string.string_has_activation)
                 aboutActivateSubmitTv!!.shapeDrawableBuilder.setSolidColor(Color.parseColor("#80FD654D"))
                     .intoBackground()
             }
@@ -668,11 +672,11 @@ class CarAboutActivity : AppActivity() {
     private fun showActivateDialog(success: Boolean) {
         val dialog = SingleAlertDialog(this, com.bonlala.base.R.style.BaseDialogTheme)
         dialog.show()
-        dialog.setContentTxt(if (success) "激活成功!" else "激活失败,请输入正确的激活码!")
+        dialog.setContentTxt(if (success) resources.getString(R.string.string_activation_success) else resources.getString(R.string.string_activation_failed_input_code))
         if (success) {
             //是否已激活
             MmkvUtils.setSaveObjParams(MmkvUtils.getConnDeviceMac(), success)
-            aboutActivateSubmitTv?.text = "已激活"
+            aboutActivateSubmitTv?.text = resources.getString(R.string.string_has_activation)
             aboutActivateSubmitTv!!.shapeDrawableBuilder.setSolidColor(Color.parseColor("#80FD654D"))
                 .intoBackground()
         }
@@ -681,7 +685,7 @@ class CarAboutActivity : AppActivity() {
 
     private fun showNotConnDialog() {
         showCommAlertDialog(
-            "未连接设备", "去官网", "去连接"
+            resources.getString(R.string.string_not_conn_device), resources.getString(R.string.string_go_to_official_website), resources.getString(R.string.string_go_to_conn)
         ) { position ->
             disCommAlertDialog()
             if (position == 0x01) {
@@ -749,8 +753,8 @@ class CarAboutActivity : AppActivity() {
         }
         dfuDialog?.show()
         dfuDialog?.setCancelable(false)
-        dfuDialog?.setTitleTxt(if (isCarWatch) "无线手环更新" else checkTypeTitle(bean.identificationCode))
-        dfuDialog?.setDfuUpgradeContent("更新内容:\n" + bean.content + "\nfileName: " + bean.fileName + "\nversionCode: " + bean.versionCode)
+        dfuDialog?.setTitleTxt(if (isCarWatch) resources.getString(R.string.string_watch_upgradge) else checkTypeTitle(bean.identificationCode))
+        dfuDialog?.setDfuUpgradeContent(resources.getString(R.string.string_upgradge_contents) + bean.content + "\nfileName: " + bean.fileName + "\nversionCode: " + bean.versionCode)
         val saveUrl = getExternalFilesDir(null)?.path + "/OTA/" + bean.fileName
         dfuDialog?.setOnClick { position ->
             if (position == 0x00) {
@@ -781,7 +785,7 @@ class CarAboutActivity : AppActivity() {
                 } else {
                     showDfuStatus(true, bean.identificationCode)
 
-                    val url = "https://otaitem.oss-cn-shenzhen.aliyuncs.com/upgrade/firmware/check_BIN_BA0059CS_0XFFFE_V00015C_0X00800001_0X04FFFFFD_202403222023.xlbin"
+                   // val url = "https://otaitem.oss-cn-shenzhen.aliyuncs.com/upgrade/firmware/check_BIN_BA0059CS_0XFFFE_V00015C_0X00800001_0X04FFFFFD_202403222023.xlbin"
                     downloadOta(bean.ota, saveUrl, bean.identificationCode)
 
 //                    downloadOta(url, saveUrl, bean.identificationCode)
@@ -904,19 +908,19 @@ class CarAboutActivity : AppActivity() {
                 BLUETOOTH_IdentificationCode -> {   //bluetooth
                     bluetoothDfuShowTv!!.shapeDrawableBuilder.setSolidGradientColors(upArray)
                         .intoBackground()
-                    bluetoothDfuShowTv?.text = "正在升级..."
+                    bluetoothDfuShowTv?.text = resources.getString(R.string.string_upgradge_state_ing)
                 }
 
                 TOUCHPAD_IdentificationCode -> {  //touchpad
                     touchpadDfuShowTv!!.shapeDrawableBuilder.setSolidGradientColors(upArray)
                         .intoBackground()
-                    touchpadDfuShowTv?.text = "正在升级..."
+                    touchpadDfuShowTv?.text = resources.getString(R.string.string_upgradge_state_ing)
                 }
 
                 MCU_IdentificationCode -> {  //mcu
                     otherMcuDfuShowTv!!.shapeDrawableBuilder.setSolidGradientColors(upArray)
                         .intoBackground()
-                    otherMcuDfuShowTv?.text = "正在升级..."
+                    otherMcuDfuShowTv?.text = resources.getString(R.string.string_upgradge_state_ing)
                 }
             }
 
@@ -951,7 +955,7 @@ class CarAboutActivity : AppActivity() {
 
     override fun onBackPressed() {
         if (isUpgrading) {
-            ToastUtils.show("正在升级中，请务退出！")
+            ToastUtils.show(resources.getString(R.string.string_not_exit_dfu))
             return
         }
 //        if(isConnWatch){
@@ -1048,7 +1052,7 @@ class CarAboutActivity : AppActivity() {
             R.id.aboutActivateSubmitTv -> {
                 val activateCode = aboutActivateEdit?.text.toString()
                 if (BikeUtils.isEmpty(activateCode)) {
-                    ToastUtils.show("请输入激活码!")
+                    ToastUtils.show(resources.getString(R.string.string_input_activation_code))
                     return
                 }
                 if (BaseApplication.getBaseApplication().connStatus != ConnStatus.CONNECTED) {
@@ -1134,7 +1138,7 @@ class CarAboutActivity : AppActivity() {
 
             aboutCarDfuShowTv!!.shapeDrawableBuilder.setSolidGradientColors(upArray)
                 .intoBackground()
-            aboutCarDfuShowTv?.text = "正在升级..."
+            aboutCarDfuShowTv?.text = resources.getString(R.string.string_upgradge_state_ing)
 
             return
         }
@@ -1199,32 +1203,29 @@ class CarAboutActivity : AppActivity() {
     private fun showDisConnectDialog(){
         val dialog = SingleAlertDialog(this, com.bonlala.base.R.style.BaseDialogTheme)
         dialog.show()
-        dialog.setContentTxt("连接已断开，请保存正常连接!")
-       dialog.setOnDialogClickListener(object : OnCommItemClickListener {
-           override fun onItemClick(position: Int) {
-               dialog.dismiss()
-               startActivity(SecondScanActivity::class.java)
-               finish()
-           }
-
-       })
+        dialog.setContentTxt(resources.getString(R.string.string_conn_has_dis_please_conn))
+       dialog.setOnDialogClickListener {
+           dialog.dismiss()
+           startActivity(SecondScanActivity::class.java)
+           finish()
+       }
     }
 
 
     private fun checkStatus(code : Int) : String{
         if(code == 0){
-            return "升级成功"
+            return resources.getString(R.string.string_upgradge_success)
         }
         if(code == 1){
-            return "数据错误"
+            return resources.getString(R.string.string_mcu_ota_data_error)
         }
         if(code == 2){
-            return "擦除错误"
+            return resources.getString(R.string.string_mcu_ota_erase_error)
         }
         if(code == 3){
-            return "写入错误"
+            return resources.getString(R.string.string_mcu_write_error)
         }
-        return "写入校验错误"
+        return resources.getString(R.string.string_mcu_ota_write_check_error)
     }
 
     private fun showAppUpdateDialog(bean : AppVoBean){
