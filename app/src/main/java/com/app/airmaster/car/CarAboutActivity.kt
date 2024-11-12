@@ -361,7 +361,7 @@ class CarAboutActivity : AppActivity() {
                 ToastUtils.show(resources.getString(R.string.string_upgradge_success))
             }
             else{
-                ToastUtils.show(String.format(resources.getString(R.string.string_exit_bot_code),it))
+                ToastUtils.show(String.format(resources.getString(R.string.string_exit_bot_code),it.toString()))
 
             }
         }
@@ -453,7 +453,7 @@ class CarAboutActivity : AppActivity() {
             dfuDialog?.dismiss()
             isUpgrading = false
 
-            ToastUtils.show(if (it) resources.getString(R.string.string_upgradge_success_re_conn) else resources.getString(R.string.string_upgradge_failed_try_again)
+            ToastUtils.show(if (it) resources.getString(R.string.string_upgradge_success_re_conn) else resources.getString(R.string.string_upgradge_failed_try_again))
             dfuViewModel?.unregister(this@CarAboutActivity)
             if (it) {
                 startActivity(SecondScanActivity::class.java)
@@ -855,7 +855,7 @@ class CarAboutActivity : AppActivity() {
                     Manifest.permission.READ_MEDIA_IMAGES,
                     Manifest.permission.READ_MEDIA_AUDIO, Manifest.permission.POST_NOTIFICATIONS
                 )
-            ).request { permissions, allGranted ->
+            ).request { _, _ ->
 
             }
             return

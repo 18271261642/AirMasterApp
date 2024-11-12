@@ -1,17 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-<!--
-    <string name="string_privacy_txt">隐私政策</string>
-    <string name="string_user_protocol">用户协议</string>-->
 
+    <string name="string_manual_check_prompt">手動キャリブレーションを行いますか?</string>
+    <string name="string_not_exit_dfu">アップデート中です、しばらくお待ちください!</string>
+    <string name="string_upgradge_success">アップデート成功</string>
+    <string name="string_upgradge_failed">アップデート失敗</string>
+    <string name="string_upgradge_failed_try_again">アップデート失敗,再アップグレードしてください</string>
+    <string name="string_upgradge_time_out">アップグレードがタイムアウトしました。再アップグレードしてください</string>
+    <string name="string_exit_bot_code">終了Boot code:%1s</string>
+    <string name="string_upgradge_success_re_conn">アップデート成功,再接続して使用してください</string>
+    <string name="string_upgradge_progress">アップグレード中:%1s</string>
+    <string name="string_has_activation">ライセンス認証済み</string>
+    <string name="string_activation_success">ライセンス認証成功!</string>
+    <string name="string_activation_failed">ライセンス認証失敗</string>
+    <string name="string_activation_failed_input_code">ライセンス認証失敗,正しいアクティベーションコードを再入力してください!</string>
+    <string name="string_watch_upgradge">腕時計のアップデート</string>
+    <string name="string_upgradge_contents">コンテンツの更新:\n</string>
+    <string name="string_upgradge_state_ing">正在升级...</string>
+    <string name="string_input_activation_code">アクティブコードを入力してください!</string>
+    <string name="string_conn_has_dis_please_conn">连接已断开，请保持正常连接</string>
 
-    <string name="string_exit_auto_check_prompt">是否退出自动检测?</string>
+    <string name="string_mcu_ota_data_error">数据错误</string>
+    <string name="string_mcu_ota_erase_error">削除エラー</string>
+    <string name="string_mcu_write_error">書き込みエラー</string>
+    <string name="string_mcu_ota_write_check_error">書き込みチェックエラー</string>
+    <string name="string_check_upgradge">新しい更新プログラム検索</string>
+
+    <string name="string_exit_auto_check_prompt">自動検出を終了するかどうか?</string>
     <string name="string_scan_device_location_desc">搜索手机附近的蓝牙设备需要位置权限,是否授权?</string>
-    <string name="string_car_minute">分钟</string>
-    <string name="string_car_work_model">工作模式</string>
-    <string name="string_car_memory_model">记忆模式</string>
-    <string name="string_car_height_memory">車高記憶設定</string>
-    <string name="string_car_pressure_memory">压力记忆</string>
+    <string name="string_car_minute">分</string>
+    <string name="string_car_work_model">運転モード</string>
+    <string name="string_car_memory_model">メモリモード</string>
+    <string name="string_car_height_memory">ハイトセンサー（高さ）</string>
+    <string name="string_car_pressure_memory">プレッシャー（空気圧）</string>
 
     <string name="string_car_lr">左前</string>
     <string name="string_car_rr">右前</string>
@@ -26,7 +47,7 @@
     <string name="string_car_h_e_6">空気圧センサー故障</string>
     <string name="string_car_h_e_7">空気漏れ</string>
 
-    <string name="string_car_auto_check_prompt">セルフテスト?</string>
+    <string name="string_car_auto_check_prompt">自動キャリブレーションを行いますか?</string>
     <string name="string_car_check_failed">セルフテスト</string>
     <string name="string_car_check_success">セルフテスト</string>
     <string name="string_car_reset">復元</string>
@@ -52,17 +73,17 @@
     <string name="string_pressure_h">高压（PSI）: %1s</string>
     <string name="string_pressure_l">低压（PSI）: %1s</string>
 
-    <string name="string_scan_conn_success">连接成功</string>
-    <string name="string_scan_conn_failed">连接失败</string>
+    <string name="string_scan_conn_success">接続完了</string>
+    <string name="string_scan_conn_failed">接続に失敗しました</string>
     
     <string name="string_setting_menu_conn_device">接続済み</string>
     <string name="string_setting_menu_set">設定</string>
     <string name="string_setting_menu_sys_auto_check">初期化校正</string>
     <string name="string_setting_menu_about">製品について</string>
-    <string name="string_scan_valid_device">可用设备</string>
-    <string name="string_scan_other_device">其它设备</string>
-    <string name="string_scan_unbind_prompt">是否解除当前连接?</string>
-    <string name="string_scan_conn_new_device">请先解绑再连接!</string>
+    <string name="string_scan_valid_device">利用可能なデバイス</string>
+    <string name="string_scan_other_device">その他のデバイス</string>
+    <string name="string_scan_unbind_prompt">接続を中断しますか?</string>
+    <string name="string_scan_conn_new_device">まず縛ってから接続してください！</string>
 
     <!--系统设置页面-->
     <string name="string_set_tank_pressure">タンク空気圧</string>
@@ -89,11 +110,11 @@
     <string name="string_manual">手動テスト</string>
     <string name="string_automatic">自動テスト</string>
     
-    <string name="string_sys_upgrage">系统升级</string>
-    <string name="string_wireless_watch">无线手环</string>
+    <string name="string_sys_upgrage">システムアップデート</string>
+    <string name="string_wireless_watch">ワイヤレス腕時計</string>
     <string name="string_activate_device">デバイス　</string>
     <string name="string_activate_device_hid">请联系经销商获取激活码</string>
-    <string name="string_activate_success">激活成功</string>
+    <string name="string_activate_success">ライセンス認証成功</string>
     
     <string name="string_not_conn_device">未连接设备</string>
     <string name="string_go_to_official_website">ホームページ</string>
@@ -106,5 +127,5 @@
     <string name="string_e_6">コンプレッサー2温度センサー故障</string>
     <string name="string_e_7">温度センサー故障</string>
 
-    <string name="string_has_new_version">有新版本</string>
+    <string name="string_has_new_version">新しい更新プログラムがあります</string>
 </resources>

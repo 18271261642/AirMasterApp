@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.app.airmaster.R
 import com.app.airmaster.action.TitleBarFragment
 import com.app.airmaster.car.CarSysSetActivity
+import com.app.airmaster.utils.MmkvUtils
 import com.app.airmaster.viewmodel.ControlViewModel
 import com.app.airmaster.widget.CommTitleView
 import com.bonlala.widget.view.SwitchButton
@@ -43,6 +44,7 @@ class CarMemoryModelFragment : TitleBarFragment<CarSysSetActivity>() {
             Timber.e("----------pppppppp="+button.isPressed)
             if(!button.isPressed && checked){
                 viewModel?.setHeightMemory(true)
+                MmkvUtils.savePressureModel(false)
             }
 
         }
@@ -50,6 +52,7 @@ class CarMemoryModelFragment : TitleBarFragment<CarSysSetActivity>() {
         //压力
         memoryPressureSwitchButton?.setOnCheckedChangeListener { button, checked ->
             if(!button.isPressed && checked){
+                MmkvUtils.savePressureModel(true)
                 viewModel?.setHeightMemory(false)
             }
 
@@ -70,13 +73,12 @@ class CarMemoryModelFragment : TitleBarFragment<CarSysSetActivity>() {
                 return@observe
             }
 
+            MmkvUtils.savePressureModel(it.modelType==1)
             //高度记忆或压力记忆，互斥
             val model = it.modelType
             memoryHeightSwitchButton?.isChecked = model == 0
             memoryPressureSwitchButton?.isChecked = model==1
         }
-
-
 
         viewModel?.writeCommonFunction()
     }

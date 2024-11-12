@@ -79,8 +79,11 @@ class CarPowerProtectFragment : TitleBarFragment<CarSysSetActivity>(){
         powerSeekBar?.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener{
             override fun onProgressChanged(p0: SeekBar?, p1: Int, p2: Boolean) {
                 val bt = p0?.progress
-                val bv = CalculateUtils.div(bt!!.toDouble(),10.0,1)
+                var bv = CalculateUtils.div(bt!!.toDouble(),10.0,1)
                 Timber.e("------电压="+p0?.progress+" "+bv)
+                if(bv<=10){
+                    bv = 10.0
+                }
                 powerProtectValueTv?.text = "$bv V"
             }
 

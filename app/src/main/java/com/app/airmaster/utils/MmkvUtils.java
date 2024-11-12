@@ -183,4 +183,13 @@ public class MmkvUtils {
     public static int getMaxPressureValue(){
         return (int) getSaveParams(MAX_PRESSURE_VALUE,150);
     }
+
+
+    //是否是压力记忆模式
+    public static void savePressureModel(boolean isPressure){
+        setSaveParams("device_type_pressure",isPressure);
+    }
+    public static boolean getPressureModel(){
+        return (boolean) getSaveParams("device_type_pressure",false);
+    }
 }

@@ -1,9 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <string name="string_manual_check_prompt">Whethere to perform manual self-test?</string>
+    <string name="string_not_exit_dfu">The upgrade hasn\'t been completed yet. Please don\'t exit until later!</string>
+    <string name="string_upgradge_success">Upgrade successful</string>
+    <string name="string_upgradge_failed">Upgrade failed</string>
+    <string name="string_upgradge_failed_try_again">Failed to update,try again</string>
+    <string name="string_upgradge_time_out">Upgrade timeout, please upgrade again</string>
+    <string name="string_exit_bot_code">Exit Boot code:%1s</string>
+    <string name="string_upgradge_success_re_conn">Upgrade successful, please reconnect to use</string>
+    <string name="string_upgradge_progress">Upgrading:%1s</string>
+    <string name="string_has_activation">Activated</string>
+    <string name="string_activation_success">Activation successful!</string>
+    <string name="string_activation_failed">Activation failed</string>
+    <string name="string_activation_failed_input_code">Activation failed, please re-enter the correct activation code!</string>
+    <string name="string_watch_upgradge">Watch upgrade</string>
+    <string name="string_upgradge_contents">UPDATE:\n</string>
+    <string name="string_upgradge_state_ing">Upgrading...</string>
+    <string name="string_input_activation_code">Please input activation code!</string>
+    <string name="string_conn_has_dis_please_conn">The connection has been disconnected, please keep it connected normally</string>
 
-    <string name="string_exit_auto_check_prompt">是否退出自动检测?</string>
-    <string name="string_scan_device_location_desc">搜索手机附近的蓝牙设备需要位置权限,是否授权?</string>
+    <string name="string_mcu_ota_data_error">Data error</string>
+    <string name="string_mcu_ota_erase_error">Erase error</string>
+    <string name="string_mcu_write_error">Write error</string>
+    <string name="string_mcu_ota_write_check_error">Write </string>
+    <string name="string_check_upgradge">Check for updates</string>
+
+    <string name="string_exit_auto_check_prompt">Do you want to exit automatic detection?</string>
+    <string name="string_scan_device_location_desc">Searching for nearby Bluetooth devices on your mobile phone requires location permissions. Should you grant the authorization?</string>
     <string name="string_car_minute">min</string>
     <string name="string_car_work_model">Working mode</string>
     <string name="string_car_memory_model">Memory mode</string>
@@ -30,80 +54,78 @@
     <string name="string_car_save">Save</string>
 
     <string name="string_air_upgrade">%1s New version</string>
-    <string name="string_air_choose">选择</string>
-    <string name="string_bluetooth">蓝牙</string>
+    <string name="string_air_choose">Choose</string>
+    <string name="string_bluetooth">Bluetooth</string>
     <string name="string_home_air">AIR</string>
     <string name="string_home_control">Control</string>
     <string name="string_home_setting">Setting</string>
-    <string name="string_check_ing">检测中……</string>
-    <string name="string_check_success">检测成功</string>
-    <string name="string_check_fail">检测失败</string>
+    <string name="string_check_ing">Detecting...</string>
+    <string name="string_check_success">OK</string>
+    <string name="string_check_fail">Fail</string>
 
-    <string name="string_check1_desc">检测最低高度</string>
-    <string name="string_check2_desc">检测车身水平状态</string>
-    <string name="string_check3_desc">检测传感器</string>
-    <string name="string_check4_desc">检测最高高度</string>
-    <string name="string_check5_desc">检测线束状态</string>
-    <string name="string_check6_desc">检测动态调整</string>
-    <string name="string_ota_dialog_content">更新内容:\n1，解决bug\n2，添加新的功能\n</string>
-    <string name="string_pressure_h">高压（PSI）: %1s</string>
-    <string name="string_pressure_l">低压（PSI）: %1s</string>
+    <string name="string_check1_desc">Minimum Height</string>
+    <string name="string_check2_desc">Horizontal Calibration</string>
+    <string name="string_check3_desc">Sensor</string>
+    <string name="string_check4_desc">Maximum Height</string>
+    <string name="string_check5_desc">Wiring</string>
+    <string name="string_check6_desc">Vehicle Body Dynamic</string>
+    <string name="string_ota_dialog_content">UPDATE:\n1，solve bug\n2，Add new features\n</string>
+    <string name="string_pressure_h">High pressure(PSI): %1s</string>
+    <string name="string_pressure_l">Low pressure(PSI): %1s</string>
 
+    <string name="string_scan_conn_success">Connected successfully</string>
+    <string name="string_scan_conn_failed">Connected failed</string>
 
-    <string name="string_scan_conn_success">连接成功</string>
-    <string name="string_scan_conn_failed">连接失败</string>
-
-    <string name="string_setting_menu_conn_device">连接设备</string>
-    <string name="string_setting_menu_set">系统设置</string>
-    <string name="string_setting_menu_sys_auto_check">系统自检</string>
-    <string name="string_setting_menu_about">关于</string>
-    <string name="string_scan_valid_device">可用设备</string>
-    <string name="string_scan_other_device">其它设备</string>
-    <string name="string_scan_unbind_prompt">是否解除当前连接?</string>
-    <string name="string_scan_conn_new_device">请先解绑再连接!</string>
+    <string name="string_setting_menu_conn_device">Pairing</string>
+    <string name="string_setting_menu_set">System setting</string>
+    <string name="string_setting_menu_sys_auto_check">Calibration</string>
+    <string name="string_setting_menu_about">About</string>
+    <string name="string_scan_valid_device">Available devices</string>
+    <string name="string_scan_other_device">Other devices</string>
+    <string name="string_scan_unbind_prompt">Should the current connection be disconnected?</string>
+    <string name="string_scan_conn_new_device">Please unbind it first and then connect!</string>
 
     <!--系统设置页面-->
-    <string name="string_set_tank_pressure">气罐压力</string>
-    <string name="string_set_sensor_tool">高度尺工具</string>
-    <string name="string_set_battery_protect">电瓶保护</string>
-    <string name="string_set_start_end">点熄火设置</string>
-    <string name="string_set_preset_setting">高度记忆设置</string>
-    <string name="string_set_service_model">维修模式</string>
-    <string name="string_set_minimum_dirve">最低行驶保护气压</string>
-    <string name="string_set_ap_balance">气压平衡</string>
-    <string name="string_tank_pressure_alert">高压和低压差不能超过40PSI.</string>
-    <string name="string_sensor_fl">左前传感器</string>
-    <string name="string_sensor_fr">右前传感器</string>
-    <string name="string_sensor_rl">左后传感器</string>
-    <string name="string_sensor_rr">右后传感器</string>
-    <string name="string_battery_16">16V高压保护</string>
-    <string name="string_battery_mini_b">低压保护</string>
-    <string name="string_start_end_start">点火设置</string>
-
-    <string name="string_start_start_position">点火后设置联动预置位:</string>
-    <string name="string_start_end_end">熄火设置</string>
-    <string name="string_start_end_position">熄火后设置联动预置位:</string>
+    <string name="string_set_tank_pressure">Tank Pressure</string>
+    <string name="string_set_sensor_tool">Sensor Tool</string>
+    <string name="string_set_battery_protect">Battery Protection</string>
+    <string name="string_set_start_end">Start/Flameout Setting</string>
+    <string name="string_set_preset_setting">Height Pre-Set Setting</string>
+    <string name="string_set_service_model">Service Mode</string>
+    <string name="string_set_minimum_dirve">Minimum Driving Pressure</string>
+    <string name="string_set_ap_balance">H#38P Balance</string>
+    <string name="string_tank_pressure_alert">The difference between high pressure and low pressure cannot exceed 40PSI.</string>
+    <string name="string_sensor_fl">FL</string>
+    <string name="string_sensor_fr">FR</string>
+    <string name="string_sensor_rl">RL</string>
+    <string name="string_sensor_rr">RR</string>
+    <string name="string_battery_16">Min Battery</string>
+    <string name="string_battery_mini_b">Max Battery</string>
+    <string name="string_start_end_start">Start</string>
+    <string name="string_start_start_position">Rise on start</string>
+    <string name="string_start_end_end">Flameout</string>
+    <string name="string_start_end_position">Lower after flameout</string>
     <string name="string_ap_balance_priority">Pressure priority</string>
-    <string name="string_ap_balance_height_priority">Height  priority</string>
-    <string name="string_manual">手动自检</string>
-    <string name="string_automatic">自动检测</string>
+    <string name="string_ap_balance_height_priority">Height priority</string>
+    <string name="string_manual">Manual self-test</string>
+    <string name="string_automatic">Automatic self-test</string>
 
-    <string name="string_sys_upgrage">系统升级</string>
-    <string name="string_wireless_watch">无线手环</string>
-    <string name="string_activate_device">激活设备</string>
-    <string name="string_activate_device_hid">请联系经销商获取激活码</string>
-    <string name="string_activate_success">激活成功</string>
+    <string name="string_sys_upgrage">System upgrade</string>
+    <string name="string_wireless_watch">Wireless wristband</string>
+    <string name="string_activate_device">Activate</string>
+    <string name="string_activate_device_hid">Please contact the distributor to obtain the activation code.</string>
+    <string name="string_activate_success">Activation successful</string>
 
-    <string name="string_not_conn_device">未连接设备</string>
-    <string name="string_go_to_official_website">去官网</string>
-    <string name="string_go_to_conn">去连接</string>
-    <string name="string_e_1">系统未自检</string>
-    <string name="string_e_2">加速度传感器故障</string>
-    <string name="string_e_3">电池电压过高</string>
-    <string name="string_e_4">电池电压过低</string>
-    <string name="string_e_5">气泵1温度传感器故障</string>
-    <string name="string_e_6">气泵2温度传感器故障</string>
-    <string name="string_e_7">系统温度传感器故障</string>
+    <string name="string_not_conn_device">No Devices</string>
+    <string name="string_go_to_official_website">web</string>
+    <string name="string_go_to_conn">connecting</string>
+    <string name="string_e_1">System not self checking</string>
+    <string name="string_e_2">Acceleration sensor failure</string>
+    <string name="string_e_3">High battery voltage</string>
+    <string name="string_e_4">Low battery voltage</string>
+    <string name="string_e_5">Compressor 1 temperature sensor failure</string>
+    <string name="string_e_6">Compressor 2 temperature sensor failure</string>
+    <string name="string_e_7">System temperature sensor failure</string>
 
-    <string name="string_has_new_version">有新版本</string>
+    <string name="string_has_new_version">Update</string>
 </resources>

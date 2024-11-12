@@ -63,6 +63,9 @@ class CarLowestAirFragment : TitleBarFragment<CarSysSetActivity>() {
         }
     }
 
+
+    private var isFirst = false
+
     override fun initData() {
         viewModel = ViewModelProvider(this)[ControlViewModel::class.java]
 
@@ -70,6 +73,10 @@ class CarLowestAirFragment : TitleBarFragment<CarSysSetActivity>() {
             if(it == null){
                 return@observe
             }
+            if(isFirst){
+                return@observe
+            }
+            isFirst = true
             frontCountNumber = it.leftFrontProtectPressure
             rearCountNumber = it.leftRearProtectPressure
             carAirAddTv?.text = frontCountNumber.toString()

@@ -9,6 +9,7 @@ import com.app.airmaster.adapter.OnCommItemClickListener
 import com.app.airmaster.car.CarSysSetActivity
 import com.app.airmaster.second.SecondScanActivity
 import com.app.airmaster.utils.ClickUtils
+import com.app.airmaster.utils.MmkvUtils
 import com.app.airmaster.viewmodel.ControlViewModel
 import com.app.airmaster.widget.CommTitleView
 import com.bonlala.widget.layout.SettingBar
@@ -163,7 +164,7 @@ class CarSysFragment : TitleBarFragment<CarSysSetActivity>() {
 
     override fun initData() {
         viewModel = ViewModelProvider(this)[ControlViewModel::class.java]
-
+        checkDeviceModel()
         viewModel?.autoSetBeanData?.observe(this){
             if(it == null){
                 return@observe
@@ -193,27 +194,47 @@ class CarSysFragment : TitleBarFragment<CarSysSetActivity>() {
     override fun onResume() {
         super.onResume()
 
-        val autoBean = BaseApplication.getBaseApplication().autoBackBean
-        if(autoBean != null){
-            sysMemoryModelBar?.visibility = if(autoBean.deviceMode == 0) View.VISIBLE else View.GONE
+        Timber.e("-------onResume-------")
+        checkDeviceModel()
 
-            //气压模式下高度尺和气压平衡没有
-            if(autoBean.deviceMode == 1){    //气压版本
-                //记忆模式
-                sysMemoryModelBar?.visibility = View.GONE
-                //高度尺工具
-                sysScaleSettingBar?.visibility = View.GONE
-                //气压平衡
-                sysAirBalanceBar?.visibility = View.GONE
-            }else{  //气压+高度版本
-                sysMemoryModelBar?.visibility = View.VISIBLE
-                sysScaleSettingBar?.visibility = View.VISIBLE
-                sysAirBalanceBar?.visibility = View.VISIBLE
-
-            }
-        }
-        viewModel?.writeCommonFunction()
+//        val autoBean = BaseApplication.getBaseApplication().autoBackBean
+//        if(autoBean != null){
+//            sysMemoryModelBar?.visibility = if(autoBean.deviceMode == 0) View.VISIBLE else View.GONE
+//
+//            //气压模式下高度尺和气压平衡没有
+//            if(autoBean.deviceMode == 1){    //气压版本
+//                //记忆模式
+//                sysMemoryModelBar?.visibility = View.GONE
+//                //高度尺工具
+//                sysScaleSettingBar?.visibility = View.GONE
+//                //气压平衡
+//                sysAirBalanceBar?.visibility = View.GONE
+//            }else{  //气压+高度版本
+//                sysMemoryModelBar?.visibility = View.VISIBLE
+//                sysScaleSettingBar?.visibility = View.VISIBLE
+//                sysAirBalanceBar?.visibility = View.VISIBLE
+//
+//            }
+//        }
+       // viewModel?.writeCommonFunction()
     }
 
+
+
+    private fun checkDeviceModel(){
+        val isPressureModel = MmkvUtils.getPressureModel()
+        if(isPressureModel){
+            //记忆模式
+          //  sysMemoryModelBar?.visibility = View.GONE
+            //高度尺工具
+            sysScaleSettingBar?.visibility = View.GONE
+            //气压平衡
+            sysAirBalanceBar?.visibility = View.GONE
+        }else{
+           // sysMemoryModelBar?.visibility = View.VISIBLE
+            sysScaleSettingBar?.visibility = View.VISIBLE
+            sysAirBalanceBar?.visibility = View.VISIBLE
+        }
+    }
 
 }

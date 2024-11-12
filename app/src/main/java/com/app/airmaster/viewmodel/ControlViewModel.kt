@@ -398,128 +398,153 @@ open class ControlViewModel : CommViewModel() {
 
     private var hashMap = HashMap<Int,AutoSetBean.GearBean>()
 
-    fun writeCommonFunction(){
-        BaseApplication.getBaseApplication().bleOperate.setCommAllParams(object : OnCarWriteBackListener{
+    fun  writeCommonFunction(){
+        BaseApplication.getBaseApplication().bleOperate.setCommAllParams { data ->
+            if (data != null && data.size >= 115) {
 
-            override fun backWriteBytes(data: ByteArray?) {
-                if(data != null && data.size>=115){
+                if ((data[8].toInt().and(0xFF)) == 3 && (data[9].toInt()
+                        .and(0xFF)) == 15 && (data[17].toInt().and(0xFF) == 145)
+                ) {
 
-                    if((data[8].toInt().and(0xFF)) == 3 && (data[9].toInt().and(0xFF)) == 15 &&(data[17].toInt().and(0xFF) ==145 )){
+                    hashMap.clear()
 
-                        hashMap.clear()
+                    val autoBean = AutoSetBean()
 
-                        val autoBean = AutoSetBean()
+                    //高度记忆模式 0g高度记忆；1压力记忆
+                    val modelType = data[18].toInt()
+                    MmkvUtils.savePressureModel(modelType==1)
 
-                        //高度记忆模式 0g高度记忆；1压力记忆
-                        val modelType = data[18].toInt()
-                        autoBean.modelType = modelType
-                        //ACC启停定时进入休眠时间(单位分钟)
-                        val sleepTime = data[19].toInt().and(0xFF)
-                        autoBean.sleepTime = sleepTime
-                        //电池高压保护开关
-                        val isHeightVoltage = data[20].toInt()==1
-                        autoBean.isHeightVoltage = isHeightVoltage
-                        //电池低压保护门限(单位0.1V)
-                        val lowVoltage = data[21].toInt().and(0xFF)
-                        autoBean.lowVoltage =lowVoltage
-                        //点火联动预置位 0:关闭
-                        //1~4:关联预置位
-                        val accTurnOnValue = data[22].toInt().and(0xFF)
-                        autoBean.accTurnOnValue = accTurnOnValue
-                        val accTurnOffValue = data[23].toInt().and(0xFF)
-                        autoBean.accTurnOffValue = accTurnOffValue
+                    autoBean.modelType = modelType
+                    //ACC启停定时进入休眠时间(单位分钟)
+                    val sleepTime = data[19].toInt().and(0xFF)
+                    autoBean.sleepTime = sleepTime
+                    //电池高压保护开关
+                    val isHeightVoltage = data[20].toInt() == 1
+                    autoBean.isHeightVoltage = isHeightVoltage
+                    //电池低压保护门限(单位0.1V)
+                    val lowVoltage = data[21].toInt().and(0xFF)
+                    autoBean.lowVoltage = lowVoltage
+                    //点火联动预置位 0:关闭
+                    //1~4:关联预置位
+                    val accTurnOnValue = data[22].toInt().and(0xFF)
+                    autoBean.accTurnOnValue = accTurnOnValue
+                    val accTurnOffValue = data[23].toInt().and(0xFF)
+                    autoBean.accTurnOffValue = accTurnOffValue
 
-                        //处理档位预置位
-                        //一档
-                        val gear1LeftFront = Utils.getIntFromBytes(data[24],data[25])
-                        val gear1RightFront = Utils.getIntFromBytes(data[26],data[27])
-                        val gear1LeftRear = Utils.getIntFromBytes(data[28],data[29])
-                        val gear1RightRear = Utils.getIntFromBytes(data[30],data[31])
-                        val gear1 = AutoSetBean.GearBean(gear1LeftFront,gear1RightFront,gear1LeftRear,gear1RightRear)
-                        hashMap[1] = gear1
+                    //处理档位预置位
+                    //一档
+                    val gear1LeftFront = Utils.getIntFromBytes(data[24], data[25])
+                    val gear1RightFront = Utils.getIntFromBytes(data[26], data[27])
+                    val gear1LeftRear = Utils.getIntFromBytes(data[28], data[29])
+                    val gear1RightRear = Utils.getIntFromBytes(data[30], data[31])
+                    val gear1 = AutoSetBean.GearBean(
+                        gear1LeftFront,
+                        gear1RightFront,
+                        gear1LeftRear,
+                        gear1RightRear
+                    )
+                    hashMap[1] = gear1
 
 
-                        //二档
-                        val gear2LeftFront = Utils.getIntFromBytes(data[32],data[33])
-                        val gear2RightFront = Utils.getIntFromBytes(data[34],data[35])
-                        val gear2LeftRear = Utils.getIntFromBytes(data[36],data[37])
-                        val gear2RightRear = Utils.getIntFromBytes(data[38],data[39])
-                        val gear2 = AutoSetBean.GearBean(gear2LeftFront,gear2RightFront,gear2LeftRear,gear2RightRear)
-                        hashMap[2] = gear2
+                    //二档
+                    val gear2LeftFront = Utils.getIntFromBytes(data[32], data[33])
+                    val gear2RightFront = Utils.getIntFromBytes(data[34], data[35])
+                    val gear2LeftRear = Utils.getIntFromBytes(data[36], data[37])
+                    val gear2RightRear = Utils.getIntFromBytes(data[38], data[39])
+                    val gear2 = AutoSetBean.GearBean(
+                        gear2LeftFront,
+                        gear2RightFront,
+                        gear2LeftRear,
+                        gear2RightRear
+                    )
+                    hashMap[2] = gear2
 
-                        //三挡
-                        val gear3LeftFront = Utils.getIntFromBytes(data[40],data[41])
-                        val gear3RightFront = Utils.getIntFromBytes(data[42],data[43])
-                        val gear3LeftRear = Utils.getIntFromBytes(data[44],data[45])
-                        val gear3RightRear = Utils.getIntFromBytes(data[46],data[47])
-                        val gear3 = AutoSetBean.GearBean(gear3LeftFront,gear3RightFront,gear3LeftRear,gear3RightRear)
-                        hashMap[3] = gear3
+                    //三挡
+                    val gear3LeftFront = Utils.getIntFromBytes(data[40], data[41])
+                    val gear3RightFront = Utils.getIntFromBytes(data[42], data[43])
+                    val gear3LeftRear = Utils.getIntFromBytes(data[44], data[45])
+                    val gear3RightRear = Utils.getIntFromBytes(data[46], data[47])
+                    val gear3 = AutoSetBean.GearBean(
+                        gear3LeftFront,
+                        gear3RightFront,
+                        gear3LeftRear,
+                        gear3RightRear
+                    )
+                    hashMap[3] = gear3
 
-                        //四挡
-                        val gear4LeftFront = Utils.getIntFromBytes(data[48],data[49])
-                        val gear4RightFront = Utils.getIntFromBytes(data[50],data[51])
-                        val gear4LeftRear = Utils.getIntFromBytes(data[52],data[53])
-                        val gear4RightRear = Utils.getIntFromBytes(data[54],data[55])
-                        val gear4 = AutoSetBean.GearBean(gear4LeftFront,gear4RightFront,gear4LeftRear,gear4RightRear)
-                        hashMap[4] = gear4
+                    //四挡
+                    val gear4LeftFront = Utils.getIntFromBytes(data[48], data[49])
+                    val gear4RightFront = Utils.getIntFromBytes(data[50], data[51])
+                    val gear4LeftRear = Utils.getIntFromBytes(data[52], data[53])
+                    val gear4RightRear = Utils.getIntFromBytes(data[54], data[55])
+                    val gear4 = AutoSetBean.GearBean(
+                        gear4LeftFront,
+                        gear4RightFront,
+                        gear4LeftRear,
+                        gear4RightRear
+                    )
+                    hashMap[4] = gear4
 
-                        //低趴
-                        val gearLowLeftFront = Utils.getIntFromBytes(data[56],data[57])
-                        val gearLowRightFront = Utils.getIntFromBytes(data[58],data[59])
-                        val gearLowLeftRear = Utils.getIntFromBytes(data[60],data[61])
-                        val gearLowRightRear = Utils.getIntFromBytes(data[62],data[63])
-                        val gear0 = AutoSetBean.GearBean(gearLowLeftFront,gearLowRightFront,gearLowLeftRear,gearLowRightRear)
-                        hashMap[0] = gear0
+                    //低趴
+                    val gearLowLeftFront = Utils.getIntFromBytes(data[56], data[57])
+                    val gearLowRightFront = Utils.getIntFromBytes(data[58], data[59])
+                    val gearLowLeftRear = Utils.getIntFromBytes(data[60], data[61])
+                    val gearLowRightRear = Utils.getIntFromBytes(data[62], data[63])
+                    val gear0 = AutoSetBean.GearBean(
+                        gearLowLeftFront,
+                        gearLowRightFront,
+                        gearLowLeftRear,
+                        gearLowRightRear
+                    )
+                    hashMap[0] = gear0
 
-                        autoBean.gearHashMap = hashMap
+                    autoBean.gearHashMap = hashMap
 
-                        //水平静止状态下超过5S,自动预置位调节开关 0不能 1能
-                        val presetPosition = data[104].toInt().and(0xFF)
-                        autoBean.presetPosition = presetPosition
-                        //气罐高压值(单位PSI)
-                        val gasTankHeightPressure = data[105].toInt().and(0xFF)
-                        autoBean.gasTankHeightPressure = gasTankHeightPressure
+                    //水平静止状态下超过5S,自动预置位调节开关 0不能 1能
+                    val presetPosition = data[104].toInt().and(0xFF)
+                    autoBean.presetPosition = presetPosition
+                    //气罐高压值(单位PSI)
+                    val gasTankHeightPressure = data[105].toInt().and(0xFF)
+                    autoBean.gasTankHeightPressure = gasTankHeightPressure
 
-                        MmkvUtils.saveMaxPressureValue(gasTankHeightPressure)
+                    MmkvUtils.saveMaxPressureValue(gasTankHeightPressure)
 
-                        //气罐低压值
-                        val gasTankLowPressure = data[106].toInt().and(0xFF)
-                        autoBean.gasTankLowPressure = gasTankLowPressure
-                        //气罐水分离模式
-                        val gasTankWaterModel = data[107].toInt().and(0xFF)
-                        autoBean.gasTankWaterModel = gasTankWaterModel
-                        //最低预置位
-                        val lowestPosition = data[108].toInt().and(0xFF)
-                        autoBean.lowestPosition = lowestPosition
-                        //ACC模式
-                        val accModel = data[109].toInt().and(0xFF)
-                        autoBean.accModel = accModel
-                        //运动中-左前最低保护气压
-                        val leftFrontProtectPressure = data[110].toInt().and(0xFF)
-                        autoBean.leftFrontProtectPressure = leftFrontProtectPressure
-                        //运动中-右前最低保护气压
-                        val rightFrontProtectPressure = data[111].toInt().and(0xFF)
-                        autoBean.rightFrontProtectPressure = rightFrontProtectPressure
-                        //运动中-左后最低保护气压
-                        val leftRearProtectPressure = data[112].toInt().and(0xFF)
-                        autoBean.leftRearProtectPressure = leftRearProtectPressure
-                        //运动中-右后最低保护气压
-                        val rightRearProtectPressure = data[113].toInt().and(0xFF)
-                        autoBean.rightRearProtectPressure = rightRearProtectPressure
-                        //自动气压调平功能
-                        val pressureBalance = data[114].toInt().and(0xFF)
-                        autoBean.pressureBalance = pressureBalance
-                        //自动气压调平功能-级别
-                        val autoPressureBalanceLevel = data[115].toInt().and(0xFF)
-                        autoBean.autoPressureBalanceLevel = autoPressureBalanceLevel
-                        BaseApplication.getBaseApplication().autoSetBean = autoBean
-                        Timber.e("----------autoBean=$autoBean")
-                        autoSetBeanData.postValue(autoBean)
-                    }
+                    //气罐低压值
+                    val gasTankLowPressure = data[106].toInt().and(0xFF)
+                    autoBean.gasTankLowPressure = gasTankLowPressure
+                    //气罐水分离模式
+                    val gasTankWaterModel = data[107].toInt().and(0xFF)
+                    autoBean.gasTankWaterModel = gasTankWaterModel
+                    //最低预置位
+                    val lowestPosition = data[108].toInt().and(0xFF)
+                    autoBean.lowestPosition = lowestPosition
+                    //ACC模式
+                    val accModel = data[109].toInt().and(0xFF)
+                    autoBean.accModel = accModel
+                    //运动中-左前最低保护气压
+                    val leftFrontProtectPressure = data[110].toInt().and(0xFF)
+                    autoBean.leftFrontProtectPressure = leftFrontProtectPressure
+                    //运动中-右前最低保护气压
+                    val rightFrontProtectPressure = data[111].toInt().and(0xFF)
+                    autoBean.rightFrontProtectPressure = rightFrontProtectPressure
+                    //运动中-左后最低保护气压
+                    val leftRearProtectPressure = data[112].toInt().and(0xFF)
+                    autoBean.leftRearProtectPressure = leftRearProtectPressure
+                    //运动中-右后最低保护气压
+                    val rightRearProtectPressure = data[113].toInt().and(0xFF)
+                    autoBean.rightRearProtectPressure = rightRearProtectPressure
+                    //自动气压调平功能
+                    val pressureBalance = data[114].toInt().and(0xFF)
+                    autoBean.pressureBalance = pressureBalance
+                    //自动气压调平功能-级别
+                    val autoPressureBalanceLevel = data[115].toInt().and(0xFF)
+                    autoBean.autoPressureBalanceLevel = autoPressureBalanceLevel
+                    BaseApplication.getBaseApplication().autoSetBean = autoBean
+                    Timber.e("----------autoBean=$autoBean")
+                    autoSetBeanData.postValue(autoBean)
                 }
             }
-
-        })
+        }
         //                     10                    17             22                             10                             20                            30                             40                             50                             60                             70                             80
         //880000000000772e 030f7f fa af 00 70 01 04  91 00 0a 01 6e 00  00 00 00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00 00 00  00 00 00 00 00 0064 00 44 00  11 00 11 00 00 00 00 00 00 00  00 00 1e 00 1e 00 1e 00 1e 00  32 00 32 00 32 00 32 00 46 00  46 00 46 00 46 00 7d 00 4d 00  46 00 46 00 14 00 14 00 14 00  14 00a08c00010047472424010000000000000000000000b5
         //880000000000772e 030f7f fa af 00 70 01 04  91 00 0a 01 6e 00  00 00 00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00 00 00  00 00 00 00 00 00 64 00 44 00  11 00 11 00 00 00 00 00 00 00  00 00 1e 00 1e 00 1e 00 1e 00  32 00 32 00 32 00 32 00 46 00  46 00 46 00 46 00 7d 00 4d 00  46 00 46 00 14 00 14 00 14 00  14 00 a0 8c 00 01 00 47 47 24 24 010000000000000000000000b5
