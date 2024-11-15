@@ -13,7 +13,7 @@
         android:id="@+id/singleContentTv"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="是否全部清除？"
+        android:text="@string/string_clear_all_prompt"
         android:textColor="@color/white"
         android:textSize="@dimen/sp_19"
         android:layout_marginTop="@dimen/dp_30"

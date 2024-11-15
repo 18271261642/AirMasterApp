@@ -137,6 +137,8 @@ class HomeControlFragment : TitleBarFragment<CarHomeActivity>() {
         })
 
         homeBottomNumberView?.setOnItemClick{
+            val isPressure = MmkvUtils.getPressureModel()
+            Timber.e("--------是否是压力记忆模式=$isPressure")
             if(BaseApplication.getBaseApplication().connStatus != ConnStatus.CONNECTED){
                 homeBottomNumberView?.clearAllClick()
                 homeBottomNumberView?.setIsLowGear(false)
@@ -145,12 +147,10 @@ class HomeControlFragment : TitleBarFragment<CarHomeActivity>() {
             }
             handlers.removeMessages(0x00)
             if(BaseApplication.getBaseApplication().autoBackBean?.deviceMode==0){  //高度模式
-                val autoSetBean = BaseApplication.getBaseApplication().autoSetBean
-                if(autoSetBean != null){
-                    if(autoSetBean.modelType == 0){
-                        handlers.sendEmptyMessageDelayed(0x00,5000)
-                        showRulerGoalVisibility(true)
-                    }
+
+                if(!isPressure){
+                    handlers.sendEmptyMessageDelayed(0x00,5000)
+                    showRulerGoalVisibility(true)
                 }
 
             }else{
@@ -232,12 +232,11 @@ class HomeControlFragment : TitleBarFragment<CarHomeActivity>() {
                 if(tempGear != autoBean.curPos){
                     tempGear = autoBean.curPos
                     handlers.removeMessages(0x00)
+                    val isPressure = MmkvUtils.getPressureModel()
                     val autoSetBean = BaseApplication.getBaseApplication().autoSetBean
-                    if(autoSetBean != null){
-                        if(autoSetBean.modelType == 0){
-                            handlers.sendEmptyMessageDelayed(0x00,5000)
-                            showRulerGoalVisibility(true)
-                        }
+                    if(!isPressure){
+                        handlers.sendEmptyMessageDelayed(0x00,5000)
+                        showRulerGoalVisibility(true)
                     }
 
                 }
@@ -321,6 +320,11 @@ class HomeControlFragment : TitleBarFragment<CarHomeActivity>() {
                 handlers.sendEmptyMessage(0x00)
             }
         })
+    }
+
+    override fun onResume() {
+        super.onResume()
+        controlViewModel?.writeCommonFunction()
     }
 
 

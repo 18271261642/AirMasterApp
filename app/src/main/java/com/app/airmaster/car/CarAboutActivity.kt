@@ -675,7 +675,7 @@ class CarAboutActivity : AppActivity() {
         dialog.setContentTxt(if (success) resources.getString(R.string.string_activation_success) else resources.getString(R.string.string_activation_failed_input_code))
         if (success) {
             //是否已激活
-            MmkvUtils.setSaveObjParams(MmkvUtils.getConnDeviceMac(), success)
+           // MmkvUtils.setSaveObjParams(MmkvUtils.getConnDeviceMac(), success)
             aboutActivateSubmitTv?.text = resources.getString(R.string.string_has_activation)
             aboutActivateSubmitTv!!.shapeDrawableBuilder.setSolidColor(Color.parseColor("#80FD654D"))
                 .intoBackground()

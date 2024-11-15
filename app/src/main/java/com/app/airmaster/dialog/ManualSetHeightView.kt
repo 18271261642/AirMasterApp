@@ -175,8 +175,8 @@ class ManualSetHeightView : AppCompatDialog {
 
     fun setModel(height: Boolean){
         this.isHeight = height
-        manualHeightOrLowDescTv?.text = if(isHeight) "请设定最高高度,\n设置完成后点击保存" else "请设定最低高度,\n设置完成后点击保存"
-        manualTitleTv?.text = if(isHeight)"4/6检测最高高度" else "1/6检测最低高度"
+        manualHeightOrLowDescTv?.text = if(isHeight) context.resources.getString(R.string.string_set_max_height) else context.resources.getString(R.string.string_set_min_height)
+        manualTitleTv?.text = if(isHeight) context.resources.getString(R.string.string_check_max_height) else context.resources.getString(R.string.string_check_min_height)
     }
 
 

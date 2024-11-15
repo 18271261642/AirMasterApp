@@ -26,7 +26,7 @@ class CarErrorNotifyViewModel : ViewModel() {
        // val deviceErrorCode = it.deviceErrorCode
         val errorArray = Utils.byteToBit(deviceErrorCode)
         Timber.e("--------设备故障="+String.format("%02x",deviceErrorCode)+" "+errorArray)
-        val resultMap = getDeviceErrorMsg(errorArray)
+        val resultMap = getDeviceErrorMsg(errorArray,context)
         resultMap.forEach {
             list?.add(it.value)
         }
@@ -37,7 +37,7 @@ class CarErrorNotifyViewModel : ViewModel() {
         Timber.e("--------气罐故障="+String.format("%02x",airErrorCode)+" "+airArray)
 
 
-        val airMap = getAirBottleErrorCode(airArray)
+        val airMap = getAirBottleErrorCode(airArray,context)
         airMap.forEach {
             list?.add(it.value)
         }
@@ -158,52 +158,52 @@ class CarErrorNotifyViewModel : ViewModel() {
     bit4:气泵状态异常
      */
     val airBotMap = HashMap<Int, String>()
-    private fun getAirBottleErrorCode(str : String) : HashMap<Int,String>{
+     fun getAirBottleErrorCode(str : String,context: Context) : HashMap<Int,String>{
         airBotMap.clear()
         val chartArray = str.toCharArray()
         if (chartArray[0].toString() == "1") {
-            airBotMap[0] = "气压传感器故障"
+            airBotMap[0] = context.resources.getString(R.string.string_air_sensor_error)
         }
         if (chartArray[1].toString() == "1") {
-            airBotMap[1] = "气罐压力过低"
+            airBotMap[1] = context.resources.getString(R.string.string_air_pressure_low)
         }
         if (chartArray[2].toString() == "1") {
-            airBotMap[2] = "气泵温度过高"
+            airBotMap[2] = context.resources.getString(R.string.string_air_pump_temp_height)
         }
         if (chartArray[3].toString() == "1") {
-            airBotMap[3] = "气罐无法充气"
+            airBotMap[3] = context.resources.getString(R.string.string_air_no_input_air)
         }
         if (chartArray[4].toString() == "1") {
-            airBotMap[4] = "气泵状态异常"
+            airBotMap[4] = context.resources.getString(R.string.string_air_pump_state_error)
         }
         return airBotMap
     }
 
     //设备故障码
     val map = HashMap<Int, String>()
-    private fun getDeviceErrorMsg(errorStr: String): HashMap<Int, String> {
+     fun getDeviceErrorMsg(errorStr: String,context: Context): HashMap<Int, String> {
         map.clear()
         val chartArray = errorStr.toCharArray()
         if (chartArray[0].toString() == "1") {
-            map[0] = "系统未自检"
+            map[0] = context.resources.getString(R.string.string_sys_no_check)
         }
         if (chartArray[1].toString() == "1") {
-            map[1] = "加速度传感器故障"
+            map[1] = context.resources.getString(R.string.string_acceleration_sensor_error)
         }
         if (chartArray[2].toString() == "1") {
-            map[2] = "电池电压过高"
+            map[2] = context.resources.getString(R.string.string_battery_pressure_height)
         }
         if (chartArray[3].toString() == "1") {
-            map[3] = "电池电压过低"
+            map[3] = context.resources.getString(R.string.string_battery_pressure_low)
         }
         if (chartArray[4].toString() == "1") {
-            map[4] = "气泵1温度传感器故障"
+            map[4] = context.resources.getString(R.string.string_air_pump1_temp_error)
         }
         if (chartArray[5].toString() == "1") {
-            map[5] = "气泵2温度传感器故障"
+            map[5] = context.resources.getString(R.string.string_air_pump2_temp_error)
         }
         if (chartArray[6].toString() == "1") {
-            map[6] = "系统温度传感器故障"
+            map[6] = context.resources.getString(R.string.string_sys_temp_error)
         }
         return map
     }

@@ -225,10 +225,10 @@ class CarAutoCheckActivity : AppActivity() {
     private fun getErrorDesc(code : Int) : String? {
         val map = HashMap<Int,String>()
         map[0] = ""
-        map[1] = "电池电压异常"
-        map[2] = "ACC未启动"
-        map[3] = "ACC未启动"
-        map[4] = "自检超时"
+        map[1] = resources.getString(R.string.string_battery_voltage_error)
+        map[2] = resources.getString(R.string.string_acc_not_start)
+        map[3] = resources.getString(R.string.string_acc_not_start)
+        map[4] = resources.getString(R.string.string_auto_check_time_out)
         map[5] = resources.getString(R.string.string_car_lr)+resources.getString(R.string.string_car_h_e_1)
         map[6] = resources.getString(R.string.string_car_rr)+resources.getString(R.string.string_car_h_e_1)
         map[7] = resources.getString(R.string.string_car_ll)+resources.getString(R.string.string_car_h_e_1)

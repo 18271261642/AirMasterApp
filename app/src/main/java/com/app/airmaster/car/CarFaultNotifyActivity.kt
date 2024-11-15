@@ -11,6 +11,7 @@ import com.app.airmaster.R
 import com.app.airmaster.action.AppActivity
 import com.app.airmaster.car.adapter.CarFaultNotifyAdapter
 import com.app.airmaster.dialog.ConfirmDialog
+import com.app.airmaster.viewmodel.CarErrorNotifyViewModel
 import com.app.airmaster.viewmodel.ControlViewModel
 import com.blala.blalable.Utils
 import timber.log.Timber
@@ -21,7 +22,7 @@ import timber.log.Timber
 class CarFaultNotifyActivity : AppActivity() {
 
     private var controlViewModel : ControlViewModel ?= null
-
+    private var errorNotifyViewModel : CarErrorNotifyViewModel?= null
 
     private var faultNotifyRy: RecyclerView? = null
     private var adapter: CarFaultNotifyAdapter? = null
@@ -53,6 +54,8 @@ class CarFaultNotifyActivity : AppActivity() {
     @SuppressLint("TimberArgCount")
     override fun initData() {
         controlViewModel = ViewModelProvider(this)[ControlViewModel::class.java]
+        errorNotifyViewModel = ViewModelProvider(this)[CarErrorNotifyViewModel::class.java]
+
 
         BaseApplication.getBaseApplication().bleOperate.setAutoBackDataListener { it ->
             list?.clear()
@@ -61,8 +64,8 @@ class CarFaultNotifyActivity : AppActivity() {
                 val deviceErrorCode = it.deviceErrorCode
                 val errorArray = Utils.byteToBit(deviceErrorCode)
                 Timber.e("--------设备故障="+String.format("%02x",deviceErrorCode)+" "+errorArray)
-                val resultMap = getDeviceErrorMsg(errorArray)
-                resultMap.forEach {
+                val resultMap = errorNotifyViewModel?.getDeviceErrorMsg(errorArray,this) //getDeviceErrorMsg(errorArray)
+                resultMap?.forEach {
                     list?.add(it.value)
                 }
 
@@ -72,8 +75,8 @@ class CarFaultNotifyActivity : AppActivity() {
                 Timber.e("--------气罐故障="+String.format("%02x",airErrorCode)+" "+airArray)
 
 
-                val airMap = getAirBottleErrorCode(airArray)
-                airMap.forEach {
+                val airMap = errorNotifyViewModel?.getAirBottleErrorCode(airArray,this)//getAirBottleErrorCode(airArray)
+                airMap?.forEach {
                     list?.add(it.value)
                 }
 

@@ -4,6 +4,37 @@
     <string name="string_privacy_txt">隐私政策</string>
     <string name="string_user_protocol">用户协议</string>-->
 
+    <string name="string_clear_all_prompt">是否全部清除?</string>
+    
+    <string name="string_set_max_height">请设定最高高度,\n设置完成后点击保存</string>
+    <string name="string_set_min_height">请设定最低高度,\n设置完成后点击保存</string>
+    <string name="string_check_max_height">4/6检测最高高度</string>
+    <string name="string_check_min_height">1/6检测最低高度</string>
+    
+    <string name="string_auto_check_time_out">自检超时</string>
+    <string name="string_acc_not_start">ACC未启动</string>
+    <string name="string_battery_voltage_error">电池电压异常</string>
+    <string name="string_exit_manual_check_prompt">是否退出手动动检测?</string>
+
+    <string name="string_to_upgrade">去升级</string>
+
+
+    <string name="string_notify_center">通知中心</string>
+    <string name="string_clear_all">一键清除</string>
+    <string name="string_air_pressure_low">气罐压力过低</string>
+    <string name="string_air_sensor_error">气压传感器故障</string>
+    <string name="string_air_pump_temp_height">气泵温度过高</string>
+    <string name="string_air_no_input_air">气罐无法充气</string>
+    <string name="string_air_pump_state_error">气泵状态异常</string>
+    <string name="string_sys_no_check">系统未自检</string>
+    <string name="string_acceleration_sensor_error">加速度传感器故障</string>
+    <string name="string_battery_pressure_height">电池电压过高</string>
+    <string name="string_battery_pressure_low">电池电压过低</string>
+    <string name="string_air_pump1_temp_error">气泵1温度传感器故障</string>
+    <string name="string_air_pump2_temp_error">气泵2温度传感器故障</string>
+    <string name="string_sys_temp_error">系统温度传感器故障</string>
+
+
     <string name="string_manual_check_prompt">是否进行手动检测?</string>
     <string name="string_not_exit_dfu">正在升级中,请务退出!</string>
     <string name="string_upgradge_success">升级成功</string>

@@ -45,26 +45,25 @@ class CarSystemCheckActivity : AppActivity() {
     private fun showDialogShow(code : Int){
         val dialog = ConfirmDialog(this, com.bonlala.base.R.style.BaseDialogTheme)
         dialog.show()
-        dialog.setContentTxt(if(code == 0) "是否进行手动检测?" else "是否进行自动检测?")
-        dialog.setOnCommClickListener(object : OnCommItemClickListener{
-            override fun onItemClick(position: Int) {
-                dialog.dismiss()
+        dialog.setContentTxt(if(code == 0) resources.getString(R.string.string_manual_check_prompt) else resources.getString(R.string.string_car_auto_check_prompt))
+        dialog.setOnCommClickListener { position ->
+            dialog.dismiss()
 
-                if(position==1){
-                    if(code == 1){
-                        val intent = Intent(this@CarSystemCheckActivity,CarAutoCheckActivity::class.java)
-                        intent.putExtra("type",code)
-                        startActivity(intent)
-                    }else{
-                       // viewModel?.intoOrExit(true,false)
-                        val intent = Intent(this@CarSystemCheckActivity,ManualCheckActivity::class.java)
-                        intent.putExtra("type",code)
-                        startActivity(intent)
-                    }
-
+            if (position == 1) {
+                if (code == 1) {
+                    val intent =
+                        Intent(this@CarSystemCheckActivity, CarAutoCheckActivity::class.java)
+                    intent.putExtra("type", code)
+                    startActivity(intent)
+                } else {
+                    // viewModel?.intoOrExit(true,false)
+                    val intent =
+                        Intent(this@CarSystemCheckActivity, ManualCheckActivity::class.java)
+                    intent.putExtra("type", code)
+                    startActivity(intent)
                 }
-            }
 
-        })
+            }
+        }
     }
 }

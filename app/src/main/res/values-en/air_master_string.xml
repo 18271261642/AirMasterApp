@@ -1,6 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+
+    <string name="string_clear_all_prompt">Clear?</string>
+
+    <string name="string_set_max_height">Maxmum Height Setting,\nAnd save</string>
+    <string name="string_set_min_height">Minimum Height Setting,\nAnd save</string>
+    <string name="string_check_max_height">4/6Maximum Height</string>
+    <string name="string_check_min_height">1/6Minimum Height</string>
+
+
+    <string name="string_auto_check_time_out">Time out</string>
+    <string name="string_acc_not_start">ACC not start</string>
+    <string name="string_battery_voltage_error">Abnormal battery voltage</string>
+    <string name="string_exit_manual_check_prompt">Do you want to exit manual motion detection?</string>
+
+    <string name="string_to_upgrade">Confirm</string>
+    <string name="string_notify_center">Notifications</string>
+    <string name="string_clear_all">Clear all</string>
+    <string name="string_air_pressure_low">Tank pressure too low</string>
+    <string name="string_air_sensor_error">Pressure sensor failure</string>
+    <string name="string_air_pump_temp_height">Compressor overheat</string>
+    <string name="string_air_no_input_air">Tank inflation failure</string>
+    <string name="string_air_pump_state_error">Compressor abnormal</string>
+    <string name="string_sys_no_check">System not self checking</string>
+    <string name="string_acceleration_sensor_error">Acceleration sensor failure</string>
+    <string name="string_battery_pressure_height">High battery voltage</string>
+    <string name="string_battery_pressure_low">High battery voltage</string>
+    <string name="string_air_pump1_temp_error">Compressor 1 temperature sensor failure</string>
+    <string name="string_air_pump2_temp_error">Compressor 2 temperature sensor failure</string>
+    <string name="string_sys_temp_error">System temperature sensor failure</string>
+
     <string name="string_manual_check_prompt">Whethere to perform manual self-test?</string>
     <string name="string_not_exit_dfu">The upgrade hasn\'t been completed yet. Please don\'t exit until later!</string>
     <string name="string_upgradge_success">Upgrade successful</string>

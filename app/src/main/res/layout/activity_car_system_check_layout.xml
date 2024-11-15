@@ -14,7 +14,7 @@
         app:leftIcon="@drawable/ic_white_left_back"
         android:background="@color/transparent"
         app:lineVisible="false"
-        app:title="系统自检"
+        app:title="@string/string_setting_menu_sys_auto_check"
         app:titleColor="@color/white"/>
 
 
@@ -22,7 +22,7 @@
         android:id="@+id/sysManualCheckBar"
         android:layout_width="match_parent"
         app:bar_leftDrawable="@mipmap/ic_sys_check_manual"
-        app:bar_leftText="手动自检"
+        app:bar_leftText="@string/string_manual"
         android:layout_marginTop="@dimen/dp_20"
         android:background="@color/transparent"
         app:bar_leftTextColor="@color/white"
@@ -35,7 +35,7 @@
         android:id="@+id/sysAutoCheckBar"
         android:layout_width="match_parent"
         app:bar_leftDrawable="@mipmap/ic_sys_check_auto"
-        app:bar_leftText="自动自检"
+        app:bar_leftText="@string/string_automatic"
         android:background="@color/transparent"
         app:bar_leftTextColor="@color/white"
         app:bar_rightDrawable="@mipmap/ic_set_right_back"

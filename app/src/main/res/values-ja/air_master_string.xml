@@ -1,6 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <string name="string_clear_all_prompt">削除"?</string>
+    <string name="string_set_max_height">車高最大値を設定し,\n保存してください</string>
+    <string name="string_set_min_height">車高最小値を設定し,\n保存してください</string>
+    <string name="string_check_max_height">4/6車高最大値検出</string>
+    <string name="string_check_min_height">1/6車高最小値検出</string>
+
+    <string name="string_auto_check_time_out">タイムアウト</string>
+    <string name="string_acc_not_start">ACC起動していません</string>
+    <string name="string_battery_voltage_error">バッテリ電圧異常</string>
+    <string name="string_exit_manual_check_prompt">手動動検出を終了するかどうか?</string>
+
+
+    <string name="string_to_upgrade">はい</string>
+
+    <string name="string_notify_center">通知センター</string>
+    <string name="string_clear_all">パージ</string>
+    <string name="string_air_pressure_low">タンク低圧異常</string>
+    <string name="string_air_sensor_error">空気圧センサー故障</string>
+    <string name="string_air_pump_temp_height">タンク高圧異常</string>
+    <string name="string_air_no_input_air">タンク空気充填異常</string>
+    <string name="string_air_pump_state_error">コンプレッサー異常</string>
+    <string name="string_sys_no_check">システムセルフテストが完了していません</string>
+    <string name="string_acceleration_sensor_error">加速器故障</string>
+    <string name="string_battery_pressure_height">バッテリー電圧高負荷</string>
+    <string name="string_battery_pressure_low">バッテリー電圧不足</string>
+    <string name="string_air_pump1_temp_error">コンプレッサー1温度センサー故障</string>
+    <string name="string_air_pump2_temp_error">コンプレッサー2温度センサー故障</string>
+    <string name="string_sys_temp_error">温度センサー故障</string>
+
+
     <string name="string_manual_check_prompt">手動キャリブレーションを行いますか?</string>
     <string name="string_not_exit_dfu">アップデート中です、しばらくお待ちください!</string>
     <string name="string_upgradge_success">アップデート成功</string>

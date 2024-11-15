@@ -101,7 +101,7 @@
                 android:layout_gravity="center"
                 android:padding="@dimen/dp_10"
                 android:gravity="center"
-                android:text="暂不使用"/>
+                android:text="@string/common_cancel"/>
 
             <View
                 android:layout_width="@dimen/dp_10"
@@ -118,7 +118,7 @@
                 android:layout_gravity="center"
                 android:padding="@dimen/dp_10"
                 android:gravity="center"
-                android:text="去升级"/>
+                android:text="@string/string_to_upgrade"/>
         </LinearLayout>
 
     </com.hjq.shape.layout.ShapeLinearLayout>

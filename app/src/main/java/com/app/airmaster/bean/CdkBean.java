@@ -10,7 +10,7 @@ public class CdkBean implements IRequestApi {
     @NonNull
     @Override
     public String getApi() {
-        return "cdkey/record/save?cdkey";
+        return "cdkey/record/save";
     }
 
     private String cdkey;

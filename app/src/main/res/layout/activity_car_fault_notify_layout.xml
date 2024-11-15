@@ -35,7 +35,7 @@
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="wrap_content"
-            android:text="通知中心"
+            android:text="@string/string_notify_center"
             android:textColor="@color/white"
             android:layout_gravity="center"
             android:gravity="center"
@@ -53,7 +53,7 @@
             android:layout_height="wrap_content"
             android:textSize="@dimen/sp_15"
             android:textColor="@color/white"
-            android:text="一键清除"/>
+            android:text="@string/string_clear_all"/>
 
 
         <ImageView

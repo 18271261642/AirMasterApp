@@ -43,6 +43,7 @@ class CarMemoryModelFragment : TitleBarFragment<CarSysSetActivity>() {
         memoryHeightSwitchButton?.setOnCheckedChangeListener { button, checked ->
             Timber.e("----------pppppppp="+button.isPressed)
             if(!button.isPressed && checked){
+                memoryPressureSwitchButton?.isChecked = false
                 viewModel?.setHeightMemory(true)
                 MmkvUtils.savePressureModel(false)
             }
@@ -52,6 +53,7 @@ class CarMemoryModelFragment : TitleBarFragment<CarSysSetActivity>() {
         //压力
         memoryPressureSwitchButton?.setOnCheckedChangeListener { button, checked ->
             if(!button.isPressed && checked){
+                memoryHeightSwitchButton?.isChecked = false
                 MmkvUtils.savePressureModel(true)
                 viewModel?.setHeightMemory(false)
             }

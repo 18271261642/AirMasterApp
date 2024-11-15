@@ -225,30 +225,30 @@ class ManualCheckActivity : AppActivity() {
     private fun getErrorDesc(code : Int) : String? {
         val map = HashMap<Int,String>()
         map[0] = ""
-        map[1] = "电池电压异常"
-        map[2] = "ACC未启动"
-        map[3] = "ACC未启动"
-        map[4] = "自检超时"
-        map[5] = "左前高度传感器超量程"
-        map[6] = "右前高度传感器超量程"
-        map[7] = "左后高度传感器超量程"
-        map[8] = "右后高度传感器超量程"
-        map[9] = "左前气压传感器故障"
-        map[10] = "右前气压传感器故障"
-        map[11] = "左后气压传感器故障"
-        map[12] = "右后气压传感器故障"
-        map[13] = "左前高度传感器故障"
-        map[14] = "右前高度传感器故障"
-        map[15] = "左后高度传感器故障"
-        map[16] = "右后高度传感器故障"
-        map[17] = "左前高度传感器测量范围过小"
-        map[18] = "右前高度传感器测量范围过小"
-        map[19] = "左后高度传感器测量范围过小"
-        map[20] = "右后高度传感器测量范围过小"
-        map[21] = "左前高度传感器线序错误"
-        map[22] = "右前高度传感器线序错误"
-        map[23] = "左后高度传感器线序错误"
-        map[24] = "右后高度传感器线序错误"
+        map[1] = resources.getString(R.string.string_battery_voltage_error)
+        map[2] = resources.getString(R.string.string_acc_not_start)
+        map[3] = resources.getString(R.string.string_acc_not_start)
+        map[4] = resources.getString(R.string.string_auto_check_time_out)
+        map[5] = resources.getString(R.string.string_car_lr)+resources.getString(R.string.string_car_h_e_1)
+        map[6] = resources.getString(R.string.string_car_rr)+resources.getString(R.string.string_car_h_e_1)
+        map[7] = resources.getString(R.string.string_car_ll)+resources.getString(R.string.string_car_h_e_1)
+        map[8] = resources.getString(R.string.string_car_rl)+resources.getString(R.string.string_car_h_e_1)
+        map[9] = resources.getString(R.string.string_car_lr)+resources.getString(R.string.string_car_h_e_6)
+        map[10] = resources.getString(R.string.string_car_rr)+resources.getString(R.string.string_car_h_e_6)
+        map[11] = resources.getString(R.string.string_car_ll)+resources.getString(R.string.string_car_h_e_6)
+        map[12] = resources.getString(R.string.string_car_rl)+resources.getString(R.string.string_car_h_e_6)
+        map[13] =  resources.getString(R.string.string_car_lr)+resources.getString(R.string.string_car_h_e_5) // "左前高度传感器故障"
+        map[14] = resources.getString(R.string.string_car_rr)+resources.getString(R.string.string_car_h_e_5)//"右前高度传感器故障"
+        map[15] = resources.getString(R.string.string_car_ll)+resources.getString(R.string.string_car_h_e_5)//"左后高度传感器故障"
+        map[16] = resources.getString(R.string.string_car_rl)+resources.getString(R.string.string_car_h_e_5)//"右后高度传感器故障"
+        map[17] =  resources.getString(R.string.string_car_lr)+resources.getString(R.string.string_car_h_e_3) //"左前高度传感器测量范围过小"
+        map[18] = resources.getString(R.string.string_car_rr)+resources.getString(R.string.string_car_h_e_3)//"右前高度传感器测量范围过小"
+        map[19] = resources.getString(R.string.string_car_ll)+resources.getString(R.string.string_car_h_e_3)//"左后高度传感器测量范围过小"
+        map[20] = resources.getString(R.string.string_car_rl)+resources.getString(R.string.string_car_h_e_3)//"右后高度传感器测量范围过小"
+        map[21] =   resources.getString(R.string.string_car_lr)+resources.getString(R.string.string_car_h_e_2) //"左前高度传感器线序错误"
+        map[22] = resources.getString(R.string.string_car_rr)+resources.getString(R.string.string_car_h_e_2)//"右前高度传感器线序错误"
+        map[23] = resources.getString(R.string.string_car_ll)+resources.getString(R.string.string_car_h_e_2)//"左后高度传感器线序错误"
+        map[24] = resources.getString(R.string.string_car_rl)+resources.getString(R.string.string_car_h_e_2)//"右后高度传感器线序错误"
 
         return map.get(code)
 
@@ -265,17 +265,14 @@ class ManualCheckActivity : AppActivity() {
     private fun showDialogShow(){
         val dialog = ConfirmDialog(this, com.bonlala.base.R.style.BaseDialogTheme)
         dialog.show()
-        dialog.setContentTxt("是否退出手动动检测?")
-        dialog.setOnCommClickListener(object : OnCommItemClickListener {
-            override fun onItemClick(position: Int) {
-                dialog.dismiss()
+        dialog.setContentTxt(resources.getString(R.string.string_exit_manual_check_prompt))
+        dialog.setOnCommClickListener { position ->
+            dialog.dismiss()
 
-                if(position==1){
-                    intoOrExitCheck(false)
-                    finish()
-                }
+            if (position == 1) {
+                intoOrExitCheck(false)
+                finish()
             }
-
-        })
+        }
     }
 }

@@ -40,8 +40,9 @@ class CarHomeCenterView : LinearLayout ,OnClickListener{
     //后轮-
     private var carCenterBotBomImg : ImageView ?= null
 
-
+    //前轮高度
     private var carFrontGaugeView : GaugeHeightView ?= null
+    //后轮高度
     private var carRearGaugeView : GaugeHeightView ?= null
 
     //左前轮气压值
