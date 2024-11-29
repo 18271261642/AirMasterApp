@@ -149,8 +149,8 @@ class HomeControlFragment : TitleBarFragment<CarHomeActivity>() {
             if(BaseApplication.getBaseApplication().autoBackBean?.deviceMode==0){  //高度模式
 
                 if(!isPressure){
-                    handlers.sendEmptyMessageDelayed(0x00,5000)
                     showRulerGoalVisibility(true)
+                    handlers.sendEmptyMessageDelayed(0x00,5000)
                 }
 
             }else{
@@ -197,11 +197,11 @@ class HomeControlFragment : TitleBarFragment<CarHomeActivity>() {
                     val isHeightModel = it.modelType==0
                     Timber.e("------onResume-----backHorPMode="+autoBackBean.deviceMode+" isHeightModel="+isHeightModel)
 
-                    if(autoBackBean.deviceMode == 0){  //气压+高度
-                        carHomeCenterView?.setShowHeightIndicator(isHeightModel)
-                    }else{  //气压
-                        carHomeCenterView?.setShowHeightIndicator(false)
-                    }
+//                    if(autoBackBean.deviceMode == 0){  //气压+高度
+//                        carHomeCenterView?.setShowHeightIndicator(isHeightModel)
+//                    }else{  //气压
+//                        carHomeCenterView?.setShowHeightIndicator(false)
+//                    }
                 }
             }
         }
@@ -235,10 +235,9 @@ class HomeControlFragment : TitleBarFragment<CarHomeActivity>() {
                     val isPressure = MmkvUtils.getPressureModel()
                     val autoSetBean = BaseApplication.getBaseApplication().autoSetBean
                     if(!isPressure){
-                        handlers.sendEmptyMessageDelayed(0x00,5000)
                         showRulerGoalVisibility(true)
+                        handlers.sendEmptyMessageDelayed(0x00,5000)
                     }
-
                 }
 
                 //档位
@@ -284,6 +283,10 @@ class HomeControlFragment : TitleBarFragment<CarHomeActivity>() {
                 val errorArray = Utils.byteToBit(deviceErrorCode)
                 val errorMap = getDeviceErrorMsg(errorArray)
                 val isEmpty =errorMap.size==0
+
+                //是否显示高度尺
+                val isPressure = MmkvUtils.getPressureModel()
+                setRulerHeightVisibility(!isPressure)
 
 
                 //  Timber.e("-------设备异常="+errorMap.toString()+" "+isEmpty)
@@ -394,9 +397,14 @@ class HomeControlFragment : TitleBarFragment<CarHomeActivity>() {
         }
     }
 
-    //显示或隐藏
+    //显示或隐藏目标高度，目标高度只显示5秒然后隐藏
     private fun showRulerGoalVisibility(visibility: Boolean){
         carHomeCenterView?.setGoalVisibility(visibility)
+    }
+
+    //是否显示高度尺的指示器，气压模式下不显示，其它显示
+    private fun setRulerHeightVisibility(visibility: Boolean){
+        carHomeCenterView?.setHeightRuleVisibility(visibility)
     }
 
     private fun showManualDialog(position : Int){

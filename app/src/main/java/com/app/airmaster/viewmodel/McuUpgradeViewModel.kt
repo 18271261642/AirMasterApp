@@ -323,8 +323,11 @@ class McuUpgradeViewModel : ViewModel(){
                 logSb.append("当前写入的包序号="+str+"\n\n")
                 if(currentPackIndex<mcuListData.size){
 
-                    val progress = CalculateUtils.div(((currentPackIndex+1).toDouble()),120.0,3)
-                    val p = String.format("%.1f",(progress.toFloat()*100F))
+                    var progress = CalculateUtils.div(((currentPackIndex+1).toDouble()),120.0,2).toFloat()
+                    if(progress>=1.0){
+                        progress = 1.0F
+                    }
+                    val p = String.format("%.1f",(progress*100F))
                     mcuDfuProgress.postValue("$p%")
 
                     GlobalScope.launch {
@@ -342,8 +345,8 @@ class McuUpgradeViewModel : ViewModel(){
                             Timber.e("-----------最后一个包="+Utils.formatBtArrayToString(currDataArray))
                         }
 
-                        val positionStr = Utils.formatBtArrayToString(positionArray)
-                        val lengthStr = Utils.formatBtArrayToString(lengthArray)
+//                        val positionStr = Utils.formatBtArrayToString(positionArray)
+//                        val lengthStr = Utils.formatBtArrayToString(lengthArray)
 
                         //长度=源地址1+目标地址1+命令1+数据length+校验1
                         val realLength = Utils.getIntFromBytes(lengthArray[0],lengthArray[1])+4
@@ -373,7 +376,7 @@ class McuUpgradeViewModel : ViewModel(){
                         val crc = Utils.crcCarContentByteArray(contentArray)
                         val fullMcuStr = "01207FFAAF$contentStr$crc"
 
-                        val resultFullStr = "8800000000020f00"+fullMcuStr
+                      //  val resultFullStr = "8800000000020f00"+fullMcuStr
 
                         //   val resultFullStr = "8800000000020f000120"+fullMcuStr
                         val resultArray = Utils.hexStringToByte(fullMcuStr)

@@ -349,11 +349,19 @@ class CarHomeCenterView : LinearLayout ,OnClickListener{
     }
 
 
+    //是否显示高度尺，气压模式下不显示高度尺，其它模式下显示
+    fun setHeightRuleVisibility(show : Boolean){
+        carFrontGaugeView?.setRealHeightVisibility(show)
+        carRearGaugeView?.setRealHeightVisibility(show)
+    }
+
 
     //设置是否显示所有高度，气压版本不显示所有的高度
     fun setShowHeightIndicator(show : Boolean){
         Timber.e("----ssssshow="+show)
         if(show){
+            carFrontGaugeView?.setRealHeightVisibility(true)
+            carRearGaugeView?.setRealHeightVisibility(true)
             setGoalVisibility(true)
         }else{
             setGoalVisibility(false)

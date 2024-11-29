@@ -847,28 +847,6 @@ class CarAboutActivity : AppActivity() {
         })
     }
 
-    //获取权限
-    private fun getPermission() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            XXPermissions.with(this).permission(
-                arrayOf(
-                    Manifest.permission.READ_MEDIA_IMAGES,
-                    Manifest.permission.READ_MEDIA_AUDIO, Manifest.permission.POST_NOTIFICATIONS
-                )
-            ).request { _, _ ->
-
-            }
-            return
-        }
-        XXPermissions.with(this).permission(
-            arrayOf(
-                Manifest.permission.READ_EXTERNAL_STORAGE,
-                Manifest.permission.WRITE_EXTERNAL_STORAGE
-            )
-        ).request { permissions, allGranted ->
-
-        }
-    }
 
     private fun intoDfuModel(isCarWatch: Boolean) {
         val bt = ByteArray(3)

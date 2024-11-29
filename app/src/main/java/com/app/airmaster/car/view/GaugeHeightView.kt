@@ -10,6 +10,9 @@ import com.app.airmaster.R
 import com.app.airmaster.widget.VerticalSeekBar
 import timber.log.Timber
 
+/**
+ * 用于显示目标的指示
+ */
 class GaugeHeightView : LinearLayout{
 
 
@@ -73,11 +76,14 @@ class GaugeHeightView : LinearLayout{
 
     //设置目标是否显示或隐藏
     fun setGoalVisibility(visibility: Boolean){
+
+        Timber.e("--------目标显示或隐藏="+visibility)
         gaugeLeftGoalSeekBar?.visibility = if(visibility) View.VISIBLE else View.GONE
         gaugeRightGoalSeekBar?.visibility = if(visibility) View.VISIBLE else View.GONE
     }
 
 
+    //高度尺
     fun setRealHeightVisibility(show : Boolean){
         gaugeLeftSeekBar?.visibility  = if(show) View.VISIBLE else View.INVISIBLE
         gaugeRightSeekBar?.visibility = if(show) View.VISIBLE else View.INVISIBLE
