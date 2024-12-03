@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="string_clear_all_prompt">削除"?</string>
+    <string name="string_clear_all_prompt">削除?</string>
     <string name="string_set_max_height">車高最大値を設定し,\n保存してください</string>
     <string name="string_set_min_height">車高最小値を設定し,\n保存してください</string>
     <string name="string_check_max_height">4/6車高最大値検出</string>

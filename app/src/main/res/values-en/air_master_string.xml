@@ -69,13 +69,13 @@
     <string name="string_car_ll">RL</string>
     <string name="string_car_rl">RR</string>
 
-    <string name="string_car_h_e_1">height sensor limit out of range</string>
-    <string name="string_car_h_e_2">height sensor wiring error</string>
-    <string name="string_car_h_e_3">height sensor range fault</string>
-    <string name="string_car_h_e_4">height sensor upside down</string>
-    <string name="string_car_h_e_5">height sensor failure</string>
-    <string name="string_car_h_e_6">pressure sensor failure</string>
-    <string name="string_car_h_e_7">leak detected on air suspension</string>
+    <string name="string_car_h_e_1">Height sensor limit out of range</string>
+    <string name="string_car_h_e_2">Height sensor wiring error</string>
+    <string name="string_car_h_e_3">Height sensor range fault</string>
+    <string name="string_car_h_e_4">Height sensor upside down</string>
+    <string name="string_car_h_e_5">Height sensor failure</string>
+    <string name="string_car_h_e_6">Pressure sensor failure</string>
+    <string name="string_car_h_e_7">Leak detected on air suspension</string>
 
     <string name="string_car_auto_check_prompt">Whethere to perform automatic self-test?</string>
     <string name="string_car_check_failed">Fail</string>
@@ -147,8 +147,8 @@
     <string name="string_activate_success">Activation successful</string>
 
     <string name="string_not_conn_device">No Devices</string>
-    <string name="string_go_to_official_website">web</string>
-    <string name="string_go_to_conn">connecting</string>
+    <string name="string_go_to_official_website">Web</string>
+    <string name="string_go_to_conn">Connecting</string>
     <string name="string_e_1">System not self checking</string>
     <string name="string_e_2">Acceleration sensor failure</string>
     <string name="string_e_3">High battery voltage</string>
