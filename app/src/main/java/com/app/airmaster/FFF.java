@@ -10,6 +10,7 @@ public class FFF {
 
         System.out.println("-------array="+new String(array));
 
+        System.out.println('I'+'T');
     }
 
 }

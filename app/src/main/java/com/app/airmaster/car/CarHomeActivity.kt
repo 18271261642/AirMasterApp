@@ -8,7 +8,6 @@ import android.content.IntentFilter
 import android.os.Handler
 import android.os.Looper
 import android.os.Message
-import android.view.KeyEvent
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.RecyclerView
@@ -168,7 +167,7 @@ class CarHomeActivity : AppActivity() ,NavigationAdapter.OnNavigationListener{
         val versionInfo = packageManager.getPackageInfo(packageName,0)
         versionViewModel?.checkAppVersion(this,versionInfo.versionCode)
 
-
+        println('I'+ 'T'.code)
 //        controlViewModel?.autoSetBeanData?.observe(this){
 //            if(it != null){
 //                isHeightModel = it.modelType ==0
