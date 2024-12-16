@@ -11,8 +11,8 @@ android {
         applicationId "com.app.airmaster"
         minSdk 21
         targetSdk 33
-        versionCode 18
-        versionName "V1.0.8"
+        versionCode 19
+        versionName "V1.0.8.2"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 

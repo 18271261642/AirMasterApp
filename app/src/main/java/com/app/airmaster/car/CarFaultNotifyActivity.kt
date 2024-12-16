@@ -1,6 +1,8 @@
 package com.app.airmaster.car
 
 import android.annotation.SuppressLint
+import android.util.DisplayMetrics
+import android.view.Gravity
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.lifecycle.ViewModelProvider
@@ -11,6 +13,7 @@ import com.app.airmaster.R
 import com.app.airmaster.action.AppActivity
 import com.app.airmaster.car.adapter.CarFaultNotifyAdapter
 import com.app.airmaster.dialog.ConfirmDialog
+import com.app.airmaster.dialog.LogDialogView
 import com.app.airmaster.viewmodel.CarErrorNotifyViewModel
 import com.app.airmaster.viewmodel.ControlViewModel
 import com.blala.blalable.Utils
@@ -28,11 +31,14 @@ class CarFaultNotifyActivity : AppActivity() {
     private var adapter: CarFaultNotifyAdapter? = null
     private var list: MutableList<String>? = null
 
+    private var notifyLogTv : TextView ?= null
+
     override fun getLayoutId(): Int {
         return R.layout.activity_car_fault_notify_layout
     }
 
     override fun initView() {
+        notifyLogTv = findViewById(R.id.notifyLogTv)
         faultNotifyRy = findViewById(R.id.faultNotifyRy)
         val linearLayoutManager = LinearLayoutManager(this)
         linearLayoutManager.orientation = LinearLayoutManager.VERTICAL
@@ -49,7 +55,15 @@ class CarFaultNotifyActivity : AppActivity() {
         findViewById<TextView>(R.id.notifyClearTv).setOnClickListener {
             showClearDialog()
         }
+
+        //log
+        findViewById<TextView>(R.id.carNotifyTitleTv)?.setOnClickListener {
+
+        }
     }
+
+
+    private var sb = StringBuffer()
 
     @SuppressLint("TimberArgCount")
     override fun initData() {
@@ -60,9 +74,13 @@ class CarFaultNotifyActivity : AppActivity() {
         BaseApplication.getBaseApplication().bleOperate.setAutoBackDataListener { it ->
             list?.clear()
             if (it != null) {
+
                 //设备故障
                 val deviceErrorCode = it.deviceErrorCode
                 val errorArray = Utils.byteToBit(deviceErrorCode)
+                sb.append("设备故障码:"+deviceErrorCode+" 转换:"+errorArray).append("\n")
+
+
                 Timber.e("--------设备故障="+String.format("%02x",deviceErrorCode)+" "+errorArray)
                 val resultMap = errorNotifyViewModel?.getDeviceErrorMsg(errorArray,this) //getDeviceErrorMsg(errorArray)
                 resultMap?.forEach {
@@ -74,7 +92,7 @@ class CarFaultNotifyActivity : AppActivity() {
                 val airArray = Utils.byteToBit(airErrorCode)
                 Timber.e("--------气罐故障="+String.format("%02x",airErrorCode)+" "+airArray)
 
-
+                sb.append("气罐故障码:"+airErrorCode+" 转换:"+airArray).append("\n")
                 val airMap = errorNotifyViewModel?.getAirBottleErrorCode(airArray,this)//getAirBottleErrorCode(airArray)
                 airMap?.forEach {
                     list?.add(it.value)
@@ -85,6 +103,7 @@ class CarFaultNotifyActivity : AppActivity() {
                 val leftArray = Utils.byteToBit(leftFrontCode)
                 Timber.e("--------左前故障="+String.format("%02x",leftFrontCode)+" "+leftArray)
 
+                sb.append("左前故障状态码:"+leftFrontCode+" 转换:"+leftArray).append("\n")
 
                 val leftMap = getWheelsError(leftArray,0)
                 leftMap.forEach {
@@ -96,6 +115,8 @@ class CarFaultNotifyActivity : AppActivity() {
                 val leftRearArray = Utils.byteToBit(leftRearCode)
                 Timber.e("--------左后故障="+String.format("%02x",leftRearCode)+" "+leftRearArray)
 
+                sb.append("左后故障状态码:"+leftRearCode+" 转换:"+leftRearArray).append("\n")
+
                 val leftRearMap = getWheelsError(leftArray,2)
                 leftRearMap.forEach {
                     list?.add(it.value)
@@ -106,6 +127,7 @@ class CarFaultNotifyActivity : AppActivity() {
                 val rightFrontArray = Utils.byteToBit(rightFront)
                 Timber.e("--------右前故障="+String.format("%02x",rightFront)+" "+rightFrontArray)
 
+                sb.append("右前故障状态码:"+rightFront+" 转换:"+rightFrontArray).append("\n")
                 val rightFrontMap = getWheelsError(leftArray,1)
                 rightFrontMap.forEach {
                     list?.add(it.value)
@@ -115,13 +137,14 @@ class CarFaultNotifyActivity : AppActivity() {
                 val rightRearCode = it.rightRearErrorCode
                 val rightRearArray = Utils.byteToBit(rightRearCode)
                 Timber.e("--------右后故障="+String.format("%02x",rightRearCode)+" "+rightRearArray)
-
+                sb.append("右后故障状态码:"+rightRearCode+" 转换:"+rightRearArray).append("\n\n\n")
                 val rightRearMap = getWheelsError(leftArray,3)
                 rightRearMap.forEach {
                     list?.add(it.value)
                 }
-
                 adapter?.notifyDataSetChanged()
+
+                notifyLogTv?.text = sb.toString()
             }
         }
         //获取状态
@@ -190,6 +213,9 @@ class CarFaultNotifyActivity : AppActivity() {
                 adapter?.notifyDataSetChanged()
 
                 controlViewModel?.clearAllWarring()
+
+                sb.delete(0,sb.length)
+                notifyLogTv?.text = sb.toString()
             }
 
         }
@@ -360,5 +386,23 @@ class CarFaultNotifyActivity : AppActivity() {
         Timber.e("----------onDestroy")
       //  BaseApplication.getBaseApplication().bleOperate.setClearAutoBack()
         super.onDestroy()
+    }
+
+
+    private fun showLogDialog(txt : String){
+        val dialog = LogDialogView(this, com.bonlala.base.R.style.BaseDialogTheme)
+        dialog.show()
+        dialog.setLogTxt(txt)
+
+        val window = dialog.window
+        val windowLayout = window?.attributes
+        val metrics2: DisplayMetrics = resources.displayMetrics
+        val widthW: Int = (metrics2.widthPixels*0.7F).toInt()
+        val height : Int = (metrics2.heightPixels*0.7F).toInt()
+
+        windowLayout?.height= height
+        windowLayout?.width = widthW
+        windowLayout?.gravity = Gravity.CENTER_VERTICAL
+        window?.attributes = windowLayout
     }
 }

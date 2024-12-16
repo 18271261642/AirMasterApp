@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
+    <string name="string_activation_code">アクティブコードを入力</string>
     <string name="string_clear_all_prompt">削除?</string>
     <string name="string_set_max_height">車高最大値を設定し,\n保存してください</string>
     <string name="string_set_min_height">車高最小値を設定し,\n保存してください</string>
@@ -61,8 +61,8 @@
     <string name="string_car_minute">分</string>
     <string name="string_car_work_model">記憶モード</string>
     <string name="string_car_memory_model">記憶モード</string>
-    <string name="string_car_height_memory">ハイトセンサー（高さ）</string>
-    <string name="string_car_pressure_memory">プレッシャー（空気圧）</string>
+    <string name="string_car_height_memory">高さモード</string>
+    <string name="string_car_pressure_memory">空気圧モード</string>
 
     <string name="string_car_lr">左前</string>
     <string name="string_car_rr">右前</string>
@@ -100,8 +100,8 @@
     <string name="string_check5_desc">線束通電</string>
     <string name="string_check6_desc">自動積載バランス修正</string>
     <string name="string_ota_dialog_content">アップデート内容:\n1，バグ修正\n2，機能追加\n</string>
-    <string name="string_pressure_h">高压（PSI）: %1s</string>
-    <string name="string_pressure_l">低压（PSI）: %1s</string>
+    <string name="string_pressure_h">高圧（PSI）: %1s</string>
+    <string name="string_pressure_l">低圧（PSI）: %1s</string>
 
     <string name="string_scan_conn_success">接続完了</string>
     <string name="string_scan_conn_failed">接続に失敗しました</string>

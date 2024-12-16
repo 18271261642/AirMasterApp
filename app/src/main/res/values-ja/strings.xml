@@ -36,7 +36,7 @@
     <string name="string_click_bind">点击连接</string>
     <string name="string_word">字</string>
     <string name="string_firmware_version">固件版本: %s</string>
-    <string name="string_app_version">APP版本</string>
+    <string name="string_app_version">APP パージョン</string>
 
 
     <string name="string_gig_small">GIF过小，请选择合适的GIF!</string>
@@ -68,7 +68,7 @@
     <string name="string_connecting">连接中..</string>
 
 
-    <string name="string_custom">自定义</string>
+    <string name="string_custom">ユーザー定義</string>
     <string name="string_select_pick">选择图片</string>
     <string name="string_take_photo">相机</string>
     <string name="string_album">相册</string>

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-
+    <string name="string_activation_code">输入激活码</string>
     <string name="string_clear_all_prompt">是否全部清除?</string>
     
     <string name="string_set_max_height">请设定最高高度,\n设置完成后点击保存</string>

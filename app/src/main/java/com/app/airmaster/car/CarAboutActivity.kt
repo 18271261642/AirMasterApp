@@ -241,7 +241,7 @@ class CarAboutActivity : AppActivity() {
         isAcFoldState(true)
 
 
-        val buildS = SpannableStringBuilder(resources.getString(R.string.string_activate_device_hid))
+        val buildS = SpannableStringBuilder(resources.getString(R.string.string_activation_code))
         buildS.setSpan(
             ForegroundColorSpan(Color.parseColor("#4A4A4B")),
             0,

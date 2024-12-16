@@ -133,6 +133,7 @@ class HomeSettingFragment : TitleBarFragment<CarHomeActivity>() {
     override fun onResume() {
         super.onResume()
         viewModel?.writeCommonFunction()
+        attachActivity?.switchFragment(2)
     }
 
     private fun showNotConnDialog(){
