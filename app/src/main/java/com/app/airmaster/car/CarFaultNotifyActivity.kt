@@ -117,7 +117,7 @@ class CarFaultNotifyActivity : AppActivity() {
 
                 sb.append("左后故障状态码:"+leftRearCode+" 转换:"+leftRearArray).append("\n")
 
-                val leftRearMap = getWheelsError(leftArray,2)
+                val leftRearMap = getWheelsError(leftRearArray,2)
                 leftRearMap.forEach {
                     list?.add(it.value)
                 }
@@ -128,7 +128,7 @@ class CarFaultNotifyActivity : AppActivity() {
                 Timber.e("--------右前故障="+String.format("%02x",rightFront)+" "+rightFrontArray)
 
                 sb.append("右前故障状态码:"+rightFront+" 转换:"+rightFrontArray).append("\n")
-                val rightFrontMap = getWheelsError(leftArray,1)
+                val rightFrontMap = getWheelsError(rightFrontArray,1)
                 rightFrontMap.forEach {
                     list?.add(it.value)
                 }
@@ -138,7 +138,7 @@ class CarFaultNotifyActivity : AppActivity() {
                 val rightRearArray = Utils.byteToBit(rightRearCode)
                 Timber.e("--------右后故障="+String.format("%02x",rightRearCode)+" "+rightRearArray)
                 sb.append("右后故障状态码:"+rightRearCode+" 转换:"+rightRearArray).append("\n\n\n")
-                val rightRearMap = getWheelsError(leftArray,3)
+                val rightRearMap = getWheelsError(rightRearArray,3)
                 rightRearMap.forEach {
                     list?.add(it.value)
                 }

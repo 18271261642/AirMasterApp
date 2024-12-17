@@ -58,7 +58,7 @@ class CarErrorNotifyViewModel : ViewModel() {
         val leftRearArray = Utils.byteToBit(leftRearCode)
         Timber.e("--------左后故障="+String.format("%02x",leftRearCode)+" "+leftRearArray)
 
-        val leftRearMap = getWheelsError(leftArray,2)
+        val leftRearMap = getWheelsError(leftRearArray,2)
         leftRearMap.forEach {
             list?.add(it.value)
         }
@@ -68,7 +68,7 @@ class CarErrorNotifyViewModel : ViewModel() {
         val rightFrontArray = Utils.byteToBit(rightFront)
         Timber.e("--------右前故障="+String.format("%02x",rightFront)+" "+rightFrontArray)
 
-        val rightFrontMap = getWheelsError(leftArray,1)
+        val rightFrontMap = getWheelsError(rightFrontArray,1)
         rightFrontMap.forEach {
             list?.add(it.value)
         }
@@ -78,7 +78,7 @@ class CarErrorNotifyViewModel : ViewModel() {
         val rightRearArray = Utils.byteToBit(rightRearCode)
         Timber.e("--------右后故障="+String.format("%02x",rightRearCode)+" "+rightRearArray)
 
-        val rightRearMap = getWheelsError(leftArray,3)
+        val rightRearMap = getWheelsError(rightRearArray,3)
         rightRearMap.forEach {
             list?.add(it.value)
         }
