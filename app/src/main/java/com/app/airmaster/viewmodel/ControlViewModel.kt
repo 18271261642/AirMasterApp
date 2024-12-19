@@ -590,7 +590,7 @@ open class ControlViewModel : CommViewModel() {
                         bean.checkStatus = state
                         bean.errorCode = errorCode
                         bean.backHex = Utils.getHexString(it)+"\n"
-                        Timber.e("-------自检="+bean.toString())
+                        Timber.e("-------自检返回="+bean.toString())
                         //checkBackDataMap.postValue(bean)
                         manualCheckData?.postValue(bean)
                     }
@@ -634,7 +634,7 @@ open class ControlViewModel : CommViewModel() {
                         bean.checkStatus = state
                         bean.errorCode = errorCode
                         bean.backHex = Utils.getHexString(it)+"\n"
-                        Timber.e("-------自检="+bean.toString())
+                        Timber.e("-------自动自检="+bean.toString())
                         checkBackDataMap.postValue(bean)
 
                     }

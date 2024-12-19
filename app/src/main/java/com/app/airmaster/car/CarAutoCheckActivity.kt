@@ -13,6 +13,7 @@ import android.widget.LinearLayout
 import androidx.lifecycle.ViewModelProvider
 import androidx.viewpager.widget.ViewPager
 import androidx.viewpager2.widget.ViewPager2
+import com.app.airmaster.BaseApplication
 import com.app.airmaster.R
 import com.app.airmaster.action.AppActivity
 import com.app.airmaster.adapter.GuideAdapter
@@ -22,6 +23,8 @@ import com.app.airmaster.car.check.CheckSuccessActivity
 import com.app.airmaster.dialog.ConfirmDialog
 import com.app.airmaster.dialog.LogDialogView
 import com.app.airmaster.viewmodel.CarCheckViewModel
+import com.app.airmaster.viewmodel.CarErrorNotifyViewModel
+import com.blala.blalable.Utils
 import com.hjq.shape.view.ShapeTextView
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
@@ -35,7 +38,7 @@ import timber.log.Timber
  */
 class CarAutoCheckActivity : AppActivity() {
 
-
+    private var errorNotifyViewModel : CarErrorNotifyViewModel?= null
     private var viewModel : CarCheckViewModel ?= null
 
 
@@ -106,7 +109,9 @@ class CarAutoCheckActivity : AppActivity() {
 
     private var errorSb = StringBuffer()
 
+    private var autoErrorSb = StringBuffer()
     override fun initData() {
+        errorNotifyViewModel = ViewModelProvider(this)[CarErrorNotifyViewModel::class.java]
         viewModel = ViewModelProvider(this)[CarCheckViewModel::class.java]
         adapter = GuideAdapter(this)
         checkPager?.adapter = adapter
@@ -120,7 +125,56 @@ class CarAutoCheckActivity : AppActivity() {
         }
         viewModel?.dealCheckData(this)
 
+        BaseApplication.getBaseApplication().bleOperate.setAutoBackDataListener { it ->
+            autoErrorSb.delete(0,autoErrorSb.length)
+            if (it != null) {
+                //左前
+                val leftFrontCode = it.leftFrontErrorCode
+                val leftArray = Utils.byteToBit(leftFrontCode)
+                Timber.e("--------左前故障="+String.format("%02x",leftFrontCode)+" "+leftArray)
 
+               // sb.append("左前故障状态码:"+leftFrontCode+" 转换:"+leftArray).append("\n")
+
+                val leftMap = getWheelsError(leftArray,0)
+                leftMap.forEach {
+                    autoErrorSb.append(it)
+                }
+
+                //左后
+                val leftRearCode = it.leftRearErrorCode
+                val leftRearArray = Utils.byteToBit(leftRearCode)
+                Timber.e("--------左后故障="+String.format("%02x",leftRearCode)+" "+leftRearArray)
+
+                //sb.append("左后故障状态码:"+leftRearCode+" 转换:"+leftRearArray).append("\n")
+
+                val leftRearMap = getWheelsError(leftRearArray,2)
+                leftRearMap.forEach {
+
+                    autoErrorSb.append(it)
+                }
+
+                //右前
+                val rightFront = it.rightFrontErrorCode
+                val rightFrontArray = Utils.byteToBit(rightFront)
+                Timber.e("--------右前故障="+String.format("%02x",rightFront)+" "+rightFrontArray)
+
+              //  sb.append("右前故障状态码:"+rightFront+" 转换:"+rightFrontArray).append("\n")
+                val rightFrontMap = getWheelsError(rightFrontArray,1)
+                rightFrontMap.forEach {
+                    autoErrorSb.append(it)
+                }
+
+                //右后
+                val rightRearCode = it.rightRearErrorCode
+                val rightRearArray = Utils.byteToBit(rightRearCode)
+                Timber.e("--------右后故障="+String.format("%02x",rightRearCode)+" "+rightRearArray)
+                //sb.append("右后故障状态码:"+rightRearCode+" 转换:"+rightRearArray).append("\n\n\n")
+                val rightRearMap = getWheelsError(rightRearArray,3)
+                rightRearMap.forEach {
+                    autoErrorSb.append(it)
+                }
+            }
+        }
 
         viewModel?.checkBackDataMap?.observe(this){
             val bean = it
@@ -229,26 +283,26 @@ class CarAutoCheckActivity : AppActivity() {
         map[2] = resources.getString(R.string.string_acc_not_start)
         map[3] = resources.getString(R.string.string_acc_not_start)
         map[4] = resources.getString(R.string.string_auto_check_time_out)
-        map[5] = resources.getString(R.string.string_car_lr)+resources.getString(R.string.string_car_h_e_1)
-        map[6] = resources.getString(R.string.string_car_rr)+resources.getString(R.string.string_car_h_e_1)
-        map[7] = resources.getString(R.string.string_car_ll)+resources.getString(R.string.string_car_h_e_1)
-        map[8] = resources.getString(R.string.string_car_rl)+resources.getString(R.string.string_car_h_e_1)
-        map[9] = resources.getString(R.string.string_car_lr)+resources.getString(R.string.string_car_h_e_6)
-        map[10] = resources.getString(R.string.string_car_rr)+resources.getString(R.string.string_car_h_e_6)
-        map[11] = resources.getString(R.string.string_car_ll)+resources.getString(R.string.string_car_h_e_6)
-        map[12] = resources.getString(R.string.string_car_rl)+resources.getString(R.string.string_car_h_e_6)
-        map[13] =  resources.getString(R.string.string_car_lr)+resources.getString(R.string.string_car_h_e_5) // "左前高度传感器故障"
-        map[14] = resources.getString(R.string.string_car_rr)+resources.getString(R.string.string_car_h_e_5)//"右前高度传感器故障"
-        map[15] = resources.getString(R.string.string_car_ll)+resources.getString(R.string.string_car_h_e_5)//"左后高度传感器故障"
-        map[16] = resources.getString(R.string.string_car_rl)+resources.getString(R.string.string_car_h_e_5)//"右后高度传感器故障"
-        map[17] =  resources.getString(R.string.string_car_lr)+resources.getString(R.string.string_car_h_e_3) //"左前高度传感器测量范围过小"
-        map[18] = resources.getString(R.string.string_car_rr)+resources.getString(R.string.string_car_h_e_3)//"右前高度传感器测量范围过小"
-        map[19] = resources.getString(R.string.string_car_ll)+resources.getString(R.string.string_car_h_e_3)//"左后高度传感器测量范围过小"
-        map[20] = resources.getString(R.string.string_car_rl)+resources.getString(R.string.string_car_h_e_3)//"右后高度传感器测量范围过小"
-        map[21] =   resources.getString(R.string.string_car_lr)+resources.getString(R.string.string_car_h_e_2) //"左前高度传感器线序错误"
-        map[22] = resources.getString(R.string.string_car_rr)+resources.getString(R.string.string_car_h_e_2)//"右前高度传感器线序错误"
-        map[23] = resources.getString(R.string.string_car_ll)+resources.getString(R.string.string_car_h_e_2)//"左后高度传感器线序错误"
-        map[24] = resources.getString(R.string.string_car_rl)+resources.getString(R.string.string_car_h_e_2)//"右后高度传感器线序错误"
+        map[5] = resources.getString(R.string.string_car_lr)+" "+resources.getString(R.string.string_car_h_e_1)
+        map[6] = resources.getString(R.string.string_car_rr)+" "+resources.getString(R.string.string_car_h_e_1)
+        map[7] = resources.getString(R.string.string_car_ll)+" "+resources.getString(R.string.string_car_h_e_1)
+        map[8] = resources.getString(R.string.string_car_rl)+" "+resources.getString(R.string.string_car_h_e_1)
+        map[9] = resources.getString(R.string.string_car_lr)+" "+resources.getString(R.string.string_car_h_e_6)
+        map[10] = resources.getString(R.string.string_car_rr)+" "+resources.getString(R.string.string_car_h_e_6)
+        map[11] = resources.getString(R.string.string_car_ll)+" "+resources.getString(R.string.string_car_h_e_6)
+        map[12] = resources.getString(R.string.string_car_rl)+" "+resources.getString(R.string.string_car_h_e_6)
+        map[13] =  resources.getString(R.string.string_car_lr)+" "+resources.getString(R.string.string_car_h_e_5) // "左前高度传感器故障"
+        map[14] = resources.getString(R.string.string_car_rr)+" "+resources.getString(R.string.string_car_h_e_5)//"右前高度传感器故障"
+        map[15] = resources.getString(R.string.string_car_ll)+" "+resources.getString(R.string.string_car_h_e_5)//"左后高度传感器故障"
+        map[16] = resources.getString(R.string.string_car_rl)+" "+resources.getString(R.string.string_car_h_e_5)//"右后高度传感器故障"
+        map[17] =  resources.getString(R.string.string_car_lr)+" "+resources.getString(R.string.string_car_h_e_3) //"左前高度传感器测量范围过小"
+        map[18] = resources.getString(R.string.string_car_rr)+" "+resources.getString(R.string.string_car_h_e_3)//"右前高度传感器测量范围过小"
+        map[19] = resources.getString(R.string.string_car_ll)+" "+resources.getString(R.string.string_car_h_e_3)//"左后高度传感器测量范围过小"
+        map[20] = resources.getString(R.string.string_car_rl)+" "+resources.getString(R.string.string_car_h_e_3)//"右后高度传感器测量范围过小"
+        map[21] =   resources.getString(R.string.string_car_lr)+" "+resources.getString(R.string.string_car_h_e_2) //"左前高度传感器线序错误"
+        map[22] = resources.getString(R.string.string_car_rr)+" "+resources.getString(R.string.string_car_h_e_2)//"右前高度传感器线序错误"
+        map[23] = resources.getString(R.string.string_car_ll)+" "+resources.getString(R.string.string_car_h_e_2)//"左后高度传感器线序错误"
+        map[24] = resources.getString(R.string.string_car_rl)+" "+resources.getString(R.string.string_car_h_e_2)//"右后高度传感器线序错误"
 
         return map.get(code)
 
@@ -299,5 +353,60 @@ class CarAutoCheckActivity : AppActivity() {
         windowLayout?.width = widthW
         windowLayout?.gravity = Gravity.CENTER_VERTICAL
         window?.attributes = windowLayout
+    }
+
+    /**
+     * bit0:高度传感器超量程
+    bit1:None
+    bit2:高度传感器线序错误
+    bit3:高度传感器测量范围过小
+    bit4:高度传感器装反
+    bit5:高度传感器故障
+    bit6:气压传感器故障
+    bit7:空气弹簧漏气
+     */
+    private val wheelMap = HashMap<Int,String>()
+    private fun getWheelsError(errorStr: String,code :Int) : HashMap<Int,String>{
+        wheelMap.clear()
+        val wheel = getWheelType(code)
+        val chartArray = errorStr.toCharArray()
+        if (chartArray[0].toString() == "1") {
+            wheelMap[0] = wheel+resources.getString(R.string.string_car_h_e_1)
+        }
+        if (chartArray[1].toString() == "1") {
+            wheelMap[1] = wheel+"None"
+        }
+        if (chartArray[2].toString() == "1") {
+            wheelMap[2] = wheel+resources.getString(R.string.string_car_h_e_2)
+        }
+        if (chartArray[3].toString() == "1") {
+            wheelMap[3] = wheel+resources.getString(R.string.string_car_h_e_3)
+        }
+        if (chartArray[4].toString() == "1") {
+            wheelMap[4] = wheel+resources.getString(R.string.string_car_h_e_4)
+        }
+        if(chartArray[5].toString()=="1"){
+            wheelMap[5] = wheel+resources.getString(R.string.string_car_h_e_5)
+        }
+        if(chartArray[6].toString()=="1"){
+            wheelMap[5] = wheel+resources.getString(R.string.string_car_h_e_6)
+        }
+        if(chartArray[7].toString()=="1"){
+            wheelMap[5] = wheel+resources.getString(R.string.string_car_h_e_7)
+        }
+        return wheelMap
+    }
+
+    private fun getWheelType(code: Int) : String{
+        if(code ==0){
+            return resources.getString(R.string.string_car_lr)
+        }
+        if(code == 1){
+            return resources.getString(R.string.string_car_rr)
+        }
+        if(code == 2){
+            return resources.getString(R.string.string_car_ll)
+        }
+        return resources.getString(R.string.string_car_rl)
     }
 }

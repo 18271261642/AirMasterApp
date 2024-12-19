@@ -97,7 +97,7 @@ class CarErrorNotifyViewModel : ViewModel() {
     bit7:空气弹簧漏气
      */
     private val wheelMap = HashMap<Int,String>()
-    private fun getWheelsError(errorStr: String,code :Int) : HashMap<Int,String>{
+     fun getWheelsError(errorStr: String,code :Int) : HashMap<Int,String>{
         wheelMap.clear()
         if(mContext == null){
             return wheelMap

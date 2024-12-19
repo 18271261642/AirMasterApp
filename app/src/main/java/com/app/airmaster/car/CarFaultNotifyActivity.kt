@@ -58,7 +58,7 @@ class CarFaultNotifyActivity : AppActivity() {
 
         //log
         findViewById<TextView>(R.id.carNotifyTitleTv)?.setOnClickListener {
-
+            showLogDialog(sb.toString())
         }
     }
 
