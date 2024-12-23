@@ -36,7 +36,7 @@
             android:layout_height="wrap_content"
             app:shape_solidColor="#333333"
             app:shape_solidPressedColor="#80333333"
-            app:shape_radius="@dimen/dp_25"
+            app:shape_radius="@dimen/dp_10"
             android:text="@string/common_confirm"
             android:textSize="20sp"
             android:paddingTop="@dimen/dp_5"
