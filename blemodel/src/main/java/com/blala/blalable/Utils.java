@@ -678,6 +678,15 @@ public class Utils {
         return array[0];
     }
 
+    public static int crcCarContentByteArrayInt(byte[] hexArray){
+        int sum = 0;
+        for(int i = 0;i<hexArray.length;i++){
+            sum+=hexArray[i] & 0xff;
+        }
+        int v = ((sum ^ 0xff)+1) & 0xff;
+        return v;
+    }
+
 
     public static String crcCarContentByteArray(byte[] hexArray){
         int sum = 0;

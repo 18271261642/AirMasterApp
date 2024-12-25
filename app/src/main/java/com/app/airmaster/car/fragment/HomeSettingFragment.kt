@@ -2,6 +2,7 @@ package com.app.airmaster.car.fragment
 
 import android.content.Intent
 import android.view.View
+import android.view.View.OnLongClickListener
 import androidx.lifecycle.ViewModelProvider
 import com.app.airmaster.BaseApplication
 import com.app.airmaster.R
@@ -14,6 +15,7 @@ import com.app.airmaster.car.CarAutoCheckActivity
 import com.app.airmaster.car.CarHomeActivity
 import com.app.airmaster.car.CarSysSetActivity
 import com.app.airmaster.car.CarSystemCheckActivity
+import com.app.airmaster.car.CrcLogActivity
 import com.app.airmaster.car.ShowWebActivity
 import com.app.airmaster.car.check.ManualCheckActivity
 import com.app.airmaster.dialog.ConfirmDialog
@@ -55,6 +57,14 @@ class HomeSettingFragment : TitleBarFragment<CarHomeActivity>() {
             intent.putExtra("title", resources.getString(R.string.privacy_agreement_tips))
             startActivity(intent)
         }
+
+        findViewById<SettingBar>(R.id.sysProtocolBar)?.setOnLongClickListener(object : OnLongClickListener{
+            override fun onLongClick(v: View?): Boolean {
+                startActivity(CrcLogActivity::class.java)
+                return true
+            }
+
+        })
 
         findViewById<SettingBar>(R.id.sysProtocolBar).setOnClickListener {
 

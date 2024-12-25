@@ -173,6 +173,9 @@
         <activity android:name="com.app.airmaster.second.SecondScanActivity"
             android:screenOrientation="portrait"/>
 
+        <activity android:name=".car.CrcLogActivity"
+            android:screenOrientation="portrait"/>
+
         <service
             android:name="com.app.airmaster.ble.SNNotificationService"
             android:enabled="true"

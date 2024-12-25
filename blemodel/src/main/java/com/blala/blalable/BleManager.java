@@ -54,6 +54,7 @@ import androidx.annotation.NonNull;
 /**
  * Created by Admin
  * Date 2021/9/3
+ *
  * @author Admin
  */
 public class BleManager {
@@ -68,6 +69,8 @@ public class BleManager {
 
     private static Context mContext;
 
+
+    private final StringBuffer crcBuffer = new StringBuffer();
 
     private final StringBuffer stringBuffer = new StringBuffer();
 
@@ -91,35 +94,35 @@ public class BleManager {
         this.bleConnStatusListener = bleConnStatusListener;
     }
 
-    public void setOnBleBackListener (OnBleStatusBackListener onBleBackListener){
+    public void setOnBleBackListener(OnBleStatusBackListener onBleBackListener) {
         this.interfaceManager.onBleBackListener = onBleBackListener;
     }
 
 
-    public void setOnCarWriteBackListener(OnCarWriteBackListener onCarWriteBackListener){
+    public void setOnCarWriteBackListener(OnCarWriteBackListener onCarWriteBackListener) {
         this.interfaceManager.onCarWriteBackListener = onCarWriteBackListener;
     }
 
 
-    public void setOnCarAutoClear(){
-        if(onCarAutoBackListener != null){
+    public void setOnCarAutoClear() {
+        if (onCarAutoBackListener != null) {
             onCarAutoBackListener = null;
 
         }
     }
 
-    public void setClearCheck(){
-        if(carCheckListener!= null){
+    public void setClearCheck() {
+        if (carCheckListener != null) {
             carCheckListener = null;
         }
     }
 
     public void setOnCarAutoBackListener(OnCarAutoBackListener onCarAutoBackListeners) {
         this.onCarAutoBackListener = onCarAutoBackListeners;
-        Log.e(TAG,"-------onBack="+(onCarAutoBackListener == null)+" "+(onCarAutoBackListeners == null));
+        Log.e(TAG, "-------onBack=" + (onCarAutoBackListener == null) + " " + (onCarAutoBackListeners == null));
     }
 
-    public void setOnSendWriteListener(OnSendWriteDataListener onSendWriteListener){
+    public void setOnSendWriteListener(OnSendWriteDataListener onSendWriteListener) {
         this.interfaceManager.onSendWriteDataListener = onSendWriteListener;
     }
 
@@ -129,22 +132,26 @@ public class BleManager {
     }
 
 
-    /**测量数据返回**/
-    public void setOnMeasureDataListener(OnMeasureDataListener onMeasureDataListener){
+    /**
+     * 测量数据返回
+     **/
+    public void setOnMeasureDataListener(OnMeasureDataListener onMeasureDataListener) {
         this.interfaceManager.onMeasureDataListener = onMeasureDataListener;
     }
 
-    /**锻炼数据**/
-    public void setOnExerciseDataListener(OnExerciseDataListener onExerciseDataListener){
+    /**
+     * 锻炼数据
+     **/
+    public void setOnExerciseDataListener(OnExerciseDataListener onExerciseDataListener) {
         this.interfaceManager.onExerciseDataListener = onExerciseDataListener;
     }
 
-    public static BleManager getInstance(Context context){
+    public static BleManager getInstance(Context context) {
         mContext = context;
         bluetoothClient = new BluetoothClient(mContext);
-        if(bleManager == null){
-            synchronized (BleManager.class){
-                if(bleManager == null){
+        if (bleManager == null) {
+            synchronized (BleManager.class) {
+                if (bleManager == null) {
                     bleManager = new BleManager();
                 }
             }
@@ -153,34 +160,34 @@ public class BleManager {
     }
 
 
-    private final Handler handler = new Handler(Looper.myLooper()){
+    private final Handler handler = new Handler(Looper.myLooper()) {
         @Override
         public void handleMessage(@NonNull Message msg) {
             super.handleMessage(msg);
-            if(msg.what == 0x00){
+            if (msg.what == 0x00) {
                 sendCommBroadcast(-1);
             }
         }
     };
 
 
-
-    public BluetoothClient getBluetoothClient(){
+    public BluetoothClient getBluetoothClient() {
         return bluetoothClient;
     }
 
 
     /**
      * 搜索设备
+     *
      * @param searchResponse 回调
-     * @param duration 搜索时间
-     * @param times 搜索次数
-     *   eg:duration=10 * 1000;times=1 表示：10s搜索一次，每次10s
+     * @param duration       搜索时间
+     * @param times          搜索次数
+     *                       eg:duration=10 * 1000;times=1 表示：10s搜索一次，每次10s
      */
-    public void startScanBleDevice(final SearchResponse searchResponse, int duration, int times){
+    public void startScanBleDevice(final SearchResponse searchResponse, int duration, int times) {
 
         final SearchRequest searchRequest = new SearchRequest.Builder()
-                .searchBluetoothLeDevice(duration,times)
+                .searchBluetoothLeDevice(duration, times)
                 .build();
         bluetoothClient.search(searchRequest, new SearchResponse() {
             @Override
@@ -209,12 +216,13 @@ public class BleManager {
 
     /**
      * 搜索设备
+     *
      * @param searchResponse 回调
-     * @param duration 搜索时间
-     * @param times 搜索次数
-     *   eg:duration=10 * 1000;times=1 表示：10s搜索一次，每次10s
+     * @param duration       搜索时间
+     * @param times          搜索次数
+     *                       eg:duration=10 * 1000;times=1 表示：10s搜索一次，每次10s
      */
-    public void startScanBleDevice(final SearchResponse searchResponse, boolean scanClass,int duration, int times){
+    public void startScanBleDevice(final SearchResponse searchResponse, boolean scanClass, int duration, int times) {
 
 //        if(!scanClass){
 //            startScanBleDevice(searchResponse,duration,times);
@@ -222,7 +230,7 @@ public class BleManager {
 //        }
 //        bluetoothClient.stopSearch();
         final SearchRequest searchRequest = new SearchRequest.Builder()
-                .searchBluetoothLeDevice(duration,times)
+                .searchBluetoothLeDevice(duration, times)
 //                .searchBluetoothClassicDevice(10 * 1000)
                 .build();
         bluetoothClient.search(searchRequest, new SearchResponse() {
@@ -250,47 +258,44 @@ public class BleManager {
     }
 
 
-    public void clearLog(){
-        stringBuffer.delete(0,stringBuffer.length());
+    public void clearLog() {
+        stringBuffer.delete(0, stringBuffer.length());
     }
 
-    public String getLog(){
+    public String getLog() {
         return stringBuffer.toString();
     }
-
-
-
 
 
     /**
      * 停止搜索
      */
-    public void stopScan(){
-        if(bluetoothClient != null){
+    public void stopScan() {
+        if (bluetoothClient != null) {
             bluetoothClient.stopSearch();
         }
     }
 
     //根据Mac地址连接蓝牙设备
-    public void connBleDeviceByMac(String mac, String bleName, ConnStatusListener connStatusListener){
-        connBleDevice(mac,bleName,connStatusListener);
+    public void connBleDeviceByMac(String mac, String bleName, ConnStatusListener connStatusListener) {
+        connBleDevice(mac, bleName, connStatusListener);
     }
 
     //断连连接
-    public void disConnDevice(){
-        String spMac = (String) BleSpUtils.get(mContext,SAVE_BLE_MAC_KEY,"");
-        if(TextUtils.isEmpty(spMac))
+    public void disConnDevice() {
+        String spMac = (String) BleSpUtils.get(mContext, SAVE_BLE_MAC_KEY, "");
+        if (TextUtils.isEmpty(spMac))
             return;
         bluetoothClient.stopSearch();
         bluetoothClient.disconnect(spMac);
-        bluetoothClient.unregisterConnectStatusListener(spMac,connectStatusListener);
-        BleSpUtils.remove(mContext,SAVE_BLE_MAC_KEY);
+        bluetoothClient.unregisterConnectStatusListener(spMac, connectStatusListener);
+        BleSpUtils.remove(mContext, SAVE_BLE_MAC_KEY);
 
     }
 
-    public void disConnDeviceNotRemoveMac(){
-        String spMac = (String) BleSpUtils.get(mContext,SAVE_BLE_MAC_KEY,"");
-        if(TextUtils.isEmpty(spMac))
+    public void disConnDeviceNotRemoveMac() {
+        String spMac = (String) BleSpUtils.get(mContext, SAVE_BLE_MAC_KEY, "");
+        if (TextUtils.isEmpty(spMac))
             return;
         BluetoothAdapter bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
         if (bluetoothAdapter != null) {
@@ -301,9 +306,10 @@ public class BleManager {
         }
         bluetoothClient.stopSearch();
         bluetoothClient.disconnect(spMac);
-        bluetoothClient.unregisterConnectStatusListener(spMac,connectStatusListener);
-        BleSpUtils.remove(mContext,SAVE_BLE_MAC_KEY);
+        bluetoothClient.unregisterConnectStatusListener(spMac, connectStatusListener);
+        BleSpUtils.remove(mContext, SAVE_BLE_MAC_KEY);
     }
+
     //反射来调用BluetoothDevice.removeBond取消设备的配对
     private void unpairDevice(BluetoothDevice device) {
         try {
@@ -314,49 +320,50 @@ public class BleManager {
             e.printStackTrace();
         }
     }
+
     /**
      * // Constants.REQUEST_READ，所有读请求
      * // Constants.REQUEST_WRITE，所有写请求
      * // Constants.REQUEST_NOTIFY，所有通知相关的请求
      * // Constants.REQUEST_RSSI，所有读信号强度的请求
      */
-    public void clearRequest(){
-        String mac = (String) BleSpUtils.get(mContext,SAVE_BLE_MAC_KEY,"");
-        if(TextUtils.isEmpty(mac))
+    public void clearRequest() {
+        String mac = (String) BleSpUtils.get(mContext, SAVE_BLE_MAC_KEY, "");
+        if (TextUtils.isEmpty(mac))
             return;
-        bluetoothClient.clearRequest(mac,Constants.REQUEST_WRITE);
-        bluetoothClient.clearRequest(mac,Constants.REQUEST_NOTIFY);
+        bluetoothClient.clearRequest(mac, Constants.REQUEST_WRITE);
+        bluetoothClient.clearRequest(mac, Constants.REQUEST_NOTIFY);
 
     }
 
 
-    private synchronized void connBleDevice(final String bleMac, final String bleName, final ConnStatusListener connectResponse){
-        BleSpUtils.put(mContext,SAVE_BLE_MAC_KEY,bleMac);
+    private synchronized void connBleDevice(final String bleMac, final String bleName, final ConnStatusListener connectResponse) {
+        BleSpUtils.put(mContext, SAVE_BLE_MAC_KEY, bleMac);
         clearLog();
-        stringBuffer.append("连接"+System.currentTimeMillis()/1000+"\n\n");
+        stringBuffer.append("连接" + System.currentTimeMillis() / 1000 + "\n\n");
         int status = bluetoothClient.getConnectStatus(bleMac);
-        sendCommBroadcast("ble_action",0);
-        Log.e(TAG,"************连接处="+bleMac+"--连接状态="+status);
+        sendCommBroadcast("ble_action", 0);
+        Log.e(TAG, "************连接处=" + bleMac + "--连接状态=" + status);
 
-        bluetoothClient.registerConnectStatusListener(bleMac,connectStatusListener);
+        bluetoothClient.registerConnectStatusListener(bleMac, connectStatusListener);
         BleConnectOptions options = (new com.inuker.bluetooth.library.connect.options.BleConnectOptions.Builder()).setConnectRetry(2).setConnectTimeout(30000).setServiceDiscoverRetry(1).setServiceDiscoverTimeout(20000).build();
         bluetoothClient.connect(bleMac, options, new BleConnectResponse() {
             @Override
             public void onResponse(final int code, final BleGattProfile data) {
-                if(data == null || data.getServices() == null)
+                if (data == null || data.getServices() == null)
                     return;
                 List<BleGattService> serviceList = data.getServices();
-                Log.e(TAG,"-----onResponse="+code+"\n"+new Gson().toJson(serviceList));
+                Log.e(TAG, "-----onResponse=" + code + "\n" + new Gson().toJson(serviceList));
 
-                if(code == 0){  //连接成功了，开始设置通知
-                    stringBuffer.append("连接成功"+"\n\n");
-                    sendCommBroadcast("ble_action",0);
+                if (code == 0) {  //连接成功了，开始设置通知
+                    stringBuffer.append("连接成功" + "\n\n");
+                    sendCommBroadcast("ble_action", 0);
                     //判断是否是OTA升级状态，是OTA状态不保存地址
                     (new Handler(Looper.getMainLooper())).postDelayed(new Runnable() {
                         public void run() {
                             //实时数据返回，主动通道
-                            setNotifyData(bleMac,bleConstant.SERVICE_UUID,bleConstant.READ_UUID,connectResponse);
-                            setCarWatchNotify(bleMac,bleConstant.CAR_WATCH_SERVICE_UUID,bleConstant.CAR_WATCH_READ_UUID,connectResponse);
+                            setNotifyData(bleMac, bleConstant.SERVICE_UUID, bleConstant.READ_UUID, connectResponse);
+                            setCarWatchNotify(bleMac, bleConstant.CAR_WATCH_SERVICE_UUID, bleConstant.CAR_WATCH_READ_UUID, connectResponse);
 
                         }
                     }, 2000L);
@@ -368,32 +375,32 @@ public class BleManager {
     }
 
 
-    public synchronized void clearListener(){
-        if(interfaceManager.writeBack24HourDataListener != null)
+    public synchronized void clearListener() {
+        if (interfaceManager.writeBack24HourDataListener != null)
             interfaceManager.writeBack24HourDataListener = null;
     }
 
 
-
-    public void setClearListener(){
-        if(interfaceManager.writeBackDataListener != null){
+    public void setClearListener() {
+        if (interfaceManager.writeBackDataListener != null) {
             interfaceManager.writeBackDataListener = null;
         }
-        if(interfaceManager.writeBack24HourDataListener != null)
+        if (interfaceManager.writeBack24HourDataListener != null)
             interfaceManager.writeBack24HourDataListener = null;
 
     }
 
-    public void setClearExercise(){
-        if(interfaceManager.onExerciseDataListener != null){
+    public void setClearExercise() {
+        if (interfaceManager.onExerciseDataListener != null) {
             interfaceManager.onExerciseDataListener = null;
         }
     }
 
 
-
-    /**旋钮屏手表的通知返回**/
-    private synchronized void setCarWatchNotify(String mac ,UUID serviceUUid,UUID notifyUUid,ConnStatusListener connStatusListener){
+    /**
+     * 旋钮屏手表的通知返回
+     **/
+    private synchronized void setCarWatchNotify(String mac, UUID serviceUUid, UUID notifyUUid, ConnStatusListener connStatusListener) {
         bluetoothClient.notify(mac, serviceUUid, notifyUUid, new BleNotifyResponse() {
             @Override
             public void onNotify(UUID uuid, UUID uuid1, byte[] bytes) {
@@ -415,49 +422,73 @@ public class BleManager {
         });
     }
 
+    public void clearCrcLog() {
+        crcBuffer.delete(0, crcBuffer.length());
+    }
 
-    public AutoBackBean getAutoBackBean(){
+    public String getCrcBuffer() {
+        return crcBuffer.toString();
+    }
+
+    public AutoBackBean getAutoBackBean() {
         return autoBackBean;
     }
 
     private AutoBackBean autoBackBean = new AutoBackBean();
 
     //数据发送通道返回数据，app端发送数据后设备返回数据
-    private synchronized void setNotifyData(String mac,UUID serviceUUid,UUID notifyUUid,ConnStatusListener connStatusListener){
+    private synchronized void setNotifyData(String mac, UUID serviceUUid, UUID notifyUUid, ConnStatusListener connStatusListener) {
         bluetoothClient.notify(mac, serviceUUid, notifyUUid, new BleNotifyResponse() {
             @Override
             public void onNotify(UUID uuid, UUID uuid1, byte[] bytes) {
-                String notifyStr = uuid1.toString()+" "+Utils.formatBtArrayToString(bytes);
-                Log.e(TAG,"------写入数据返回="+notifyStr);
+                if (bytes == null) {
+                    return;
+                }
+                String notifyStr = uuid1.toString() + " " + Utils.formatBtArrayToString(bytes);
+                Log.e(TAG, "----11--写入数据返回=" + notifyStr);
+                if ((bytes[10] & 0xff) == 127 && (bytes[11] & 0xff) == 250 && (bytes[12] & 0xff) == 175) {
+                    byte[] crcArray = new byte[bytes.length - 14];
+                    System.arraycopy(bytes, 13, crcArray, 0, crcArray.length);
+                    int crcValue = Utils.crcCarContentByteArrayInt(crcArray);
+                    //Log.e(TAG, "------------校验孩子=" + crcValue+" "+(bytes[bytes.length - 1] & 0xff));
+                    if (crcValue != (bytes[bytes.length - 1] & 0xff)) {
+                        String crcError = Utils.formatCurrentTime() + " " + notifyStr;
+                        crcBuffer.append(crcError).append("\n\n");
+                    }
+
+                }
+
+
                 //stringBuffer.append("数据返回:"+notifyStr+"\n\n");
-               // sendCommBroadcast("ble_action",0);
-                if(interfaceManager.writeBackDataListener != null){
+                // sendCommBroadcast("ble_action",0);
+                if (interfaceManager.writeBackDataListener != null) {
                     interfaceManager.writeBackDataListener.backWriteData(bytes);
                 }
 
-                if(interfaceManager.onCarWriteBackListener != null){
+                if (interfaceManager.onCarWriteBackListener != null) {
                     interfaceManager.onCarWriteBackListener.backWriteBytes(bytes);
                 }
 
-                //8800000000003860030f7ffaaf0031040190020100461e46321632df0000dfdf00000000000078ce010000008b8b464600020600000000000000000000000085
+                //88 00 00 00 00 00 38 60 03 0f 7f fa af 00 31 04 01 90 020100461e46321632df0000dfdf00000000000078ce010000008b8b464600020600000000000000000000000085
                 //8800000000003808030f7ffaaf00310401 90 02 01 003c0a16322c1edf0000dfdf00000000000078ce010000008b8b464600040c000000000000000000000000c9
 
-                if(bytes.length>20 && (bytes[9] &0xff) == 15 && (bytes[10] &0xff) == 127 && (bytes[17] & 0xff) == 144){
+
+                if (bytes.length > 20 && (bytes[9] & 0xff) == 15 && (bytes[10] & 0xff) == 127 && (bytes[17] & 0xff) == 144) {
 
                     //当前工作模式
-                    int workModel = bytes[18] &0xff;
+                    int workModel = bytes[18] & 0xff;
                     //自检模式下项目
                     int selfCheckModel = bytes[19] & 0xff;
                     //当前处于预置位位置
-                    int curPos =  bytes[20] & 0xf;
+                    int curPos = bytes[20] & 0xf;
                     //左前气压值
-                    int leftPressure = bytes[21] &0xff;
+                    int leftPressure = bytes[21] & 0xff;
                     //右前气压值
                     int rightPressure = bytes[22] & 0xff;
                     //左后气压值
                     int leftRearPressure = bytes[23] & 0xff;
                     //右后气压值
-                    int rightRearPressure = bytes[24] &0xff;
+                    int rightRearPressure = bytes[24] & 0xff;
 
 
                     //气缸气压值
@@ -468,10 +499,10 @@ public class BleManager {
                     autoBackBean.setLeftFrontRulerFL(leftRulerWork);
 
                     //右前高度尺工作量
-                    int rightRulerWork = bytes[27] &0xff;
+                    int rightRulerWork = bytes[27] & 0xff;
                     autoBackBean.setRightFrontRulerFL(rightRulerWork);
                     //左后高度尺工作量
-                    int leftAfterRulerWork = bytes[28] &0xff;
+                    int leftAfterRulerWork = bytes[28] & 0xff;
                     autoBackBean.setLeftRearRulerFL(leftAfterRulerWork);
                     //右后高度尺工作量
                     int rightAfterRulerWork = bytes[29] & 0xff;
@@ -481,10 +512,10 @@ public class BleManager {
                     int leftRulerGoalWork = bytes[30] & 0xff;
                     autoBackBean.setLeftFrontGoalFL(leftRulerGoalWork);
                     //右前高度尺目标工作量
-                    int rightRulerGoalWor = bytes[31] &0xff;
+                    int rightRulerGoalWor = bytes[31] & 0xff;
                     autoBackBean.setRightFrontGoalFL(rightRulerGoalWor);
                     //左后高度尺目标工作量
-                    int leftAfterRulerGoalWor = bytes[32] &0xff;
+                    int leftAfterRulerGoalWor = bytes[32] & 0xff;
                     autoBackBean.setLeftRearGoalFL(leftAfterRulerGoalWor);
                     //右后高度尺目标工作量
                     int rightAfterRulerGoalWor = bytes[33] & 0xff;
@@ -493,9 +524,9 @@ public class BleManager {
                     //左前高度尺实际工作量
                     int leftRuler = bytes[34] & 0xff;
                     //右前高度尺实际工作量
-                    int rightRuler = bytes[35] &0xff;
+                    int rightRuler = bytes[35] & 0xff;
                     //左后高度尺实际工作量
-                    int leftAfterRuler = bytes[36] &0xff;
+                    int leftAfterRuler = bytes[36] & 0xff;
                     //右后高度尺实际工作量
                     int rightAfterRuler = bytes[37] & 0xff;
 
@@ -605,19 +636,19 @@ public class BleManager {
                     autoBackBean.setActivationStatus(activationStatus);
 
                     autoBackBean.setDeviceMode(deviceModel);
-                    autoBackBean.setAutoStr(notifyStr+"  温度= "+String.format("%02x", bytes[39]));
+                    autoBackBean.setAutoStr(notifyStr + "  温度= " + String.format("%02x", bytes[39]));
 
-                  //  Log.e(TAG,"-------自动返回数据=="+autoBackBean.toString()+" "+(String.format("%02x",deviceErrorCode))+" "+String.format("%02x",leftFrontErrorCode)+" "+String.format("%02x",rightFrontErrorCode)+" "+String.format("%02x",leftRearErrorCode)+" "+String.format("%02x",rightRearErrorCode)+" "+String.format("%02x",airBottleErrorCode)+" deviceModel="+deviceModel);
+                    //  Log.e(TAG,"-------自动返回数据=="+autoBackBean.toString()+" "+(String.format("%02x",deviceErrorCode))+" "+String.format("%02x",leftFrontErrorCode)+" "+String.format("%02x",rightFrontErrorCode)+" "+String.format("%02x",leftRearErrorCode)+" "+String.format("%02x",rightRearErrorCode)+" "+String.format("%02x",airBottleErrorCode)+" deviceModel="+deviceModel);
 
-                    if(onCarAutoBackListener != null){
+                    if (onCarAutoBackListener != null) {
                         onCarAutoBackListener.backAutoData(autoBackBean);
                     }
 
                 }
 
 
-                if(bytes.length>18 && (bytes[17] & 0xff) == 167){ //自检
-                    if(carCheckListener != null){
+                if (bytes.length > 18 && (bytes[17] & 0xff) == 167) { //自检
+                    if (carCheckListener != null) {
                         carCheckListener.backCarCheck(bytes);
                     }
                 }
@@ -631,19 +662,21 @@ public class BleManager {
     }
 
 
-    /**读取电量**/
-    public synchronized void readDeviceBatteryValue(OnCommBackDataListener onCommBackDataListener){
-        String bleMac = (String) BleSpUtils.get(mContext,SAVE_BLE_MAC_KEY,"");
-        if(TextUtils.isEmpty(bleMac))
+    /**
+     * 读取电量
+     **/
+    public synchronized void readDeviceBatteryValue(OnCommBackDataListener onCommBackDataListener) {
+        String bleMac = (String) BleSpUtils.get(mContext, SAVE_BLE_MAC_KEY, "");
+        if (TextUtils.isEmpty(bleMac))
             return;
         bluetoothClient.read(bleMac, bleConstant.BATTERY_SERVER_UUID, bleConstant.BATTERY_READ_UUID, new BleReadResponse() {
             @Override
             public void onResponse(int i, byte[] bytes) {
-                if(bytes == null)
+                if (bytes == null)
                     return;
-                Log.e(TAG,"-------电量读取="+Utils.formatBtArrayToString(bytes));
+                Log.e(TAG, "-------电量读取=" + Utils.formatBtArrayToString(bytes));
                 int batteryValue = bytes[0] & 0xff;
-                if(onCommBackDataListener != null)
+                if (onCommBackDataListener != null)
                     onCommBackDataListener.onIntDataBack(new int[]{batteryValue});
             }
         });
@@ -651,86 +684,83 @@ public class BleManager {
 
 
     //写入设备数据
-    public synchronized void writeDataToDevice(byte[] data, WriteBackDataListener writeBackDataListener){
+    public synchronized void writeDataToDevice(byte[] data, WriteBackDataListener writeBackDataListener) {
         String writeStr = Utils.formatBtArrayToString(data);
-        Log.e(TAG,"-----写入数据="+writeStr);
-        String bleMac = (String) BleSpUtils.get(mContext,SAVE_BLE_MAC_KEY,"");
-        if(TextUtils.isEmpty(bleMac))
+        Log.e(TAG, "-----写入数据=" + writeStr);
+        String bleMac = (String) BleSpUtils.get(mContext, SAVE_BLE_MAC_KEY, "");
+        if (TextUtils.isEmpty(bleMac))
             return;
-        stringBuffer.append("写入数据:"+writeStr+"\n\n");
-        sendCommBroadcast("ble_action",0);
+        stringBuffer.append("写入数据:" + writeStr + "\n\n");
+        sendCommBroadcast("ble_action", 0);
         interfaceManager.setWriteBackDataListener(writeBackDataListener);
-        bluetoothClient.write(bleMac,bleConstant.SERVICE_UUID,bleConstant.WRITE_UUID,data,bleWriteResponse);
+        bluetoothClient.write(bleMac, bleConstant.SERVICE_UUID, bleConstant.WRITE_UUID, data, bleWriteResponse);
     }
 
-    public synchronized void writeDataToDeviceNoBack(byte[] data){
+    public synchronized void writeDataToDeviceNoBack(byte[] data) {
         String writeStr = Utils.formatBtArrayToString(data);
-        Log.e(TAG,"-----写入数据="+writeStr);
-        String bleMac = (String) BleSpUtils.get(mContext,SAVE_BLE_MAC_KEY,"");
-        if(TextUtils.isEmpty(bleMac))
+        Log.e(TAG, "-----写入数据=" + writeStr);
+        String bleMac = (String) BleSpUtils.get(mContext, SAVE_BLE_MAC_KEY, "");
+        if (TextUtils.isEmpty(bleMac))
             return;
-        stringBuffer.append("写入数据:"+writeStr+"\n\n");
-        sendCommBroadcast("ble_action",0);
-      //  interfaceManager.setWriteBackDataListener(writeBackDataListener);
-        bluetoothClient.write(bleMac,bleConstant.SERVICE_UUID,bleConstant.WRITE_UUID,data,bleWriteResponse);
+        stringBuffer.append("写入数据:" + writeStr + "\n\n");
+        sendCommBroadcast("ble_action", 0);
+        //  interfaceManager.setWriteBackDataListener(writeBackDataListener);
+        bluetoothClient.write(bleMac, bleConstant.SERVICE_UUID, bleConstant.WRITE_UUID, data, bleWriteResponse);
     }
 
 
     //OnCarWriteBackListener
 
 
-    public synchronized void writeCarDataToDevice(byte[] data, OnCarWriteBackListener writeBackDataListener){
+    public synchronized void writeCarDataToDevice(byte[] data, OnCarWriteBackListener writeBackDataListener) {
         String writeStr = Utils.formatBtArrayToString(data);
-        Log.e(TAG,"-----写入数据="+writeStr);
-        String bleMac = (String) BleSpUtils.get(mContext,SAVE_BLE_MAC_KEY,"");
-        if(TextUtils.isEmpty(bleMac))
+        Log.e(TAG, "-----写入数据=" + writeStr);
+        String bleMac = (String) BleSpUtils.get(mContext, SAVE_BLE_MAC_KEY, "");
+        if (TextUtils.isEmpty(bleMac))
             return;
-        stringBuffer.append("写入数据:"+writeStr+"\n\n");
-        sendCommBroadcast("ble_action",0);
+        stringBuffer.append("写入数据:" + writeStr + "\n\n");
+        sendCommBroadcast("ble_action", 0);
         interfaceManager.setOnCarWriteBackListener(writeBackDataListener);
-        bluetoothClient.write(bleMac,bleConstant.SERVICE_UUID,bleConstant.WRITE_UUID,data,bleWriteResponse);
+        bluetoothClient.write(bleMac, bleConstant.SERVICE_UUID, bleConstant.WRITE_UUID, data, bleWriteResponse);
     }
 
 
-
     //写入旋钮屏配套的手表
-    public synchronized void writeCarWatchData(byte[] data, OnCarWatchBackListener onCarWatchBackListener){
+    public synchronized void writeCarWatchData(byte[] data, OnCarWatchBackListener onCarWatchBackListener) {
         String writeStr = Utils.formatBtArrayToString(data);
-        Log.e(TAG,"-----写入数据="+writeStr);
-        String bleMac = (String) BleSpUtils.get(mContext,SAVE_BLE_MAC_KEY,"");
-        if(TextUtils.isEmpty(bleMac))
+        Log.e(TAG, "-----写入数据=" + writeStr);
+        String bleMac = (String) BleSpUtils.get(mContext, SAVE_BLE_MAC_KEY, "");
+        if (TextUtils.isEmpty(bleMac))
             return;
-        stringBuffer.append("写入数据:"+writeStr+"\n\n");
-        sendCommBroadcast("ble_action",0);
+        stringBuffer.append("写入数据:" + writeStr + "\n\n");
+        sendCommBroadcast("ble_action", 0);
         interfaceManager.setOnCarWatchBackListener(onCarWatchBackListener);
-        bluetoothClient.write(bleMac,bleConstant.CAR_WATCH_SERVICE_UUID,bleConstant.CAR_WATCH_WRITE_UUID,data,bleWriteResponse);
+        bluetoothClient.write(bleMac, bleConstant.CAR_WATCH_SERVICE_UUID, bleConstant.CAR_WATCH_WRITE_UUID, data, bleWriteResponse);
     }
 
 
     //写入设备数据
-    public synchronized void writeDataToDevice(byte[] data){
-        Log.e(TAG,"-----写入数据="+Arrays.toString(data));
-        String bleMac = (String) BleSpUtils.get(mContext,SAVE_BLE_MAC_KEY,"");
-        if(TextUtils.isEmpty(bleMac))
+    public synchronized void writeDataToDevice(byte[] data) {
+        Log.e(TAG, "-----写入数据=" + Arrays.toString(data));
+        String bleMac = (String) BleSpUtils.get(mContext, SAVE_BLE_MAC_KEY, "");
+        if (TextUtils.isEmpty(bleMac))
             return;
-        bluetoothClient.write(bleMac,bleConstant.SERVICE_UUID,bleConstant.WRITE_UUID,data,bleWriteResponse);
+        bluetoothClient.write(bleMac, bleConstant.SERVICE_UUID, bleConstant.WRITE_UUID, data, bleWriteResponse);
     }
-
 
 
     /**
      * 键盘写入表盘数据
      */
-    public synchronized void writeKeyBoardDialData(byte[] data, WriteBackDataListener writeBackDataListener){
-      //  this.dayTag = day;
-       // Log.e(TAG,"-----写入键盘表盘数据长度="+data.length +"  "+Utils.formatBtArrayToString(data));
-        String bleMac = (String) BleSpUtils.get(mContext,SAVE_BLE_MAC_KEY,"");
-        if(TextUtils.isEmpty(bleMac))
+    public synchronized void writeKeyBoardDialData(byte[] data, WriteBackDataListener writeBackDataListener) {
+        //  this.dayTag = day;
+        // Log.e(TAG,"-----写入键盘表盘数据长度="+data.length +"  "+Utils.formatBtArrayToString(data));
+        String bleMac = (String) BleSpUtils.get(mContext, SAVE_BLE_MAC_KEY, "");
+        if (TextUtils.isEmpty(bleMac))
             return;
         interfaceManager.setWriteBackDataListener(writeBackDataListener);
-        bluetoothClient.write(bleMac, bleConstant.SERVICE_UUID,bleConstant.KEYBOARD_DIAL_WRITE_UUID,data,bleWriteResponse);
+        bluetoothClient.write(bleMac, bleConstant.SERVICE_UUID, bleConstant.KEYBOARD_DIAL_WRITE_UUID, data, bleWriteResponse);
     }
-
 
 
     //监听蓝牙连接状态的监听
@@ -738,12 +768,12 @@ public class BleManager {
         @Override
         public void onConnectStatusChanged(String mac, int status) {
 
-            Log.e(TAG,"---mmmmm-连接状态manager="+mac+" "+status);
-            if(mac != null && status == Constants.STATUS_DISCONNECTED){
+            Log.e(TAG, "---mmmmm-连接状态manager=" + mac + " " + status);
+            if (mac != null && status == Constants.STATUS_DISCONNECTED) {
                 sendCommBroadcast(BleConstant.BLE_SOURCE_DIS_CONNECTION_ACTION);
             }
-            if(bleConnStatusListener != null){
-                bleConnStatusListener.onConnectStatusChanged(mac==null?"mac":mac,status);
+            if (bleConnStatusListener != null) {
+                bleConnStatusListener.onConnectStatusChanged(mac == null ? "mac" : mac, status);
             }
         }
     };
@@ -756,17 +786,17 @@ public class BleManager {
     };
 
 
-    private void sendCommBroadcast(int...value){
+    private void sendCommBroadcast(int... value) {
         Intent intent = new Intent();
         intent.setAction(BleConstant.COMM_BROADCAST_ACTION);
-        intent.putExtra(BleConstant.COMM_BROADCAST_KEY,value);
+        intent.putExtra(BleConstant.COMM_BROADCAST_KEY, value);
         mContext.sendBroadcast(intent);
     }
 
-    private void sendCommBroadcast(String action,int...value){
+    private void sendCommBroadcast(String action, int... value) {
         Intent intent = new Intent();
         intent.setAction(action);
-        intent.putExtra(BleConstant.COMM_BROADCAST_KEY,value);
+        intent.putExtra(BleConstant.COMM_BROADCAST_KEY, value);
         mContext.sendBroadcast(intent);
     }
 }

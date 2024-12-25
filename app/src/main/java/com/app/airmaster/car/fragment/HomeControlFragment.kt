@@ -222,7 +222,7 @@ class HomeControlFragment : TitleBarFragment<CarHomeActivity>() {
                 if(carActivity.isFinishing){
                     return
                 }
-                  Timber.e("----监听------自动返回数据="+autoBean.toString())
+                 // Timber.e("----监听------自动返回数据="+autoBean.toString())
 
                 if(tempGear == -1){
                     showRulerGoalVisibility(false)
