@@ -57,7 +57,7 @@ class HalfCircleView : View {
     }
 
 
-    override fun onDraw(canvas: Canvas?) {
+    override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
         halfCirclePaint?.color = color
         //绘制半圆

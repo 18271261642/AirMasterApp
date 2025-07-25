@@ -110,7 +110,7 @@ class CarHeightGaugeView : View{
     }
 
 
-    override fun onDraw(canvas: Canvas?) {
+    override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
        // Timber.e("-------leftDrawable="+(leftDrawable == null))
         if(leftDrawable == null || rightDrawable == null){

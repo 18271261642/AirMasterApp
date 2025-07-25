@@ -61,6 +61,7 @@ class HomeAirFragment : TitleBarFragment<CarHomeActivity>(){
         settings.javaScriptEnabled = true
         // 允许网页弹对话框
         settings.javaScriptCanOpenWindowsAutomatically = true
+        settings.textZoom = 100
         // 加快网页加载完成的速度，等页面完成再加载图片
         settings.loadsImagesAutomatically = true
         // 本地 DOM 存储（解决加载某些网页出现白板现象）

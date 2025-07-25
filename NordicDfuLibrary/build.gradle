@@ -41,6 +41,7 @@ ext {
 */
 android {
     compileSdkVersion 30
+    namespace 'no.nordicsemi.android.dfu'
 
     defaultConfig {
         minSdkVersion 18

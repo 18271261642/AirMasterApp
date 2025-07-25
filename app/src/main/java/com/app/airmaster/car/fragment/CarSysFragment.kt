@@ -61,6 +61,9 @@ class CarSysFragment : TitleBarFragment<CarSysSetActivity>() {
             if(ClickUtils.isFastDoubleClick()){
                 return@setOnClickListener
             }
+            if(fragmentTransaction == null){
+                return@setOnClickListener
+            }
             fragmentTransaction.replace(R.id.stsSetFrameLayout,CarGassPressureFragment.getInstance())
             fragmentTransaction.addToBackStack(null)
             fragmentTransaction.commit()
@@ -69,6 +72,9 @@ class CarSysFragment : TitleBarFragment<CarSysSetActivity>() {
         //记忆模式
         sysMemoryModelBar?.setOnClickListener {
             if(ClickUtils.isFastDoubleClick()){
+                return@setOnClickListener
+            }
+            if(fragmentTransaction == null){
                 return@setOnClickListener
             }
             fragmentTransaction.replace(R.id.stsSetFrameLayout,CarMemoryModelFragment.getInstance())
@@ -83,6 +89,9 @@ class CarSysFragment : TitleBarFragment<CarSysSetActivity>() {
             if(ClickUtils.isFastDoubleClick()){
                 return@setOnClickListener
             }
+            if(fragmentTransaction == null){
+                return@setOnClickListener
+            }
             fragmentTransaction.replace(R.id.stsSetFrameLayout,CarWorkModelFragment.getInstance())
             fragmentTransaction.addToBackStack(null)
             fragmentTransaction.commit()
@@ -91,6 +100,9 @@ class CarSysFragment : TitleBarFragment<CarSysSetActivity>() {
         //高度尺
         sysScaleSettingBar?.setOnClickListener {
             if(ClickUtils.isFastDoubleClick()){
+                return@setOnClickListener
+            }
+            if(fragmentTransaction == null){
                 return@setOnClickListener
             }
             fragmentTransaction.replace(R.id.stsSetFrameLayout,CarSysScaleFragment.getInstance())
@@ -103,6 +115,9 @@ class CarSysFragment : TitleBarFragment<CarSysSetActivity>() {
             if(ClickUtils.isFastDoubleClick()){
                 return@setOnClickListener
             }
+            if(fragmentTransaction == null){
+                return@setOnClickListener
+            }
             fragmentTransaction.replace(R.id.stsSetFrameLayout,CarPowerProtectFragment.getInstance())
             fragmentTransaction.addToBackStack(null)
             fragmentTransaction.commit()
@@ -110,6 +125,9 @@ class CarSysFragment : TitleBarFragment<CarSysSetActivity>() {
         //点火熄火
         findViewById<SettingBar>(R.id.sysIgnitionBar).setOnClickListener {
             if(ClickUtils.isFastDoubleClick()){
+                return@setOnClickListener
+            }
+            if(fragmentTransaction == null){
                 return@setOnClickListener
             }
             fragmentTransaction.replace(R.id.stsSetFrameLayout,CarIgnitionFragment.getInstance())
@@ -122,6 +140,9 @@ class CarSysFragment : TitleBarFragment<CarSysSetActivity>() {
             if(ClickUtils.isFastDoubleClick()){
                 return@setOnClickListener
             }
+            if(fragmentTransaction == null){
+                return@setOnClickListener
+            }
             fragmentTransaction.replace(R.id.stsSetFrameLayout,CarRepairFragment.getInstance())
             fragmentTransaction.addToBackStack(null)
             fragmentTransaction.commit()
@@ -130,6 +151,9 @@ class CarSysFragment : TitleBarFragment<CarSysSetActivity>() {
         //最细行驶保护气压
         findViewById<SettingBar>(R.id.sysLowestBar).setOnClickListener {
             if(ClickUtils.isFastDoubleClick()){
+                return@setOnClickListener
+            }
+            if(fragmentTransaction == null){
                 return@setOnClickListener
             }
             fragmentTransaction.replace(R.id.stsSetFrameLayout,CarLowestAirFragment.getInstance())
@@ -141,6 +165,9 @@ class CarSysFragment : TitleBarFragment<CarSysSetActivity>() {
             if(ClickUtils.isFastDoubleClick()){
                 return@setOnClickListener
             }
+            if(fragmentTransaction == null){
+                return@setOnClickListener
+            }
             fragmentTransaction.replace(R.id.stsSetFrameLayout,CarHeightMemoryFragment.getInstance())
             fragmentTransaction.addToBackStack(null)
             fragmentTransaction.commit()
@@ -149,6 +176,9 @@ class CarSysFragment : TitleBarFragment<CarSysSetActivity>() {
         //气压平衡
         sysAirBalanceBar?.setOnClickListener {
             if(ClickUtils.isFastDoubleClick()){
+                return@setOnClickListener
+            }
+            if(fragmentTransaction == null){
                 return@setOnClickListener
             }
             fragmentTransaction.replace(R.id.stsSetFrameLayout,CarAirPressureBalanceFragment.getInstance())

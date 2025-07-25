@@ -6,6 +6,7 @@ plugins {
 
 android {
     compileSdk 33
+    namespace 'com.bonlala.base'
 
     defaultConfig {
         minSdk 21
