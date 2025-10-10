@@ -120,11 +120,14 @@ class CarLowestAirFragment : TitleBarFragment<CarSysSetActivity>() {
         if(v>=99){
             v = 99
             carAirAddTv?.text = "99"
+            setLowProtectPressure()
             return
         }
         if(v<=0){
             v = 0
+            frontCountNumber = 0
             carAirAddTv?.text = "0"
+            setLowProtectPressure()
             return
         }
         carAirAddTv?.text = v.toString()
@@ -144,12 +147,15 @@ class CarLowestAirFragment : TitleBarFragment<CarSysSetActivity>() {
         var v = rearCountNumber
         if(v<=0){
             v = 0
+            rearCountNumber = 0
             carRearAirAddTv?.text = "0"
+            setLowProtectPressure()
             return
         }
         if(v>=99){
             v = 99
             carRearAirAddTv?.text = "99"
+            setLowProtectPressure()
             return
         }
         carRearAirAddTv?.text = v.toString()

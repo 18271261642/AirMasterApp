@@ -33,4 +33,5 @@ include ':app'
 include ':blemodel'
 include ':base'
 include ':widget'
-include ':NordicDfuLibrary'
+/*include ':NordicDfuLibrary'*/
+include ':NordicDfuLibrary2'

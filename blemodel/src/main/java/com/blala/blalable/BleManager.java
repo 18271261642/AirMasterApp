@@ -445,7 +445,7 @@ public class BleManager {
                     return;
                 }
                 String notifyStr = uuid1.toString() + " " + Utils.formatBtArrayToString(bytes);
-                Log.e(TAG, "----11--写入数据返回=" + notifyStr);
+                Log.e(TAG, "----11--notify data=" + notifyStr);
                 if ((bytes[10] & 0xff) == 127 && (bytes[11] & 0xff) == 250 && (bytes[12] & 0xff) == 175) {
                     byte[] crcArray = new byte[bytes.length - 14];
                     System.arraycopy(bytes, 13, crcArray, 0, crcArray.length);

@@ -1,4 +1,5 @@
 apply plugin: 'com.android.library'
+apply plugin: 'org.jetbrains.kotlin.android'
 
 /*
  * I followed this:
@@ -40,14 +41,14 @@ ext {
 }
 */
 android {
-    compileSdkVersion 30
+   // compileSdkVersion 34
+
     namespace 'no.nordicsemi.android.dfu'
+    compileSdk 34
 
     defaultConfig {
         minSdkVersion 18
-        targetSdkVersion 30
-        versionCode 22
-        versionName "1.8.1"
+        targetSdkVersion 34
         javaCompileOptions {
             annotationProcessorOptions {
                 arguments = [AROUTER_MODULE_NAME: project.getName()]
@@ -61,12 +62,19 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+    lintOptions {
+        baseline file("lint-baseline.xml")
+    }
+    kotlinOptions {
+        jvmTarget = '17'
+    }
 }
 
 dependencies {
     implementation 'androidx.legacy:legacy-support-core-utils:1.0.0'
     implementation 'com.google.code.gson:gson:2.8.5'
     api 'com.alibaba:arouter-api:1.5.0'
+    implementation 'androidx.core:core-ktx:1.13.1'
     annotationProcessor 'com.alibaba:arouter-compiler:1.2.2'
 }
 /*
@@ -122,3 +130,33 @@ if (JavaVersion.current().isJava8Compatible()) {
     }
 }
 */
+
+
+def SDK_BASENAME = "nordic_dfu_1";
+def SDK_VERSION = "_V1.0";
+def OUTPUT_PATH = "build";
+def INPUT_PATH = file('build/outputs/classes.jar')
+def zipFile = file('build/intermediates/aar_main_jar/classes.jar')
+
+
+//删除任务
+task deleteBuild(type: Delete) {
+    delete OUTPUT_PATH + SDK_BASENAME + SDK_VERSION + ".jar"
+}
+
+
+task makeJar(type: Copy) {
+    //删除存在的
+    delete 'build/nordic_dfu_1.8.1.jar'
+    //设置拷贝的文件
+    from('build/intermediates/aar_main_jar/release/')
+    //打进jar包后的文件目录
+    into('build/')
+    //将classes.jar放入build/libs/目录下
+    //include ,exclude参数来设置过滤
+    include('classes.jar')
+    //重命名
+    rename ('classes.jar', 'nordic_dfu_1.8.1.jar')
+}
+
+makeJar.dependsOn(build)

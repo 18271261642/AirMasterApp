@@ -382,10 +382,13 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_gravity="center"
             android:orientation="horizontal">
+
             <com.hjq.shape.view.ShapeEditText
                 android:id="@+id/aboutActivateEdit"
                 android:layout_width="0dp"
+
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginEnd="@dimen/dp_10"
@@ -410,6 +413,7 @@
                 android:paddingEnd="@dimen/dp_30"
                 android:paddingBottom="@dimen/dp_10"
                 android:text="@string/common_confirm"
+                android:layout_gravity="center"
                 android:textColor="@color/white"
                 app:shape_endColor="#FD654D"
                 app:shape_radius="@dimen/dp_25"

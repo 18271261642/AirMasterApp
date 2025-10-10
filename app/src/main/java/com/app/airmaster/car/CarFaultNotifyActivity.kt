@@ -3,6 +3,8 @@ package com.app.airmaster.car
 import android.annotation.SuppressLint
 import android.util.DisplayMetrics
 import android.view.Gravity
+import android.view.View
+import android.view.View.OnLongClickListener
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.lifecycle.ViewModelProvider
@@ -57,8 +59,9 @@ class CarFaultNotifyActivity : AppActivity() {
         }
 
         //log
-        findViewById<TextView>(R.id.carNotifyTitleTv)?.setOnClickListener {
+        findViewById<TextView>(R.id.carNotifyTitleTv)?.setOnLongClickListener {
             showLogDialog(sb.toString())
+            true
         }
     }
 

@@ -8,6 +8,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Binder;
+import android.os.Build;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Looper;
@@ -72,7 +73,12 @@ public class ConnStatusService extends Service {
         intentFilter.addAction(BleConstant.BLE_SOURCE_DIS_CONNECTION_ACTION);
         intentFilter.addAction(BluetoothAdapter.ACTION_CONNECTION_STATE_CHANGED);
         intentFilter.addAction(BluetoothDevice.ACTION_PAIRING_REQUEST);
-        registerReceiver(broadcastReceiver,intentFilter);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            registerReceiver(broadcastReceiver,intentFilter,Context.RECEIVER_EXPORTED);
+        }else{
+            registerReceiver(broadcastReceiver,intentFilter);
+        }
 
         BluetoothClient bluetoothClient = BleManager.getInstance(this).getBluetoothClient();
         if(bluetoothClient != null){

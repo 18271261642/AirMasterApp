@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.util.SparseArray;
 import android.view.KeyEvent;
+import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 
@@ -21,8 +22,13 @@ import java.util.List;
 import java.util.Random;
 import java.util.Timer;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.graphics.Insets;
+import androidx.core.view.OnApplyWindowInsetsListener;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Lifecycle;
 
@@ -215,6 +221,28 @@ public abstract class BaseActivity extends AppCompatActivity
          * @param data              数据
          */
         void onActivityResult(int resultCode, @Nullable Intent data);
+    }
+
+
+    protected void setupWindowInsets(int rootId,int contentId) {
+        View rootView = findViewById(rootId);
+        View scrollView = findViewById(contentId);
+
+        ViewCompat.setOnApplyWindowInsetsListener(rootView, new OnApplyWindowInsetsListener() {
+            @NonNull
+            @Override
+            public WindowInsetsCompat onApplyWindowInsets(@NonNull View v, @NonNull WindowInsetsCompat insets) {
+                Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
+                rootView.setPadding(
+                        scrollView.getLeft(),
+                        scrollView.getPaddingTop(),
+                        scrollView.getPaddingRight(),
+                        systemBars.bottom
+                );
+                return WindowInsetsCompat.CONSUMED;
+            }
+        });
+
     }
 
 }

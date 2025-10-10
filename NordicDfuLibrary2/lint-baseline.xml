@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<issues format="6" by="lint 7.2.1" type="baseline" client="gradle" dependencies="false" name="AGP (7.2.1)" variant="all" version="7.2.1">
+
+    <issue
+        id="InlinedApi"
+        message="Field requires API level 23 (current min is 18): `android.app.PendingIntent#FLAG_IMMUTABLE`"
+        errorLine1="        final PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_IMMUTABLE);"
+        errorLine2="                                                                                       ~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/no/nordicsemi/android/dfu/DfuBaseService.java"
+            line="1621"
+            column="88"/>
+    </issue>
+
+    <issue
+        id="InlinedApi"
+        message="Field requires API level 23 (current min is 18): `android.app.PendingIntent#FLAG_IMMUTABLE`"
+        errorLine1="            final PendingIntent pendingAbortIntent = PendingIntent.getBroadcast(this, 1, abortIntent, PendingIntent.FLAG_IMMUTABLE);"
+        errorLine2="                                                                                                      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/no/nordicsemi/android/dfu/DfuBaseService.java"
+            line="1641"
+            column="103"/>
+    </issue>
+
+    <issue
+        id="InlinedApi"
+        message="Field requires API level 23 (current min is 18): `android.app.PendingIntent#FLAG_IMMUTABLE`"
+        errorLine1="        final PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_IMMUTABLE);"
+        errorLine2="                                                                                       ~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/no/nordicsemi/android/dfu/DfuBaseService.java"
+            line="1677"
+            column="88"/>
+    </issue>
+
+    <issue
+        id="InlinedApi"
+        message="Field requires API level 23 (current min is 18): `android.app.PendingIntent#FLAG_IMMUTABLE`"
+        errorLine1="            final PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, targetIntent, PendingIntent.FLAG_IMMUTABLE);"
+        errorLine2="                                                                                                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/no/nordicsemi/android/dfu/DfuBaseService.java"
+            line="1711"
+            column="98"/>
+    </issue>
+
+    <issue
+        id="OldTargetApi"
+        message="Not targeting the latest versions of Android; compatibility modes apply. Consider testing and updating this version. Consult the android.os.Build.VERSION_CODES javadoc for details."
+        errorLine1="        targetSdkVersion 30"
+        errorLine2="        ~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="build.gradle"
+            line="47"
+            column="9"/>
+    </issue>
+
+    <issue
+        id="GradleDependency"
+        message="A newer version of com.google.code.gson:gson than 2.8.5 is available: 2.10.1"
+        errorLine1="    implementation &apos;com.google.code.gson:gson:2.8.5&apos;"
+        errorLine2="                   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="build.gradle"
+            line="70"
+            column="20"/>
+    </issue>
+
+    <issue
+        id="StringFormatInvalid"
+        message="Format string &apos;`dfu_status_uploading_part`&apos; is not a valid format string so it should not be passed to `String.format`"
+        errorLine1="                final String title = info.getTotalParts() == 1 ? getString(R.string.dfu_status_uploading) : getString(R.string.dfu_status_uploading_part, info.getCurrentPart(), info.getTotalParts());"
+        errorLine2="                                                                                                            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/no/nordicsemi/android/dfu/DfuBaseService.java"
+            line="1608"
+            column="109"/>
+        <location
+            file="src/main/res/values/strings.xml"
+            line="14"
+            column="5"
+            message="This definition does not require arguments"/>
+    </issue>
+
+    <issue
+        id="IconMissingDensityFolder"
+        message="Missing density variation folders in `D:\WorkPlace\BONLALA\Sleepring\NordicDfuLibrary\src\main\res`: drawable-mdpi, drawable-xxhdpi">
+        <location
+            file="src/main/res"/>
+    </issue>
+
+</issues>

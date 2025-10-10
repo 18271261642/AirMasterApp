@@ -30,6 +30,7 @@
         app:layout_constraintRight_toRightOf="parent"
         android:layout_width="wrap_content"
         android:layout_gravity="center"
+        android:layout_marginEnd="@dimen/dp_3"
         app:layout_constraintLeft_toLeftOf="parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/dp_10"

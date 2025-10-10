@@ -131,7 +131,12 @@ class SecondScanActivity : AppActivity() {
         intentFilter.addAction(BleConstant.BLE_CONNECTED_ACTION)
         intentFilter.addAction(BleConstant.BLE_DIS_CONNECT_ACTION)
         intentFilter.addAction(BleConstant.BLE_SCAN_COMPLETE_ACTION)
-        registerReceiver(broadcastReceiver,intentFilter)
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            registerReceiver(broadcastReceiver,intentFilter,Context.RECEIVER_EXPORTED)
+        }else{
+            registerReceiver(broadcastReceiver,intentFilter)
+        }
 
         val isGet = ActivityCompat.checkSelfPermission(this,Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED
         if(isGet){
@@ -280,11 +285,11 @@ class SecondScanActivity : AppActivity() {
             }
 
             override fun onDeviceFounded(p0: SearchResult) {
-                if (p0.getScanRecord() == null || p0.getScanRecord().isEmpty())
+                if (p0.scanRecord == null || p0.scanRecord.isEmpty())
                     return
-                 Timber.e("--------扫描="+p0.name+" "+Utils.formatBtArrayToString(p0.getScanRecord()))
+                 Timber.e("--------扫描="+p0.name+" "+Utils.formatBtArrayToString(p0.scanRecord))
 
-                val recordStr = Utils.formatBtArrayToString(p0.getScanRecord())
+                val recordStr = Utils.formatBtArrayToString(p0.scanRecord)
                 val bleName = p0.name
 
                 if (BikeUtils.isEmpty(bleName) || bleName.equals("NULL") || BikeUtils.isEmpty(p0.address))

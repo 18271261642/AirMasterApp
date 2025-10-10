@@ -5,12 +5,14 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
+import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.os.Message
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager.widget.ViewPager
 import com.app.airmaster.BaseApplication
@@ -98,6 +100,7 @@ class CarHomeActivity : AppActivity() ,NavigationAdapter.OnNavigationListener{
     }
 
     override fun initView() {
+        setupWindowInsets(R.id.carHomeRootView,R.id.rv_home_navigation)
         mViewPager = findViewById(R.id.vp_home_pager)
         mNavigationView = findViewById(R.id.rv_home_navigation)
     }
@@ -109,7 +112,12 @@ class CarHomeActivity : AppActivity() ,NavigationAdapter.OnNavigationListener{
         intentFilter.addAction(BleConstant.BLE_DIS_CONNECT_ACTION)
         intentFilter.addAction(BleConstant.BLE_SCAN_COMPLETE_ACTION)
         intentFilter.addAction(BleConstant.BLE_START_SCAN_ACTION)
-        registerReceiver(broadcastReceiver,intentFilter)
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            registerReceiver(broadcastReceiver,intentFilter,Context.RECEIVER_EXPORTED)
+        }else{
+            registerReceiver(broadcastReceiver,intentFilter)
+        }
         controlViewModel = ViewModelProvider(this)[ControlViewModel::class.java]
         autoConnViewModel = ViewModelProvider(this)[AutoConnViewModel::class.java]
         mNavigationAdapter = NavigationAdapter(this).apply {
@@ -145,7 +153,7 @@ class CarHomeActivity : AppActivity() ,NavigationAdapter.OnNavigationListener{
         }
         onNewIntent(intent)
 
-        GlobalScope.launch {
+        lifecycleScope.launch {
             delay(1500)
             autoConnViewModel?.retryConnDevice(this@CarHomeActivity)
         }
@@ -324,16 +332,17 @@ class CarHomeActivity : AppActivity() ,NavigationAdapter.OnNavigationListener{
         dialog.setTitleTxt(resources.getString(R.string.string_has_new_version))
         dialog.setContent(bean.content)
         dialog.setIsFocusUpdate(bean.isForceUpdate)
-        dialog.setOnDialogClickListener(object : OnCommItemClickListener{
-            override fun onItemClick(position: Int) {
-                if(position == 0x00){
-                    dialog.dismiss()
-                }
-                if(position == 0x01){
-                    dialog.startDownload(this@CarHomeActivity,bean.ota,"airmaster_"+bean.versionCode.toString()+".apk")
-                }
+        dialog.setOnDialogClickListener { position ->
+            if (position == 0x00) {
+                dialog.dismiss()
             }
-
-        })
+            if (position == 0x01) {
+                dialog.startDownload(
+                    this@CarHomeActivity,
+                    bean.ota,
+                    "airmaster_" + bean.versionCode.toString() + ".apk"
+                )
+            }
+        }
     }
 }

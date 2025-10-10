@@ -13,6 +13,7 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import timber.log.Timber
+import java.util.Locale
 
 /**
  * Create by sjh
@@ -127,7 +128,7 @@ open class ControlViewModel : CommViewModel() {
 
     //气罐手动打气
     fun setManualAerate(isStart : Boolean){
-        val scrStr = "0005040113"+String.format("%02x",if(isStart) 0 else 1)
+        val scrStr = "0005040113"+String.format(Locale.CHINA,"%02x",if(isStart) 0 else 1)
         val crc = Utils.crcCarContentArray(scrStr)
 
         val str = "011E"+ CarConstant.CAR_HEAD_BYTE_STR+scrStr+crc

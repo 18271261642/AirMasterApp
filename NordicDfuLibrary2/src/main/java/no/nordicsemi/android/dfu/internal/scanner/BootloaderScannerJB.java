@@ -22,27 +22,22 @@
 
 package no.nordicsemi.android.dfu.internal.scanner;
 
-import android.annotation.TargetApi;
 import android.bluetooth.BluetoothAdapter;
-import android.bluetooth.le.BluetoothLeScanner;
-import android.bluetooth.le.ScanCallback;
-import android.bluetooth.le.ScanResult;
-import android.bluetooth.le.ScanSettings;
-import android.os.Build;
+import android.bluetooth.BluetoothDevice;
 
 import java.util.Locale;
 
 /**
  * @see BootloaderScanner
  */
-@TargetApi(Build.VERSION_CODES.LOLLIPOP)
-public class BootloaderScannerLollipop extends ScanCallback implements BootloaderScanner {
+public class BootloaderScannerJB implements BootloaderScanner, BluetoothAdapter.LeScanCallback {
 	private final Object mLock = new Object();
 	private String mDeviceAddress;
 	private String mDeviceAddressIncremented;
 	private String mBootloaderAddress;
 	private boolean mFound;
 
+	@SuppressWarnings("deprecation")
 	@Override
 	public String searchFor(final String deviceAddress) {
 		final String firstBytes = deviceAddress.substring(0, 15);
@@ -65,7 +60,7 @@ public class BootloaderScannerLollipop extends ScanCallback implements Bootloade
 				}
 
 				if (mFound)
-					return;
+                    return ;
 
 				mBootloaderAddress = null;
 				mFound = true;
@@ -74,24 +69,14 @@ public class BootloaderScannerLollipop extends ScanCallback implements Bootloade
 				synchronized (mLock) {
 					mLock.notifyAll();
 				}
-			}
+
+            }
 		}, "Scanner timer").start();
 
 		final BluetoothAdapter adapter = BluetoothAdapter.getDefaultAdapter();
 		if (adapter == null || adapter.getState() != BluetoothAdapter.STATE_ON)
 			return null;
-		final BluetoothLeScanner scanner = adapter.getBluetoothLeScanner();
-		if (scanner == null)
-			return null;
-		/*
-		 * Scanning with filters does not work on Nexus 9 (Android 5.1). No devices are found and scanner terminates on timeout.
-		 * We will match the device address in the callback method instead. It's not like it should be, but at least it works.
-		 */
-		//final List<ScanFilter> filters = new ArrayList<>();
-		//filters.add(new ScanFilter.Builder().setDeviceAddress(mDeviceAddress).build());
-		//filters.add(new ScanFilter.Builder().setDeviceAddress(mDeviceAddressIncremented).build());
-		final ScanSettings settings = new ScanSettings.Builder().setScanMode(ScanSettings.SCAN_MODE_LOW_LATENCY).build();
-		scanner.startScan(/*filters*/ null, settings, this);
+		adapter.startLeScan(this);
 
 		try {
 			synchronized (mLock) {
@@ -102,13 +87,13 @@ public class BootloaderScannerLollipop extends ScanCallback implements Bootloade
 			// do nothing
 		}
 
-		scanner.stopScan(this);
+		adapter.stopLeScan(this);
 		return mBootloaderAddress;
 	}
 
 	@Override
-	public void onScanResult(final int callbackType, final ScanResult result) {
-		final String address = result.getDevice().getAddress();
+	public void onLeScan(final BluetoothDevice device, final int rssi, final byte[] scanRecord) {
+		final String address = device.getAddress();
 
 		if (mDeviceAddress.equals(address) || mDeviceAddressIncremented.equals(address)) {
 			mBootloaderAddress = address;
@@ -120,4 +105,5 @@ public class BootloaderScannerLollipop extends ScanCallback implements Bootloade
 			}
 		}
 	}
+
 }
