@@ -159,6 +159,7 @@ class CarHomeActivity : AppActivity() ,NavigationAdapter.OnNavigationListener{
         }
         switchFragment(1)
 
+        //APP版本更新
         versionViewModel?.appVersionData?.observe(this){
             if(it != null){
                 if(!it.fileName.contains(".apk")){
@@ -181,7 +182,9 @@ class CarHomeActivity : AppActivity() ,NavigationAdapter.OnNavigationListener{
 //            if(it != null){
 //                isHeightModel = it.modelType ==0
 //            }
-//        }
+
+        //获取筛选的设备名称
+        versionViewModel?.getFilterDevice(this)
     }
 
 

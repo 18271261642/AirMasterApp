@@ -52,7 +52,7 @@ class LaunchActivity : AppActivity() {
             handlers.sendEmptyMessageDelayed(0x00,1000)
         }
 
-        filterViewModel?.getFilterDevice(this)
+      //  filterViewModel?.getFilterDevice(this)
 
 
     }

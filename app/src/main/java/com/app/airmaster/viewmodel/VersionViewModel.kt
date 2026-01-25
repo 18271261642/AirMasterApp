@@ -3,6 +3,7 @@ package com.app.airmaster.viewmodel
 import android.os.Build
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.app.airmaster.BaseApplication
 import com.app.airmaster.bean.CdkBean
 import com.app.airmaster.ble.ota.BluetoothLeClass.OnWriteDataListener
@@ -11,6 +12,7 @@ import com.app.airmaster.car.bean.DeviceBinVersionBean
 import com.app.airmaster.car.bean.ServerVersionInfoBean
 import com.app.airmaster.car.bean.VersionParamsBean
 import com.app.airmaster.listeners.OnCarVersionsListener
+import com.app.airmaster.utils.BikeUtils
 import com.app.airmaster.utils.GsonUtils
 import com.blala.blalable.Utils
 import com.blala.blalable.car.CarConstant
@@ -20,6 +22,8 @@ import com.google.gson.Gson
 import com.hjq.http.EasyHttp
 import com.hjq.http.listener.OnHttpListener
 import com.tencent.bugly.crashreport.CrashReport
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import okhttp3.MediaType
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.RequestBody
@@ -31,7 +35,7 @@ import java.util.concurrent.TimeUnit
 /**
  * 版本相关的
  */
-class VersionViewModel : CommViewModel(){
+class VersionViewModel : FilterViewModel(){
 
     //app版本
     var appVersionData = SingleLiveEvent<AppVoBean?>()
@@ -305,19 +309,19 @@ class VersionViewModel : CommViewModel(){
 
     //保存激活信息
     fun saveActivateRecord(life: LifecycleOwner,activateCode : String,productSn : String){
+        viewModelScope.launch(Dispatchers.IO){
+            EasyHttp.post(life).api(CdkBean().setParams(activateCode,productSn)).request(object : OnHttpListener<String>{
+                override fun onSucceed(result: String?) {
 
+                }
 
+                override fun onFail(e: Exception?) {
 
-        EasyHttp.post(life).api(CdkBean().setParams(activateCode,productSn)).request(object : OnHttpListener<String>{
-            override fun onSucceed(result: String?) {
+                }
 
-            }
+            })
+        }
 
-            override fun onFail(e: Exception?) {
-
-            }
-
-        })
     }
 
 
@@ -325,29 +329,33 @@ class VersionViewModel : CommViewModel(){
 
     //检查App版本
     fun checkAppVersion(life: LifecycleOwner,versionCode: Int) {
-        val map = HashMap<String,Any>()
-        map["appVersion"] = versionCode
-        map["appType"] = 1
-        val requestBody = RequestBody.create(JSON, Gson().toJson(map))
-        EasyHttp.post(life).api("checkUpdate")
-            .body(requestBody)
-            .request(object : OnHttpListener<String>{
-            override fun onSucceed(result: String?) {
-                val jsonObject = JSONObject(result)
-                if(jsonObject.getInt("code") == 200){
-                    val data = jsonObject.getJSONObject("data")
-                    val voStr = data.getString("appVo")
-                    val bean = GsonUtils.getGsonObject<AppVoBean>(voStr)
-                    appVersionData.postValue(bean)
-                }
-            }
+        viewModelScope.launch(Dispatchers.IO){
+            val map = HashMap<String,Any>()
+            map["appVersion"] = versionCode
+            map["appType"] = 1
+            val requestBody = RequestBody.create(JSON, Gson().toJson(map))
+            EasyHttp.post(life).api("checkUpdate")
+                .body(requestBody)
+                .request(object : OnHttpListener<String>{
+                    override fun onSucceed(result: String?) {
+                        if(result == null || BikeUtils.isEmpty(result)){
+                            return
+                        }
+                        val jsonObject = JSONObject(result)
+                        if(jsonObject.getInt("code") == 200){
+                            val data = jsonObject.getJSONObject("data")
+                            val voStr = data.getString("appVo")
+                            val bean = GsonUtils.getGsonObject<AppVoBean>(voStr)
+                            appVersionData.postValue(bean)
+                        }
+                    }
 
-            override fun onFail(e: Exception?) {
+                    override fun onFail(e: Exception?) {
 
-            }
+                    }
 
-        })
-
+                })
+        }
 
     }
 

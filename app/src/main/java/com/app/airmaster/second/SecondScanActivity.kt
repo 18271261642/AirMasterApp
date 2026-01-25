@@ -63,7 +63,7 @@ class SecondScanActivity : AppActivity() {
     private var scanBindDeviceView : CarBindDeviceView ?= null
 
 
-    //用于去重的list
+    //����ȥ�ص�list
     private var repeatList: MutableList<String>? = null
 
     private val handlers: Handler = object : Handler(Looper.getMainLooper()) {
@@ -151,7 +151,7 @@ class SecondScanActivity : AppActivity() {
 
 
 
-    //获取已经连接的设备
+    //��ȡ�Ѿ����ӵ��豸
     private fun getHasBindDevice(){
         val connMac = MmkvUtils.getConnDeviceMac()
         if(BikeUtils.isEmpty(connMac)){
@@ -180,10 +180,10 @@ class SecondScanActivity : AppActivity() {
 
 
 
-    //判断是否有位置权限了，没有请求权限
+    //�ж��Ƿ���λ��Ȩ���ˣ�û������Ȩ��
     private fun verifyScanFun(isReconn: Boolean) {
 
-        //判断蓝牙是否开启
+        //�ж������Ƿ���
         if (!BikeUtils.isBleEnable(this)) {
             BikeUtils.openBletooth(this)
             return
@@ -203,7 +203,7 @@ class SecondScanActivity : AppActivity() {
             }
         }
 
-        //判断权限
+        //�ж�Ȩ��
         val isPermission = ActivityCompat.checkSelfPermission(
             this,
             Manifest.permission.ACCESS_COARSE_LOCATION
@@ -222,7 +222,7 @@ class SecondScanActivity : AppActivity() {
         }
 
 
-        //判断蓝牙是否打开
+        //�ж������Ƿ��
         val isOpenBle = BonlalaUtils.isOpenBlue(this@SecondScanActivity)
         if (!isOpenBle) {
             BonlalaUtils.openBluetooth(this)
@@ -275,7 +275,7 @@ class SecondScanActivity : AppActivity() {
         }
 
 
-    //开始扫描
+    //��ʼɨ��
     fun startScan() {
         val connMac = MmkvUtils.getConnDeviceMac()
         BaseApplication.getBaseApplication().bleOperate.scanBleDevice(object : SearchResponse {
@@ -287,7 +287,7 @@ class SecondScanActivity : AppActivity() {
             override fun onDeviceFounded(p0: SearchResult) {
                 if (p0.scanRecord == null || p0.scanRecord.isEmpty())
                     return
-                 Timber.e("--------扫描="+p0.name+" "+Utils.formatBtArrayToString(p0.scanRecord))
+                 Timber.e("--------搜索设备="+p0.name+" "+Utils.formatBtArrayToString(p0.scanRecord))
 
                 val recordStr = Utils.formatBtArrayToString(p0.scanRecord)
                 val bleName = p0.name
@@ -317,7 +317,7 @@ class SecondScanActivity : AppActivity() {
 
                         val isScreen =checkState //recordStr.contains("c019") || recordStr.contains("19c0")|| recordStr.contains("1dc0") || recordStr.contains("c01d")
 
-                    //判断少于40个设备就不添加了
+                    //�ж�����40���豸�Ͳ������
                     if (repeatList?.size!! > 40) {
                         return
                     }
@@ -346,7 +346,7 @@ class SecondScanActivity : AppActivity() {
     }
 
 
-    //过滤
+    //����
     private fun checkFilterData(recordStr : String) : Boolean{
         val filterList = BaseApplication.getBaseApplication().filterList
         run outside@{

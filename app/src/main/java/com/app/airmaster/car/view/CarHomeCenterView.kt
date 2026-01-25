@@ -18,6 +18,7 @@ import android.widget.LinearLayout
 import com.app.airmaster.R
 import com.app.airmaster.listeners.OnControlPressureCheckedListener
 import com.app.airmaster.widget.HomeTxtStyleView
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -207,7 +208,7 @@ class CarHomeCenterView : LinearLayout ,OnClickListener{
     var isEnd = false
     var count = 0
     private  fun startCountDown(id : Int){
-        GlobalScope.launch {
+        GlobalScope.launch(Dispatchers.Main) {
             while (!isEnd){
                 map.clear()
                 when (id){

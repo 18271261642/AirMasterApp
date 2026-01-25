@@ -1,21 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+
+
+    <string name="string_next_upgradge">Update later</string>
     <string name="string_activation_code">Enter activation code</string>
     <string name="string_clear_all_prompt">Clear?</string>
-
-
     <string name="string_set_max_height">Maxmum Height Setting,\nAnd save</string>
     <string name="string_set_min_height">Minimum Height Setting,\nAnd save</string>
     <string name="string_check_max_height">4/6Maximum Height</string>
     <string name="string_check_min_height">1/6Minimum Height</string>
-
     <string name="string_auto_check_time_out">Time out</string>
     <string name="string_acc_not_start">ACC not start</string>
     <string name="string_battery_voltage_error">Abnormal battery voltage</string>
     <string name="string_exit_manual_check_prompt">Do you want to exit manual motion detection?</string>
-
-
     <string name="string_to_upgrade">Confirm</string>
     <string name="string_notify_center">Notifications</string>
     <string name="string_clear_all">Clear all</string>
@@ -27,11 +25,10 @@
     <string name="string_sys_no_check">System not self checking</string>
     <string name="string_acceleration_sensor_error">Acceleration sensor failure</string>
     <string name="string_battery_pressure_height">High battery voltage</string>
-    <string name="string_battery_pressure_low">Battery voltage too low</string>
+    <string name="string_battery_pressure_low">High battery voltage</string>
     <string name="string_air_pump1_temp_error">Compressor 1 temperature sensor failure</string>
     <string name="string_air_pump2_temp_error">Compressor 2 temperature sensor failure</string>
     <string name="string_sys_temp_error">System temperature sensor failure</string>
-
     <string name="string_manual_check_prompt">Whethere to perform manual self-test?</string>
     <string name="string_not_exit_dfu">The upgrade hasn\'t been completed yet. Please don\'t exit until later!</string>
     <string name="string_upgradge_success">Upgrade successful</string>
@@ -70,13 +67,13 @@
     <string name="string_car_ll">RL</string>
     <string name="string_car_rl">RR</string>
 
-    <string name="string_car_h_e_1">height sensor limit out of range</string>
-    <string name="string_car_h_e_2">height sensor wiring error</string>
-    <string name="string_car_h_e_3">height sensor range fault</string>
-    <string name="string_car_h_e_4">height sensor upside down</string>
-    <string name="string_car_h_e_5">height sensor failure</string>
-    <string name="string_car_h_e_6">pressure sensor failure</string>
-    <string name="string_car_h_e_7">leak detected on air suspension</string>
+    <string name="string_car_h_e_1">Height sensor limit out of range</string>
+    <string name="string_car_h_e_2">Height sensor wiring error</string>
+    <string name="string_car_h_e_3">Height sensor range fault</string>
+    <string name="string_car_h_e_4">Height sensor upside down</string>
+    <string name="string_car_h_e_5">Height sensor failure</string>
+    <string name="string_car_h_e_6">Pressure sensor failure</string>
+    <string name="string_car_h_e_7">Leak detected on air suspension</string>
 
     <string name="string_car_auto_check_prompt">Whethere to perform automatic self-test?</string>
     <string name="string_car_check_failed">Fail</string>
@@ -148,8 +145,8 @@
     <string name="string_activate_success">Activation successful</string>
 
     <string name="string_not_conn_device">No Devices</string>
-    <string name="string_go_to_official_website">web</string>
-    <string name="string_go_to_conn">connecting</string>
+    <string name="string_go_to_official_website">Web</string>
+    <string name="string_go_to_conn">Connecting</string>
     <string name="string_e_1">System not self checking</string>
     <string name="string_e_2">Acceleration sensor failure</string>
     <string name="string_e_3">High battery voltage</string>

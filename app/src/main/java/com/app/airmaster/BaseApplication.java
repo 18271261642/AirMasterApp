@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.os.IBinder;
+
 import androidx.annotation.NonNull;
 
 import com.app.airmaster.action.ActivityManager;
@@ -31,23 +32,29 @@ import com.hjq.toast.ToastUtils;
 import com.liulishuo.filedownloader.FileDownloader;
 import com.tencent.bugly.crashreport.CrashReport;
 import com.tencent.mmkv.MMKV;
+
 import org.litepal.LitePal;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
+
 import okhttp3.OkHttpClient;
 import timber.log.Timber;
 
 /**
  * Created by Admin
  * Application
+ *
  * @author Admin
  */
 public class BaseApplication extends BleApplication {
 
 
-    /**连接状态枚举**/
+    /**
+     * 连接状态枚举
+     **/
     private ConnStatus connStatus = ConnStatus.NOT_CONNECTED;
     private static BaseApplication baseApplication;
 
@@ -76,24 +83,24 @@ public class BaseApplication extends BleApplication {
     }
 
 
-    public static BaseApplication getBaseApplication(){
+    public static BaseApplication getBaseApplication() {
         return baseApplication;
     }
 
-    public BleOperateManager getBleOperate(){
+    public BleOperateManager getBleOperate() {
         return BleOperateManager.getInstance();
     }
 
 
-    public  void setAgree(){
+    public void setAgree() {
         boolean isFirstOpen = MmkvUtils.getPrivacy();
-        if(isFirstOpen){
+        if (isFirstOpen) {
             CrashReport.initCrashReport(baseApplication, "5203bcf1b4", true);
         }
 
     }
 
-    private void initApp(){
+    private void initApp() {
         baseApplication = this;
         //log
         Timber.plant(new DebugLoggerTree());
@@ -110,7 +117,7 @@ public class BaseApplication extends BleApplication {
         initNet();
 
         Intent intent = new Intent(this, ConnStatusService.class);
-        this.bindService(intent,serviceConnection, Context.BIND_AUTO_CREATE);
+        this.bindService(intent, serviceConnection, Context.BIND_AUTO_CREATE);
         FileDownloader.setupOnApplicationOnCreate(baseApplication);
 
         ActivityManager.getInstance().registerApplicationLifecycleCallback(new ActivityManager.ApplicationLifecycleCallback() {
@@ -137,13 +144,13 @@ public class BaseApplication extends BleApplication {
     }
 
 
-    private void initNet(){
+    private void initNet() {
         OkHttpRetryInterceptor.Builder builder = new OkHttpRetryInterceptor.Builder();
         builder.build();
         OkHttpClient okHttpClient = new OkHttpClient.Builder()
                 .connectTimeout(0, TimeUnit.SECONDS)
-                .readTimeout(0,TimeUnit.SECONDS)
-                .writeTimeout(0,TimeUnit.SECONDS)
+                .readTimeout(0, TimeUnit.SECONDS)
+                .writeTimeout(0, TimeUnit.SECONDS)
 //                .addInterceptor(new OkHttpRetryInterceptor(builder))
                 .build();
 
@@ -174,7 +181,7 @@ public class BaseApplication extends BleApplication {
                 .into();
     }
 
-    public ConnStatusService getConnStatusService(){
+    public ConnStatusService getConnStatusService() {
         return connStatusService;
     }
 
@@ -183,9 +190,9 @@ public class BaseApplication extends BleApplication {
         @Override
         public void onServiceConnected(ComponentName componentName, IBinder iBinder) {
             try {
-                connStatusService =( (ConnStatusService.ConnBinder)iBinder).getService();
-                Timber.e("--------service=null="+(connStatusService == null));
-            }catch (Exception e){
+                connStatusService = ((ConnStatusService.ConnBinder) iBinder).getService();
+                Timber.e("--------service=null=" + (connStatusService == null));
+            } catch (Exception e) {
                 e.printStackTrace();
             }
 
@@ -199,12 +206,12 @@ public class BaseApplication extends BleApplication {
 
 
     //获取连接状态
-    public ConnStatus getConnStatus(){
+    public ConnStatus getConnStatus() {
         return connStatus;
     }
 
     //设置连接状态
-    public void setConnStatus(ConnStatus connStatus){
+    public void setConnStatus(ConnStatus connStatus) {
         this.connStatus = connStatus;
     }
 
@@ -214,16 +221,17 @@ public class BaseApplication extends BleApplication {
         return log;
     }
 
-    private StringBuffer stringBuffer  = new StringBuffer();
-    public void clearLog(){
-        stringBuffer.delete(0,stringBuffer.length());
+    private StringBuffer stringBuffer = new StringBuffer();
+
+    public void clearLog() {
+        stringBuffer.delete(0, stringBuffer.length());
     }
 
     public void setLogStr(String logStr) {
-        stringBuffer.append(logStr+"\n");
+        stringBuffer.append(logStr + "\n");
     }
 
-    public String getAppLog(){
+    public String getAppLog() {
         return stringBuffer.toString();
     }
 
@@ -252,6 +260,15 @@ public class BaseApplication extends BleApplication {
     }
 
     public List<String> getFilterList() {
+        if (filterList.isEmpty()) {
+            return new ArrayList<String>(Arrays.asList("C01B",
+                    "C019",
+                    "C023",
+                    "C024",
+                    "C027",
+                    "C02B",
+                    "C028"));
+        }
         return filterList;
     }
 

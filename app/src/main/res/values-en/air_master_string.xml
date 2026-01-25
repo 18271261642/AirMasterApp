@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <string name="string_next_upgradge">Update later</string>
     <string name="string_activation_code">Enter activation code</string>
     <string name="string_clear_all_prompt">Clear?</string>
 

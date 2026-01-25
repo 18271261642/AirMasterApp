@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="string_next_upgradge">キャンセル</string>
     <string name="string_activation_code">アクティブコードを入力</string>
     <string name="string_clear_all_prompt">削除?</string>
     <string name="string_set_max_height">車高最大値を設定し,\n保存してください</string>
