@@ -9,6 +9,7 @@ import android.view.Gravity
 import android.view.View
 import androidx.core.view.size
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.viewpager2.widget.ViewPager2
 import com.app.airmaster.BaseApplication
 import com.app.airmaster.R
@@ -109,8 +110,11 @@ class ManualCheckActivity : AppActivity() {
 
             Timber.e("-----自检--itemBean=$itemBean")
 
-            manualCheckPager?.currentItem = position
-            adapter?.setItem(position,itemBean)
+            if(position<adapter?.itemCount!!){
+                manualCheckPager?.currentItem = position
+                adapter?.setItem(position,itemBean)
+            }
+
 
             if(checkStep==6 ){
 
@@ -191,7 +195,7 @@ class ManualCheckActivity : AppActivity() {
             if(it == 0x00){
                 dialog.dismiss()
                 intoOrExitCheck(false)
-                GlobalScope.launch {
+                lifecycleScope.launch {
                     delay(500)
                     finish()
                 }

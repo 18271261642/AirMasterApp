@@ -113,7 +113,7 @@ class NotebookActivity : AppActivity() {
 
             val tempList = mutableListOf<NoteBookBean>()
             noteList?.forEach {
-                if(it.noteTitle.toLowerCase(Locale.ROOT).contains(str.toLowerCase(Locale.ROOT))){
+                if(it.noteTitle.lowercase(Locale.ROOT).contains(str.lowercase(Locale.ROOT))){
                     tempList.add(it)
                 }
             }

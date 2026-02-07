@@ -7,6 +7,7 @@ import android.os.Handler
 import android.os.Looper
 import android.os.Message
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.app.airmaster.BaseApplication
 import com.app.airmaster.R
 import com.app.airmaster.ble.DfuService
@@ -142,33 +143,31 @@ class DfuViewModel : ViewModel(){
 
 
     private val mDfuProgressListener : DfuProgressListener = object : DfuProgressListener {
-        override fun onDeviceConnecting(deviceAddress: String?) {
-            Timber.e("------onDeviceConnecting--------")
 
-            //   dfuBtnStatusView?.setShowTxt = resources.getString(R.string.string_upgrade_ing)
-        }
 
-        override fun onDeviceConnected(deviceAddress: String?) {
-            Timber.e("-------onDeviceConnected-------")
-        }
 
-        override fun onDfuProcessStarting(deviceAddress: String?) {
-            Timber.e("------onDfuProcessStarting--------")
-           // isUpgradeing = true
+        override fun onDeviceConnecting(deviceAddress: String) {
 
         }
 
-        override fun onDfuProcessStarted(deviceAddress: String?) {
-            Timber.e("------onDfuProcessStarted--------")
+        override fun onDeviceConnected(deviceAddress: String) {
+
         }
 
-        override fun onEnablingDfuMode(deviceAddress: String?) {
-            Timber.e("-------onEnablingDfuMode-------")
+        override fun onDfuProcessStarting(deviceAddress: String) {
+
         }
 
-        @SuppressLint("SetTextI18n")
+        override fun onDfuProcessStarted(deviceAddress: String) {
+
+        }
+
+        override fun onEnablingDfuMode(deviceAddress: String) {
+
+        }
+
         override fun onProgressChanged(
-            deviceAddress: String?,
+            deviceAddress: String,
             percent: Int,
             speed: Float,
             avgSpeed: Float,
@@ -176,54 +175,38 @@ class DfuViewModel : ViewModel(){
             partsTotal: Int
         ) {
             Timber.e("------onProgressChanged--------="+percent+" "+currentPart)
-          //  dfuStateTv?.text = "升级中: "+percent
-           // dfuProgressData.postValue(percent)
             dfuProgressData.postValue(percent)
         }
 
-        override fun onFirmwareValidating(deviceAddress: String?) {
+        override fun onFirmwareValidating(deviceAddress: String) {
             Timber.e("-----onFirmwareValidating---------")
-
         }
 
         override fun onDeviceDisconnecting(deviceAddress: String?) {
             Timber.e("-----onDeviceDisconnecting---------")
         }
 
-        override fun onDeviceDisconnected(deviceAddress: String?) {
-            Timber.e("----onDeviceDisconnected----------")
+        override fun onDeviceDisconnected(deviceAddress: String) {
+            TODO("Not yet implemented")
         }
 
-        override fun onDfuCompleted(deviceAddress: String?) {
-            Timber.e("-------onDfuCompleted-------="+deviceAddress)
-          //  ToastUtils.show(context.getString(R.string.string_upgrade_success))
-            //  dfuNoUpdateTv.visibility = View.GONE
-          //  failOrSuccess(true)
+        override fun onDfuCompleted(deviceAddress: String) {
             BaseApplication.getBaseApplication().bleOperate.disConnYakDevice()
+
 
             dfuServiceController?.abort()
             isDfuConn = false
-            GlobalScope.launch {
+            viewModelScope.launch {
                 delay(3000)
                 dfuUpgradeStatus.postValue(true)
             }
-
-//            val saveMac = MmkvUtils.getConnDeviceMac()
-//            if(!BikeUtils.isEmpty(saveMac)){
-////                BaseApplication.getInstance().connStatusService.autoConnDevice(saveMac,true)
-//            }
-            //BaseApplication.getInstance().connStatusService.autoConnDevice()
         }
 
-        override fun onDfuAborted(deviceAddress: String?) {
-            Timber.e("------onDfuAborted--------")
-          //  failOrSuccess(false)
-           // dfuUpgradeStatus.postValue(false)
+        override fun onDfuAborted(deviceAddress: String) {
+
         }
 
-        override fun onError(deviceAddress: String?, error: Int, errorType: Int, message: String?) {
-            Timber.e("--------onError------="+error+" "+message)
-          //  failOrSuccess(false)
+        override fun onError(deviceAddress: String, error: Int, errorType: Int, message: String?) {
             isDfuConn = false
             dfuUpgradeStatus.postValue(false)
         }

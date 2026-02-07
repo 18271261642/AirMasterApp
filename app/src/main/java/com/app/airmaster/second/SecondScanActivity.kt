@@ -352,9 +352,10 @@ class SecondScanActivity : AppActivity() {
         run outside@{
             filterList.forEachIndexed { index, s ->
                 val tempK = Utils.changeStr(s)
-                if(recordStr.contains(s.toLowerCase(Locale.ROOT)) || recordStr.contains(tempK.toLowerCase(Locale.ROOT))){
+                if(recordStr.contains(s.lowercase(Locale.ROOT)) || recordStr.contains(tempK.lowercase(
+                        Locale.ROOT
+                    ))){
                     return true
-                    return@outside
                 }
             }
         }

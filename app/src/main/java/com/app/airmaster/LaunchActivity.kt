@@ -48,18 +48,9 @@ class LaunchActivity : AppActivity() {
 
     override fun initData() {
         filterViewModel = ViewModelProvider(this)[FilterViewModel::class.java]
-        filterViewModel?.filterState?.observe(this){
-            handlers.sendEmptyMessageDelayed(0x00,1000)
-        }
-
-      //  filterViewModel?.getFilterDevice(this)
-
+        handlers.sendEmptyMessageDelayed(0x00,2000)
 
     }
-
-
-
-
 
 
     //显示隐私弹窗

@@ -4,11 +4,12 @@ import android.content.Context
 import android.os.Bundle
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatDialog
+import androidx.lifecycle.LifecycleOwner
 import com.app.airmaster.R
 import com.app.airmaster.adapter.OnCommItemClickListener
 import com.hjq.shape.view.ShapeTextView
 
-class ConfirmDialog : AppCompatDialog{
+class ConfirmDialog(context: Context,theme: Int) : AppCompatDialog(context,theme){
 
 
     private var confirmCancelTv : ShapeTextView ?= null
@@ -23,15 +24,11 @@ class ConfirmDialog : AppCompatDialog{
         this.onItemClickListener = onclick
     }
 
-
-    constructor(context: Context) : super (context){
-
-    }
-
-
-    constructor(context: Context, theme : Int) : super (context, theme){
+    init {
 
     }
+
+
 
 
     override fun onCreate(savedInstanceState: Bundle?) {

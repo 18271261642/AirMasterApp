@@ -61,18 +61,6 @@ class BleKeyboardActivity : AppActivity(){
     private var bluetoothAdapter : BluetoothAdapter ?= null
 
 
-    private val handlers : Handler = object : Handler(Looper.getMainLooper()){
-        override fun handleMessage(msg: Message) {
-            super.handleMessage(msg)
-            if(!activity.isFinishing){
-                val log = BleOperateManager.getInstance().getLog()
-
-               // lowTv?.text = log.toString()
-            }
-
-
-        }
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -82,7 +70,12 @@ class BleKeyboardActivity : AppActivity(){
         intentFilter.addAction(BleConstant.BLE_SCAN_COMPLETE_ACTION)
         intentFilter.addAction(BleConstant.BLE_START_SCAN_ACTION)
         intentFilter.addAction("ble_action")
-        registerReceiver(broadcastReceiver,intentFilter)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            registerReceiver(broadcastReceiver,intentFilter,Context.RECEIVER_EXPORTED)
+        }else{
+            registerReceiver(broadcastReceiver,intentFilter)
+        }
+
 
 
     }
@@ -107,17 +100,17 @@ class BleKeyboardActivity : AppActivity(){
     }
 
     private fun startRunnable(){
-      handlers.postDelayed(runnable,1000)
+
     }
 
     private var runnable : Runnable = Runnable {
-       handlers.sendEmptyMessageDelayed(0x00,1000)
+
     }
 
 
     override fun onStop() {
         super.onStop()
-        handlers.removeMessages(0x00)
+
 
     }
 
@@ -279,7 +272,7 @@ class BleKeyboardActivity : AppActivity(){
        // Timber.e("----22-绑定="+bindArray?.size+" "+(bluetoothAdapter == null))
         bindArray?.forEach {
             //Timber.e("-----绑定="+it.name)
-            if(it != null && !BikeUtils.isEmpty(it.name) && it.name.toLowerCase(Locale.ROOT).contains("zoom")){
+            if(it != null && !BikeUtils.isEmpty(it.name) && it.name.lowercase(Locale.ROOT).contains("zoom")){
                // Timber.e("---取消配对--绑定="+it.name)
                 BikeUtils.unpairDevice(it)
             }
@@ -336,7 +329,7 @@ class BleKeyboardActivity : AppActivity(){
             }
 
             if(action == "ble_action"){
-                handlers.sendEmptyMessage(0x00)
+
             }
 
             if(action == BleConstant.BLE_START_SCAN_ACTION){

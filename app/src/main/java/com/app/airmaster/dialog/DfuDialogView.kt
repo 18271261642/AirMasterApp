@@ -208,80 +208,80 @@ class DfuDialogView : AppCompatDialog {
     }
 
 
-    private val mDfuProgressListener : DfuProgressListener = object : DfuProgressListener {
-        override fun onDeviceConnecting(deviceAddress: String?) {
-            Timber.e("------onDeviceConnecting--------")
-
-            //   dfuBtnStatusView?.setShowTxt = resources.getString(R.string.string_upgrade_ing)
-        }
-
-        override fun onDeviceConnected(deviceAddress: String?) {
-            Timber.e("-------onDeviceConnected-------")
-        }
-
-        override fun onDfuProcessStarting(deviceAddress: String?) {
-            Timber.e("------onDfuProcessStarting--------")
-            isUpgradeing = true
-
-        }
-
-        override fun onDfuProcessStarted(deviceAddress: String?) {
-            Timber.e("------onDfuProcessStarted--------")
-        }
-
-        override fun onEnablingDfuMode(deviceAddress: String?) {
-            Timber.e("-------onEnablingDfuMode-------")
-        }
-
-        @SuppressLint("SetTextI18n")
-        override fun onProgressChanged(
-            deviceAddress: String?,
-            percent: Int,
-            speed: Float,
-            avgSpeed: Float,
-            currentPart: Int,
-            partsTotal: Int
-        ) {
-            Timber.e("------onProgressChanged--------="+percent+" "+currentPart)
-            dfuStateTv?.text = "升级中: "+percent
-        }
-
-        override fun onFirmwareValidating(deviceAddress: String?) {
-            Timber.e("-----onFirmwareValidating---------")
-
-        }
-
-        override fun onDeviceDisconnecting(deviceAddress: String?) {
-            Timber.e("-----onDeviceDisconnecting---------")
-        }
-
-        override fun onDeviceDisconnected(deviceAddress: String?) {
-            Timber.e("----onDeviceDisconnected----------")
-        }
-
-        override fun onDfuCompleted(deviceAddress: String?) {
-            Timber.e("-------onDfuCompleted-------="+deviceAddress)
-            ToastUtils.show(context.getString(R.string.string_upgrade_success))
-            //  dfuNoUpdateTv.visibility = View.GONE
-            failOrSuccess(true)
-//            val saveMac = MmkvUtils.getConnDeviceMac()
-//            if(!BikeUtils.isEmpty(saveMac)){
-////                BaseApplication.getInstance().connStatusService.autoConnDevice(saveMac,true)
-//            }
-            //BaseApplication.getInstance().connStatusService.autoConnDevice()
-        }
-
-        override fun onDfuAborted(deviceAddress: String?) {
-            Timber.e("------onDfuAborted--------")
-            failOrSuccess(false)
-        }
-
-        override fun onError(deviceAddress: String?, error: Int, errorType: Int, message: String?) {
-            Timber.e("--------onError------="+error+" "+message)
-            failOrSuccess(false)
-        }
-
-    }
+//    private val mDfuProgressListener : DfuProgressListener = object : DfuProgressListener {
+//        override fun onDeviceConnecting(deviceAddress: String?) {
+//            Timber.e("------onDeviceConnecting--------")
+//
+//            //   dfuBtnStatusView?.setShowTxt = resources.getString(R.string.string_upgrade_ing)
+//        }
+//
+//        override fun onDeviceConnected(deviceAddress: String?) {
+//            Timber.e("-------onDeviceConnected-------")
+//        }
+//
+//        override fun onDfuProcessStarting(deviceAddress: String?) {
+//            Timber.e("------onDfuProcessStarting--------")
+//            isUpgradeing = true
+//
+//        }
+//
+//        override fun onDfuProcessStarted(deviceAddress: String?) {
+//            Timber.e("------onDfuProcessStarted--------")
+//        }
+//
+//        override fun onEnablingDfuMode(deviceAddress: String?) {
+//            Timber.e("-------onEnablingDfuMode-------")
+//        }
+//
+//        @SuppressLint("SetTextI18n")
+//        override fun onProgressChanged(
+//            deviceAddress: String?,
+//            percent: Int,
+//            speed: Float,
+//            avgSpeed: Float,
+//            currentPart: Int,
+//            partsTotal: Int
+//        ) {
+//            Timber.e("------onProgressChanged--------="+percent+" "+currentPart)
+//            dfuStateTv?.text = "升级中: "+percent
+//        }
+//
+//        override fun onFirmwareValidating(deviceAddress: String?) {
+//            Timber.e("-----onFirmwareValidating---------")
+//
+//        }
+//
+//        override fun onDeviceDisconnecting(deviceAddress: String?) {
+//            Timber.e("-----onDeviceDisconnecting---------")
+//        }
+//
+//        override fun onDeviceDisconnected(deviceAddress: String?) {
+//            Timber.e("----onDeviceDisconnected----------")
+//        }
+//
+//        override fun onDfuCompleted(deviceAddress: String?) {
+//            Timber.e("-------onDfuCompleted-------="+deviceAddress)
+//            ToastUtils.show(context.getString(R.string.string_upgrade_success))
+//            //  dfuNoUpdateTv.visibility = View.GONE
+//            failOrSuccess(true)
+////            val saveMac = MmkvUtils.getConnDeviceMac()
+////            if(!BikeUtils.isEmpty(saveMac)){
+//////                BaseApplication.getInstance().connStatusService.autoConnDevice(saveMac,true)
+////            }
+//            //BaseApplication.getInstance().connStatusService.autoConnDevice()
+//        }
+//
+//        override fun onDfuAborted(deviceAddress: String?) {
+//            Timber.e("------onDfuAborted--------")
+//            failOrSuccess(false)
+//        }
+//
+//        override fun onError(deviceAddress: String?, error: Int, errorType: Int, message: String?) {
+//            Timber.e("--------onError------="+error+" "+message)
+//            failOrSuccess(false)
+//        }
+//
+//    }
 
 
 
